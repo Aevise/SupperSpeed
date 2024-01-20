@@ -1,6 +1,6 @@
 CREATE TABLE user_role
 (
-    user_id INT NOT NULL,
+    user_id INT NOT NULL UNIQUE,
     role_id INT NOT NULL,
     PRIMARY KEY (user_id, role_id),
     CONSTRAINT pk_user_user_role
