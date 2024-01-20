@@ -6,7 +6,6 @@ CREATE TABLE dish
     name               VARCHAR(32)   NOT NULL,
     description        VARCHAR(128),
     price              NUMERIC(8, 2) NOT NULL,
-    ingredient_list_id INT,
     photo              VARCHAR(128),
     availability       BOOLEAN       NOT NULL,
     PRIMARY KEY (dish_id),
@@ -15,8 +14,5 @@ CREATE TABLE dish
             REFERENCES restaurant (user_id),
     CONSTRAINT fk_dish_category_id
         FOREIGN KEY (dish_category_id)
-            REFERENCES dish_category (dish_category_id),
-    CONSTRAINT fk_dish_ingredient_list_id
-        FOREIGN KEY (ingredient_list_id)
-            REFERENCES ingredient_list (ingredient_list_id)
+            REFERENCES dish_category (dish_category_id)
 );

@@ -1,9 +1,8 @@
-CREATE TABLE order
+CREATE TABLE supper_order
 (
     order_id        SERIAL                   NOT NULL,
     client_id       INT                      NOT NULL,
     restaurant_id   INT                      NOT NULL,
-    dishes_id       INT                      NOT NULL,
     order_date_time TIMESTAMP WITH TIME ZONE NOT NULL,
     status_id       INT                      NOT NULL,
     rating_id       INT,
@@ -16,8 +15,5 @@ CREATE TABLE order
             REFERENCES restaurant (user_id),
     CONSTRAINT fk_rating_order
         FOREIGN KEY (rating_id)
-            REFERENCES user_rating (user_rating_id),
-    CONSTRAINT fk_dishes_order
-        FOREIGN KEY (dishes_id)
-            REFERENCES dishes (dish_list_id)
+            REFERENCES user_rating (user_rating_id)
 );

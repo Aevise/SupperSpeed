@@ -8,7 +8,7 @@ CREATE TABLE restaurant
     PRIMARY KEY (user_id),
     CONSTRAINT fk_restaurant_user_id
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id),
+            REFERENCES supper_user (user_id),
     CONSTRAINT fk_restaurant_address_id
         FOREIGN KEY (address_id)
             REFERENCES address (address_id)
