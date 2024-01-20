@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of="supperUserId")
+@EqualsAndHashCode(of = "supperUserId")
 @ToString(of = {"supperUserId", "email", "active", "creationDateTime", "lastLoginDateTime"})
 @Builder
 @NoArgsConstructor
