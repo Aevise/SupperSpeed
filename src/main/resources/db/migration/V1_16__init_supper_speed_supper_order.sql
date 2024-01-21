@@ -15,5 +15,8 @@ CREATE TABLE supper_order
             REFERENCES restaurant (user_id),
     CONSTRAINT fk_rating_order
         FOREIGN KEY (rating_id)
-            REFERENCES user_rating (user_rating_id)
+            REFERENCES user_rating (user_rating_id),
+    CONSTRAINT fk_status_order
+        FOREIGN KEY (status_id)
+            REFERENCES status_list (status_id)
 );

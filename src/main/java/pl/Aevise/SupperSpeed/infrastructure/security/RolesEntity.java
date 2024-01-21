@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "roleId")
-@ToString(of = "role_name")
+@ToString(of = "roleName")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
