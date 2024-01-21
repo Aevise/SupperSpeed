@@ -2,7 +2,6 @@ package pl.Aevise.SupperSpeed.infrastructure.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pl.Aevise.SupperSpeed.infrastructure.security.UserRoleEntity;
 
 import java.time.OffsetDateTime;
 
@@ -23,11 +22,11 @@ public class SupperOrderEntity {
     private Integer orderId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private ClientEntity client;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private RestaurantEntity restaurant;
 
     @Column(name = "order_date_time", nullable = false)

@@ -8,13 +8,13 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "dish")
-@ToString(of = {"ingredientId", "quantity", "units"})
+@ToString(of = {"ingredient", "quantity", "units"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "ingredient_list")
-public class IngredientListEntity implements Serializable{
+public class IngredientListEntity implements Serializable {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -7,13 +7,13 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "ingredientId")
-@ToString(of = {"name", "allergic"})
+@EqualsAndHashCode(of = "userRatingId")
+@ToString(of = {"foodRating", "deliveryRating", "ratingDateTime", "description"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ingredient")
+@Table(name = "user_rating")
 public class UserRatingEntity {
 
     @Id
