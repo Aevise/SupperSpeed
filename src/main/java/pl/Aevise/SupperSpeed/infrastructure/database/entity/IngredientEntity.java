@@ -19,7 +19,7 @@ public class IngredientEntity {
     @Column(name = "ingredient_id", nullable = false, unique = true)
     private Integer ingredientId;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 64)
     private String name;
 
     @Column(name = "allergic")

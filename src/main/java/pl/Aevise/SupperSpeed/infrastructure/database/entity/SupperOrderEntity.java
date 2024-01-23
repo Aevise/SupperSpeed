@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,12 +22,14 @@ public class SupperOrderEntity {
     @Column(name = "order_id", unique = true, nullable = false)
     private Integer orderId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId
+// sprawdzic    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private ClientEntity client;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId
+// sprawdzic    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private RestaurantEntity restaurant;
 
     @Column(name = "order_date_time", nullable = false)
@@ -36,7 +39,10 @@ public class SupperOrderEntity {
     @JoinColumn(name = "status_id", unique = true)
     private StatusListEntity status;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "rating_id", unique = true)
     private UserRatingEntity userRating;
+
+
+
 }

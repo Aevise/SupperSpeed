@@ -18,7 +18,7 @@ public class IngredientListEntity implements Serializable {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "dish_id", referencedColumnName = "dish_id")
+    @MapsId
     private DishEntity dish;
 
     @Id

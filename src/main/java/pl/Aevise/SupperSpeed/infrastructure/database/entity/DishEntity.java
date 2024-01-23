@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,14 +23,14 @@ public class DishEntity {
     private Integer dishId;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @MapsId
     private RestaurantEntity restaurant;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "dish_category_id", nullable = false)
     private DishCategoryEntity dishCategory;
 
-    @Column(name = "name", length = 32)
+    @Column(name = "name", length = 32, nullable = false)
     private String name;
 
     @Column(name = "description", length = 128)
@@ -41,7 +42,15 @@ public class DishEntity {
     @Column(name = "photo", length = 128)
     private String photo;
 
-    @Column(name = "availability")
+    @Column(name = "availability", nullable = false)
     private Boolean availability;
+
+    @ManyToMany
+    @JoinTable(
+            name = "menu_list",
+            joinColumns = @JoinColumn(name = "dish_id"),
+            inverseJoinColumns = @JoinColumn(name = "menu_id")
+    )
+    private Set<MenuEntity> menus;
 
 }

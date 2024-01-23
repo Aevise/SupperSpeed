@@ -17,12 +17,12 @@ public class DishesListEntity implements Serializable {
 
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "dish_id", referencedColumnName = "dish_id")
+    @MapsId
     private DishEntity dish;
 
     @Id
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
+    @MapsId
     private SupperOrderEntity order;
 
     @Column(name = "quantity")

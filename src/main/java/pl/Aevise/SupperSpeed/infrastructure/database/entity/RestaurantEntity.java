@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,8 +19,8 @@ import java.time.LocalTime;
 public class RestaurantEntity {
 
     @Id
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", unique = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId
     private SupperUserEntity supperUser;
 
     @Column(name = "restaurant_name")
@@ -34,5 +35,9 @@ public class RestaurantEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true)
     private AddressEntity address;
+
+    //TODO czy tutaj dodac kiedys Cascade? Do sprawdzenia na testach
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    private Set<SupperOrderEntity> orders;
 
 }

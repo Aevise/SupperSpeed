@@ -9,10 +9,10 @@ CREATE TABLE supper_order
     PRIMARY KEY (order_id),
     CONSTRAINT fk_client_order
         FOREIGN KEY (client_id)
-            REFERENCES client (user_id),
+            REFERENCES client (supper_client_id),
     CONSTRAINT fk_restaurant_order
         FOREIGN KEY (restaurant_id)
-            REFERENCES restaurant (user_id),
+            REFERENCES restaurant (supper_restaurant_id),
     CONSTRAINT fk_rating_order
         FOREIGN KEY (rating_id)
             REFERENCES user_rating (user_rating_id),

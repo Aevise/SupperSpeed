@@ -19,15 +19,15 @@ public class AddressEntity {
     @Column(name = "address_id", nullable = false, unique = true)
     private Integer addressId;
 
-    @Column(name = "country")
+    @Column(name = "country", length = 32, nullable = false)
     private String country;
 
-    @Column(name = "city")
+    @Column(name = "city", length = 32, nullable = false)
     private String city;
 
-    @Column(name = "postal_code")
+    @Column(name = "postal_code", length = 32, nullable = false)
     private String postalCode;
 
-    @Column(name = "address")
+    @Column(name = "address", length = 64, nullable = false)
     private String address;
 }

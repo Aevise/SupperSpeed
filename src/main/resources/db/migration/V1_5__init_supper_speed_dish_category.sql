@@ -6,5 +6,5 @@ CREATE TABLE dish_category
     PRIMARY KEY (dish_category_id),
     CONSTRAINT fk_restaurant_dish_category_id
         FOREIGN KEY (restaurant_id)
-            REFERENCES restaurant (user_id)
+            REFERENCES restaurant (supper_restaurant_id)
 );

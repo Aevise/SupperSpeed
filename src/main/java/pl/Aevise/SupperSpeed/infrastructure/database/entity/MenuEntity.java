@@ -3,6 +3,8 @@ package pl.Aevise.SupperSpeed.infrastructure.database.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @EqualsAndHashCode(of = "menuId")
@@ -13,6 +15,7 @@ import lombok.*;
 @Entity
 @Table(name = "menu")
 public class MenuEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "menu_id", nullable = false, unique = true)
@@ -23,5 +26,10 @@ public class MenuEntity {
 
     @Column(name = "description", length = 128)
     private String description;
+
+    @ManyToMany(mappedBy = "menus")
+    private Set<DishEntity> dishes;
+
+
 
 }

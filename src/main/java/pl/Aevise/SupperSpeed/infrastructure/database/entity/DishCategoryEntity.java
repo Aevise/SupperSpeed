@@ -19,11 +19,11 @@ public class DishCategoryEntity {
     @Column(name = "dish_category_id", nullable = false, unique = true)
     private Integer dishCategoryId;
 
-    @Column(name = "category_name")
+    @Column(name = "category_name", length = 32, nullable = false)
     private String categoryName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @MapsId
     private RestaurantEntity restaurant;
 
 }
