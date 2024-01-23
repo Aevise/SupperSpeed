@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.infrastructure.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DishesListKey;
 
 import java.io.Serializable;
 
@@ -15,14 +16,17 @@ import java.io.Serializable;
 @Table(name = "dishes_list")
 public class DishesListEntity implements Serializable {
 
-    @Id
+    @EmbeddedId
+    private DishesListKey id;
+
+    @MapsId("dishId")
+    @JoinColumn(name = "dish_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    @MapsId
     private DishEntity dish;
 
-    @Id
+    @MapsId("orderId")
+    @JoinColumn(name = "order_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    @MapsId
     private SupperOrderEntity order;
 
     @Column(name = "quantity")

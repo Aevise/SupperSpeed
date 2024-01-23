@@ -8,6 +8,6 @@ CREATE TABLE dishes_list
         FOREIGN KEY (order_id)
             REFERENCES supper_order (order_id),
     CONSTRAINT fk_dish
-        FOREIGN KEY (order_id)
+        FOREIGN KEY (dish_id)
             REFERENCES dish (dish_id)
 );
