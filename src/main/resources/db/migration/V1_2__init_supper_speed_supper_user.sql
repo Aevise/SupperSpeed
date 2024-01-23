@@ -7,5 +7,9 @@ CREATE TABLE supper_user
     phone                VARCHAR(32),
     creation_date_time   TIMESTAMP WITH TIME ZONE NOT NULL,
     last_login_date_time TIMESTAMP WITH TIME ZONE NOT NULL,
-    PRIMARY KEY (user_id)
+    role_id              INTEGER                  NOT NULL,
+    PRIMARY KEY (user_id),
+    CONSTRAINT pk_user_role
+        FOREIGN KEY (role_id)
+            REFERENCES roles (role_id)
 );

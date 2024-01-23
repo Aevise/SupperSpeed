@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.infrastructure.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.Aevise.SupperSpeed.infrastructure.security.RolesEntity;
 
 import java.time.OffsetDateTime;
 
@@ -38,6 +39,10 @@ public class SupperUserEntity {
 
     @Column(name = "last_login_date_time")
     private OffsetDateTime lastLoginDateTime;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", nullable = false)
+    private RolesEntity role;
 
 
 }

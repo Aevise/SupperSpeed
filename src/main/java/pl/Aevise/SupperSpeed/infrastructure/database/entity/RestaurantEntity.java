@@ -19,8 +19,11 @@ import java.util.Set;
 public class RestaurantEntity {
 
     @Id
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Integer id;
+
     @MapsId
+    @JoinColumn(name = "supper_restaurant_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private SupperUserEntity supperUser;
 
     @Column(name = "restaurant_name")

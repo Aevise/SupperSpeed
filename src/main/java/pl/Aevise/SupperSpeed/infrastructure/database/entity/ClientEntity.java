@@ -17,8 +17,11 @@ import java.util.Set;
 public class ClientEntity {
 
     @Id
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Integer id;
+
     @MapsId
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "supper_client_id")
     private SupperUserEntity supperUser;
 
     @Column(name = "name", length = 32, nullable = false)
