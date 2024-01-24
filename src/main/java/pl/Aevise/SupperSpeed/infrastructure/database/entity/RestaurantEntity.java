@@ -3,6 +3,7 @@ package pl.Aevise.SupperSpeed.infrastructure.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.Aevise.SupperSpeed.infrastructure.security.SupperUserEntity;
 
 import java.time.LocalTime;
 import java.util.Set;
@@ -34,6 +35,9 @@ public class RestaurantEntity {
 
     @Column(name = "close_hour")
     private LocalTime closeHour;
+
+    @Column(name = "phone")
+    private String phone;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true)

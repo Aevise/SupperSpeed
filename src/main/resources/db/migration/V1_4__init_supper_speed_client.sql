@@ -3,6 +3,7 @@ CREATE TABLE client
     supper_client_id INT         NOT NULL,
     name             VARCHAR(32) NOT NULL,
     surname          VARCHAR(32),
+    phone            VARCHAR(32),
     address_id       INT         NOT NULL,
     PRIMARY KEY (supper_client_id),
     CONSTRAINT fk_client_user_id

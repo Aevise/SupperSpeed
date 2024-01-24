@@ -1,10 +1,11 @@
-package pl.Aevise.SupperSpeed.infrastructure.database.entity;
+package pl.Aevise.SupperSpeed.infrastructure.security;
 
 import jakarta.persistence.*;
 import lombok.*;
 import pl.Aevise.SupperSpeed.infrastructure.security.RolesEntity;
 
 import java.time.OffsetDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,18 +32,19 @@ public class SupperUserEntity {
     @Column(name = "active")
     private Boolean active;
 
-    @Column(name = "phone")
-    private String phone;
-
     @Column(name = "creation_date_time")
     private OffsetDateTime creationDateTime;
 
     @Column(name = "last_login_date_time")
     private OffsetDateTime lastLoginDateTime;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "role_id", nullable = false)
-    private RolesEntity role;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RolesEntity> role;
 
 
 }

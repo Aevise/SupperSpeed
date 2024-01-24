@@ -1,8 +1,9 @@
 package pl.Aevise.SupperSpeed.domain;
 
+import jakarta.persistence.Column;
 import lombok.*;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperUserEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.SupperUserEntity;
 
 import java.time.LocalTime;
 
@@ -18,4 +19,5 @@ public class Restaurant {
     LocalTime openHour;
     LocalTime closeHour;
     AddressEntity address;
+    String phone;
 }

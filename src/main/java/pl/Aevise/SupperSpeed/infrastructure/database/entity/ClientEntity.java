@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.infrastructure.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pl.Aevise.SupperSpeed.infrastructure.security.SupperUserEntity;
 
 import java.util.Set;
 
@@ -29,6 +30,9 @@ public class ClientEntity {
 
     @Column(name = "surname", length = 32)
     private String surname;
+
+    @Column(name = "phone")
+    private String phone;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true, nullable = false)

@@ -15,7 +15,6 @@ public class SupperUser {
     String email;
     String password;
     Boolean active;
-    String phone;
     OffsetDateTime creationDateTime;
     OffsetDateTime lastLoginDateTime;
 

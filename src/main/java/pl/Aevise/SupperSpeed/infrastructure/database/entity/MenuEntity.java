@@ -30,6 +30,4 @@ public class MenuEntity {
     @ManyToMany(mappedBy = "menus")
     private Set<DishEntity> dishes;
 
-
-
 }

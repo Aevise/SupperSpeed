@@ -2,7 +2,6 @@ package pl.Aevise.SupperSpeed.infrastructure.security;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperUserEntity;
 
 import java.io.Serializable;
 
