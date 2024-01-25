@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,7 +45,8 @@ public class SecurityConfiguration {
         //TODO add request Matchers after authorizehttprequests
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login").permitAll())
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("c-home").hasAnyAuthority("CLIENT"))
                 .formLogin(FormLoginConfigurer::permitAll)
                 .logout(logout -> logout
                         .logoutSuccessUrl("/login")

@@ -2,7 +2,8 @@ CREATE TABLE restaurant
 (
     supper_restaurant_id INT         NOT NULL,
     restaurant_name      VARCHAR(32) NOT NULL,
-    address_id           INT         NOT NULL,
+    address_id           INT         ,
+    phone                VARCHAR(32),
     open_hour            TIME        NOT NULL,
     close_hour           TIME        NOT NULL,
     PRIMARY KEY (supper_restaurant_id),

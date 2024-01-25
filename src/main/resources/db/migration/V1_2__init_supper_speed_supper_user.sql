@@ -6,7 +6,7 @@ CREATE TABLE supper_user
     active               BOOLEAN                  NOT NULL DEFAULT FALSE,
     creation_date_time   TIMESTAMP WITH TIME ZONE NOT NULL,
     last_login_date_time TIMESTAMP WITH TIME ZONE NOT NULL,
-    role_id              INTEGER                  NOT NULL,
+    role_id              INTEGER                  ,
     PRIMARY KEY (user_id),
     CONSTRAINT pk_user_role
         FOREIGN KEY (role_id)

@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.domain;
 
-import jakarta.persistence.*;
 import lombok.*;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantResponseEntity;
 

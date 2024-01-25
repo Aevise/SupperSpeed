@@ -22,6 +22,7 @@ public class SupperSpeedUserDetailsService implements UserDetailsService {
 
     /**
      * email can be interpreted as username in simple login logic: username/password
+     *
      * @param email
      * @throws UsernameNotFoundException
      */
@@ -29,19 +30,18 @@ public class SupperSpeedUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         SupperUserEntity user = supperUserRepository.findByEmail(email);
-        //TODO powrot do ManyToMany, czyli supperuser moze miec kilka roli w aplikacji
-        List<GrantedAuthority> authorities = getUserAuthority((Set<RolesEntity>) user.getRole());
+        List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }
 
-    private List<GrantedAuthority> getUserAuthority(Set<RolesEntity> userRoles){
+    private List<GrantedAuthority> getUserAuthority(Set<RolesEntity> userRoles) {
         return userRoles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
                 .distinct()
                 .collect(Collectors.toList());
     }
 
-    private UserDetails buildUserForAuthentication(SupperUserEntity user, List<GrantedAuthority> authorities){
+    private UserDetails buildUserForAuthentication(SupperUserEntity user, List<GrantedAuthority> authorities) {
         return new User(
                 user.getEmail(),
                 user.getPassword(),

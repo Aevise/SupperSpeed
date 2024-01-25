@@ -2,7 +2,6 @@ package pl.Aevise.SupperSpeed.infrastructure.security;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pl.Aevise.SupperSpeed.infrastructure.security.RolesEntity;
 
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -20,22 +19,22 @@ public class SupperUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Integer supperUserId;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "active")
+    @Column(name = "active", nullable = false)
     private Boolean active;
 
-    @Column(name = "creation_date_time")
+    @Column(name = "creation_date_time", nullable = false)
     private OffsetDateTime creationDateTime;
 
-    @Column(name = "last_login_date_time")
+    @Column(name = "last_login_date_time", nullable = false)
     private OffsetDateTime lastLoginDateTime;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
@@ -44,7 +43,7 @@ public class SupperUserEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<RolesEntity> role;
+    private Set<RolesEntity> roles;
 
 
 }

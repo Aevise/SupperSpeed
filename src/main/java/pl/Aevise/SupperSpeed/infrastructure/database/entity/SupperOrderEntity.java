@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -42,7 +41,6 @@ public class SupperOrderEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "rating_id", unique = true)
     private UserRatingEntity userRating;
-
 
 
 }
