@@ -11,13 +11,14 @@
 
 <body>
     <div class="container">
-        <h1>Supper Restaurants przy h1</h1>
+        <h1>Feeling hungry? Try one of our SupperRestaurants!</h1>
     </div>
 
     <div>
         <table class="table">
             <thead class="table-dark">
             <tr>
+                <th></th>
                 <th>Name</th>
                 <th>open hour</th>
                 <th>close hour</th>
@@ -27,6 +28,7 @@
             </thead>
             <tbody>
                 <tr th:each="restaurant : ${availableRestaurantsDTOs}">
+                    <td th:text="${restaurant.logo}"></td>
                     <td th:text="${restaurant.restaurantName}"></td>
                     <td th:text="${restaurant.openHour}"></td>
                     <td th:text="${restaurant.closeHour}"></td>
