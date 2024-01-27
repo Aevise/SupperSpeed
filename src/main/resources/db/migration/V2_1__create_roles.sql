@@ -1,4 +1,4 @@
 INSERT INTO roles (role_name)
-VALUES ('client');
+VALUES ('CLIENT');
 INSERT INTO roles (role_name)
-VALUES ('restaurant');
+VALUES ('RESTAURANT');

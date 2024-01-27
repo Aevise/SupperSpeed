@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "roleId")
-@ToString(of = "roleName")
+@ToString(of = "role")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,5 +20,5 @@ public class RolesEntity {
     private Integer roleId;
 
     @Column(name = "role_name", length = 32, nullable = false)
-    private String roleName;
+    private String role;
 }

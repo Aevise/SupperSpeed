@@ -3,8 +3,7 @@ package pl.Aevise.SupperSpeed.api.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.RestaurantViewService;
 
@@ -17,7 +16,7 @@ public class ClientHomeController {
     private final RestaurantMapper restaurantMapper;
     private final RestaurantViewService restaurantViewService;
 
-    @RequestMapping(value = CLIENT_HOME)
+    @GetMapping(value = CLIENT_HOME)
     public String clientHomePage(Model model) {
         var availableRestaurants = restaurantViewService.availableRestaurants()
                 .stream()
@@ -26,8 +25,6 @@ public class ClientHomeController {
 
         model.addAttribute("availableRestaurantsDTOs", availableRestaurants);
 
-        return "client_main";
+        return "client";
     }
-
-
 }

@@ -5,4 +5,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.SupperUserEntity;
 
 public interface RestaurantJpaRepository extends JpaRepository<RestaurantEntity, SupperUserEntity> {
+
+
 }

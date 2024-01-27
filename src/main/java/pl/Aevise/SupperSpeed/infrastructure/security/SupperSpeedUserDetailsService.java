@@ -36,7 +36,7 @@ public class SupperSpeedUserDetailsService implements UserDetailsService {
 
     private List<GrantedAuthority> getUserAuthority(Set<RolesEntity> userRoles) {
         return userRoles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRoleName()))
+                .map(role -> new SimpleGrantedAuthority(role.getRole()))
                 .distinct()
                 .collect(Collectors.toList());
     }

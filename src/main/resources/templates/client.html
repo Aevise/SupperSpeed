@@ -18,10 +18,11 @@
         <table class="table">
             <thead class="table-dark">
             <tr>
-                <th>restaurantName</th>
-                <th>openHour</th>
-                <th>closeHour</th>
-                <th>phone</th>
+                <th>Name</th>
+                <th>open hour</th>
+                <th>close hour</th>
+                <th>contact</th>
+                <th>cuisine</th>
             </tr>
             </thead>
             <tbody>
@@ -30,10 +31,13 @@
                     <td th:text="${restaurant.openHour}"></td>
                     <td th:text="${restaurant.closeHour}"></td>
                     <td th:text="${restaurant.phone}"></td>
+                    <td th:text="${restaurant.type}"></td>
+                    <td>
+                        <a th:href = "@{/error}" class="btn btn-info" role="button" th:text="'Order from ' + ${restaurant.restaurantName}">Restaurant Name</a>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
 </body>
 </html>

@@ -37,7 +37,7 @@ public class SupperUserEntity {
     @Column(name = "last_login_date_time", nullable = false)
     private OffsetDateTime lastLoginDateTime;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

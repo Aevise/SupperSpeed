@@ -25,3 +25,5 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  security:
+    enabled: true
