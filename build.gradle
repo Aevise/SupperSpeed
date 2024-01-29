@@ -31,6 +31,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+    //image processing
+    implementation "org.imgscalr:imgscalr-lib:${imgscalrVersion}"
+
     //db
     implementation 'org.flywaydb:flyway-core'
     runtimeOnly 'org.postgresql:postgresql'

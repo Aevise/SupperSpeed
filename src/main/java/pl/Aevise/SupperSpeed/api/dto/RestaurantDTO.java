@@ -16,6 +16,9 @@ public class RestaurantDTO {
     String restaurantName;
     LocalTime openHour;
     LocalTime closeHour;
-    //TODO add restaurant address to DTO?
     String phone;
+    CuisineDTO cuisine;
+    LogoDTO logo;
+    //TODO dodac address do mapowania restauracji
+
 }

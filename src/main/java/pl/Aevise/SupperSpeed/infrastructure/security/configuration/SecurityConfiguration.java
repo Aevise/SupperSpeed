@@ -21,11 +21,24 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    private static Customizer<LogoutConfigurer<HttpSecurity>> logoutConfiguration() {
+        return logout -> logout
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll();
+    }
+
+    private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationConfiguration() {
+        return auth -> auth
+                .requestMatchers("/login", "/logout").permitAll()
+                .requestMatchers("/client/**").hasAuthority("CLIENT");
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     //TODO zrobic konfiguracje zabezpieczen po nowemu
     @Bean
@@ -41,7 +54,6 @@ public class SecurityConfiguration {
                 .build();
     }
 
-
     @Bean
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
     SecurityFilterChain securityEnabled(HttpSecurity http) throws Exception {
@@ -53,20 +65,6 @@ public class SecurityConfiguration {
                 .logout(logoutConfiguration());
 
         return http.build();
-    }
-
-    private static Customizer<LogoutConfigurer<HttpSecurity>> logoutConfiguration() {
-        return logout -> logout
-                .logoutSuccessUrl("/login")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .permitAll();
-    }
-
-    private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationConfiguration() {
-        return auth -> auth
-                .requestMatchers("/login", "/logout").permitAll()
-                .requestMatchers("/client/**").hasAuthority("CLIENT");
     }
 
     @Bean

@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "supperUser")
-@ToString(of = {"restaurantName", "openHour", "closeHour"})
+@ToString(of = {"restaurantName", "cuisine", "openHour", "closeHour"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,9 +39,17 @@ public class RestaurantEntity {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true)
     private AddressEntity address;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "cuisine_id")
+    private CuisineEntity cuisine;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "logo_id", unique = true)
+    private LogoEntity logo;
 
     //TODO czy tutaj dodac kiedys Cascade? Do sprawdzenia na testach
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")

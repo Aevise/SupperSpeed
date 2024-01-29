@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
 
     @Bean
-    public static ObjectMapper objectMapper(){
+    public static ObjectMapper objectMapper() {
         return new ObjectMapper()
                 .registerModule(new JavaTimeModule())
                 .registerModule(new Jdk8Module())

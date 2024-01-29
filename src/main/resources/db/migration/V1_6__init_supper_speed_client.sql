@@ -4,7 +4,7 @@ CREATE TABLE client
     name             VARCHAR(32) NOT NULL,
     surname          VARCHAR(32),
     phone            VARCHAR(32),
-    address_id       INT         ,
+    address_id       INT,
     PRIMARY KEY (supper_client_id),
     CONSTRAINT fk_client_user_id
         FOREIGN KEY (supper_client_id)
