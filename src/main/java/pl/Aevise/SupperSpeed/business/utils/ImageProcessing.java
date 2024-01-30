@@ -8,7 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class ImageProcessing implements ImageProcessingInterface{
+public class ImageProcessing implements ImageProcessingInterface {
     @Override
     public BufferedImage resizeImage(BufferedImage image) {
         return Scalr.resize(

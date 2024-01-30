@@ -4,7 +4,7 @@ import lombok.*;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.CuisineEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.LogoEntity;
-import pl.Aevise.SupperSpeed.infrastructure.security.SupperUserEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 
 import java.time.LocalTime;
 

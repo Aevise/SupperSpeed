@@ -1,4 +1,4 @@
-package pl.Aevise.SupperSpeed.infrastructure.security;
+package pl.Aevise.SupperSpeed.infrastructure.security.database.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

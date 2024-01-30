@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 
 import java.util.List;
 import java.util.Set;
@@ -18,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class SupperSpeedUserDetailsService implements UserDetailsService {
 
-    private final SupperUserRepository supperUserRepository;
+    private final SupperUserJpaRepository supperUserJpaRepository;
 
     /**
      * email can be interpreted as username in simple login logic: username/password
@@ -29,7 +32,7 @@ public class SupperSpeedUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        SupperUserEntity user = supperUserRepository.findByEmail(email);
+        SupperUserEntity user = supperUserJpaRepository.findByEmail(email).get();
         List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
         return buildUserForAuthentication(user, authorities);
     }
