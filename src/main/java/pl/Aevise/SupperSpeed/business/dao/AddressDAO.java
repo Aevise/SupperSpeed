@@ -1,0 +1,9 @@
+package pl.Aevise.SupperSpeed.business.dao;
+
+import pl.Aevise.SupperSpeed.domain.Address;
+
+import java.util.Optional;
+
+public interface AddressDAO {
+    Optional<Address> findById(Integer id);
+}

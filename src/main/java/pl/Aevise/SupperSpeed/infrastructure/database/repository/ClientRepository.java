@@ -21,9 +21,9 @@ public class ClientRepository implements ClientDAO {
 
     @Override
     public Optional<Client> findByEmail(String email) {
-        Optional<SupperUserEntity> user = supperUserJpaRepository.findByEmail(email);
+        Optional<SupperUserEntity> userEntity = supperUserJpaRepository.findByEmail(email);
 
-        return user
+        return userEntity
                 .flatMap(supperUserEntity ->
                         clientJpaRepository
                                 .findById(supperUserEntity.getSupperUserId())

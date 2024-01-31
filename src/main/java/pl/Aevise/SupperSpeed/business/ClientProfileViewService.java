@@ -19,6 +19,7 @@ public class ClientProfileViewService {
     private final SupperUserDAO supperUserDAO;
     private final ClientDAO clientDAO;
 
+
     @Transactional
     public Optional<Client> findByEmail(String email) {
         Optional<SupperUser> foundUser = supperUserDAO.findByEmail(email);
@@ -32,4 +33,5 @@ public class ClientProfileViewService {
         }
         return Optional.empty();
     }
+
 }
