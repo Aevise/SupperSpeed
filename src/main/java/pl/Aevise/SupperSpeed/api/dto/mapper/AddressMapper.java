@@ -7,5 +7,6 @@ import pl.Aevise.SupperSpeed.domain.Address;
 @Mapper(componentModel = "spring")
 public interface AddressMapper {
 
-    AddressDTO map(final Address address);
+    AddressDTO mapToDTO(final Address address);
+    Address mapFromDTO(final AddressDTO addressDTO);
 }

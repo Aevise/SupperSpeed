@@ -6,5 +6,7 @@ import pl.Aevise.SupperSpeed.domain.Client;
 
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
-    ClientDTO map(final Client client);
+    ClientDTO mapToDTO(final Client client);
+
+    Client mapFromDTO(final ClientDTO clientDTO);
 }

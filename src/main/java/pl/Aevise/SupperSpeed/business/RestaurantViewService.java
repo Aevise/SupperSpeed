@@ -19,7 +19,7 @@ public class RestaurantViewService {
     @Transactional
     public List<Restaurant> availableRestaurants() {
         List<Restaurant> availableRestaurants = restaurantDAO.findAvailable();
-        log.info("Available restaurants: [{}]", availableRestaurants.size());
+        log.info("Number of available restaurants: [{}]", availableRestaurants.size());
         return availableRestaurants;
     }
 
