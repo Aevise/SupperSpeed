@@ -45,7 +45,7 @@ public class UserService {
             }else{
                 restaurantService.deleteRestaurantById(userId);
             }
-            supperUserDAO.deleteUserByEmail(email);
+//            supperUserDAO.deleteUserByEmail(email);
         }else {
             log.error("Could not find the user with email: [{}] ", email);
         }

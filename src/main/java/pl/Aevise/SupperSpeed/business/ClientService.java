@@ -23,7 +23,7 @@ public class ClientService {
 
     public void deleteClientById(Integer userId) {
         clientDAO.deleteClientById(userId);
-        log.info("Deleted user with id: [{}]", userId);
+        log.info("Deleted client with id: [{}]", userId);
     }
 
 //    @Transactional
