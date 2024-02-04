@@ -32,7 +32,8 @@ public class SecurityConfiguration {
     private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationConfiguration() {
         return auth -> auth
                 .requestMatchers("/login", "/logout").permitAll()
-                .requestMatchers("/client/**").hasAuthority("CLIENT");
+                .requestMatchers("/client/**").hasAuthority("CLIENT")
+                .requestMatchers("/delete/**").hasAuthority("CLIENT");
     }
 
     @Bean

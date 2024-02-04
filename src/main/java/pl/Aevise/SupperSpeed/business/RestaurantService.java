@@ -5,21 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
-import pl.Aevise.SupperSpeed.domain.Restaurant;
-
-import java.util.List;
 
 @Slf4j
 @Service
 @AllArgsConstructor
-public class RestaurantViewService {
+public class RestaurantService {
 
     private final RestaurantDAO restaurantDAO;
 
     @Transactional
-    public List<Restaurant> availableRestaurants() {
-        List<Restaurant> availableRestaurants = restaurantDAO.findAvailable();
-        log.info("Number of available restaurants: [{}]", availableRestaurants.size());
-        return availableRestaurants;
+    public void deleteRestaurantById(Integer id){
+        restaurantDAO.deleteRestaurantById(id);
+        log.info("Deleted restaurant with id: [{}]", id);
     }
 }

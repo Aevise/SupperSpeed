@@ -20,7 +20,7 @@ public class AddressService {
     private final AddressDAO addressDAO;
 
     @Qualifier("UpdateAddress")
-    public void updateAddress(AddressDTO addressDTO, Integer userId){
+    public void updateAddressByUserId(AddressDTO addressDTO, Integer userId){
         Optional<Client> client = clientDAO.findById(userId);
 
         Integer addressId = client.get().getAddress().getAddressId();

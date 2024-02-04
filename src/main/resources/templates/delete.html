@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="pl">
 
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
@@ -14,7 +14,18 @@
 <h1>Are you sure you want to delete your account?</h1>
 <br>
 <div style="display: flex; justify-content: center; gap: 20px;">
-    <a th:href="@{/client/profile}" class="btn btn-info btn-lg" style="width: 150px" role="button">No</a>
-    <a th:href="@{/logout}" class="btn btn-danger btn-lg" style="width: 150px" role="button">Yes</a>
+    <form action="/supperspeed/delete" method="post">
+        <input type="hidden" name="confirmation" value="no"/>
+        <button type="submit" class="btn btn-success btn-lg" style="width: 150px;">Don't
+            delete
+        </button>
+    </form>
+    <form action="/supperspeed/delete" method="post">
+        <input type="hidden" name="confirmation" value="yes"/>
+        <button type="submit" class="btn btn-danger btn-lg" style="width: 150px;">
+            Delete
+        </button>
+    </form>
 </div>
 </body>
+</html>

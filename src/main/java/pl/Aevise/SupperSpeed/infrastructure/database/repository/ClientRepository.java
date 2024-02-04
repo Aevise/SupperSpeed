@@ -50,13 +50,14 @@ public class ClientRepository implements ClientDAO {
 
     @Override
     public Optional<Client> findById(Integer id) {
-        return Optional.of(clientJpaRepository
+        return clientJpaRepository
                 .findById(id)
-                .map(clientEntityMapper::mapFromEntity)
-                .orElseThrow(()-> new EntityNotFoundException(
-                        "Could not find user with id: [%s]"
-                                .formatted(id)
-                )));
+                .map(clientEntityMapper::mapFromEntity);
+    }
+
+    @Override
+    public void deleteClientById(Integer userId) {
+        clientJpaRepository.deleteById(userId);
     }
 
 

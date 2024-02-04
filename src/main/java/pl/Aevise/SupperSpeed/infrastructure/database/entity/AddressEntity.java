@@ -6,7 +6,7 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "addressId")
-@ToString(of = {"addressId", "country", "city", "postalCode", "address"})
+@ToString(of = {"addressId", "country", "city", "postalCode", "currentAddress"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +28,6 @@ public class AddressEntity {
     @Column(name = "postal_code", length = 32, nullable = false)
     private String postalCode;
 
-    @Column(name = "address", length = 64, nullable = false)
-    private String address;
+    @Column(name = "current_address", length = 64, nullable = false)
+    private String currentAddress;
 }

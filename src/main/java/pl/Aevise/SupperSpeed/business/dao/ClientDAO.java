@@ -14,4 +14,5 @@ public interface ClientDAO {
 
     Optional<Client> findById(Integer id);
 
+    void deleteClientById(Integer userId);
 }

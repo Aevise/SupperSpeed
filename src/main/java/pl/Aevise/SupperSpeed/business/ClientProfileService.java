@@ -63,7 +63,7 @@ public class ClientProfileService {
         if(currentUser.isPresent()) {
             Integer supperUserId = currentUser.get().getSupperUserId();
             log.info("Successfully retrieved user's: [{}] information", supperUserId);
-            addressService.updateAddress(addressDTO, supperUserId);
+            addressService.updateAddressByUserId(addressDTO, supperUserId);
         }
         else {
             log.error("Did not found user with email: [{}]", email);

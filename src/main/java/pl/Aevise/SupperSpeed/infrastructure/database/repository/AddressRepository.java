@@ -42,7 +42,7 @@ public class AddressRepository implements AddressDAO {
                 ));
         Address newAddress = addressMapper.mapFromDTO(addressDTO);
 
-        oldAddress.setAddress(newAddress.getAddress());
+        oldAddress.setCurrentAddress(newAddress.getCurrentAddress());
         oldAddress.setCity(newAddress.getCity());
         oldAddress.setCountry(newAddress.getCountry());
         oldAddress.setPostalCode(newAddress.getPostalCode());

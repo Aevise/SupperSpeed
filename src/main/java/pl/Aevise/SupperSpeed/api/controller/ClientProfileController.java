@@ -16,7 +16,7 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.ClientMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.ClientProfileService;
-import pl.Aevise.SupperSpeed.business.UserProfileService;
+import pl.Aevise.SupperSpeed.business.UserService;
 
 @Controller
 @AllArgsConstructor
@@ -27,7 +27,7 @@ public class ClientProfileController {
 
     private final ClientProfileService clientProfileService;
     private final AddressService addressService;
-    private final UserProfileService userProfileService;
+    private final UserService userService;
     private final ClientMapper clientMapper;
     private final AddressMapper addressMapper;
 

@@ -9,4 +9,6 @@ public interface RestaurantDAO {
     Optional<Restaurant> findByName(String restaurantName);
 
     List<Restaurant> findAvailable();
+
+    void deleteRestaurantById(Integer id);
 }
