@@ -8,8 +8,8 @@ import pl.Aevise.SupperSpeed.domain.Restaurant;
 @Mapper(componentModel = "spring", uses = {CuisineMapper.class, LogoMapper.class})
 public interface RestaurantMapper {
 
-    @Mapping(source = "cuisine", target = "cuisine")
-    @Mapping(source = "logo", target = "logo")
-    RestaurantDTO map(final Restaurant restaurant);
+    @Mapping(target = "cuisine", ignore = true)
+    @Mapping(target = "logo", ignore = true)
+    RestaurantDTO mapToDTO(final Restaurant restaurant);
 
 }

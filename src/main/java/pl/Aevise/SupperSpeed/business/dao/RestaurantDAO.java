@@ -11,4 +11,6 @@ public interface RestaurantDAO {
     List<Restaurant> findAvailable();
 
     void deleteRestaurantById(Integer id);
+
+    Optional<Restaurant> findByEmail(String email);
 }

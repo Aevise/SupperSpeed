@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 @Configuration
 @EnableWebSecurity
@@ -32,8 +33,12 @@ public class SecurityConfiguration {
     private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationConfiguration() {
         return auth -> auth
                 .requestMatchers("/login", "/logout").permitAll()
-                .requestMatchers("/client/**").hasAuthority("CLIENT")
-                .requestMatchers("/delete/**").hasAuthority("CLIENT");
+                .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
+                .requestMatchers("/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
+                .requestMatchers("/delete/**").hasAnyAuthority(
+                        AvailableRoles.CLIENT.name(),
+                        AvailableRoles.RESTAURANT.name()
+                );
     }
 
     @Bean

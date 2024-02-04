@@ -17,6 +17,9 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.ClientMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.ClientProfileService;
 import pl.Aevise.SupperSpeed.business.UserService;
+import pl.Aevise.SupperSpeed.domain.Client;
+
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -27,7 +30,6 @@ public class ClientProfileController {
 
     private final ClientProfileService clientProfileService;
     private final AddressService addressService;
-    private final UserService userService;
     private final ClientMapper clientMapper;
     private final AddressMapper addressMapper;
 
@@ -39,17 +41,20 @@ public class ClientProfileController {
                     @AuthenticationPrincipal UserDetails userDetails
             ) {
 
-        ClientDTO clientDTO = clientProfileService
-                .findClientByEmail(userDetails.getUsername())
-                .map(clientMapper::mapToDTO)
-                .get();
+        Optional<Client> client = clientProfileService
+                .findClientByEmail(userDetails.getUsername());
 
-        AddressDTO addressDTO = addressService.findById(clientDTO.getAddress().getAddressId())
-                .map(addressMapper::mapToDTO)
-                .get();
+        if(client.isPresent()){
+            ClientDTO clientDTO = client.map(clientMapper::mapToDTO)
+                    .get();
 
-        model.addAttribute("clientDTO", clientDTO);
-        model.addAttribute("addressDTO", addressDTO);
+            AddressDTO addressDTO = addressService.findById(client.get().getAddress().getAddressId())
+                    .map(addressMapper::mapToDTO)
+                    .get();
+
+            model.addAttribute("clientDTO", clientDTO);
+            model.addAttribute("addressDTO", addressDTO);
+        }
 
         return "client_profile";
     }

@@ -20,7 +20,7 @@ public class ClientHomeController {
     public String clientHomePage(Model model) {
         var availableRestaurants = restaurantViewService.availableRestaurants()
                 .stream()
-                .map(restaurantMapper::map)
+                .map(restaurantMapper::mapToDTO)
                 .toList();
 
         model.addAttribute("availableRestaurantsDTOs", availableRestaurants);
