@@ -13,6 +13,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class RestaurantDTO {
 
+    Integer restaurantId;
     String restaurantName;
     LocalTime openHour;
     LocalTime closeHour;

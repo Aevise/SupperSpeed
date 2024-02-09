@@ -12,4 +12,7 @@ public interface RestaurantMapper {
     @Mapping(target = "logo", ignore = true)
     RestaurantDTO mapToDTO(final Restaurant restaurant);
 
+    @Mapping(target = "cuisine", ignore = true)
+    @Mapping(target = "logo", ignore = true)
+    Restaurant mapFromDTO(RestaurantDTO restaurantDTO);
 }

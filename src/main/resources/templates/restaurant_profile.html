@@ -7,7 +7,7 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
           rel="stylesheet">
-    <title th:text="${restaurantDTO.restaurantName} +'profile'"></title>
+    <title th:text="${restaurantDTO.restaurantName} +' profile'"></title>
 </head>
 
 <body>
@@ -18,7 +18,7 @@
     </div>
     <br>
     <div class="row mt-3" style="display: flex; justify-content: center; gap: 20px;">
-        <a class="btn btn-success" role="button" th:href="@{/menu}">View and change menu</a>
+        <a class="btn btn-success" role="button" th:href="@{profile/menu}">View and change menu</a>
     </div>
     <br><br>
 </div>

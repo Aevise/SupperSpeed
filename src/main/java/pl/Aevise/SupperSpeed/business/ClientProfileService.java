@@ -38,12 +38,12 @@ public class ClientProfileService {
         Optional<SupperUser> currentUser = profileService.findUserByEmail(email);
 
         if(currentUser.isPresent()){
-            Integer supperUserId = currentUser.get().getSupperUserId();
-            log.info("Began updating user's: [{}] information", supperUserId);
-            clientDAO.updateClientInformation(newUsersInformation, supperUserId);
+            Integer userId = currentUser.get().getSupperUserId();
+            clientDAO.updateClientInformation(newUsersInformation, userId);
+            log.info("Client's [{}] information updated successfully.", userId);
         }
         else {
-            log.error("Did not found user with email: [{}]", email);
+            log.error("Could not update information for client: [{}]. Client not found.", email);
         }
     }
 

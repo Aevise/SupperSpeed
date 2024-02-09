@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link crossorigin="anonymous"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          rel="stylesheet">
+    <title>Edit Menu</title>
+</head>
+
+<body>
+<div class="container">
+    <div style="display: flex; justify-content: center;">
+        <h1>Current menu:</h1>
+    </div>
+    <br>
+</div>
+
+<table class="table">
+    <thead class="table-dark">
+    <tr th:each="category : ${dishCategoryDTO}">
+        <td th:text="${category.categoryName}" style="display: flex; justify-content: center;"></td>
+    </tr>
+    </thead>
+</table>
+</body>
+</html>

@@ -23,7 +23,7 @@ public class DishCategoryEntity {
     private String categoryName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
+    @JoinColumn(name = "restaurant_id")
     private RestaurantEntity restaurant;
 
 }

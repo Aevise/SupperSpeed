@@ -16,6 +16,7 @@ import java.time.LocalTime;
 public class Restaurant {
 
     SupperUserEntity supperUser;
+    Integer restaurantId;
     String restaurantName;
     LocalTime openHour;
     LocalTime closeHour;
