@@ -18,12 +18,66 @@
     <br>
 </div>
 
-<table class="table">
-    <thead class="table-dark">
-    <tr th:each="category : ${dishCategoryDTO}">
-        <td th:text="${category.categoryName}" style="display: flex; justify-content: center;"></td>
+<table class="table" th:each="category : ${dishesByCategory}">
+    <thead>
+    <tr class="table-primary">
+        <th colspan="5" style="text-align: center;" th:text="${category.getKey()}"></th>
+    </tr>
+    <tr class="table table-info">
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Availability</th>
     </tr>
     </thead>
+    <tbody>
+    <tr th:each="dish : ${category.getValue()}">
+        <form th:action="@{/restaurant/profile/menu/updateDish}" method="post">
+            <td>
+                <label>
+                    <input type="text" th:name="photo" th:value="${dish.photo}"/>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="text" th:name="name" th:value="${dish.name}"/>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="text" th:name="description" th:value="${dish.description}"/>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="text" th:name="price" th:value="${dish.price}"/>
+                </label>
+            </td>
+            <td>
+                <label>
+                    <input type="checkbox" th:name="availability" th:checked="${dish.availability}"/>
+                </label>
+            </td>
+            <td>
+                <input type="hidden" th:name="dishId" th:value="${dish.dishId}">
+                <button type="submit" class="btn btn-info">Update Dish</button>
+            </td>
+        </form>
+        <td>
+            <form th:action="@{/restaurant/profile/menu/deleteDish}" method="post">
+                <input type="hidden" th:name="dishId" th:value="${dish.dishId}">
+                <button type="submit" class="btn btn-danger">Delete Dish</button>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="7" style="text-align: center;">
+            <a class="btn btn-info" role="button" th:href="@{/error}">Add new dish</a>
+        </td>
+    </tr>
+    </tbody>
 </table>
+
 </body>
 </html>

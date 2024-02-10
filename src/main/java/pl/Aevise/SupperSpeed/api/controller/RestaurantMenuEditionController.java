@@ -6,15 +6,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
-import pl.Aevise.SupperSpeed.api.dto.mapper.DishCategoryMapper;
-import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
-import pl.Aevise.SupperSpeed.business.DishCategoryService;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import pl.Aevise.SupperSpeed.api.dto.DishDTO;
+import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.DishService;
 import pl.Aevise.SupperSpeed.business.ProfileService;
-import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,17 +24,14 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RestaurantMenuEditionController {
 
-    private final RestaurantService restaurantService;
-
-    private final DishCategoryService dishCategoryService;
-    private final DishCategoryMapper dishCategoryMapper;
-
-    private final DishService dishService;
-    private final DishMapper dishMapper;
-
+    private final DishListService dishListService;
     private final ProfileService profileService;
 
+    private final DishService dishService;
+
+
     static final String RESTAURANT_MENU_EDIT = "/restaurant/profile/menu";
+    static final String RESTAURANT_MENU_UPDATE_DISH = "/restaurant/profile/menu/updateDish";
 
     @GetMapping(RESTAURANT_MENU_EDIT)
     public String getRestaurantMenuEdit(
@@ -40,27 +39,20 @@ public class RestaurantMenuEditionController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         Optional<SupperUser> user = profileService.findUserByEmail(userDetails.getUsername());
-
         if (user.isPresent()) {
             Integer restaurantId = user.get().getSupperUserId();
-
-            List<DishCategoryDTO> dishCategoryDTO = dishCategoryService
-                    .findAllByRestaurant(restaurantId)
-                    .stream()
-                    .map(dishCategoryMapper::mapToDTO)
-                    .toList();
-
-//            List<DishDTO> dishesDTO = dishService
-//                    .findAllByRestaurant(restaurantId)
-//                    .stream()
-//                    .map(dishMapper::mapToDTO)
-//                    .toList();
-
-            model.addAttribute("dishCategoryDTO", dishCategoryDTO);
-//            model.addAttribute("dishesDTO", dishesDTO);
+            HashMap<String, List<DishDTO>> dishListByCategory = dishListService.getDishListByCategoryFromRestaurant(restaurantId);
+            model.addAttribute("dishesByCategory", dishListByCategory);
         }
-
-
         return "restaurant_menu_edit";
     }
+
+    @PostMapping(RESTAURANT_MENU_UPDATE_DISH)
+    public String updateDish(
+            @ModelAttribute DishDTO dishDTO
+    ) {
+        dishService.updateDish(dishDTO);
+        return "redirect:" + RESTAURANT_MENU_EDIT;
+    }
+
 }

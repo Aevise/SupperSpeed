@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DishDTO {
+    Integer dishId;
     String name;
     String description;
     BigDecimal price;
