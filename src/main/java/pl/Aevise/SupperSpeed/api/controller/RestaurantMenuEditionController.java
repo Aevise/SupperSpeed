@@ -32,6 +32,7 @@ public class RestaurantMenuEditionController {
 
     static final String RESTAURANT_MENU_EDIT = "/restaurant/profile/menu";
     static final String RESTAURANT_MENU_UPDATE_DISH = "/restaurant/profile/menu/updateDish";
+    static final String RESTAURANT_MENU_DELETE_DISH = "/restaurant/profile/menu/deleteDish";
 
     @GetMapping(RESTAURANT_MENU_EDIT)
     public String getRestaurantMenuEdit(
@@ -52,6 +53,14 @@ public class RestaurantMenuEditionController {
             @ModelAttribute DishDTO dishDTO
     ) {
         dishService.updateDish(dishDTO);
+        return "redirect:" + RESTAURANT_MENU_EDIT;
+    }
+
+    @PostMapping(RESTAURANT_MENU_DELETE_DISH)
+    public String deleteDish(
+            @RequestParam(value = "dishId") Integer dishId
+    ){
+        dishService.deleteDish(dishId);
         return "redirect:" + RESTAURANT_MENU_EDIT;
     }
 

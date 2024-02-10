@@ -58,4 +58,9 @@ public class DishRepository implements DishDAO {
         dishJpaRepository.saveAndFlush(dish);
     }
 
+    @Override
+    public void deleteDish(Integer dishId) {
+        dishJpaRepository.deleteById(dishId);
+    }
+
 }

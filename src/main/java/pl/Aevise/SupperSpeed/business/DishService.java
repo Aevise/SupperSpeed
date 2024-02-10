@@ -32,4 +32,9 @@ public class DishService {
         dishDAO.updateDish(dishDTO);
         log.info("Updated dish: [{}] - [{}]", dishDTO.getDishId(), dishDTO.getName());
     }
+
+    public void deleteDish(Integer dishId) {
+        dishDAO.deleteDish(dishId);
+        log.info("Deleted dish [{}]", dishId);
+    }
 }

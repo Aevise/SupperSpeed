@@ -11,4 +11,6 @@ public interface DishDAO {
     List<Dish> findAllByCategory(Integer categoryId);
 
     void updateDish(DishDTO dishDTO);
+
+    void deleteDish(Integer dishId);
 }
