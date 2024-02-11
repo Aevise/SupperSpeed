@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
-import pl.Aevise.SupperSpeed.business.DishListService;
-import pl.Aevise.SupperSpeed.business.DishService;
-import pl.Aevise.SupperSpeed.business.ProfileService;
+import pl.Aevise.SupperSpeed.business.*;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +23,8 @@ public class RestaurantMenuEditionController {
 
     private final DishListService dishListService;
     private final ProfileService profileService;
+    private final DishCategoryService dishCategoryService;
+    private final RestaurantService restaurantService;
 
     private final DishService dishService;
 
@@ -33,7 +32,10 @@ public class RestaurantMenuEditionController {
     static final String RESTAURANT_MENU_EDIT = "/restaurant/profile/menu";
     static final String RESTAURANT_MENU_UPDATE_DISH = "/restaurant/profile/menu/updateDish";
     static final String RESTAURANT_MENU_DELETE_DISH = "/restaurant/profile/menu/deleteDish";
-
+    static final String RESTAURANT_MENU_UPDATE_CATEGORY = "/restaurant/profile/menu/updateCategory";
+    static final String RESTAURANT_MENU_DELETE_CATEGORY = "/restaurant/profile/menu/deleteCategory";
+    static final String RESTAURANT_MENU_ADD_CATEGORY = "/restaurant/profile/menu/addCategory";
+    static final String RESTAURANT_MENU_ADD_DISH = "/restaurant/profile/menu/addDish";
     @GetMapping(RESTAURANT_MENU_EDIT)
     public String getRestaurantMenuEdit(
             Model model,
@@ -42,10 +44,16 @@ public class RestaurantMenuEditionController {
         Optional<SupperUser> user = profileService.findUserByEmail(userDetails.getUsername());
         if (user.isPresent()) {
             Integer restaurantId = user.get().getSupperUserId();
-            HashMap<String, List<DishDTO>> dishListByCategory = dishListService.getDishListByCategoryFromRestaurant(restaurantId);
-            model.addAttribute("dishesByCategory", dishListByCategory);
+            List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
+
+            var dishList = dishListService.extractDishesByCategory(dishCategories);
+
+            model.addAttribute("dishesByCategory", dishList);
+            model.addAttribute("userId", restaurantId);
+
+            return "restaurant_menu_edit";
         }
-        return "restaurant_menu_edit";
+        return "error";
     }
 
     @PostMapping(RESTAURANT_MENU_UPDATE_DISH)
@@ -64,4 +72,29 @@ public class RestaurantMenuEditionController {
         return "redirect:" + RESTAURANT_MENU_EDIT;
     }
 
+    @PostMapping(RESTAURANT_MENU_UPDATE_CATEGORY)
+    public String updateCategory(
+            @ModelAttribute DishCategoryDTO dishCategoryDTO
+    ) {
+        dishCategoryService.updateCategory(dishCategoryDTO);
+
+        return "redirect:" + RESTAURANT_MENU_EDIT;
+    }
+
+    @PostMapping(RESTAURANT_MENU_DELETE_CATEGORY)
+    public String deleteCategory(
+            @RequestParam(value = "dishCategoryId") Integer categoryId
+    ){
+        dishCategoryService.deleteCategory(categoryId);
+        return "redirect:" + RESTAURANT_MENU_EDIT;
+    }
+
+    @PostMapping(RESTAURANT_MENU_ADD_CATEGORY)
+    public String addCategory(
+            @RequestParam(value = "restaurantId") Integer restaurantId,
+            @RequestParam(value = "categoryName") String categoryName
+    ){
+        dishCategoryService.addCategory(restaurantId, categoryName);
+        return "redirect:" + RESTAURANT_MENU_EDIT;
+    }
 }

@@ -25,13 +25,14 @@ public class DishListService {
 
     @Transactional
     public HashMap<String, List<DishDTO>> getDishListByCategoryFromRestaurant(Integer restaurantId) {
-        List<DishCategoryDTO> dishCategories = dishCategoryService
-                .findAllByRestaurant(restaurantId)
-                .stream()
-                .map(dishCategoryMapper::mapToDTO)
-                .toList();
+        List<DishCategoryDTO> dishCategories = getDishCategoriesByRestaurantId(restaurantId);
+        return extractDishesByCategoryName(dishCategories);
+    }
 
+    @Transactional
+    public HashMap<String, List<DishDTO>> extractDishesByCategoryName(List<DishCategoryDTO> dishCategories) {
         HashMap<String, List<DishDTO>> dishesByCategory = new HashMap<>();
+
         for (DishCategoryDTO dishCategory : dishCategories) {
             dishesByCategory.put(
                     dishCategory.getCategoryName(),
@@ -43,6 +44,31 @@ public class DishListService {
             );
         }
         return dishesByCategory;
+    }
+
+    @Transactional
+    public HashMap<List<DishCategoryDTO>, List<DishDTO>> extractDishesByCategory(List<DishCategoryDTO> dishCategories) {
+        HashMap<List<DishCategoryDTO>, List<DishDTO>> dishesByCategory = new HashMap<>();
+
+        for (DishCategoryDTO dishCategory : dishCategories) {
+            dishesByCategory.put(
+                    List.of(dishCategory),
+                    dishService
+                            .findAllByCategory(dishCategory.getDishCategoryId())
+                            .stream()
+                            .map(dishMapper::mapToDTO)
+                            .toList()
+            );
+        }
+        return dishesByCategory;
+    }
+
+    public List<DishCategoryDTO> getDishCategoriesByRestaurantId(Integer restaurantId) {
+        return dishCategoryService
+                .findAllByRestaurant(restaurantId)
+                .stream()
+                .map(dishCategoryMapper::mapToDTO)
+                .toList();
     }
 
 }

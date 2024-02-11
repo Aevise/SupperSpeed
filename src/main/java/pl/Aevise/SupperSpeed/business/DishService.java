@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.business.dao.DishDAO;
 import pl.Aevise.SupperSpeed.domain.Dish;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 
 import java.util.List;
 
@@ -36,5 +37,10 @@ public class DishService {
     public void deleteDish(Integer dishId) {
         dishDAO.deleteDish(dishId);
         log.info("Deleted dish [{}]", dishId);
+    }
+
+    public void deleteDishes(List<DishEntity> dishes){
+        dishDAO.deleteDishes(dishes);
+        log.info("Deleted [{}] dishes", dishes.size());
     }
 }

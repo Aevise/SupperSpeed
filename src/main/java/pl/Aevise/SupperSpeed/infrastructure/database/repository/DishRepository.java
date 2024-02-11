@@ -11,9 +11,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DishJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DishEntityMapper;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -62,5 +60,11 @@ public class DishRepository implements DishDAO {
     public void deleteDish(Integer dishId) {
         dishJpaRepository.deleteById(dishId);
     }
+
+    @Override
+    public void deleteDishes(List<DishEntity> dishes) {
+        dishJpaRepository.deleteAll(dishes);
+    }
+
 
 }

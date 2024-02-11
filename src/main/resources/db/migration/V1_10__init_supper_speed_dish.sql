@@ -15,4 +15,5 @@ CREATE TABLE dish
     CONSTRAINT fk_dish_category_id
         FOREIGN KEY (dish_category_id)
             REFERENCES dish_category (dish_category_id)
+            ON DELETE CASCADE
 );

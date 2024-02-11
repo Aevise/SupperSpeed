@@ -21,8 +21,26 @@
 <table class="table" th:each="category : ${dishesByCategory}">
     <thead>
     <tr class="table-primary">
-        <th colspan="5" style="text-align: center;" th:text="${category.getKey()}"></th>
+        <form th:action="@{/restaurant/profile/menu/updateCategory}" method="post">
+            <th colspan="5" style="text-align: center;">
+                <label>
+                    <input type="text" th:name="categoryName" th:value="${category.getKey().get(0).categoryName}"/>
+                </label>
+            </th>
+            <th style="background-color: transparent;">
+                <input type="hidden" th:name="dishCategoryId" th:value="${category.getKey().get(0).dishCategoryId}">
+                <button type="submit" class="btn btn-info">Update Category</button>
+            </th>
+        </form>
+
+        <th style="background-color: transparent;">
+            <form th:action="@{/restaurant/profile/menu/deleteCategory}" method="post">
+                <input type="hidden" th:name="dishCategoryId" th:value="${category.getKey().get(0).dishCategoryId}">
+                <button type="submit" class="btn btn-danger">Delete Category</button>
+            </form>
+        </th>
     </tr>
+
     <tr class="table table-info">
         <th>Photo</th>
         <th>Name</th>
@@ -73,6 +91,83 @@
     </tr>
     </tbody>
 </table>
+
+<br>
+<div class="container">
+    <h2>Add new category:</h2>
+    <form th:action="@{/restaurant/profile/menu/addCategory}" method="post">
+        <input type="hidden" th:name="restaurantId" th:value="*{userId}">
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="categoryName">Name:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="categoryName" name="categoryName" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6"></div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Add Category</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<br>
+<div class="container">
+    <h2>Add new dish:</h2>
+    <form th:action="@{/restaurant/profile/menu/addDish}" method="post">
+        <input type="hidden" th:name="restaurantId" th:value="*{userId}">
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="photo">Photo:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="photo" name="photo" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="name">Name:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="name" name="name" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="description">Description:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="description" name="description" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="price">Price:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="price" name="price" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="availability">Availability:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="availability" name="availability" th:checked="false" type="checkbox">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6"></div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Add Dish</button>
+            </div>
+        </div>
+    </form>
+</div>
+
 <div class="row mt-3">
     <div class="col-md-4">
         <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>

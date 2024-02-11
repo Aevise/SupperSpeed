@@ -11,4 +11,6 @@ public interface RestaurantEntityMapper {
 
     @Mapping(target = "supperUser", ignore = true)
     Restaurant mapFromEntity(RestaurantEntity restaurantEntity);
+
+    RestaurantEntity mapToEntity(Restaurant restaurant);
 }

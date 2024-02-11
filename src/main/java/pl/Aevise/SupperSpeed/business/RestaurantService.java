@@ -60,4 +60,14 @@ public class RestaurantService {
             log.error("Could not update information for restaurant: [{}]. Client not found.", email);
         }
     }
+
+    public Optional<Restaurant> findById(Integer restaurantId) {
+        Optional<Restaurant> restaurant = restaurantDAO.findById(restaurantId);
+        if (restaurant.isPresent()){
+            log.info("Found restaurant: [{}]", restaurantId);
+            return restaurant;
+        }
+        log.warn("Couldn't find restaurant [{}]", restaurantId);
+        return Optional.empty();
+    }
 }
