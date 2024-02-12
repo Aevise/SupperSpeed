@@ -38,6 +38,10 @@ public class SecurityConfiguration {
                 .requestMatchers("/delete/**").hasAnyAuthority(
                         AvailableRoles.CLIENT.name(),
                         AvailableRoles.RESTAURANT.name()
+                )
+                .requestMatchers("/orders/**").hasAnyAuthority(
+                        AvailableRoles.CLIENT.name(),
+                        AvailableRoles.RESTAURANT.name()
                 );
     }
 
