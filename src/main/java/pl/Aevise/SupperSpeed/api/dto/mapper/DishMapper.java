@@ -7,7 +7,7 @@ import pl.Aevise.SupperSpeed.domain.Dish;
 @Mapper(componentModel = "spring")
 public interface DishMapper {
 
-    Dish mapFromDTO(final DishDTO cuisineDTO);
+    Dish mapFromDTO(final DishDTO dishDTO);
 
-    DishDTO mapToDTO(Dish cuisine);
+    DishDTO mapToDTO(Dish dish);
 }

@@ -3,6 +3,7 @@ package pl.Aevise.SupperSpeed.business;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.business.dao.DishDAO;
 import pl.Aevise.SupperSpeed.domain.Dish;
@@ -42,5 +43,11 @@ public class DishService {
     public void deleteDishes(List<DishEntity> dishes){
         dishDAO.deleteDishes(dishes);
         log.info("Deleted [{}] dishes", dishes.size());
+    }
+
+    @Transactional
+    public void addDish(Dish dish) {
+        dishDAO.addDish(dish);
+        log.info("Successfully added dish: [{}]", dish.getName());
     }
 }

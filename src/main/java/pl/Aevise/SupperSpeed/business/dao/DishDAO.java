@@ -16,4 +16,6 @@ public interface DishDAO {
     void deleteDish(Integer dishId);
 
     void deleteDishes(List<DishEntity> dishes);
+
+    void addDish(Dish dish);
 }

@@ -66,5 +66,11 @@ public class DishRepository implements DishDAO {
         dishJpaRepository.deleteAll(dishes);
     }
 
+    @Override
+    public void addDish(Dish dish) {
+        DishEntity dishToSave = dishEntityMapper.mapToEntity(dish);
+        dishJpaRepository.saveAndFlush(dishToSave);
+    }
+
 
 }

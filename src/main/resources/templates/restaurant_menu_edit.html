@@ -74,7 +74,7 @@
             </td>
             <td>
                 <label>
-                    <input type="checkbox" th:name="availability" th:checked="${dish.availability}"/>
+                    <input type="checkbox" id="editAvailability" name="availability" th:checked="${dish.availability}"/>
                 </label>
             </td>
             <td>
@@ -159,6 +159,21 @@
                 <input id="availability" name="availability" th:checked="false" type="checkbox">
             </div>
         </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label>Category:</label>
+            </div>
+            <div class="col-md-3">
+        <select class="form-control" id="categoryId" name="categoryId">
+            <option value="">Select a category</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category.dishCategoryId}"
+                    th:text="${category.categoryName}">Category Name
+            </option>
+        </select>
+            </div>
+        </div>
+
         <div class="row mt-3">
             <div class="col-md-6"></div>
             <div class="col-md-2">
