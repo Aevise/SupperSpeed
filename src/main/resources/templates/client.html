@@ -12,6 +12,7 @@
 <body>
 <div>
     <h1>Feeling hungry? Try one of our SupperRestaurants!</h1>
+    <br>
 </div>
 
 <div>
@@ -33,7 +34,7 @@
             <td th:text="${restaurant.openHour}"></td>
             <td th:text="${restaurant.closeHour}"></td>
             <td th:text="${restaurant.phone}"></td>
-            <td th:text="${restaurant.cuisine.getCuisine()}"></td>
+            <td th:text="${restaurant.cuisine}"></td>
             <td>
                 <a class="btn btn-info" role="button" th:href="@{/error}"
                    th:text="'Order from ' + ${restaurant.restaurantName}">Restaurant Name</a>

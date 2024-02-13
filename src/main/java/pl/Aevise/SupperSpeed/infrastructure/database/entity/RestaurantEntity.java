@@ -39,11 +39,11 @@ public class RestaurantEntity {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true)
     private AddressEntity address;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "cuisine_id")
     private CuisineEntity cuisine;
 
@@ -54,5 +54,4 @@ public class RestaurantEntity {
     //TODO czy tutaj dodac kiedys Cascade? Do sprawdzenia na testach
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private Set<SupperOrderEntity> orders;
-
 }

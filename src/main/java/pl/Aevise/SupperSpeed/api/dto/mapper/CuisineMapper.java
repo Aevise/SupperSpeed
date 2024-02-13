@@ -7,5 +7,7 @@ import pl.Aevise.SupperSpeed.domain.Cuisine;
 @Mapper(componentModel = "spring")
 public interface CuisineMapper {
 
-    CuisineDTO map(final Cuisine cuisine);
+    Cuisine mapFromDTO(final CuisineDTO cuisineDTO);
+
+    CuisineDTO mapToDTO(Cuisine cuisine);
 }

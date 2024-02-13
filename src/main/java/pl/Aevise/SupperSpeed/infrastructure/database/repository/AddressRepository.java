@@ -35,19 +35,19 @@ public class AddressRepository implements AddressDAO {
 
     @Override
     public void updateAddress(AddressDTO addressDTO, Integer addressId){
-        AddressEntity oldAddress = addressJpaRepository.findById(addressId)
+        AddressEntity address = addressJpaRepository.findById(addressId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Address with id: [%s] not found"
                                 .formatted(addressId)
                 ));
-        Address newAddress = addressMapper.mapFromDTO(addressDTO);
+        Address newAddressData = addressMapper.mapFromDTO(addressDTO);
 
-        oldAddress.setCurrentAddress(newAddress.getCurrentAddress());
-        oldAddress.setCity(newAddress.getCity());
-        oldAddress.setCountry(newAddress.getCountry());
-        oldAddress.setPostalCode(newAddress.getPostalCode());
+        address.setCurrentAddress(newAddressData.getCurrentAddress());
+        address.setCity(newAddressData.getCity());
+        address.setCountry(newAddressData.getCountry());
+        address.setPostalCode(newAddressData.getPostalCode());
 
-        addressJpaRepository.saveAndFlush(oldAddress);
+        addressJpaRepository.saveAndFlush(address);
 
     }
 }

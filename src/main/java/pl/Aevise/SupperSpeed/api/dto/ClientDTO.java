@@ -14,10 +14,8 @@ import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserE
 @AllArgsConstructor
 public class ClientDTO {
 
-    SupperUserEntity supperUser;
     String name;
     String surname;
-    AddressEntity address;
     String phone;
 
 }

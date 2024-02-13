@@ -13,12 +13,14 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class RestaurantDTO {
 
+    Integer restaurantId;
     String restaurantName;
     LocalTime openHour;
     LocalTime closeHour;
     String phone;
     CuisineDTO cuisine;
     LogoDTO logo;
+    AddressDTO addressDTO;
     //TODO dodac address do mapowania restauracji
 
 }

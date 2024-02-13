@@ -50,4 +50,5 @@ public class UserService {
             log.error("Could not find the user with email: [{}] ", email);
         }
     }
+
 }

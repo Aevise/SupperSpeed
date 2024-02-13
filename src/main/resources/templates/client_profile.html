@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
@@ -7,16 +7,18 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
           rel="stylesheet">
-    <title>Supper Speed</title>
+    <title th:text="${clientDTO.name} +'profile'"></title>
 </head>
 
 <body>
+
 <div class="container">
     <h1 th:text="'Welcome back ' + *{clientDTO.name}"></h1>
+        <a class="btn btn-success" role="button" th:href="@{/orders}">View orders</a>
     <div class="col-md-3">
         <h3>Your current data:</h3>
         <form action="/supperspeed/client/profile" method="post">
-            <input type="hidden" name="action" value="updateData" />
+            <input type="hidden" name="action" value="updateData"/>
             <div class="row mt-3">
                 <div class="col-md-3">
                     <label for="customerName">Name:</label>
@@ -52,7 +54,7 @@
         <br><br>
         <h3>Current address:</h3>
         <form action="/supperspeed/client/profile" method="post">
-            <input type="hidden" name="action" value="updateAddress" />
+            <input type="hidden" name="action" value="updateAddress"/>
             <div class="row mt-3">
                 <div class="col-md-3">
                     <label for="customerCountry">Country:</label>

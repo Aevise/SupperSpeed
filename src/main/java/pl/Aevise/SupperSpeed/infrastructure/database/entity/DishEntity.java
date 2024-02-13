@@ -23,7 +23,7 @@ public class DishEntity {
     private Integer dishId;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @MapsId
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private RestaurantEntity restaurant;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
