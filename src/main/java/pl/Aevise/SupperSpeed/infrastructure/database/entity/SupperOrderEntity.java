@@ -20,10 +20,9 @@ public class SupperOrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", unique = true, nullable = false)
     private Integer orderId;
-
+//TODO poprawić mapowania w orderEntity
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
-// sprawdzic    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+//    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private ClientEntity client;
 
     @ManyToOne(fetch = FetchType.LAZY)
