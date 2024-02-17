@@ -1,6 +1,9 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +20,12 @@ import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@Slf4j
 @AllArgsConstructor
 public class OrdersBrowseController {
 
@@ -39,16 +44,24 @@ public class OrdersBrowseController {
             ){
         List<StatusListDTO> statusList = getStatusList();
         Optional<SupperUser> user = profileService.findUserByEmail(userDetails.getUsername());
+        List<SupperOrderDTO> ordersByUserId = new ArrayList<>();
 
         if(user.isPresent()){
-            List<SupperOrderDTO> ordersByUserId = getOrdersByUserIdAndAuthority(
-                    user.get().getSupperUserId(),
-                    userDetails
-                            .getAuthorities()
-                            .stream()
-                            .findFirst()
-                            .map(GrantedAuthority::getAuthority)
-                            .toString());
+            try{
+                ordersByUserId = getOrdersByUserIdAndAuthority(
+                        user.get().getSupperUserId(),
+                        userDetails
+                                .getAuthorities()
+                                .stream()
+                                .findFirst()
+                                .map(GrantedAuthority::getAuthority)
+                                .orElseThrow(()->
+                                        new EntityNotFoundException(
+                                                "User does not exists"
+                                        )));
+            }catch (InvalidDataAccessResourceUsageException ex){
+                log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
+            }
 
             model.addAttribute("statusListDTO", statusList);
             model.addAttribute("ordersDTO", ordersByUserId);
@@ -67,7 +80,7 @@ public class OrdersBrowseController {
     }
 
     private List<SupperOrderDTO> getOrdersByUserIdAndAuthority(Integer userId, String authority){
-        if (authority.equalsIgnoreCase(AvailableRoles.CLIENT.toString())){
+        if (authority.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())){
             return supperOrderService
                     .getOrdersByRestaurantId(userId)
                     .stream()

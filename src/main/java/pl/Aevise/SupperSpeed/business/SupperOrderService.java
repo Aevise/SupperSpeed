@@ -24,8 +24,8 @@ public class SupperOrderService {
 
     @Transactional
     public List<SupperOrder> getOrdersByClientId(Integer clientId){
-        List<SupperOrder> ordersByRestaurantId = supperOrderDAO.getOrdersByClientId(clientId);
-        log.info("Found: [{}] orders", ordersByRestaurantId.size());
-        return ordersByRestaurantId;
+        List<SupperOrder> ordersByClientId = supperOrderDAO.getOrdersByClientId(clientId);
+        log.info("Found: [{}] orders", ordersByClientId.size());
+        return ordersByClientId;
     }
 }
