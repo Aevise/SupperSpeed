@@ -18,4 +18,6 @@ public interface RestaurantDAO {
     void updateRestaurantInformation(RestaurantDTO restaurantDTO, Integer userId);
 
     Optional<Restaurant> findById(Integer id);
+
+    List<Restaurant> findAll();
 }

@@ -29,7 +29,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrdersBrowseController {
 
-    private final  StatusListService statusListService;
+    private final StatusListService statusListService;
     private final StatusListMapper statusListMapper;
     private final ProfileService profileService;
     private final SupperOrderService supperOrderService;
@@ -93,8 +93,4 @@ public class OrdersBrowseController {
                 .map(supperOrderMapper::mapToDTO)
                 .toList();
     }
-
-
-
-
 }

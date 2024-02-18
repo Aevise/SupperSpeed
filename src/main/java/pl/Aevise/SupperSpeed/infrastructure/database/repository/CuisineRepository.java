@@ -18,9 +18,9 @@ public class CuisineRepository implements CuisineDAO {
     private final CuisineEntityMapper cuisineEntityMapper;
 
     @Override
-    public List<Cuisine> findAllByRestaurant(Integer restaurantId) {
+    public List<Cuisine> findAll() {
         return cuisineJpaRepository
-                .findAllById(Collections.singleton(restaurantId))
+                .findAll()
                 .stream()
                 .map(cuisineEntityMapper::mapFromEntity)
                 .toList();

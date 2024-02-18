@@ -10,6 +10,7 @@ import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -69,5 +70,11 @@ public class RestaurantService {
         }
         log.warn("Couldn't find restaurant [{}]", restaurantId);
         return Optional.empty();
+    }
+
+    public List<Restaurant> findAll() {
+        List<Restaurant> restaurants = restaurantDAO.findAll();
+        log.info("Found [{}] restaurants", restaurants.size());
+        return restaurants;
     }
 }

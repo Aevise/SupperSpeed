@@ -75,4 +75,13 @@ public class RestaurantRepository implements RestaurantDAO {
                 .findById(id)
                 .map(restaurantEntityMapper::mapFromEntity);
     }
+
+    @Override
+    public List<Restaurant> findAll() {
+        return restaurantJpaRepository
+                .findAll()
+                .stream()
+                .map(restaurantEntityMapper::mapFromEntity)
+                .toList();
+    }
 }

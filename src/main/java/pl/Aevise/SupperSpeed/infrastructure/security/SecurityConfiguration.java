@@ -42,7 +42,8 @@ public class SecurityConfiguration {
                 .requestMatchers("/orders/**").hasAnyAuthority(
                         AvailableRoles.CLIENT.name(),
                         AvailableRoles.RESTAURANT.name()
-                );
+                )
+                .requestMatchers("/search/**").hasAuthority(AvailableRoles.CLIENT.name());
     }
 
     @Bean
