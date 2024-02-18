@@ -16,6 +16,8 @@ import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.Cuisine;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -35,7 +37,11 @@ public class MainPageController {
 
         List<CuisineDTO> cuisines = getCuisineDTOList();
         List<RestaurantDTO> restaurants = getRestaurantsDTOList();
-        List<AddressDTO> addresses = getAddressDTOList();
+//        List<AddressDTO> addresses = getAddressDTOList();
+
+        restaurants.get(0).getCuisine().getCuisine();
+
+        HashMap<String, List<RestaurantDTO>> test = test(restaurants);
 
 
         return "main_page";
@@ -63,5 +69,15 @@ public class MainPageController {
         return cuisines.stream()
                 .map(cuisineMapper::mapToDTO)
                 .toList();
+    }
+
+    private HashMap<String, List<RestaurantDTO>> test (List<RestaurantDTO> restaurants){
+        HashMap<String, List<RestaurantDTO>> map = new HashMap<>();
+
+        for (RestaurantDTO restaurant : restaurants) {
+            map.putIfAbsent(restaurant.getCuisine().getCuisine(), new ArrayList<>());
+            map.get(restaurant.getCuisine().getCuisine()).add(restaurant);
+        }
+        return map;
     }
 }

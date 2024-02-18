@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AddressDTO {
 
+    Integer addressId;
     String country;
     String city;
     String postalCode;

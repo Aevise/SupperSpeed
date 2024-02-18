@@ -20,7 +20,7 @@ public class RestaurantDTO {
     String phone;
     CuisineDTO cuisine;
     LogoDTO logo;
-    AddressDTO addressDTO;
+    AddressDTO address;
     //TODO dodac address do mapowania restauracji
 
 }
