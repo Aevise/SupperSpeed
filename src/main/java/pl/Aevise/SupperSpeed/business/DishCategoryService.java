@@ -24,8 +24,16 @@ public class DishCategoryService {
     private final RestaurantService restaurantService;
     private final RestaurantEntityMapper restaurantEntityMapper;
 
+    private static DishCategoryEntity buildDishCategory(String categoryName, RestaurantEntity restaurantEntity) {
+        return DishCategoryEntity
+                .builder()
+                .restaurant(restaurantEntity)
+                .categoryName(categoryName)
+                .build();
+    }
+
     @Transactional
-    public List<DishCategory> findAllByRestaurant(Integer restaurantId){
+    public List<DishCategory> findAllByRestaurant(Integer restaurantId) {
         List<DishCategory> dishCategories = dishCategoryDAO.findAllByRestaurant(restaurantId);
         log.info("Found: [{}] categories", dishCategories.size());
         return dishCategories;
@@ -43,7 +51,7 @@ public class DishCategoryService {
 
     public void addCategory(Integer restaurantId, String categoryName) {
         Optional<Restaurant> restaurant = restaurantService.findById(restaurantId);
-        if (restaurant.isPresent()){
+        if (restaurant.isPresent()) {
             RestaurantEntity restaurantEntity = getRestaurant(restaurantId, restaurant);
             DishCategoryEntity newCategory = buildDishCategory(categoryName, restaurantEntity);
             dishCategoryDAO.addCategory(newCategory);
@@ -56,13 +64,5 @@ public class DishCategoryService {
         RestaurantEntity restaurantEntity = restaurantEntityMapper.mapToEntity(restaurant.get());
         restaurantEntity.setId(restaurantId);
         return restaurantEntity;
-    }
-
-    private static DishCategoryEntity buildDishCategory(String categoryName, RestaurantEntity restaurantEntity) {
-        return DishCategoryEntity
-                .builder()
-                .restaurant(restaurantEntity)
-                .categoryName(categoryName)
-                .build();
     }
 }

@@ -29,25 +29,24 @@ import java.util.Optional;
 @AllArgsConstructor
 public class OrdersBrowseController {
 
+    static final String SUPPER_SPEED_ORDERS_BROWSER = "/orders";
     private final StatusListService statusListService;
     private final StatusListMapper statusListMapper;
     private final ProfileService profileService;
     private final SupperOrderService supperOrderService;
     private final SupperOrderMapper supperOrderMapper;
 
-    static final String SUPPER_SPEED_ORDERS_BROWSER = "/orders";
-
     @GetMapping(SUPPER_SPEED_ORDERS_BROWSER)
     public String getOrders(
             @AuthenticationPrincipal UserDetails userDetails,
             Model model
-            ){
+    ) {
         List<StatusListDTO> statusList = getStatusList();
         Optional<SupperUser> user = profileService.findUserByEmail(userDetails.getUsername());
         List<SupperOrderDTO> ordersByUserId = new ArrayList<>();
 
-        if(user.isPresent()){
-            try{
+        if (user.isPresent()) {
+            try {
                 ordersByUserId = getOrdersByUserIdAndAuthority(
                         user.get().getSupperUserId(),
                         userDetails
@@ -55,11 +54,11 @@ public class OrdersBrowseController {
                                 .stream()
                                 .findFirst()
                                 .map(GrantedAuthority::getAuthority)
-                                .orElseThrow(()->
+                                .orElseThrow(() ->
                                         new EntityNotFoundException(
                                                 "User does not exists"
                                         )));
-            }catch (InvalidDataAccessResourceUsageException ex){
+            } catch (InvalidDataAccessResourceUsageException ex) {
                 log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
             }
 
@@ -72,15 +71,15 @@ public class OrdersBrowseController {
     }
 
 
-    private  List<StatusListDTO> getStatusList(){
+    private List<StatusListDTO> getStatusList() {
         return statusListService.getStatusList()
                 .stream()
                 .map(statusListMapper::mapToDTO)
                 .toList();
     }
 
-    private List<SupperOrderDTO> getOrdersByUserIdAndAuthority(Integer userId, String authority){
-        if (authority.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())){
+    private List<SupperOrderDTO> getOrdersByUserIdAndAuthority(Integer userId, String authority) {
+        if (authority.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())) {
             return supperOrderService
                     .getOrdersByRestaurantId(userId)
                     .stream()

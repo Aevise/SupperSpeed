@@ -64,7 +64,7 @@ public class RestaurantService {
 
     public Optional<Restaurant> findById(Integer restaurantId) {
         Optional<Restaurant> restaurant = restaurantDAO.findById(restaurantId);
-        if (restaurant.isPresent()){
+        if (restaurant.isPresent()) {
             log.info("Found restaurant: [{}]", restaurantId);
             return restaurant;
         }

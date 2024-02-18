@@ -15,14 +15,14 @@
 <br>
 <div style="display: flex; justify-content: center; gap: 20px;">
     <form action="/supperspeed/delete" method="post">
-        <input type="hidden" name="confirmation" value="no"/>
-        <button type="submit" class="btn btn-success btn-lg" style="width: 150px;">Don't
+        <input name="confirmation" type="hidden" value="no"/>
+        <button class="btn btn-success btn-lg" style="width: 150px;" type="submit">Don't
             delete
         </button>
     </form>
     <form action="/supperspeed/delete" method="post">
-        <input type="hidden" name="confirmation" value="yes"/>
-        <button type="submit" class="btn btn-danger btn-lg" style="width: 150px;">
+        <input name="confirmation" type="hidden" value="yes"/>
+        <button class="btn btn-danger btn-lg" style="width: 150px;" type="submit">
             Delete
         </button>
     </form>

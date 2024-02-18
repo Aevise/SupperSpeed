@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.StatusListDAO;
 import pl.Aevise.SupperSpeed.domain.StatusList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.StatusListEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.StatusListEntityMapper;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.StatusListJpaRepository;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.StatusListEntityMapper;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class StatusListListRepository implements StatusListDAO {
     public List<StatusList> getStatusList() {
         List<StatusListEntity> statusListEntity = statusListJpaRepository.findAll();
 
-        if(!statusListEntity.isEmpty()){
+        if (!statusListEntity.isEmpty()) {
             return statusListEntity.stream()
                     .map(statusListEntityMapper::mapFromEntity)
                     .distinct()

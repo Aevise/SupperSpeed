@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
-import pl.Aevise.SupperSpeed.domain.exception.NotFoundException;
 import pl.Aevise.SupperSpeed.infrastructure.security.dao.SupperUserDAO;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
@@ -26,11 +25,11 @@ public class SupperUserRepository implements SupperUserDAO {
     }
 
     @Override
-    public void deleteUserByEmail(String email){
+    public void deleteUserByEmail(String email) {
         Optional<SupperUserEntity> user = supperUserJpaRepository.findByEmail(email);
-        if (user.isPresent()){
+        if (user.isPresent()) {
             supperUserJpaRepository.delete(user.get());
-        }else throw new EntityNotFoundException(
+        } else throw new EntityNotFoundException(
                 "Could not find user with email: [%s]".formatted(email)
         );
     }

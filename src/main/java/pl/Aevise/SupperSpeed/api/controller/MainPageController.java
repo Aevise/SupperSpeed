@@ -24,7 +24,7 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 public class MainPageController {
-    
+
     private static final String MAIN_PAGE = "/search";
     private final CuisineService cuisineService;
     private final CuisineMapper cuisineMapper;
@@ -32,9 +32,9 @@ public class MainPageController {
     private final RestaurantMapper restaurantMapper;
     private final AddressService addressService;
     private final AddressMapper addressMapper;
-    
+
     @GetMapping(MAIN_PAGE)
-    public String getMainPage(Model model){
+    public String getMainPage(Model model) {
 
         List<CuisineDTO> cuisines = getCuisineDTOList();
         List<AddressDTO> addresses = getAddressDTOList();
@@ -47,7 +47,7 @@ public class MainPageController {
         return "main_page";
     }
 
-    private List<AddressDTO> getAddressDTOList(){
+    private List<AddressDTO> getAddressDTOList() {
         List<Address> address = addressService.findAll();
 
         return address.stream()
@@ -71,7 +71,7 @@ public class MainPageController {
                 .toList();
     }
 
-    private HashMap<String, List<RestaurantDTO>> mapRestaurantsByCuisine(List<RestaurantDTO> restaurants){
+    private HashMap<String, List<RestaurantDTO>> mapRestaurantsByCuisine(List<RestaurantDTO> restaurants) {
         HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = new HashMap<>();
 
         for (RestaurantDTO restaurant : restaurants) {

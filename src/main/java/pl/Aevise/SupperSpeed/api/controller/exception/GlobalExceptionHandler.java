@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.OK)
     public ModelAndView handleNoOrdersFound(
             InvalidDataAccessResourceUsageException exception,
-            HttpServletRequest request){
+            HttpServletRequest request) {
         String referer = request.getHeader("Referer");
         String message = String.format("Queried data not found: [%s]", exception.getMessage());
         log.warn(message);

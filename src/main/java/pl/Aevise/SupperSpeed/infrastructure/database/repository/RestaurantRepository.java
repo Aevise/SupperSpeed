@@ -58,7 +58,7 @@ public class RestaurantRepository implements RestaurantDAO {
 
         Restaurant restaurantNewData = restaurantMapper.mapFromDTO(restaurantDTO);
 
-        if(currentRestaurantData.isPresent()){
+        if (currentRestaurantData.isPresent()) {
             RestaurantEntity restaurant = currentRestaurantData.get();
             restaurant.setRestaurantName(restaurantNewData.getRestaurantName());
             restaurant.setOpenHour(restaurantNewData.getOpenHour());

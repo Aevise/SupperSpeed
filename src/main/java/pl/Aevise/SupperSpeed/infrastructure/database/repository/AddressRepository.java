@@ -35,7 +35,7 @@ public class AddressRepository implements AddressDAO {
     }
 
     @Override
-    public void updateAddress(AddressDTO addressDTO, Integer addressId){
+    public void updateAddress(AddressDTO addressDTO, Integer addressId) {
         AddressEntity address = addressJpaRepository.findById(addressId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Address with id: [%s] not found"

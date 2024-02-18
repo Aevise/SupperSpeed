@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface SupperUserDAO {
     Optional<SupperUser> findByEmail(String email);
+
     void deleteUserByEmail(String email);
 }

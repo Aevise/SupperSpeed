@@ -24,13 +24,13 @@ public class DishService {
         return dishesFromRestaurant;
     }
 
-    public List<Dish> findAllByCategory(Integer categoryId){
+    public List<Dish> findAllByCategory(Integer categoryId) {
         List<Dish> dishesFromRestaurant = dishDAO.findAllByCategory(categoryId);
         log.info("Found: [{}] dishesByCategory", dishesFromRestaurant.size());
         return dishesFromRestaurant;
     }
 
-    public void updateDish(DishDTO dishDTO){
+    public void updateDish(DishDTO dishDTO) {
         dishDAO.updateDish(dishDTO);
         log.info("Updated dish: [{}] - [{}]", dishDTO.getDishId(), dishDTO.getName());
     }
@@ -40,7 +40,7 @@ public class DishService {
         log.info("Deleted dish [{}]", dishId);
     }
 
-    public void deleteDishes(List<DishEntity> dishes){
+    public void deleteDishes(List<DishEntity> dishes) {
         dishDAO.deleteDishes(dishes);
         log.info("Deleted [{}] dishes", dishes.size());
     }

@@ -8,5 +8,6 @@ import pl.Aevise.SupperSpeed.domain.Address;
 public interface AddressMapper {
 
     AddressDTO mapToDTO(final Address address);
+
     Address mapFromDTO(final AddressDTO addressDTO);
 }

@@ -16,14 +16,14 @@ public class SupperOrderService {
     private final SupperOrderDAO supperOrderDAO;
 
     @Transactional
-    public List<SupperOrder> getOrdersByRestaurantId(Integer restaurantId){
+    public List<SupperOrder> getOrdersByRestaurantId(Integer restaurantId) {
         List<SupperOrder> ordersByRestaurantId = supperOrderDAO.getOrdersByRestaurantId(restaurantId);
         log.info("Found: [{}] orders", ordersByRestaurantId.size());
         return ordersByRestaurantId;
     }
 
     @Transactional
-    public List<SupperOrder> getOrdersByClientId(Integer clientId){
+    public List<SupperOrder> getOrdersByClientId(Integer clientId) {
         List<SupperOrder> ordersByClientId = supperOrderDAO.getOrdersByClientId(clientId);
         log.info("Found: [{}] orders", ordersByClientId.size());
         return ordersByClientId;

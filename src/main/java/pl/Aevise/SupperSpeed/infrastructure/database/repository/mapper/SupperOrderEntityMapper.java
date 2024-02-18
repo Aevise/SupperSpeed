@@ -8,5 +8,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 public interface SupperOrderEntityMapper {
 
     SupperOrderEntity mapToEntity(SupperOrder supperOrder);
+
     SupperOrder mapFromEntity(SupperOrderEntity supperOrderEntity);
 }

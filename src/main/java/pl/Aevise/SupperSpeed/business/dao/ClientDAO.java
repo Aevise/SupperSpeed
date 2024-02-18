@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
-import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
 import pl.Aevise.SupperSpeed.domain.Client;
 

@@ -14,11 +14,11 @@
 
 <div class="container">
     <h1 th:text="'Welcome back ' + *{clientDTO.name}"></h1>
-        <a class="btn btn-success" role="button" th:href="@{/orders}">View orders</a>
+    <a class="btn btn-success" role="button" th:href="@{/orders}">View orders</a>
     <div class="col-md-3">
         <h3>Your current data:</h3>
         <form action="/supperspeed/client/profile" method="post">
-            <input type="hidden" name="action" value="updateData"/>
+            <input name="action" type="hidden" value="updateData"/>
             <div class="row mt-3">
                 <div class="col-md-3">
                     <label for="customerName">Name:</label>
@@ -46,7 +46,7 @@
             <div class="row mt-3">
                 <div class="col-md-6"></div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-info">Update data</button>
+                    <button class="btn btn-info" type="submit">Update data</button>
                 </div>
             </div>
         </form>
@@ -54,7 +54,7 @@
         <br><br>
         <h3>Current address:</h3>
         <form action="/supperspeed/client/profile" method="post">
-            <input type="hidden" name="action" value="updateAddress"/>
+            <input name="action" type="hidden" value="updateAddress"/>
             <div class="row mt-3">
                 <div class="col-md-3">
                     <label for="customerCountry">Country:</label>
@@ -90,7 +90,7 @@
             <div class="row mt-3">
                 <div class="col-md-6"></div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-info">Update address</button>
+                    <button class="btn btn-info" type="submit">Update address</button>
                 </div>
             </div>
         </form>

@@ -15,7 +15,7 @@ public class ProfileService {
 
     private final SupperUserDAO supperUserDAO;
 
-    public Optional<SupperUser> findUserByEmail(String email){
+    public Optional<SupperUser> findUserByEmail(String email) {
         Optional<SupperUser> foundUser = supperUserDAO.findByEmail(email);
         foundUser.ifPresent(supperUser -> log.info(
                 "Retrieved SupperUser id:[{}], email:[{}]",

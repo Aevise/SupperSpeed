@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.business.UserService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,8 +25,16 @@ public class UserDeleteController {
 
     private final UserService userService;
 
+    private static Set<String> getUsersAuthorities(UserDetails userDetails) {
+        return userDetails
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+    }
+
     @GetMapping(value = CLIENT_DELETE)
-    public String deletePage(){
+    public String deletePage() {
         return "delete";
     }
 
@@ -37,8 +43,8 @@ public class UserDeleteController {
             (
                     @AuthenticationPrincipal UserDetails userDetails,
                     @RequestParam(required = false) String confirmation
-            ){
-        if("yes".equals(confirmation)){
+            ) {
+        if ("yes".equals(confirmation)) {
             userService.deleteUserByEmail(userDetails.getUsername());
             return "redirect:" + CLIENT_LOGOUT;
         }
@@ -46,18 +52,10 @@ public class UserDeleteController {
         var grantedAuthorities = getUsersAuthorities(userDetails);
 
 
-        if(grantedAuthorities.contains(AvailableRoles.CLIENT.name())){
+        if (grantedAuthorities.contains(AvailableRoles.CLIENT.name())) {
             return "redirect:" + CLIENT_PROFILE;
         }
         return "redirect:" + RESTAURANT_PROFILE;
-    }
-
-    private static Set<String> getUsersAuthorities(UserDetails userDetails) {
-        return userDetails
-                .getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
     }
 
 }
