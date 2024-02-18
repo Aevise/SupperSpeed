@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.CuisineDTO;
@@ -33,16 +34,15 @@ public class MainPageController {
     private final AddressMapper addressMapper;
     
     @GetMapping(MAIN_PAGE)
-    public String getMainPage(){
+    public String getMainPage(Model model){
 
         List<CuisineDTO> cuisines = getCuisineDTOList();
+        List<AddressDTO> addresses = getAddressDTOList();
         List<RestaurantDTO> restaurants = getRestaurantsDTOList();
-//        List<AddressDTO> addresses = getAddressDTOList();
 
-        restaurants.get(0).getCuisine().getCuisine();
+        HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = mapRestaurantsByCuisine(restaurants);
 
-        HashMap<String, List<RestaurantDTO>> test = test(restaurants);
-
+        model.addAttribute("restaurantsByCuisine", restaurantsByCuisine);
 
         return "main_page";
     }
@@ -71,13 +71,13 @@ public class MainPageController {
                 .toList();
     }
 
-    private HashMap<String, List<RestaurantDTO>> test (List<RestaurantDTO> restaurants){
-        HashMap<String, List<RestaurantDTO>> map = new HashMap<>();
+    private HashMap<String, List<RestaurantDTO>> mapRestaurantsByCuisine(List<RestaurantDTO> restaurants){
+        HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = new HashMap<>();
 
         for (RestaurantDTO restaurant : restaurants) {
-            map.putIfAbsent(restaurant.getCuisine().getCuisine(), new ArrayList<>());
-            map.get(restaurant.getCuisine().getCuisine()).add(restaurant);
+            restaurantsByCuisine.putIfAbsent(restaurant.getCuisine().getCuisine(), new ArrayList<>());
+            restaurantsByCuisine.get(restaurant.getCuisine().getCuisine()).add(restaurant);
         }
-        return map;
+        return restaurantsByCuisine;
     }
 }
