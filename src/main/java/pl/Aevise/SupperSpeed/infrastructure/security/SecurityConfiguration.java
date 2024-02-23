@@ -32,6 +32,7 @@ public class SecurityConfiguration {
 
     private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationConfiguration() {
         return auth -> auth
+                .requestMatchers("/").permitAll()
                 .requestMatchers("/login", "/logout").permitAll()
                 .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
                 .requestMatchers("/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())

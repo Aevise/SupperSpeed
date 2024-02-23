@@ -25,7 +25,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MainPageController {
 
-    private static final String MAIN_PAGE = "/search";
+    private static final String MAIN_PAGE = "/";
+
     private final CuisineService cuisineService;
     private final CuisineMapper cuisineMapper;
     private final RestaurantService restaurantService;
