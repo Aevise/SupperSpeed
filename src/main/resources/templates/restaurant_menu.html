@@ -36,7 +36,6 @@
 
     <tbody id="dishTable">
     <tr th:each="dish : ${category.getValue()}">
-
         <td th:text="${dish.photo}"/>
         <td th:text="${dish.name}"/>
         <td th:text="${dish.description}"/>
@@ -46,10 +45,18 @@
             <span class="num">0</span>
             <span class="plus">+</span>
         </td>
-        <td class="total">0</td>
+        <td class="total" style="text-align: center;">0</td>
     </tr>
     </tbody>
 </table>
+
+<br>
+
+<div class="row mt-3">
+    <div class="col-md-4">
+        <a id="orderButton" class="btn btn-success" role="button" th:href="@{/}">Order</a>
+    </div>
+</div>
 
 <br>
 
@@ -59,6 +66,8 @@
     </div>
 </div>
 
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const pluses = document.querySelectorAll(".plus"),
@@ -67,6 +76,9 @@
             totals = document.querySelectorAll(".total"),
             dishes = document.querySelectorAll("#dishTable tr");
 
+        let orderPrice = 0;
+        let orderButton = document.getElementById("orderButton");
+
         pluses.forEach((plus, index) => {
             const clonedPlus = plus.cloneNode(true);
             plus.parentNode.replaceChild(clonedPlus, plus);
@@ -74,8 +86,13 @@
             clonedPlus.addEventListener("click", () => {
                 let amount = nums[index].innerText || 0;
                 amount++;
+
                 nums[index].innerText = amount;
-                updateTotal(index, amount);
+
+                let dishPrice = getTotalDishPrice(index, 1);
+                let totalDishPrice = getTotalDishPrice(index, amount);
+                updateTotalPriceForDishes(index, totalDishPrice)
+                updateOrderValue(dishPrice, true);
             });
         });
 
@@ -87,17 +104,36 @@
                 let amount = nums[index].innerText || 0;
                 if (amount > 0) {
                     amount--;
+
                     nums[index].innerText = amount;
-                    updateTotal(index, amount);
+
+                    let dishPrice = getTotalDishPrice(index, 1);
+                    let totalDishPrice = getTotalDishPrice(index, amount);
+                    updateTotalPriceForDishes(index, totalDishPrice)
+                    updateOrderValue(dishPrice, false);
                 }
             });
         });
 
-        function updateTotal(index, amount) {
-            let price = parseFloat(dishes[index].cells[3].textContent) || 0;
-            let total = amount * price;
-            totals[index].innerText = total.toFixed(2);
+        function updateTotalPriceForDishes(index, price) {
+            totals[index].innerText = price.toFixed(2);
         }
+
+        function getTotalDishPrice(index, amount){
+            let price = parseFloat(dishes[index].cells[3].textContent) || 0;
+            return amount * price;
+        }
+
+        function updateOrderValue(price, addingValue){
+            if(addingValue === true){
+                orderPrice += price;
+
+            }else {
+                orderPrice -= price;
+            }
+            orderButton.textContent = `Confirm Order: (${orderPrice.toFixed(2)})`;
+        }
+
     });
 </script>
 
