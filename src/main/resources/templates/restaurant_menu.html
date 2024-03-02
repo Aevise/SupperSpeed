@@ -50,40 +50,6 @@
             <td class="total">0</td>
         </tr>
     </form>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const pluses = document.querySelectorAll(".plus"),
-                minuses = document.querySelectorAll(".minus"),
-                nums = document.querySelectorAll(".num");
-
-            pluses.forEach((plus, index) => {
-                const clonedPlus = plus.cloneNode(true);
-                plus.parentNode.replaceChild(clonedPlus, plus);
-
-                clonedPlus.addEventListener("click", () => {
-                    let amount = nums[index].innerText || 0;
-                    amount++;
-                    nums[index].innerText = amount;
-                });
-            });
-
-            minuses.forEach((minus, index) => {
-                const clonedMinus = minus.cloneNode(true);
-                minus.parentNode.replaceChild(clonedMinus, minus);
-
-                clonedMinus.addEventListener("click", () => {
-                    let amount = nums[index].innerText || 0;
-                    if (amount > 0) {
-                        amount--;
-                        nums[index].innerText = amount;
-                    }
-                });
-            });
-
-
-        });
-    </script>
     </tbody>
 </table>
 
@@ -94,6 +60,38 @@
         <a class="btn btn-info" role="button" th:href="@{/}">Go back</a>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const pluses = document.querySelectorAll(".plus"),
+            minuses = document.querySelectorAll(".minus"),
+            nums = document.querySelectorAll(".num");
+
+        pluses.forEach((plus, index) => {
+            const clonedPlus = plus.cloneNode(true);
+            plus.parentNode.replaceChild(clonedPlus, plus);
+
+            clonedPlus.addEventListener("click", () => {
+                let amount = nums[index].innerText || 0;
+                amount++;
+                nums[index].innerText = amount;
+            });
+        });
+
+        minuses.forEach((minus, index) => {
+            const clonedMinus = minus.cloneNode(true);
+            minus.parentNode.replaceChild(clonedMinus, minus);
+
+            clonedMinus.addEventListener("click", () => {
+                let amount = nums[index].innerText || 0;
+                if (amount > 0) {
+                    amount--;
+                    nums[index].innerText = amount;
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
