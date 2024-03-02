@@ -126,10 +126,13 @@
         function updateOrderValue(price, addingValue){
             if(addingValue === true){
                 orderPrice += price;
-
             }else {
                 orderPrice -= price;
             }
+            setOrderButtonValue();
+        }
+
+        function setOrderButtonValue(){
             orderButton.textContent = `Confirm Order: (${orderPrice.toFixed(2)})`;
         }
 
