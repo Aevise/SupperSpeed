@@ -87,12 +87,7 @@
                 let amount = nums[index].innerText || 0;
                 amount++;
 
-                nums[index].innerText = amount;
-
-                let dishPrice = getTotalDishPrice(index, 1);
-                let totalDishPrice = getTotalDishPrice(index, amount);
-                updateTotalPriceForDishes(index, totalDishPrice)
-                updateOrderValue(dishPrice, true);
+                handleOrderPriceUpdate(index, amount, true);
             });
         });
 
@@ -105,15 +100,19 @@
                 if (amount > 0) {
                     amount--;
 
-                    nums[index].innerText = amount;
-
-                    let dishPrice = getTotalDishPrice(index, 1);
-                    let totalDishPrice = getTotalDishPrice(index, amount);
-                    updateTotalPriceForDishes(index, totalDishPrice)
-                    updateOrderValue(dishPrice, false);
+                    handleOrderPriceUpdate(index, amount, false);
                 }
             });
         });
+
+        function handleOrderPriceUpdate(index, amount, addingValue){
+            nums[index].innerText = amount;
+
+            let dishPrice = getTotalDishPrice(index, 1);
+            let totalDishPrice = getTotalDishPrice(index, amount);
+            updateTotalPriceForDishes(index, totalDishPrice)
+            updateOrderValue(dishPrice, addingValue);
+        }
 
         function updateTotalPriceForDishes(index, price) {
             totals[index].innerText = price.toFixed(2);
