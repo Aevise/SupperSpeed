@@ -34,22 +34,20 @@
     </tr>
     </thead>
 
-    <tbody>
-    <form method="post" th:action="@{/order}">
-        <tr th:each="dish : ${category.getValue()}">
+    <tbody id="dishTable">
+    <tr th:each="dish : ${category.getValue()}">
 
-            <td th:text="${dish.photo}"/>
-            <td th:text="${dish.name}"/>
-            <td th:text="${dish.description}"/>
-            <td th:text="${dish.price}"/>
-            <td class="wrapper" style="text-align: center;">
-                <span class="minus">-</span>
-                <span class="num">0</span>
-                <span class="plus">+</span>
-            </td>
-            <td class="total">0</td>
-        </tr>
-    </form>
+        <td th:text="${dish.photo}"/>
+        <td th:text="${dish.name}"/>
+        <td th:text="${dish.description}"/>
+        <td th:text="${dish.price}"/>
+        <td class="wrapper" style="text-align: center;">
+            <span class="minus">-</span>
+            <span class="num">0</span>
+            <span class="plus">+</span>
+        </td>
+        <td class="total">0</td>
+    </tr>
     </tbody>
 </table>
 
@@ -65,7 +63,9 @@
     document.addEventListener("DOMContentLoaded", function () {
         const pluses = document.querySelectorAll(".plus"),
             minuses = document.querySelectorAll(".minus"),
-            nums = document.querySelectorAll(".num");
+            nums = document.querySelectorAll(".num"),
+            totals = document.querySelectorAll(".total"),
+            dishes = document.querySelectorAll("#dishTable tr");
 
         pluses.forEach((plus, index) => {
             const clonedPlus = plus.cloneNode(true);
@@ -75,6 +75,7 @@
                 let amount = nums[index].innerText || 0;
                 amount++;
                 nums[index].innerText = amount;
+                updateTotal(index, amount);
             });
         });
 
@@ -87,9 +88,16 @@
                 if (amount > 0) {
                     amount--;
                     nums[index].innerText = amount;
+                    updateTotal(index, amount);
                 }
             });
         });
+
+        function updateTotal(index, amount) {
+            let price = parseFloat(dishes[index].cells[3].textContent) || 0;
+            let total = amount * price;
+            totals[index].innerText = total.toFixed(2);
+        }
     });
 </script>
 
