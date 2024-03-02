@@ -34,6 +34,10 @@ public class RestaurantMenuEditionController {
     static final String RESTAURANT_MENU_DELETE_CATEGORY = "/restaurant/profile/menu/deleteCategory";
     static final String RESTAURANT_MENU_ADD_CATEGORY = "/restaurant/profile/menu/addCategory";
     static final String RESTAURANT_MENU_ADD_DISH = "/restaurant/profile/menu/addDish";
+    static final String ERROR = "error";
+
+
+
     private final DishListService dishListService;
     private final ProfileService profileService;
     private final DishCategoryService dishCategoryService;
@@ -57,7 +61,7 @@ public class RestaurantMenuEditionController {
 
             return "restaurant_menu_edit";
         }
-        return "error";
+        return ERROR;
     }
 
     @PostMapping(RESTAURANT_MENU_UPDATE_DISH)
