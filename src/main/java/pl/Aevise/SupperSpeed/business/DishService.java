@@ -47,6 +47,7 @@ public class DishService {
 
     @Transactional
     public void addDish(Dish dish) {
+
         dishDAO.addDish(dish);
         log.info("Successfully added dish: [{}]", dish.getName());
     }
