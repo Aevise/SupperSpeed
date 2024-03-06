@@ -5,5 +5,5 @@ import pl.Aevise.SupperSpeed.domain.Cuisine;
 import java.util.List;
 
 public interface CuisineDAO {
-    List<Cuisine> findAllByRestaurant(Integer restaurantId);
+    List<Cuisine> findAll();
 }

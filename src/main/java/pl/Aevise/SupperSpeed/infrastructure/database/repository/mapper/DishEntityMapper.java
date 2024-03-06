@@ -7,5 +7,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 @Mapper(componentModel = "spring")
 public interface DishEntityMapper {
     Dish mapFromEntity(DishEntity dishEntity);
+
     DishEntity mapToEntity(Dish dish);
 }

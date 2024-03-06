@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.api.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClientDTO {
-
-    String name;
-    String surname;
-    String phone;
-
+public class SupperOrderDTO {
+    Integer orderId;
+    String orderDateTime;
+    ClientDTO clientDTO;
+    RestaurantDTO restaurantDTO;
+    StatusListDTO statusListDTO;
+    RatingDTO ratingDTO;
 }

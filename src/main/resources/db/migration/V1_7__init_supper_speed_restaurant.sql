@@ -1,6 +1,7 @@
 CREATE TABLE restaurant
 (
     supper_restaurant_id INT         NOT NULL,
+    restaurant_id        SERIAL      NOT NULL,
     restaurant_name      VARCHAR(32) NOT NULL,
     address_id           INT,
     phone                VARCHAR(32),

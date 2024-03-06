@@ -35,18 +35,18 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserByEmail(String email){
+    public void deleteUserByEmail(String email) {
 
         Optional<SupperUser> user = supperUserDAO.findByEmail(email);
-        if(user.isPresent()){
+        if (user.isPresent()) {
             Integer userId = user.get().getSupperUserId();
-            if(clientService.findById(userId).isPresent()){
+            if (clientService.findById(userId).isPresent()) {
                 clientService.deleteClientById(userId);
-            }else{
+            } else {
                 restaurantService.deleteRestaurantById(userId);
             }
 //            supperUserDAO.deleteUserByEmail(email);
-        }else {
+        } else {
             log.error("Could not find the user with email: [{}] ", email);
         }
     }

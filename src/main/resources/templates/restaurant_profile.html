@@ -43,7 +43,7 @@
 <div class="container">
     <h3>Your current data:</h3>
     <form action="/supperspeed/restaurant/profile" method="post">
-        <input type="hidden" name="action" value="updateData"/>
+        <input name="action" type="hidden" value="updateData"/>
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="restaurantName">Name:</label>
@@ -79,7 +79,7 @@
         <div class="row mt-3">
             <div class="col-md-6"></div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-info">Update data</button>
+                <button class="btn btn-info" type="submit">Update data</button>
             </div>
         </div>
     </form>
@@ -89,7 +89,7 @@
 <div class="container">
     <h3>Current address:</h3>
     <form action="/supperspeed/restaurant/profile" method="post">
-        <input type="hidden" name="action" value="updateAddress"/>
+        <input name="action" type="hidden" value="updateAddress"/>
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="customerCountry">Country:</label>
@@ -125,7 +125,7 @@
         <div class="row mt-3">
             <div class="col-md-6"></div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-info">Update address</button>
+                <button class="btn btn-info" type="submit">Update address</button>
             </div>
         </div>
     </form>

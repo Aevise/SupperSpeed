@@ -15,8 +15,8 @@ public class CuisineService {
 
     private final CuisineDAO cuisineDAO;
 
-    public List<Cuisine> findAllByRestaurant(Integer restaurantId) {
-        List<Cuisine> cuisineList = cuisineDAO.findAllByRestaurant(restaurantId);
+    public List<Cuisine> findAll() {
+        List<Cuisine> cuisineList = cuisineDAO.findAll();
         log.info("Available cuisines: [{}]", cuisineList.size());
         return cuisineList;
     }

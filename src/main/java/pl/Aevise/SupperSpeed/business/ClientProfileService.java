@@ -22,6 +22,13 @@ public class ClientProfileService {
     private final AddressService addressService;
     private final ProfileService profileService;
 
+    private static void buildClient(Client client) {
+        Client.builder()
+                .name(client.getName())
+                .surname(client.getSurname())
+                .phone(client.getPhone())
+                .build();
+    }
 
     @Transactional
     public Optional<Client> findClientByEmail(String email) {
@@ -34,43 +41,30 @@ public class ClientProfileService {
     }
 
     @Transactional
-    public void updateClientInformation(ClientDTO newUsersInformation, String email){
+    public void updateClientInformation(ClientDTO newUsersInformation, String email) {
         Optional<SupperUser> currentUser = profileService.findUserByEmail(email);
 
-        if(currentUser.isPresent()){
+        if (currentUser.isPresent()) {
             Integer userId = currentUser.get().getSupperUserId();
             clientDAO.updateClientInformation(newUsersInformation, userId);
             log.info("Client's [{}] information updated successfully.", userId);
-        }
-        else {
+        } else {
             log.error("Could not update information for client: [{}]. Client not found.", email);
         }
     }
 
     @Transactional
     @Qualifier("clientUpdateAddress")
-    public void updateAddress(AddressDTO addressDTO, String email){
+    public void updateAddress(AddressDTO addressDTO, String email) {
         Optional<SupperUser> currentUser = profileService.findUserByEmail(email);
 
-        if(currentUser.isPresent()) {
+        if (currentUser.isPresent()) {
             Integer supperUserId = currentUser.get().getSupperUserId();
             log.info("Successfully retrieved user's: [{}] information", supperUserId);
             addressService.updateAddressByUserId(addressDTO, supperUserId);
-        }
-        else {
+        } else {
             log.error("Did not found user with email: [{}]", email);
         }
-    }
-
-
-
-
-    private static void buildClient(Client client) {
-        Client.builder()
-                .name(client.getName())
-                .surname(client.getSurname())
-                .phone(client.getPhone())
-                .build();
     }
 
 }

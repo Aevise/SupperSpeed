@@ -16,7 +16,6 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.ClientMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.ClientProfileService;
-import pl.Aevise.SupperSpeed.business.UserService;
 import pl.Aevise.SupperSpeed.domain.Client;
 
 import java.util.Optional;
@@ -44,7 +43,7 @@ public class ClientProfileController {
         Optional<Client> client = clientProfileService
                 .findClientByEmail(userDetails.getUsername());
 
-        if(client.isPresent()){
+        if (client.isPresent()) {
             ClientDTO clientDTO = client.map(clientMapper::mapToDTO)
                     .get();
 
@@ -68,13 +67,13 @@ public class ClientProfileController {
                     @AuthenticationPrincipal UserDetails userDetails,
                     @RequestParam(required = false) String action
             ) {
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "redirect:" + CLIENT_PROFILE;
         }
 
-        if("updateAddress".equals(action)){
+        if ("updateAddress".equals(action)) {
             clientProfileService.updateAddress(addressDTO, userDetails.getUsername());
-        }else {
+        } else {
             clientProfileService.updateClientInformation(clientDTO, userDetails.getUsername());
         }
         return "redirect:" + CLIENT_PROFILE;

@@ -1,6 +1,8 @@
 package pl.Aevise.SupperSpeed.api.controller.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -24,6 +26,22 @@ public class GlobalExceptionHandler {
         modelView.addObject("errorMessage", message);
         return modelView;
     }
+
+    @ExceptionHandler(InvalidDataAccessResourceUsageException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ModelAndView handleNoOrdersFound(
+            InvalidDataAccessResourceUsageException exception,
+            HttpServletRequest request) {
+        String referer = request.getHeader("Referer");
+        String message = String.format("Queried data not found: [%s]", exception.getMessage());
+        log.warn(message);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:" + referer);
+        modelAndView.addObject("errorMessage", message);
+        return modelAndView;
+    }
+
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

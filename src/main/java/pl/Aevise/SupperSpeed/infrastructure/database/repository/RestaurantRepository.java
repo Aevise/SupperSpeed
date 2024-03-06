@@ -58,7 +58,7 @@ public class RestaurantRepository implements RestaurantDAO {
 
         Restaurant restaurantNewData = restaurantMapper.mapFromDTO(restaurantDTO);
 
-        if(currentRestaurantData.isPresent()){
+        if (currentRestaurantData.isPresent()) {
             RestaurantEntity restaurant = currentRestaurantData.get();
             restaurant.setRestaurantName(restaurantNewData.getRestaurantName());
             restaurant.setOpenHour(restaurantNewData.getOpenHour());
@@ -74,5 +74,14 @@ public class RestaurantRepository implements RestaurantDAO {
         return restaurantJpaRepository
                 .findById(id)
                 .map(restaurantEntityMapper::mapFromEntity);
+    }
+
+    @Override
+    public List<Restaurant> findAll() {
+        return restaurantJpaRepository
+                .findAll()
+                .stream()
+                .map(restaurantEntityMapper::mapFromEntity)
+                .toList();
     }
 }

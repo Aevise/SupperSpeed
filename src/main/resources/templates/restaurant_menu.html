@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link crossorigin="anonymous"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          rel="stylesheet">
+    <title>Supper Tasty!</title>
+</head>
+
+<body>
+<div class="container">
+    <div style="display: flex; justify-content: center;">
+        <h1>Menu:</h1>
+    </div>
+    <br>
+</div>
+
+<table class="table" th:each="category : ${dishesByCategory}">
+    <thead>
+    <tr class="table-primary">
+        <th colspan="4" style="text-align: center;" th:text="${category.getKey().get(0).categoryName}"/>
+    </tr>
+
+    <tr class="table table-info">
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Price</th>
+        <th style="background-color: transparent; text-align: center;">Quantity</th>
+        <th style="background-color: transparent; text-align: center;">Total Price</th>
+    </tr>
+    </thead>
+
+    <tbody id="dishTable">
+    <tr th:each="dish : ${category.getValue()}">
+        <td th:text="${dish.photo}"/>
+        <td th:text="${dish.name}"/>
+        <td th:text="${dish.description}"/>
+        <td th:text="${dish.price}"/>
+        <td class="wrapper" style="text-align: center;">
+            <span class="minus">-</span>
+            <span class="num">0</span>
+            <span class="plus">+</span>
+        </td>
+        <td class="total" style="text-align: center;">0</td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<div class="row mt-3">
+    <div class="col-md-4">
+        <a id="orderButton" class="btn btn-success" role="button" th:href="@{/}">Order</a>
+    </div>
+</div>
+
+<br>
+
+<div class="row mt-3">
+    <div class="col-md-4">
+        <a class="btn btn-info" role="button" th:href="@{/}">Go back</a>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const pluses = document.querySelectorAll(".plus"),
+            minuses = document.querySelectorAll(".minus"),
+            nums = document.querySelectorAll(".num"),
+            totals = document.querySelectorAll(".total"),
+            dishes = document.querySelectorAll("#dishTable tr");
+
+        let orderPrice = 0;
+        let orderButton = document.getElementById("orderButton");
+
+        pluses.forEach((plus, index) => {
+            const clonedPlus = plus.cloneNode(true);
+            plus.parentNode.replaceChild(clonedPlus, plus);
+
+            clonedPlus.addEventListener("click", () => {
+                let amount = nums[index].innerText || 0;
+                amount++;
+
+                handleOrderPriceUpdate(index, amount, true);
+            });
+        });
+
+        minuses.forEach((minus, index) => {
+            const clonedMinus = minus.cloneNode(true);
+            minus.parentNode.replaceChild(clonedMinus, minus);
+
+            clonedMinus.addEventListener("click", () => {
+                let amount = nums[index].innerText || 0;
+                if (amount > 0) {
+                    amount--;
+
+                    handleOrderPriceUpdate(index, amount, false);
+                }
+            });
+        });
+
+        function handleOrderPriceUpdate(index, amount, addingValue){
+            nums[index].innerText = amount;
+
+            let dishPrice = getTotalDishPrice(index, 1);
+            let totalDishPrice = getTotalDishPrice(index, amount);
+            updateTotalPriceForDishes(index, totalDishPrice)
+            updateOrderValue(dishPrice, addingValue);
+        }
+
+        function updateTotalPriceForDishes(index, price) {
+            totals[index].innerText = price.toFixed(2);
+        }
+
+        function getTotalDishPrice(index, amount){
+            let price = parseFloat(dishes[index].cells[3].textContent) || 0;
+            return amount * price;
+        }
+
+        function updateOrderValue(price, addingValue){
+            if(addingValue === true){
+                orderPrice += price;
+            }else {
+                orderPrice -= price;
+            }
+            setOrderButtonValue();
+        }
+
+        function setOrderButtonValue(){
+            orderButton.textContent = `Confirm Order: (${orderPrice.toFixed(2)})`;
+        }
+
+    });
+</script>
+
+</body>
+</html>

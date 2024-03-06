@@ -7,7 +7,6 @@ import pl.Aevise.SupperSpeed.domain.Cuisine;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.CuisineJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.CuisineEntityMapper;
 
-import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -18,9 +17,9 @@ public class CuisineRepository implements CuisineDAO {
     private final CuisineEntityMapper cuisineEntityMapper;
 
     @Override
-    public List<Cuisine> findAllByRestaurant(Integer restaurantId) {
+    public List<Cuisine> findAll() {
         return cuisineJpaRepository
-                .findAllById(Collections.singleton(restaurantId))
+                .findAll()
                 .stream()
                 .map(cuisineEntityMapper::mapFromEntity)
                 .toList();

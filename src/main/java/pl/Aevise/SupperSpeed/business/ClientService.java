@@ -17,7 +17,7 @@ public class ClientService {
     private final ClientDAO clientDAO;
 
     @Transactional
-    public Optional<Client> findById(Integer id){
+    public Optional<Client> findById(Integer id) {
         return clientDAO.findById(id);
     }
 

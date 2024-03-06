@@ -11,6 +11,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.AddressJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.AddressEntityMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,7 +35,7 @@ public class AddressRepository implements AddressDAO {
     }
 
     @Override
-    public void updateAddress(AddressDTO addressDTO, Integer addressId){
+    public void updateAddress(AddressDTO addressDTO, Integer addressId) {
         AddressEntity address = addressJpaRepository.findById(addressId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Address with id: [%s] not found"
@@ -49,5 +50,13 @@ public class AddressRepository implements AddressDAO {
 
         addressJpaRepository.saveAndFlush(address);
 
+    }
+
+    @Override
+    public List<Address> findAll() {
+        return addressJpaRepository.findAll()
+                .stream()
+                .map(addressEntityMapper::mapFromEntity)
+                .toList();
     }
 }
