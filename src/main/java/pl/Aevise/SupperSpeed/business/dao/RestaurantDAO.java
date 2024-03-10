@@ -20,4 +20,6 @@ public interface RestaurantDAO {
     Optional<Restaurant> findById(Integer id);
 
     List<Restaurant> findAll();
+
+    List<Restaurant> findAllByCity(String city);
 }

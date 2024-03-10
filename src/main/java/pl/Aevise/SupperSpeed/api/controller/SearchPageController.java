@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.CuisineDTO;
@@ -46,9 +45,13 @@ public class SearchPageController {
             ) {
         List<CuisineDTO> cuisines = getCuisineDTOList();
         List<AddressDTO> addresses = getAddressDTOList();
-        List<RestaurantDTO> restaurants = getRestaurantsDTOList();
+        List<RestaurantDTO> restaurants = getRestaurantsByCityDTOList(city);
 
-        List<String> cities = addressService.findDistinctCities();
+        List<String> cities = addressService
+                .findDistinctCities()
+                .stream()
+                .sorted()
+                .toList();
 
         HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = mapRestaurantsByCuisine(restaurants);
 
@@ -68,8 +71,8 @@ public class SearchPageController {
                 .toList();
     }
 
-    private List<RestaurantDTO> getRestaurantsDTOList() {
-        List<Restaurant> restaurants = restaurantService.findAll();
+    private List<RestaurantDTO> getRestaurantsByCityDTOList(String city) {
+        List<Restaurant> restaurants = restaurantService.findAllByCity(city);
 
         return restaurants.stream()
                 .map(restaurantMapper::mapToDTO)

@@ -77,4 +77,10 @@ public class RestaurantService {
         log.info("Found [{}] restaurants", restaurants.size());
         return restaurants;
     }
+
+    public List<Restaurant> findAllByCity(String city) {
+        List<Restaurant> restaurants = restaurantDAO.findAllByCity(city);
+        log.info("Found [{}] restaurants in city [{}]", restaurants.size(), city);
+        return restaurants;
+    }
 }
