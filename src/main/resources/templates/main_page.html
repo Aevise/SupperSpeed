@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<html lang="pl">
 
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
@@ -11,52 +11,32 @@
 </head>
 
 <body>
-<div class="container">
-    <div style="display: flex; justify-content: center;">
-        <h1>Feeling hungry? Try one of our SupperRestaurants!</h1>
+<h1 style="display: flex; justify-content: center;">
+    Order from one of restaurants
+</h1>
+<br>
+<form class="px-4 py-3" th:action="@{/search}" method="get">
+    <div class="mb-3" style="display: flex; justify-content: center;">
+        <label for="city">City:</label>
+        <select id="city" name="city">
+            <option th:each="city : ${distinctCities}" th:value="${city}" th:text="${city}"></option>
+        </select>
     </div>
-    <br>
-</div>
-
-<table class="table" th:each="restaurants : ${restaurantsByCuisine}">
-    <thead class="table-primary">
-    <tr>
-        <th colspan="5" style="text-align: center;" th:text="${restaurants.getKey()}"></th>
-    </tr>
-    </thead>
-    <thead class="table-info">
-    <tr>
-        <th>Name</th>
-        <th>Open hour</th>
-        <th>Close hour</th>
-        <th>Street</th>
-        <th>Contact</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr th:each="restaurant : ${restaurants.getValue()}">
-            <td th:text="${restaurant.restaurantName}"></td>
-            <td th:text="${restaurant.openHour}"></td>
-            <td th:text="${restaurant.closeHour}"></td>
-            <td th:text="${restaurant.address.currentAddress}"></td>
-            <td th:text="${restaurant.phone}"></td>
-            <td style="background-color: transparent;">
-                <form method="get" th:action="@{/menu}">
-                    <input th:name="restaurantId" th:value="${restaurant.restaurantId}" type="hidden">
-                    <button class="btn btn-info" type="submit" th:text="'Order from '+ ${restaurant.restaurantName}">Order button</button>
-                </form>
-            </td>
-        </tr>
-
-    </tbody>
-</table>
-
-<div class="row mt-3">
-    <div class="col-md-4">
-        <a class="btn btn-info" role="button" th:href="@{/client/profile}">Profile</a>
+    <div class="mb-3" style="display: flex; justify-content: center;">
+        <label for="streetName" class="form-label">Street Name </label>
+        <input type="text" id="streetName" name="streetName" placeholder="Street Name">
     </div>
-</div>
+    <div class="mb-3" style="display: flex; justify-content: center;">
+        <button type="submit" class="btn btn-primary">Show available</button>
+    </div>
+</form>
+
+<br>
+<a class="dropdown-item" href="supperspeed/error" style="display: flex; justify-content: center;">New around here? Sign
+    up</a>
+<br>
+<a class="dropdown-item" href="supperspeed/login" style="display: flex; justify-content: center;">Already have account?
+    Sign in</a>
+
 </body>
-
-
 </html>

@@ -59,4 +59,9 @@ public class AddressRepository implements AddressDAO {
                 .map(addressEntityMapper::mapFromEntity)
                 .toList();
     }
+
+    @Override
+    public List<String> findDistinctCities() {
+        return addressJpaRepository.findDistinctCities();
+    }
 }
