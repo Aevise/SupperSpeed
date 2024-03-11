@@ -60,4 +60,10 @@ public class AddressService {
         log.info("Found [{}] addresses", addresses.size());
         return addresses;
     }
+
+    public List<String> findDistinctCities() {
+        List<String> distinctCities = addressDAO.findDistinctCities();
+        log.info("Found [{}] distinct cities", distinctCities.size());
+        return distinctCities;
+    }
 }

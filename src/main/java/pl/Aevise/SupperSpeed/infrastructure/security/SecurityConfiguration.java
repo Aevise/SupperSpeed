@@ -32,7 +32,7 @@ public class SecurityConfiguration {
 
     private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationConfiguration() {
         return auth -> auth
-                .requestMatchers("/", "/menu", "/login", "/logout").permitAll()
+                .requestMatchers("/", "/menu", "/search/**", "/create","/login", "/logout", "error").permitAll()
                 .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
                 .requestMatchers("/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
                 .requestMatchers("/delete/**").hasAnyAuthority(
@@ -42,8 +42,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/orders/**").hasAnyAuthority(
                         AvailableRoles.CLIENT.name(),
                         AvailableRoles.RESTAURANT.name()
-                )
-                .requestMatchers("/search/**").hasAuthority(AvailableRoles.CLIENT.name());
+                );
     }
 
     @Bean

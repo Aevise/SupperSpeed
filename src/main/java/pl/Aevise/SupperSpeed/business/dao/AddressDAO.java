@@ -12,4 +12,7 @@ public interface AddressDAO {
     void updateAddress(AddressDTO addressDTO, Integer addressId);
 
     List<Address> findAll();
+
+    List<String> findDistinctCities();
+
 }
