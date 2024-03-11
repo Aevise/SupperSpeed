@@ -35,11 +35,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/", "/menu", "/search/**", "/create","/login", "/logout", "error").permitAll()
                 .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
                 .requestMatchers("/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
-                .requestMatchers("/delete/**").hasAnyAuthority(
-                        AvailableRoles.CLIENT.name(),
-                        AvailableRoles.RESTAURANT.name()
-                )
-                .requestMatchers("/orders/**").hasAnyAuthority(
+                .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(
                         AvailableRoles.CLIENT.name(),
                         AvailableRoles.RESTAURANT.name()
                 );
@@ -73,7 +69,6 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorizationConfiguration())
                 .formLogin(FormLoginConfigurer::permitAll)
                 .logout(logoutConfiguration());
-
         return http.build();
     }
 
