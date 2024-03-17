@@ -50,7 +50,7 @@ public class ClientProfileController {
             AddressDTO addressDTO = addressService
                     .findById(client.get().getAddress().getAddressId())
                     .map(addressMapper::mapToDTO)
-                    .get();
+                    .orElse(new AddressDTO());
 
             model.addAttribute("clientDTO", clientDTO);
             model.addAttribute("addressDTO", addressDTO);
