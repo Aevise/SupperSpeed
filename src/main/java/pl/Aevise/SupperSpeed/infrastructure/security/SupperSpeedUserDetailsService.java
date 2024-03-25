@@ -13,7 +13,9 @@ import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,15 +35,19 @@ public class SupperSpeedUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         SupperUserEntity user = supperUserJpaRepository.findByEmail(email).get();
-        List<GrantedAuthority> authorities = getUserAuthority(user.getRoles());
+        System.out.println("hehe");
+        List<GrantedAuthority> authorities = getUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);
     }
 
-    private List<GrantedAuthority> getUserAuthority(Set<RolesEntity> userRoles) {
-        return userRoles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole()))
-                .distinct()
-                .collect(Collectors.toList());
+    private List<GrantedAuthority> getUserAuthority(RolesEntity userRoles) {
+        return List.of(new SimpleGrantedAuthority(userRoles.getRole()));
+//        new (new SimpleGrantedAuthority(userRoles.getRole()))
+//
+//                userRoles.stream()
+//                .map(role -> new SimpleGrantedAuthority(role.getRole()))
+//                .distinct()
+//                .collect(Collectors.toList());
     }
 
     private UserDetails buildUserForAuthentication(SupperUserEntity user, List<GrantedAuthority> authorities) {

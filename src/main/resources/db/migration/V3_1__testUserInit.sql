@@ -36,15 +36,6 @@ VALUES (3, 'test3', 3, CURRENT_TIME, CURRENT_TIME, 9);
 INSERT INTO client(supper_client_id, name, surname, phone, address_id)
 VALUES (4, 'test1', 'test2', '+48 123 456 789', 4);
 
-INSERT INTO user_role(user_id, role_id)
-VALUES (1, 2);
-INSERT INTO user_role(user_id, role_id)
-VALUES (2, 2);
-INSERT INTO user_role(user_id, role_id)
-VALUES (3, 2);
-INSERT INTO user_role(user_id, role_id)
-VALUES (4, 1);
-
 INSERT INTO dish_category(dish_category_id, restaurant_id, category_name)
 VALUES (1, 3, 'Dania rybne');
 INSERT INTO dish_category(dish_category_id, restaurant_id, category_name)

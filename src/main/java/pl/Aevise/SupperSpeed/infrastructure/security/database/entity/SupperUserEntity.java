@@ -37,13 +37,7 @@ public class SupperUserEntity {
     @Column(name = "last_login_date_time", nullable = false)
     private OffsetDateTime lastLoginDateTime;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<RolesEntity> roles;
-
-
+    @OneToOne(cascade =  CascadeType.ALL)
+    @JoinColumn(name = "role_id")
+    private RolesEntity role;
 }

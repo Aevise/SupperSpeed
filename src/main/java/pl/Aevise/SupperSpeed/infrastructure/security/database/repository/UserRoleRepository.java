@@ -8,4 +8,8 @@ import pl.Aevise.SupperSpeed.infrastructure.security.dao.UserRoleDAO;
 @AllArgsConstructor
 public class UserRoleRepository implements UserRoleDAO {
 
+    @Override
+    public void updateUserRole() {
+
+    }
 }
