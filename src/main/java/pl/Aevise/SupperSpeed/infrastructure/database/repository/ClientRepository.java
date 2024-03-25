@@ -60,6 +60,11 @@ public class ClientRepository implements ClientDAO {
         clientJpaRepository.deleteById(userId);
     }
 
+    @Override
+    public ClientEntity createClient(ClientEntity clientEntity) {
+            return clientJpaRepository.saveAndFlush(clientEntity);
+    }
+
 
     public ClientEntity findClientEntityById(Integer userId) {
         return clientJpaRepository

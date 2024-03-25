@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.business.dao.ClientDAO;
 import pl.Aevise.SupperSpeed.domain.Client;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 
 import java.util.Optional;
 
@@ -24,6 +25,17 @@ public class ClientService {
     public void deleteClientById(Integer userId) {
         clientDAO.deleteClientById(userId);
         log.info("Deleted client with id: [{}]", userId);
+    }
+
+    @Transactional
+    public int createClient(ClientEntity clientEntity){
+        /**
+         * @return the id of created client. Returned id matches supper_user id.
+         * It can be used to save other information regarding entity ex. bind role
+         */
+        ClientEntity user = clientDAO.createClient(clientEntity);
+        log.info("Successfully created user with email: [{}]. Id:[{}]", user.getSupperUser().getEmail(), user.getId());
+        return user.getId();
     }
 
 //    @Transactional
