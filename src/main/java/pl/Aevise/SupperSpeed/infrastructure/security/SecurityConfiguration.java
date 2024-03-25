@@ -32,7 +32,7 @@ public class SecurityConfiguration {
 
     private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationConfiguration() {
         return auth -> auth
-                .requestMatchers("/", "/menu", "/search/**", "/create","/login", "/logout", "error").permitAll()
+                .requestMatchers("/", "/menu", "/search/**", "/create/**","/login", "/logout", "error").permitAll()
                 .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
                 .requestMatchers("/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
                 .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(

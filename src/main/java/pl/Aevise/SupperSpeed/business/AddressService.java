@@ -45,8 +45,12 @@ public class AddressService {
 
     @Transactional
     public Optional<Address> findById(Integer id) {
-        Optional<Address> address = addressDAO.findById(id);
+        if(id == null){
+            log.warn("Tried to fetch address with id null");
+            return Optional.empty();
+        }
 
+        Optional<Address> address = addressDAO.findById(id);
         if (address.isPresent()) {
             log.info("Found address with id: [{}]", id);
             return address;
