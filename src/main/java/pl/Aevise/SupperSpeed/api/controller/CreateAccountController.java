@@ -13,6 +13,8 @@ import pl.Aevise.SupperSpeed.business.UserService;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.RolesService;
+import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.dto.SupperUserDTO;
 
@@ -22,8 +24,12 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class CreateAccountController {
 
+    //TODO zmienić potem na false i dodac aktywowanie uzytkownika za pomoca maila
+    static final boolean userDefaultActive = true;
+
     private final UserService userService;
     private final ClientService clientService;
+    private final RolesService rolesService;
 
     private static final String CREATE_ACCOUNT_PAGE = "/create";
     private static final String CREATE_ACCOUNT_USER = "/create/user";
@@ -50,15 +56,10 @@ public class CreateAccountController {
                 createClientEntity(
                         supperUserDTO,
                         clientDTO,
-                        role_id
-                        , password
+                        role_id,
+                        password
                 )
         );
-
-
-//        userService.createUser();
-//        clientService.createClient();
-
 
         return "redirect:" + CREATE_ACCOUNT_PAGE;
     }
@@ -78,7 +79,6 @@ public class CreateAccountController {
             ClientDTO clientDTO,
             String role,
             String password) {
-        final boolean userDefaultActive = false;
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return ClientEntity.builder()
                 .supperUser(
@@ -88,6 +88,7 @@ public class CreateAccountController {
                                 .active(userDefaultActive)
                                 .creationDateTime(OffsetDateTime.now())
                                 .lastLoginDateTime(OffsetDateTime.now())
+                                .role(getRoleById(Integer.valueOf(role)))
                                 .build()
                 )
                 .name(clientDTO.getName())
@@ -95,6 +96,12 @@ public class CreateAccountController {
                 .phone(clientDTO.getPhone())
                 .address(new AddressEntity())
                 .build();
+    }
+
+    RolesEntity getRoleById(Integer roleId){
+        return rolesService
+                .findById(roleId)
+                .orElse(null);
     }
 
     RestaurantEntity createRestaurantEntity(){

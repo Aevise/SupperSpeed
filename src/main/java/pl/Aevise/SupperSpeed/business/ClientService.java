@@ -2,12 +2,18 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
 import pl.Aevise.SupperSpeed.business.dao.ClientDAO;
 import pl.Aevise.SupperSpeed.domain.Client;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.dto.SupperUserDTO;
 
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @Slf4j

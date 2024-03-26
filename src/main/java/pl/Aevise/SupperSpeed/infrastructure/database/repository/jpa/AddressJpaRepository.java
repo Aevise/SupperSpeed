@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface AddressJpaRepository extends JpaRepository<AddressEntity, Integer> {
 
-    @Query("SELECT DISTINCT a.city FROM AddressEntity a")
+    @Query("SELECT DISTINCT a.city FROM AddressEntity a WHERE a.city IS NOT NULL")
     List<String> findDistinctCities();
 }
