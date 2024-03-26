@@ -3,15 +3,19 @@ package pl.Aevise.SupperSpeed.api.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
+import pl.Aevise.SupperSpeed.api.dto.CuisineDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.ClientService;
+import pl.Aevise.SupperSpeed.business.CuisineService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.UserService;
+import pl.Aevise.SupperSpeed.domain.Cuisine;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -21,6 +25,7 @@ import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserE
 import pl.Aevise.SupperSpeed.infrastructure.security.dto.SupperUserDTO;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -34,6 +39,7 @@ public class CreateAccountController {
     private final ClientService clientService;
     private final RestaurantService restaurantService;
     private final RolesService rolesService;
+    private final CuisineService cuisineService;
 
     private static final String CREATE_ACCOUNT_PAGE = "/create";
     private static final String CREATE_ACCOUNT_USER = "/create/user";
@@ -41,7 +47,13 @@ public class CreateAccountController {
     private static final String ACCOUNT_EXIST = "/create/exist";
 
     @GetMapping(CREATE_ACCOUNT_PAGE)
-    String getAccountCreationForm() {
+    String getAccountCreationForm(
+            Model model
+    ) {
+
+        List<CuisineDTO> cuisines = cuisineService.findAllAsDTO();
+        model.addAttribute("cuisinesListDTO", cuisines);
+
         return "create_account_page";
     }
 
@@ -73,7 +85,8 @@ public class CreateAccountController {
             @ModelAttribute SupperUserDTO supperUserDTO,
             @ModelAttribute RestaurantDTO restaurantDTO,
             @RequestParam("role_id") String role_id,
-            @RequestParam("password") String password
+            @RequestParam("password") String password,
+            @RequestParam("cuisine") String cuisine
     ) {
         if (checkIfUserExist(supperUserDTO.getEmail())) {
             return ACCOUNT_EXIST;
@@ -84,7 +97,8 @@ public class CreateAccountController {
                         supperUserDTO,
                         restaurantDTO,
                         role_id,
-                        password
+                        password,
+                        cuisine
                 )
         );
 
@@ -118,7 +132,8 @@ public class CreateAccountController {
             SupperUserDTO supperUserDTO,
             RestaurantDTO restaurantDTO,
             String role,
-            String password
+            String password,
+            String cuisine
     ) {
         return RestaurantEntity.builder()
                 .supperUser(
@@ -130,6 +145,7 @@ public class CreateAccountController {
                                 .lastLoginDateTime(OffsetDateTime.now())
                                 .role(getRoleById(Integer.valueOf(role)))
                                 .build())
+                .cuisine(cuisineService.getCuisineByName(cuisine))
                 .restaurantName(restaurantDTO.getRestaurantName())
                 .phone(restaurantDTO.getPhone())
                 .openHour(restaurantDTO.getOpenHour())

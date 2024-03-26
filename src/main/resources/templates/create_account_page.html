@@ -113,6 +113,12 @@
                                 <label for="close_hour">Close Hour: </label>
                                 <input type="text" id="close_hour" name="closeHour">
                             </div>
+                            <div class="col">
+                                <label for="cuisine">Cuisine : </label>
+                                <select id="cuisine" name="cuisine">
+                                <option th:each="cuisine : ${cuisinesListDTO}" th:value="${cuisine.cuisine}" th:text="${cuisine.cuisine}"></option>
+                                </select>
+                            </div>
                         </div>
                         <input type="hidden" id="restaurant_role_id" name="role_id" value="2">
                         <div class="row mt-3">
