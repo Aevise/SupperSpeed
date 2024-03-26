@@ -22,9 +22,9 @@ public class RestaurantEntity {
     @Id
     private Integer id;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "restaurant_id")
-    private Integer restaurantId;
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @Column(name = "restaurant_id")
+//    private Integer restaurantId;
 
     @MapsId
     @JoinColumn(name = "supper_restaurant_id")

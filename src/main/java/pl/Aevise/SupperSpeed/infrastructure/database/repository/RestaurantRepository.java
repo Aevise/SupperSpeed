@@ -93,4 +93,9 @@ public class RestaurantRepository implements RestaurantDAO {
                 .map(restaurantEntityMapper::mapFromEntity)
                 .toList();
     }
+
+    @Override
+    public RestaurantEntity createRestaurant(RestaurantEntity restaurantEntity) {
+        return restaurantJpaRepository.saveAndFlush(restaurantEntity);
+    }
 }

@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class RestaurantDTO {
 
-    SupperUserDTO supperUser;
+//    SupperUserDTO supperUser;
     Integer restaurantId;
     String restaurantName;
     LocalTime openHour;

@@ -37,7 +37,6 @@ public class ClientService {
     public int createClient(ClientEntity clientEntity){
         /**
          * @return the id of created client. Returned id matches supper_user id.
-         * It can be used to save other information regarding entity ex. bind role
          */
         ClientEntity user = clientDAO.createClient(clientEntity);
         log.info("Successfully created user with email: [{}]. Id:[{}]", user.getSupperUser().getEmail(), user.getId());

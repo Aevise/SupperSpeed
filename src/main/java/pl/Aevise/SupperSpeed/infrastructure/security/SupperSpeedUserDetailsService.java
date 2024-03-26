@@ -35,7 +35,6 @@ public class SupperSpeedUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         SupperUserEntity user = supperUserJpaRepository.findByEmail(email).get();
-        System.out.println("hehe");
         List<GrantedAuthority> authorities = getUserAuthority(user.getRole());
         return buildUserForAuthentication(user, authorities);
     }

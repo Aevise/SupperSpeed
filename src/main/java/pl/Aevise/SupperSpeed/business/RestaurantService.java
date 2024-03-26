@@ -9,6 +9,7 @@ import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -82,5 +83,15 @@ public class RestaurantService {
         List<Restaurant> restaurants = restaurantDAO.findAllByCity(city);
         log.info("Found [{}] restaurants in city [{}]", restaurants.size(), city);
         return restaurants;
+    }
+
+    @Transactional
+    public int createRestaurant(RestaurantEntity restaurantEntity) {
+        /**
+         * @return the id of created client. Returned id matches supper_user id.
+         */
+        RestaurantEntity restaurant = restaurantDAO.createRestaurant(restaurantEntity);
+        log.info("Successfully created user with email: [{}]. Id:[{}]", restaurant.getSupperUser().getEmail(), restaurant.getId());
+        return restaurant.getId();
     }
 }
