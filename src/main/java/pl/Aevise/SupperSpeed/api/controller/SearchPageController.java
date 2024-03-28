@@ -1,6 +1,8 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,10 +56,19 @@ public class SearchPageController {
                 .toList();
 
         HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = mapRestaurantsByCuisine(restaurants);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         model.addAttribute("restaurantsByCuisine", restaurantsByCuisine);
         model.addAttribute("currentCity", city);
         model.addAttribute("distinctCities", cities);
+        model.addAttribute("role", authentication.getAuthorities());
+
+
+
+        //authorities[0] = "ROLE_ANONYMOUS" - dla uzytkownika niezalogowanego
+        //authorities[0] = "RESTAURANT" - dla zalogowanej restauracji
+        //authorities[0] = "CLIENT" - dla zalogowanego klienta
+
 
 
         return "search_page";

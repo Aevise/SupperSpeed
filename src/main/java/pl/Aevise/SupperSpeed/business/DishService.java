@@ -10,6 +10,7 @@ import pl.Aevise.SupperSpeed.domain.Dish;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -17,6 +18,8 @@ import java.util.List;
 public class DishService {
 
     private final DishDAO dishDAO;
+    private final RestaurantService restaurantService;
+    private final DishCategoryService dishCategoryService;
 
     public List<Dish> findAllByRestaurant(Integer restaurantId) {
         List<Dish> dishesFromRestaurant = dishDAO.findAllByRestaurant(restaurantId);
@@ -50,5 +53,19 @@ public class DishService {
 
         dishDAO.addDish(dish);
         log.info("Successfully added dish: [{}]", dish.getName());
+    }
+
+    public Dish buildDish(DishDTO dishDTO, Integer restaurantId, Integer categoryId) {
+        return Dish.builder()
+                .name(dishDTO.getName())
+                .photo(dishDTO.getPhoto())
+                .price(dishDTO.getPrice())
+                .description(dishDTO.getDescription())
+                .availability(Optional
+                        .ofNullable(dishDTO.getAvailability())
+                        .orElse(false))
+                .restaurant(restaurantService.findByIdEntity(restaurantId))
+                .dishCategory(dishCategoryService.findByIdEntity(categoryId))
+                .build();
     }
 }

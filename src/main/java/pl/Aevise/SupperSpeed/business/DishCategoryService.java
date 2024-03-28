@@ -57,4 +57,25 @@ public class DishCategoryService {
                 dishCategory.getRestaurant().getId());
     }
 
+    public Optional<DishCategory> findById(Integer id){
+        Optional<DishCategory> dishCategory = dishCategoryDAO.findById(id);
+        if (dishCategory.isPresent()){
+            log.info("Successfully found dish category with id: [{}]", id);
+            return dishCategory;
+        }
+        log.warn("Could not find dish category with id: [{}]", id);
+        return Optional.empty();
+    }
+
+    public DishCategoryEntity findByIdEntity(Integer id){
+        Optional<DishCategory> dishCategory = findById(id);
+        if (dishCategory.isPresent()){
+            DishCategoryEntity dishCategoryEntity = dishCategoryEntityMapper.mapToEntity(dishCategory.get());
+            log.info("Successfully mapped dish category to entity");
+            return dishCategoryEntity;
+        }
+        log.warn("No dish category to map");
+        return null;
+    }
+
 }

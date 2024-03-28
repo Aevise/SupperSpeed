@@ -14,6 +14,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DishJpaRepos
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DishCategoryEntityMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -62,5 +63,11 @@ public class DishCategoryRepository implements DishCategoryDAO {
     @Override
     public void addCategory(DishCategoryEntity dishCategoryEntity) {
         dishCategoryJpaRepository.saveAndFlush(dishCategoryEntity);
+    }
+
+    @Override
+    public Optional<DishCategory> findById(Integer id) {
+        return dishCategoryJpaRepository.findById(id)
+                .map(dishCategoryEntityMapper::mapFromEntity);
     }
 }
