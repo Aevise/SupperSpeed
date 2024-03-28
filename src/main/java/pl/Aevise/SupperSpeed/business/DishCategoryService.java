@@ -10,6 +10,7 @@ import pl.Aevise.SupperSpeed.domain.DishCategory;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DishCategoryEntityMapper;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
 
 import java.util.List;
@@ -22,13 +23,12 @@ public class DishCategoryService {
 
     private final DishCategoryDAO dishCategoryDAO;
     private final RestaurantService restaurantService;
-    private final RestaurantEntityMapper restaurantEntityMapper;
+    private final DishCategoryEntityMapper dishCategoryEntityMapper;
 
-    private static DishCategoryEntity buildDishCategory(String categoryName, RestaurantEntity restaurantEntity) {
-        return DishCategoryEntity
-                .builder()
-                .restaurant(restaurantEntity)
+    public DishCategory buildDishCategory(String restaurantId, String categoryName){
+        return DishCategory.builder()
                 .categoryName(categoryName)
+                .restaurant(restaurantService.findByIdEntity(Integer.valueOf(restaurantId)))
                 .build();
     }
 
@@ -49,20 +49,12 @@ public class DishCategoryService {
         log.info("Deleted category: [{}]", categoryId);
     }
 
-    public void addCategory(Integer restaurantId, String categoryName) {
-        Optional<Restaurant> restaurant = restaurantService.findById(restaurantId);
-        if (restaurant.isPresent()) {
-            RestaurantEntity restaurantEntity = getRestaurant(restaurantId, restaurant);
-            DishCategoryEntity newCategory = buildDishCategory(categoryName, restaurantEntity);
-            dishCategoryDAO.addCategory(newCategory);
-            log.info("Added category: [{}] - [{}]", restaurantId, categoryName);
-        }
-        log.error("Could't add category: [{}]", categoryName);
+    public void addCategory(DishCategory dishCategory) {
+        DishCategoryEntity dishCategoryEntity = dishCategoryEntityMapper.mapToEntity(dishCategory);
+        dishCategoryDAO.addCategory(dishCategoryEntity);
+        log.info("successfully added dishCategory: [{}] to restaurant [{}]",
+                dishCategory.getCategoryName(),
+                dishCategory.getRestaurant().getId());
     }
 
-    private RestaurantEntity getRestaurant(Integer restaurantId, Optional<Restaurant> restaurant) {
-        RestaurantEntity restaurantEntity = restaurantEntityMapper.mapToEntity(restaurant.get());
-        restaurantEntity.setId(restaurantId);
-        return restaurantEntity;
-    }
 }

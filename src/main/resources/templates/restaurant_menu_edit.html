@@ -98,7 +98,7 @@
 <div class="container">
     <h2>Add new category:</h2>
     <form method="post" th:action="@{/restaurant/profile/menu/addCategory}">
-        <input th:name="restaurantId" th:value="*{userId}" type="hidden">
+        <input name="restaurantId" th:value="*{userId}" type="hidden">
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="categoryName">Name:</label>
@@ -120,7 +120,7 @@
 <div class="container">
     <h2>Add new dish:</h2>
     <form method="post" th:action="@{/restaurant/profile/menu/addDish}">
-        <input th:name="restaurantId" th:value="*{userId}" type="hidden">
+        <input name="restaurantId" th:value="*{userId}" type="hidden">
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="photo">Photo:</label>

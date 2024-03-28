@@ -8,4 +8,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
 public interface DishCategoryEntityMapper {
 
     DishCategory mapFromEntity(DishCategoryEntity dishCategoryEntity);
+
+    DishCategoryEntity mapToEntity(DishCategory dishCategory);
 }

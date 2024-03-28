@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
-import pl.Aevise.SupperSpeed.business.DishCategoryService;
-import pl.Aevise.SupperSpeed.business.DishListService;
-import pl.Aevise.SupperSpeed.business.DishService;
-import pl.Aevise.SupperSpeed.business.ProfileService;
+import pl.Aevise.SupperSpeed.business.*;
 import pl.Aevise.SupperSpeed.domain.Dish;
+import pl.Aevise.SupperSpeed.domain.DishCategory;
+import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,12 +36,12 @@ public class RestaurantMenuEditionController {
     static final String RESTAURANT_MENU_ADD_DISH = "/restaurant/profile/menu/addDish";
     static final String ERROR = "error";
 
-
-
     private final DishListService dishListService;
     private final ProfileService profileService;
     private final DishCategoryService dishCategoryService;
     private final DishService dishService;
+    private final RestaurantService restaurantService;
+
 
     @GetMapping(RESTAURANT_MENU_EDIT)
     public String getRestaurantMenuEdit(
@@ -102,11 +102,12 @@ public class RestaurantMenuEditionController {
 
     @PostMapping(RESTAURANT_MENU_ADD_CATEGORY)
     public String addCategory(
-            @RequestParam(value = "restaurantId") Integer restaurantId,
-            @RequestParam(value = "categoryId") String categoryId
+            @RequestParam(value = "categoryName") String categoryName,
+            @RequestParam(value = "restaurantId") String restaurantId,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
 
-        dishCategoryService.addCategory(restaurantId, categoryId);
+        dishCategoryService.addCategory(dishCategoryService.buildDishCategory(restaurantId, categoryName));
         return "redirect:" + RESTAURANT_MENU_EDIT;
     }
 
@@ -140,4 +141,5 @@ public class RestaurantMenuEditionController {
                         .build())
                 .build();
     }
+
 }

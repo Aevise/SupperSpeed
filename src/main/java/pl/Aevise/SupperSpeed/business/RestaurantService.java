@@ -10,6 +10,7 @@ import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,7 @@ public class RestaurantService {
     private final RestaurantDAO restaurantDAO;
     private final ProfileService profileService;
     private final AddressService addressService;
+    private final RestaurantEntityMapper restaurantEntityMapper;
 
     @Transactional
     public void deleteRestaurantById(Integer id) {
@@ -93,5 +95,19 @@ public class RestaurantService {
         RestaurantEntity restaurant = restaurantDAO.createRestaurant(restaurantEntity);
         log.info("Successfully created user with email: [{}]. Id:[{}]", restaurant.getSupperUser().getEmail(), restaurant.getId());
         return restaurant.getId();
+    }
+
+    public RestaurantEntity findByIdEntity(Integer restaurantId) {
+        Optional<Restaurant> restaurant = findById(restaurantId);
+        if (restaurant.isPresent()) {
+            RestaurantEntity restaurantEntity = restaurant
+                    .map(restaurantEntityMapper::mapToEntity)
+                    .orElseGet(() -> {
+                        log.warn("Could not map restaurant with id: [{}]", restaurantId);
+                        return null;
+                    });
+            log.info("Successfully mapped restaurant entity with id: [{}]", restaurantId);
+            return restaurantEntity;
+        }
     }
 }
