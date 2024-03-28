@@ -109,5 +109,7 @@ public class RestaurantService {
             log.info("Successfully mapped restaurant entity with id: [{}]", restaurantId);
             return restaurantEntity;
         }
+        log.warn("No restaurant to map available");
+        return null;
     }
 }
