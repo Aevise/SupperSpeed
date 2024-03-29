@@ -9,4 +9,5 @@ public interface SupperOrderJpaRepository extends JpaRepository<SupperOrderEntit
     List<SupperOrderEntity> findAllByRestaurant_Id(Integer restaurantId);
 
     List<SupperOrderEntity> findAllByClient_Id(Integer clientId);
+
 }
