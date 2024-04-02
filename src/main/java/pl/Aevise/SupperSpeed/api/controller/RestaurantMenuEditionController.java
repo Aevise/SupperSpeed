@@ -117,29 +117,11 @@ public class RestaurantMenuEditionController {
             @RequestParam(value = "restaurantId") Integer restaurantId,
             @RequestParam(value = "categoryId") Integer categoryId
     ) {
-        Dish dish = buildDish(dishDTO, restaurantId, categoryId);
+        Dish dish = dishService.buildDish(dishDTO, restaurantId, categoryId);
         dishService.addDish(dish);
         return "redirect:" + RESTAURANT_MENU_EDIT;
     }
 
-    private Dish buildDish(DishDTO dishDTO, Integer restaurantId, Integer categoryId) {
-        return Dish.builder()
-                .name(dishDTO.getName())
-                .photo(dishDTO.getPhoto())
-                .price(dishDTO.getPrice())
-                .description(dishDTO.getDescription())
-                .availability(Optional
-                        .ofNullable(dishDTO.getAvailability())
-                        .orElse(false))
-                .restaurant(RestaurantEntity
-                        .builder()
-                        .id(restaurantId)
-                        .build())
-                .dishCategory(DishCategoryEntity
-                        .builder()
-                        .dishCategoryId(categoryId)
-                        .build())
-                .build();
-    }
+
 
 }
