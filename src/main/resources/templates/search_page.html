@@ -69,7 +69,7 @@
     </tbody>
 </table>
 
-<div th:switch="${role[0]}">
+<div th:switch="${role}">
     <div th:case="'RESTAURANT'">
         <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Profile</a>
     </div>

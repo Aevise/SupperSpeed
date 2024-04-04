@@ -30,9 +30,12 @@
     </thead>
 </table>
 
-<div class="row mt-3">
-    <div class="col-md-4">
+<div th:switch="${role}">
+    <div th:case="'RESTAURANT'">
         <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>
+    </div>
+    <div th:case="'CLIENT'">
+        <a class="btn btn-info" role="button" th:href="@{/client/profile}">Go back</a>
     </div>
 </div>
 

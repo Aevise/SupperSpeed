@@ -20,6 +20,7 @@ import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.Cuisine;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
+import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,6 +34,7 @@ public class SearchPageController {
     private static final String SEARCH_PAGE = "/search";
 
     private final CuisineService cuisineService;
+    private final SecurityService securityService;
     private final CuisineMapper cuisineMapper;
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
@@ -57,13 +59,7 @@ public class SearchPageController {
                 .sorted()
                 .toList();
 
-        List<String> userRole = SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
+        String userRole = securityService.getUserAuthority();
 
         HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = mapRestaurantsByCuisine(restaurants);
 

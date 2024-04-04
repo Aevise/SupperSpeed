@@ -18,6 +18,7 @@ import pl.Aevise.SupperSpeed.business.ProfileService;
 import pl.Aevise.SupperSpeed.business.StatusListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
+import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class OrdersBrowseController {
 
     static final String SUPPER_SPEED_ORDERS_BROWSER = "/orders";
     private final StatusListService statusListService;
+    private final SecurityService securityService;
     private final StatusListMapper statusListMapper;
     private final ProfileService profileService;
     private final SupperOrderService supperOrderService;
@@ -44,26 +46,21 @@ public class OrdersBrowseController {
         List<StatusListDTO> statusList = getStatusList();
         Optional<SupperUser> user = profileService.findUserByEmail(userDetails.getUsername());
         List<SupperOrderDTO> ordersByUserId = new ArrayList<>();
+        String userRole = securityService.getUserAuthority();
 
         if (user.isPresent()) {
             try {
                 ordersByUserId = getOrdersByUserIdAndAuthority(
                         user.get().getSupperUserId(),
-                        userDetails
-                                .getAuthorities()
-                                .stream()
-                                .findFirst()
-                                .map(GrantedAuthority::getAuthority)
-                                .orElseThrow(() ->
-                                        new EntityNotFoundException(
-                                                "User does not exists"
-                                        )));
+                        userRole);
             } catch (InvalidDataAccessResourceUsageException ex) {
                 log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
             }
 
+
             model.addAttribute("statusListDTO", statusList);
             model.addAttribute("ordersDTO", ordersByUserId);
+            model.addAttribute("role", userRole);
         }
 
 
