@@ -69,9 +69,15 @@
     </tbody>
 </table>
 
-<div class="row mt-3">
-    <div class="col-md-4">
+<div th:switch="${role[0]}">
+    <div th:case="'RESTAURANT'">
+        <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Profile</a>
+    </div>
+    <div th:case="'CLIENT'">
         <a class="btn btn-info" role="button" th:href="@{/client/profile}">Profile</a>
+    </div>
+    <div th:case="'ROLE_ANONYMOUS'">
+        <a class="btn btn-info" role="button" th:href="@{/login}">Log in</a>
     </div>
 </div>
 

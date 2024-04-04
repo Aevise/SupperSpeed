@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,7 @@ import pl.Aevise.SupperSpeed.domain.Cuisine;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,13 +57,20 @@ public class SearchPageController {
                 .sorted()
                 .toList();
 
+        List<String> userRole = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+
         HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = mapRestaurantsByCuisine(restaurants);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         model.addAttribute("restaurantsByCuisine", restaurantsByCuisine);
         model.addAttribute("currentCity", city);
         model.addAttribute("distinctCities", cities);
-        model.addAttribute("role", authentication.getAuthorities());
+        model.addAttribute("role", userRole);
 
         //authorities[0] = "ROLE_ANONYMOUS" - dla uzytkownika niezalogowanego
         //authorities[0] = "RESTAURANT" - dla zalogowanej restauracji
