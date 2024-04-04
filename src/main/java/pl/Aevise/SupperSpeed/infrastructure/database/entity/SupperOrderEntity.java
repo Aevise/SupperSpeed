@@ -20,14 +20,13 @@ public class SupperOrderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id", unique = true, nullable = false)
     private Integer orderId;
-    //TODO poprawić mapowania w orderEntity
-    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id")
     private ClientEntity client;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
-// sprawdzic    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "restaurant_id")
     private RestaurantEntity restaurant;
 
     @Column(name = "order_date_time", nullable = false)

@@ -55,6 +55,9 @@ public class OrdersBrowseController {
                 log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
             }
 
+            System.out.println(ordersByUserId.get(0).getClientDTO().getName());
+            System.out.println(ordersByUserId.get(0).getRestaurantDTO().getRestaurantName());
+            System.out.println(ordersByUserId.get(0).getOrderId());
 
             model.addAttribute("statusListDTO", statusList);
             model.addAttribute("ordersDTO", ordersByUserId);

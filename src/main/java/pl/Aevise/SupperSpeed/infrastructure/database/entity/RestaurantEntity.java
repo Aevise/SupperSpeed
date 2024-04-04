@@ -20,6 +20,7 @@ import java.util.Set;
 public class RestaurantEntity {
 
     @Id
+    @Column(name = "restaurant_id", unique = true, nullable = false)
     private Integer id;
 
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)

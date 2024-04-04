@@ -27,11 +27,12 @@ public class SecurityService {
                 .findFirst();
 
         if (userRole.isPresent()) {
+            log.info("Successfully retrieved user's Role");
             return userRole.get();
         }
 
-        throw new RuntimeException(
-                "Security error, could not get user Authorities from Spring Security Context Holder"
-        );
+        log.error("Security error, could not get user Authorities from Spring Security Context Holder");
+
+        throw new RuntimeException();
     }
 }
