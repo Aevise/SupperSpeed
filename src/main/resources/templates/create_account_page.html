@@ -4,10 +4,10 @@
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
     <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            rel="stylesheet"
     >
     <title>Create account</title>
 </head>
@@ -18,25 +18,25 @@
 <div class="accordion" id="accordionExample">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <button aria-controls="collapseOne" aria-expanded="false" class="accordion-button collapsed"
+                    data-bs-target="#collapseOne" data-bs-toggle="collapse" type="button">
                 Client
             </button>
         </h2>
-        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-             data-bs-parent="#accordionExample">
-            <form th:action="@{/create/user}" method="post">
+        <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+             id="collapseOne">
+            <form method="post" th:action="@{/create/user}">
                 <div class="accordion-body">
                     <h3 style="display: flex; justify-content: center;">User Data:</h3>
                     <div class="container">
                         <div class="row">
                             <div class="col">
                                 <label for="clientEmail">Email: </label>
-                                <input type="text" id="clientEmail" name="email">
+                                <input id="clientEmail" name="email" type="text">
                             </div>
                             <div class="col">
                                 <label for="clientPassword">Password: </label>
-                                <input type="password" id="clientPassword" name="password">
+                                <input id="clientPassword" name="password" type="password">
                             </div>
                         </div>
                     </div>
@@ -47,20 +47,20 @@
                         <div class="row">
                             <div class="col">
                                 <label for="clientName">Name: </label>
-                                <input type="text" id="clientName" name="name">
+                                <input id="clientName" name="name" type="text">
                             </div>
                         </div>
                         <div class="col">
                             <label for="clientSurname">Surname: </label>
-                            <input type="text" id="clientSurname" name="surname">
+                            <input id="clientSurname" name="surname" type="text">
                         </div>
                         <div class="col">
                             <label for="clientPhone">Phone: </label>
-                            <input type="text" id="clientPhone" name="phone">
+                            <input id="clientPhone" name="phone" type="text">
                         </div>
                     </div>
                 </div>
-                <input type="hidden" id="client_role_id" name="role_id" value="1">
+                <input id="client_role_id" name="role_id" type="hidden" value="1">
                 <div class="row mt-3">
                     <button class="btn btn-info" role="button" type="submit">Register</button>
                 </div>
@@ -69,25 +69,25 @@
         <br>
         <div class="accordion-item">
             <h2 class="accordion-header" id="headingTwo">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <button aria-controls="collapseTwo" aria-expanded="false" class="accordion-button collapsed"
+                        data-bs-target="#collapseTwo" data-bs-toggle="collapse" type="button">
                     Restaurant Owner
                 </button>
             </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                 data-bs-parent="#accordionExample">
-                <form th:action="@{/create/restaurant}" method="post">
+            <div aria-labelledby="headingTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+                 id="collapseTwo">
+                <form method="post" th:action="@{/create/restaurant}">
                     <div class="accordion-body">
                         <h3 style="display: flex; justify-content: center;">User Data:</h3>
                         <div class="container">
                             <div class="row">
                                 <div class="col">
                                     <label for="restaurantEmail">Email: </label>
-                                    <input type="text" id="restaurantEmail" name="email">
+                                    <input id="restaurantEmail" name="email" type="text">
                                 </div>
                                 <div class="col">
                                     <label for="restaurantPassword">Password: </label>
-                                    <input type="password" id="restaurantPassword" name="password">
+                                    <input id="restaurantPassword" name="password" type="password">
                                 </div>
                             </div>
                         </div>
@@ -98,29 +98,30 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="restaurant_name">Name: </label>
-                                    <input type="text" id="restaurant_name" name="restaurantName">
+                                    <input id="restaurant_name" name="restaurantName" type="text">
                                 </div>
                             </div>
                             <div class="col">
                                 <label for="restaurantPhone">Phone: </label>
-                                <input type="text" id="restaurantPhone" name="phone">
+                                <input id="restaurantPhone" name="phone" type="text">
                             </div>
                             <div class="col">
                                 <label for="open_hour">Open Hour: </label>
-                                <input type="text" id="open_hour" name="openHour">
+                                <input id="open_hour" name="openHour" type="text">
                             </div>
                             <div class="col">
                                 <label for="close_hour">Close Hour: </label>
-                                <input type="text" id="close_hour" name="closeHour">
+                                <input id="close_hour" name="closeHour" type="text">
                             </div>
                             <div class="col">
                                 <label for="cuisine">Cuisine : </label>
                                 <select id="cuisine" name="cuisine">
-                                <option th:each="cuisine : ${cuisinesListDTO}" th:value="${cuisine.cuisine}" th:text="${cuisine.cuisine}"></option>
+                                    <option th:each="cuisine : ${cuisinesListDTO}" th:text="${cuisine.cuisine}"
+                                            th:value="${cuisine.cuisine}"></option>
                                 </select>
                             </div>
                         </div>
-                        <input type="hidden" id="restaurant_role_id" name="role_id" value="2">
+                        <input id="restaurant_role_id" name="role_id" type="hidden" value="2">
                         <div class="row mt-3">
                             <button class="btn btn-info" role="button" type="submit">Register</button>
                         </div>
@@ -137,9 +138,9 @@
 </div>
 
 <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous">
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
 
 

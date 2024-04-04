@@ -62,7 +62,7 @@ public class ClientRepository implements ClientDAO {
 
     @Override
     public ClientEntity createClient(ClientEntity clientEntity) {
-            return clientJpaRepository.saveAndFlush(clientEntity);
+        return clientJpaRepository.saveAndFlush(clientEntity);
     }
 
 

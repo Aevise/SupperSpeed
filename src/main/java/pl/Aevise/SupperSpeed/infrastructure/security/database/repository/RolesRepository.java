@@ -2,7 +2,6 @@ package pl.Aevise.SupperSpeed.infrastructure.security.database.repository;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import pl.Aevise.SupperSpeed.domain.Role;
 import pl.Aevise.SupperSpeed.infrastructure.security.dao.RolesDAO;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.RolesJpaRepository;
@@ -19,6 +18,6 @@ public class RolesRepository implements RolesDAO {
 
     @Override
     public Optional<RolesEntity> findById(Integer roleId) {
-         return rolesJpaRepository.findById(roleId);
+        return rolesJpaRepository.findById(roleId);
     }
 }

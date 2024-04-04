@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SecurityService {
 
-    public String getUserAuthority(){
+    public String getUserAuthority() {
         /**
          * gets user role based on his authoritity
          * user authorities are user roles in system eg. RESTAURANT or CLIENT
@@ -27,12 +26,12 @@ public class SecurityService {
                 .map(GrantedAuthority::getAuthority)
                 .findFirst();
 
-        if(userRole.isPresent()){
+        if (userRole.isPresent()) {
             return userRole.get();
         }
 
         throw new RuntimeException(
-                "Security error"
+                "Security error, could not get user Authorities from Spring Security Context Holder"
         );
     }
 }

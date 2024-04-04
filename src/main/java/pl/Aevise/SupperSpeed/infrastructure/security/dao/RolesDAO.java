@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.infrastructure.security.dao;
 
-import pl.Aevise.SupperSpeed.domain.Role;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
 
 import java.util.Optional;

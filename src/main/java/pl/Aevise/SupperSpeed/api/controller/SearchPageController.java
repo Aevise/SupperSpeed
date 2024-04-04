@@ -1,9 +1,6 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +20,6 @@ import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,7 +67,6 @@ public class SearchPageController {
         //authorities[0] = "ROLE_ANONYMOUS" - dla uzytkownika niezalogowanego
         //authorities[0] = "RESTAURANT" - dla zalogowanej restauracji
         //authorities[0] = "CLIENT" - dla zalogowanego klienta
-
 
 
         return "search_page";

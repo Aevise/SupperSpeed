@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.OffsetDateTime;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -37,7 +36,7 @@ public class SupperUserEntity {
     @Column(name = "last_login_date_time", nullable = false)
     private OffsetDateTime lastLoginDateTime;
 
-    @OneToOne(cascade =  CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private RolesEntity role;
 }

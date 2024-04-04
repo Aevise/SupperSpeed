@@ -1,7 +1,6 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
-import pl.Aevise.SupperSpeed.domain.Dish;
 import pl.Aevise.SupperSpeed.domain.DishCategory;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
 

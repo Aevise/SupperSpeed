@@ -45,7 +45,7 @@ public class AddressService {
 
     @Transactional
     public Optional<Address> findById(Integer id) {
-        if(id == null){
+        if (id == null) {
             log.warn("Tried to fetch address with id null");
             return Optional.empty();
         }

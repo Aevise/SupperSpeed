@@ -7,11 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.business.dao.DishCategoryDAO;
 import pl.Aevise.SupperSpeed.domain.DishCategory;
-import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DishCategoryEntityMapper;
-import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +22,7 @@ public class DishCategoryService {
     private final RestaurantService restaurantService;
     private final DishCategoryEntityMapper dishCategoryEntityMapper;
 
-    public DishCategory buildDishCategory(String restaurantId, String categoryName){
+    public DishCategory buildDishCategory(String restaurantId, String categoryName) {
         return DishCategory.builder()
                 .categoryName(categoryName)
                 .restaurant(restaurantService.findByIdEntity(Integer.valueOf(restaurantId)))
@@ -57,9 +54,9 @@ public class DishCategoryService {
                 dishCategory.getRestaurant().getId());
     }
 
-    public Optional<DishCategory> findById(Integer id){
+    public Optional<DishCategory> findById(Integer id) {
         Optional<DishCategory> dishCategory = dishCategoryDAO.findById(id);
-        if (dishCategory.isPresent()){
+        if (dishCategory.isPresent()) {
             log.info("Successfully found dish category with id: [{}]", id);
             return dishCategory;
         }
@@ -67,9 +64,9 @@ public class DishCategoryService {
         return Optional.empty();
     }
 
-    public DishCategoryEntity findByIdEntity(Integer id){
+    public DishCategoryEntity findByIdEntity(Integer id) {
         Optional<DishCategory> dishCategory = findById(id);
-        if (dishCategory.isPresent()){
+        if (dishCategory.isPresent()) {
             DishCategoryEntity dishCategoryEntity = dishCategoryEntityMapper.mapToEntity(dishCategory.get());
             log.info("Successfully mapped dish category to entity");
             return dishCategoryEntity;

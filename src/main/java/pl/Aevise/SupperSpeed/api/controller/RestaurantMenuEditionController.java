@@ -13,12 +13,7 @@ import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.business.*;
 import pl.Aevise.SupperSpeed.domain.Dish;
-import pl.Aevise.SupperSpeed.domain.DishCategory;
-import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -121,7 +116,6 @@ public class RestaurantMenuEditionController {
         dishService.addDish(dish);
         return "redirect:" + RESTAURANT_MENU_EDIT;
     }
-
 
 
 }

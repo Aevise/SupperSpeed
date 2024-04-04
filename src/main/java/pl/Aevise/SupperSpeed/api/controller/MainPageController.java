@@ -16,7 +16,7 @@ public class MainPageController {
     private final AddressService addressService;
 
     @GetMapping(MAIN_PAGE)
-    String getMainPage(Model model){
+    String getMainPage(Model model) {
 
         List<String> distinctCities = addressService
                 .findDistinctCities()

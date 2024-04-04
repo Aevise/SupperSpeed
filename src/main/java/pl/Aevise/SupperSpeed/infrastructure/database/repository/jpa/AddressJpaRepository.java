@@ -4,7 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.repository.AddressRepository;
 
 import java.util.List;
 

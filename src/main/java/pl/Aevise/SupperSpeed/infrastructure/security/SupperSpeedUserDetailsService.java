@@ -13,11 +13,7 @@ import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service

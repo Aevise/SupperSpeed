@@ -15,7 +15,6 @@ import pl.Aevise.SupperSpeed.business.ClientService;
 import pl.Aevise.SupperSpeed.business.CuisineService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.UserService;
-import pl.Aevise.SupperSpeed.domain.Cuisine;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -34,17 +33,15 @@ public class CreateAccountController {
     //TODO zmienić potem na false i dodac aktywowanie uzytkownika za pomoca maila
     static final boolean userDefaultActive = true;
     static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
+    private static final String CREATE_ACCOUNT_PAGE = "/create";
+    private static final String CREATE_ACCOUNT_USER = "/create/user";
+    private static final String CREATE_ACCOUNT_RESTAURANT = "/create/restaurant";
+    private static final String ACCOUNT_EXIST = "/create/exist";
     private final UserService userService;
     private final ClientService clientService;
     private final RestaurantService restaurantService;
     private final RolesService rolesService;
     private final CuisineService cuisineService;
-
-    private static final String CREATE_ACCOUNT_PAGE = "/create";
-    private static final String CREATE_ACCOUNT_USER = "/create/user";
-    private static final String CREATE_ACCOUNT_RESTAURANT = "/create/restaurant";
-    private static final String ACCOUNT_EXIST = "/create/exist";
 
     @GetMapping(CREATE_ACCOUNT_PAGE)
     String getAccountCreationForm(

@@ -26,11 +26,11 @@ public class CuisineService {
         return cuisineList;
     }
 
-    public List<CuisineDTO> findAllAsDTO(){
+    public List<CuisineDTO> findAllAsDTO() {
         List<CuisineDTO> list = findAll().stream()
                 .map(cuisineMapper::mapToDTO)
                 .toList();
-        if (list.isEmpty()){
+        if (list.isEmpty()) {
             log.warn("Could not map cuisines to DTO");
             return List.of();
         }
@@ -42,7 +42,7 @@ public class CuisineService {
 
         Optional<CuisineEntity> cuisineEntity = cuisineDAO.findByCuisineName(cuisine);
 
-        if (cuisineEntity.isPresent()){
+        if (cuisineEntity.isPresent()) {
             CuisineEntity currentCuisine = cuisineEntity.get();
             log.info("Successfully fetched cuisine: id:[{}], [{}]", currentCuisine.getCuisineId(), currentCuisine.getCuisine());
             return currentCuisine;

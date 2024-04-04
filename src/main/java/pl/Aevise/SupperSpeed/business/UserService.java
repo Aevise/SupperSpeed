@@ -2,7 +2,6 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.business.dao.AddressDAO;
@@ -54,7 +53,7 @@ public class UserService {
 
     public Optional<SupperUser> findUserByEmail(String email) {
         Optional<SupperUser> user = supperUserDAO.findByEmail(email);
-        if(user.isPresent()){
+        if (user.isPresent()) {
             log.info("Found user with email [{}]", email);
             return user;
         }
