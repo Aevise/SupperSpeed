@@ -20,37 +20,39 @@
     <br>
 </div>
 
-<table class="table" th:each="category : ${dishesByCategory}">
-    <thead>
-    <tr class="table-primary">
-        <th colspan="4" style="text-align: center;" th:text="${category.getKey().get(0).categoryName}"/>
-    </tr>
+<div class="container">
+    <table class="table" th:each="category : ${dishesByCategory}">
+        <thead>
+        <tr class="table-primary">
+            <th colspan="4" style="text-align: center;" th:text="${category.getKey().get(0).categoryName}"/>
+        </tr>
 
-    <tr class="table table-info">
-        <th>Photo</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th style="background-color: transparent; text-align: center;">Quantity</th>
-        <th style="background-color: transparent; text-align: center;">Total Price</th>
-    </tr>
-    </thead>
+        <tr class="table table-info">
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th style="background-color: transparent; text-align: center;">Quantity</th>
+            <th style="background-color: transparent; text-align: center;">Total Price</th>
+        </tr>
+        </thead>
 
-    <tbody id="dishTable">
-    <tr th:each="dish : ${category.getValue()}">
-        <td th:text="${dish.photo}"/>
-        <td th:text="${dish.name}"/>
-        <td th:text="${dish.description}"/>
-        <td th:text="${dish.price}"/>
-        <td class="wrapper" style="text-align: center;">
-            <span class="minus">-</span>
-            <span class="num">0</span>
-            <span class="plus">+</span>
-        </td>
-        <td class="total" style="text-align: center;">0</td>
-    </tr>
-    </tbody>
-</table>
+        <tbody id="dishTable">
+        <tr th:each="dish : ${category.getValue()}">
+            <td th:text="${dish.photo}"/>
+            <td th:text="${dish.name}"/>
+            <td th:text="${dish.description}"/>
+            <td th:text="${dish.price}"/>
+            <td class="wrapper" style="text-align: center;">
+                <span class="minus">-</span>
+                <span class="num">0</span>
+                <span class="plus">+</span>
+            </td>
+            <td class="total" style="text-align: center;">0</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 <br>
 
@@ -112,7 +114,7 @@
             });
         });
 
-        function handleOrderPriceUpdate(index, amount, addingValue){
+        function handleOrderPriceUpdate(index, amount, addingValue) {
             nums[index].innerText = amount;
 
             let dishPrice = getTotalDishPrice(index, 1);
@@ -125,21 +127,21 @@
             totals[index].innerText = price.toFixed(2);
         }
 
-        function getTotalDishPrice(index, amount){
+        function getTotalDishPrice(index, amount) {
             let price = parseFloat(dishes[index].cells[3].textContent) || 0;
             return amount * price;
         }
 
-        function updateOrderValue(price, addingValue){
-            if(addingValue === true){
+        function updateOrderValue(price, addingValue) {
+            if (addingValue === true) {
                 orderPrice += price;
-            }else {
+            } else {
                 orderPrice -= price;
             }
             setOrderButtonValue();
         }
 
-        function setOrderButtonValue(){
+        function setOrderButtonValue() {
             orderButton.textContent = `Confirm Order: (${orderPrice.toFixed(2)})`;
         }
 
