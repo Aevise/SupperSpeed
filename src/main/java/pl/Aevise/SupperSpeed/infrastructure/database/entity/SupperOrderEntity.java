@@ -32,7 +32,7 @@ public class SupperOrderEntity {
     @Column(name = "order_date_time", nullable = false)
     private OffsetDateTime orderDateTime;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id", unique = true)
     private StatusListEntity status;
 

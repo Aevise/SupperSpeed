@@ -20,47 +20,50 @@
     <br>
 </div>
 
-<div class="container">
-    <table class="table" th:each="category : ${dishesByCategory}">
-        <thead>
-        <tr class="table-primary">
-            <th colspan="4" style="text-align: center;" th:text="${category.getKey().get(0).categoryName}"/>
-        </tr>
+<form action="/supperspeed/orders/submit-order" method="post">
+    <div class="container">
+        <table class="table" th:each="category : ${dishesByCategory}">
+            <thead>
+            <tr class="table-primary">
+                <th colspan="4" style="text-align: center;" th:text="${category.getKey().get(0).categoryName}"/>
+            </tr>
 
-        <tr class="table table-info">
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th style="background-color: transparent; text-align: center;">Quantity</th>
-            <th style="background-color: transparent; text-align: center;">Total Price</th>
-        </tr>
-        </thead>
+            <tr class="table table-info">
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th style="background-color: transparent; text-align: center;">Quantity</th>
+                <th style="background-color: transparent; text-align: center;">Total Price</th>
+            </tr>
+            </thead>
 
-        <tbody id="dishTable">
-        <tr th:each="dish : ${category.getValue()}">
-            <td th:text="${dish.photo}"/>
-            <td th:text="${dish.name}"/>
-            <td th:text="${dish.description}"/>
-            <td th:text="${dish.price}"/>
-            <td class="wrapper" style="text-align: center;">
-                <span class="minus">-</span>
-                <span class="num">0</span>
-                <span class="plus">+</span>
-            </td>
-            <td class="total" style="text-align: center;">0</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+            <tbody id="dishTable">
+            <tr th:each="dish : ${category.getValue()}" th:data-dish-id="${dish.dishId}">
+                <td th:text="${dish.photo}"/>
+                <td th:text="${dish.name}"/>
+                <td th:text="${dish.description}"/>
+                <td th:text="${dish.price}"/>
+                <td class="wrapper" style="text-align: center;">
+                    <button type="button" class="minus">-</button>
+                    <input type="number" th:name="'amountOfDishWithId_' + ${dish.dishId}" class="num" value="0" min="0" readonly/>
+                    <button type="button" class="plus">+</button>
+                </td>
+                <td class="total" style="text-align: center;">0</td>
+            </tr>
+            </tbody>
+        </table>
+        <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <button class="btn btn-success" type="submit" id="orderButton">Order</button>
+            </div>
+        </div>
+    </div>
+</form>
 
 <br>
 
-<div class="row mt-3">
-    <div class="col-md-4">
-        <a class="btn btn-success" id="orderButton" role="button" th:href="@{/}">Order</a>
-    </div>
-</div>
 
 <br>
 
@@ -93,8 +96,9 @@
             plus.parentNode.replaceChild(clonedPlus, plus);
 
             clonedPlus.addEventListener("click", () => {
-                let amount = nums[index].innerText || 0;
+                let amount = parseInt(nums[index].value) || 0;
                 amount++;
+                nums[index].value = amount;
 
                 handleOrderPriceUpdate(index, amount, true);
             });
@@ -105,9 +109,10 @@
             minus.parentNode.replaceChild(clonedMinus, minus);
 
             clonedMinus.addEventListener("click", () => {
-                let amount = nums[index].innerText || 0;
+                let amount = parseInt(nums[index].value) || 0;
                 if (amount > 0) {
                     amount--;
+                    nums[index].value = amount;
 
                     handleOrderPriceUpdate(index, amount, false);
                 }

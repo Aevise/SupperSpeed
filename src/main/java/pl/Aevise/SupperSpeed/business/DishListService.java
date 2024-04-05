@@ -57,9 +57,11 @@ public class DishListService {
                             .findAllByCategory(dishCategory.getDishCategoryId())
                             .stream()
                             .map(dishMapper::mapToDTO)
+                            .filter(DishDTO::getAvailability)
                             .toList()
             );
         }
+
         dishesByCategory.entrySet().removeIf(category -> category.getValue().isEmpty());
         return dishesByCategory;
     }

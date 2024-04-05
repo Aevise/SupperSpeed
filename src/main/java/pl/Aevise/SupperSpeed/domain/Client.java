@@ -11,6 +11,7 @@ import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserE
 @ToString(of = {"name", "surname"})
 public class Client {
 
+    Integer id;
     SupperUserEntity supperUser;
     String name;
     String surname;
