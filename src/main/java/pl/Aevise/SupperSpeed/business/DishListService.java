@@ -8,9 +8,11 @@ import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishCategoryMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
+import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -22,6 +24,8 @@ public class DishListService {
 
     private final DishService dishService;
     private final DishMapper dishMapper;
+
+//    private final DishListDAO dishListDAO;
 
     @Transactional
     public HashMap<String, List<DishDTO>> getDishListByCategoryFromRestaurant(Integer restaurantId) {
@@ -74,4 +78,7 @@ public class DishListService {
                 .toList();
     }
 
+    public void bindDishesWithOrder(Integer orderId, Map<Integer, Integer> dishQuantities) {
+
+    }
 }

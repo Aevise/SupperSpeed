@@ -28,12 +28,11 @@ public class DishCategoryRepository implements DishCategoryDAO {
 
     @Override
     public List<DishCategory> findAllByRestaurant(Integer restaurantId) {
-        List<DishCategory> list = dishCategoryJpaRepository
+        return dishCategoryJpaRepository
                 .findAllByRestaurant_Id(restaurantId)
                 .stream()
                 .map(dishCategoryEntityMapper::mapFromEntity)
                 .toList();
-        return list;
     }
 
     @Override

@@ -38,8 +38,10 @@ public class SupperOrderService {
     }
 
     @Transactional
-    public void createNewOrder(Integer restaurantId, String clientEmail) {
-        supperOrderDAO.createNewOrder(buildSupperOrderEntity(restaurantId, clientEmail));
+    public SupperOrderEntity createNewOrder(Integer restaurantId, String clientEmail) {
+        SupperOrderEntity newOrder = supperOrderDAO.createNewOrder(buildSupperOrderEntity(restaurantId, clientEmail));
+        log.info("Successfully created order: [{}]", newOrder.getOrderId());
+        return newOrder;
     }
 
     private SupperOrderEntity buildSupperOrderEntity(Integer restaurantId, String clientEmail) {

@@ -10,5 +10,5 @@ public interface SupperOrderDAO {
 
     List<SupperOrder> getOrdersByClientId(Integer clientId);
 
-    void createNewOrder(SupperOrderEntity supperOrderEntity);
+    SupperOrderEntity createNewOrder(SupperOrderEntity supperOrderEntity);
 }

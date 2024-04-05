@@ -43,7 +43,7 @@ public class SupperOrderRepository implements SupperOrderDAO {
     }
 
     @Override
-    public void createNewOrder(SupperOrderEntity supperOrderEntity) {
-        supperOrderJpaRepository.saveAndFlush(supperOrderEntity);
+    public SupperOrderEntity createNewOrder(SupperOrderEntity supperOrderEntity) {
+        return supperOrderJpaRepository.saveAndFlush(supperOrderEntity);
     }
 }

@@ -14,6 +14,7 @@ import pl.Aevise.SupperSpeed.business.ClientService;
 import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.business.UserService;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import java.util.Map;
 public class OrderProcessingController {
 
     static final String ORDER_PROCESSING = "/orders/submit-order";
+    static final String ORDER_PAYMENT = "/orders/submit-order/pay";
 
     private final SupperOrderService supperOrderService;
     private final DishListService dishListService;
@@ -39,10 +41,18 @@ public class OrderProcessingController {
 
         Map<Integer, Integer> dishQuantities = extractDishIdAndAmount(request.getParameterMap());
 
-        supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
+        SupperOrderEntity newOrder = supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
+
+        dishListService.bindDishesWithOrder(newOrder.getOrderId(), dishQuantities);
 
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("dishQuantities", dishQuantities);
+        return "order_processing";
+    }
+
+    @PostMapping(ORDER_PAYMENT)
+    public String payForOrder(){
+
         return "order_processing";
     }
 
