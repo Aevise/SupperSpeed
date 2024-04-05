@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.StatusListDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.StatusListMapper;
@@ -19,10 +20,7 @@ import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -55,11 +53,10 @@ public class OrdersBrowseController {
             } catch (InvalidDataAccessResourceUsageException ex) {
                 log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
             }
-
-            System.out.println(ordersByUserId.get(0).getOrderDateTime());
+            var ordersByStatus = sortOrdersByStatus(ordersByUserId);
 
             model.addAttribute("statusListDTO", statusList);
-            model.addAttribute("ordersDTO", ordersByUserId);
+            model.addAttribute("orders", ordersByStatus);
             model.addAttribute("role", userRole);
         }
 
@@ -90,9 +87,19 @@ public class OrdersBrowseController {
                 .toList();
     }
 
-    private HashMap<String, List<SupperOrderDTO>> sortOrdersByStatus(SupperOrderDTO){
+    private HashMap<String, List<SupperOrderDTO>> sortOrdersByStatus(List<SupperOrderDTO> orders){
         HashMap<String, List<SupperOrderDTO>> ordersByStatus = new HashMap<>();
 
-        return null;
+        for (SupperOrderDTO order : orders) {
+            ordersByStatus.putIfAbsent(
+                    order.getStatusListDTO().getDescription(),
+                    new ArrayList<>()
+            );
+            ordersByStatus
+                    .get(order.getStatusListDTO().getDescription())
+                    .add(order);
+        }
+
+        return ordersByStatus;
     }
 }
