@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.StatusListDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.StatusListMapper;
@@ -20,7 +19,10 @@ import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -87,7 +89,7 @@ public class OrdersBrowseController {
                 .toList();
     }
 
-    private HashMap<String, List<SupperOrderDTO>> sortOrdersByStatus(List<SupperOrderDTO> orders){
+    private HashMap<String, List<SupperOrderDTO>> sortOrdersByStatus(List<SupperOrderDTO> orders) {
         HashMap<String, List<SupperOrderDTO>> ordersByStatus = new HashMap<>();
 
         for (SupperOrderDTO order : orders) {

@@ -60,6 +60,7 @@ public class DishListService {
                             .toList()
             );
         }
+        dishesByCategory.entrySet().removeIf(category -> category.getValue().isEmpty());
         return dishesByCategory;
     }
 

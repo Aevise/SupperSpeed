@@ -14,21 +14,9 @@
 
 <body>
 <div class="container">
-    <h1>Page to display orders sorted by categories.
-        Restaurant can change order status.
-        User can cancel order only when it hasn't been accepted by restaurant or is still not paid
-    </h1>
+    <h1>View all your orders:</h1>
+    <br>
 </div>
-
-<table class="table" th:each="status: ${statusListDTO}">
-    <thead>
-    <tr class="table-primary">
-        <th colspan="5" style="text-align: center">
-            <label th:text="${status.description}"></label>
-        </th>
-    </tr>
-    </thead>
-</table>
 
 <div class="accordion" th:each="orderSet, orderStat:${orders.entrySet()}" id="MyAccordion">
     <div class="accordion-item">
@@ -46,7 +34,7 @@
                         <div class="col" th:text="'orderID: [' + ${order.getOrderId()} + ']'"></div>
                         <div class="col" th:text="'order date: [' + ${order.getOrderDateTime()} + ']'"></div>
                     </div>
-                    <div class="w-100">
+                    <div class="row">
                         <div class="col" th:text="'Name: ' + ${order.getClientDTO().getName()}"></div>
                         <div class="col" th:text="'Surname: ' + ${order.getClientDTO().getSurname()}"></div>
                     </div>
@@ -54,13 +42,14 @@
                         <div class="col"
                              th:text="'Restaurant: ' + ${order.getRestaurantDTO().getRestaurantName()}"></div>
                     </div>
+                    <hr class="hr" />
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
+<br>
 <div th:switch="${role}">
     <div th:case="'RESTAURANT'">
         <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>
