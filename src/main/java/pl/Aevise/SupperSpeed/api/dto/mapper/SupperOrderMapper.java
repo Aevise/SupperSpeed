@@ -5,10 +5,18 @@ import org.mapstruct.Mapping;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 
-@Mapper(componentModel = "spring", uses = OffsetDateTimeMapper.class)
+@Mapper(componentModel = "spring", uses = {
+        OffsetDateTimeMapper.class,
+        ClientMapper.class,
+        RestaurantMapper.class,
+        StatusListMapper.class
+})
 public interface SupperOrderMapper {
 
     @Mapping(source = "orderDateTime", target = "orderDateTime", qualifiedByName = "mapOffsetDateTimeToString")
+    @Mapping(source = "client", target = "clientDTO")
+    @Mapping(source = "restaurant", target = "restaurantDTO")
+    @Mapping(source = "status", target = "statusListDTO")
     SupperOrderDTO mapToDTO(final SupperOrder supperOrder);
 
     @Mapping(source = "orderDateTime", target = "orderDateTime", qualifiedByName = "mapStringToOffsetDateTime")

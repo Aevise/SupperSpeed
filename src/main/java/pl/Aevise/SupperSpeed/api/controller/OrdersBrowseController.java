@@ -20,6 +20,7 @@ import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,9 +56,7 @@ public class OrdersBrowseController {
                 log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
             }
 
-            System.out.println(ordersByUserId.get(0).getClientDTO().getName());
-            System.out.println(ordersByUserId.get(0).getRestaurantDTO().getRestaurantName());
-            System.out.println(ordersByUserId.get(0).getOrderId());
+            System.out.println(ordersByUserId.get(0).getOrderDateTime());
 
             model.addAttribute("statusListDTO", statusList);
             model.addAttribute("ordersDTO", ordersByUserId);
@@ -89,5 +88,11 @@ public class OrdersBrowseController {
                 .stream()
                 .map(supperOrderMapper::mapToDTO)
                 .toList();
+    }
+
+    private HashMap<String, List<SupperOrderDTO>> sortOrdersByStatus(SupperOrderDTO){
+        HashMap<String, List<SupperOrderDTO>> ordersByStatus = new HashMap<>();
+
+        return null;
     }
 }

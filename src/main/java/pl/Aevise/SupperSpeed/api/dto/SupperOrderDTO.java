@@ -15,5 +15,5 @@ public class SupperOrderDTO {
     ClientDTO clientDTO;
     RestaurantDTO restaurantDTO;
     StatusListDTO statusListDTO;
-    RatingDTO ratingDTO;
+    UserRatingDTO userRatingDTO;
 }
