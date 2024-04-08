@@ -12,6 +12,7 @@ import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishesListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DishesListKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.DishListRepository;
 
 import java.util.ArrayList;
@@ -88,24 +89,13 @@ public class DishListService {
     @Transactional
     public void saveAllByOrderAndDishQuantity(Integer orderId, Map<Integer, Integer> dishQuantities){
         List<DishesListEntity> dishesListEntities = bindDishesWithOrder(orderId, dishQuantities);
-//        Integer savedDishes = dishListRepository.saveAllByOrderAndDishQuantity(dishesListEntities);
+        Integer savedDishes = dishListRepository.saveAllByOrderAndDishQuantity(dishesListEntities);
 
-        DishesListEntity dishesEntitu = DishesListEntity.builder()
-                .quantity(2)
-                .order(SupperOrderEntity.builder()
-                        .orderId(1)
-                        .build())
-                .dish(DishEntity.builder()
-                        .dishId(2)
-                        .build())
-                .build();
-        dishListRepository.save(dishesEntitu);
-
-//        if (savedDishes > 0){
-//            log.info("Successfully saved [{}] dishes for order: [{}]", savedDishes, orderId);
-//        }else {
-//            log.warn("Did not save any dishes for order: [{}]", orderId);
-//        }
+        if (savedDishes > 0){
+            log.info("Successfully saved [{}] dishes for order: [{}]", savedDishes, orderId);
+        }else {
+            log.warn("Did not save any dishes for order: [{}]", orderId);
+        }
 
     }
 
@@ -113,6 +103,10 @@ public class DishListService {
         List<DishesListEntity> dishes = new ArrayList<>();
         for (Map.Entry<Integer, Integer> entry : dishQuantities.entrySet()) {
             dishes.add(DishesListEntity.builder()
+                            .id(DishesListKey.builder()
+                                    .orderId(orderId)
+                                    .dishId(entry.getKey())
+                                    .build())
                             .dish(DishEntity.builder()
                                     .dishId(entry.getKey())
                                     .build())

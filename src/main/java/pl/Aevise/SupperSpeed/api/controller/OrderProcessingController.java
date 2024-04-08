@@ -43,8 +43,6 @@ public class OrderProcessingController {
         Map<Integer, Integer> dishesIdAndQuantities = extractDishIdAndAmount(request.getParameterMap());
         dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
 
-
-
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("dishesIdAndQuantities", dishesIdAndQuantities);
         return "order_processing";
