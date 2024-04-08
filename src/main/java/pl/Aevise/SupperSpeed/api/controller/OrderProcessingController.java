@@ -38,25 +38,29 @@ public class OrderProcessingController {
                     @AuthenticationPrincipal UserDetails userDetails,
                     Model model
             ) {
-
-        Map<Integer, Integer> dishQuantities = extractDishIdAndAmount(request.getParameterMap());
-
         SupperOrderEntity newOrder = supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
 
-        dishListService.bindDishesWithOrder(newOrder.getOrderId(), dishQuantities);
+        Map<Integer, Integer> dishesIdAndQuantities = extractDishIdAndAmount(request.getParameterMap());
+        dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
+
+
 
         model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("dishQuantities", dishQuantities);
+        model.addAttribute("dishesIdAndQuantities", dishesIdAndQuantities);
         return "order_processing";
     }
 
-    @PostMapping(ORDER_PAYMENT)
+    //TODO zmienić na postMapping
+    @GetMapping(ORDER_PAYMENT)
     public String payForOrder(){
 
         return "order_processing";
     }
 
     private Map<Integer, Integer> extractDishIdAndAmount(Map<String, String[]> requestData){
+        /*
+         Map<K,V> K - dishId, V - amount
+         */
         Map<Integer, Integer> dishQuantities = new HashMap<>();
         requestData.forEach(
                 (dishKey, amount) -> {

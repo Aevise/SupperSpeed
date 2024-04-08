@@ -30,6 +30,6 @@ public class DishesListEntity implements Serializable {
     private SupperOrderEntity order;
 
     @Column(name = "quantity")
-    private String quantity;
+    private Integer quantity;
 
 }

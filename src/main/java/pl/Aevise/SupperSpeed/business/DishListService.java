@@ -9,7 +9,10 @@ import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishCategoryMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
 import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishesListEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.DishListRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,10 +27,10 @@ public class DishListService {
     private final DishCategoryService dishCategoryService;
     private final DishCategoryMapper dishCategoryMapper;
 
+    private final DishListRepository dishListRepository;
+
     private final DishService dishService;
     private final DishMapper dishMapper;
-
-    private final
 
 
     @Transactional
@@ -81,9 +84,45 @@ public class DishListService {
                 .toList();
     }
 
-    public void bindDishesWithOrder(Integer orderId, Map<Integer, Integer> dishQuantities) {
+
+    @Transactional
+    public void saveAllByOrderAndDishQuantity(Integer orderId, Map<Integer, Integer> dishQuantities){
+        List<DishesListEntity> dishesListEntities = bindDishesWithOrder(orderId, dishQuantities);
+//        Integer savedDishes = dishListRepository.saveAllByOrderAndDishQuantity(dishesListEntities);
+
+        DishesListEntity dishesEntitu = DishesListEntity.builder()
+                .quantity(2)
+                .order(SupperOrderEntity.builder()
+                        .orderId(1)
+                        .build())
+                .dish(DishEntity.builder()
+                        .dishId(2)
+                        .build())
+                .build();
+        dishListRepository.save(dishesEntitu);
+
+//        if (savedDishes > 0){
+//            log.info("Successfully saved [{}] dishes for order: [{}]", savedDishes, orderId);
+//        }else {
+//            log.warn("Did not save any dishes for order: [{}]", orderId);
+//        }
+
+    }
+
+    private List<DishesListEntity> bindDishesWithOrder(Integer orderId, Map<Integer, Integer> dishQuantities) {
         List<DishesListEntity> dishes = new ArrayList<>();
-
-
+        for (Map.Entry<Integer, Integer> entry : dishQuantities.entrySet()) {
+            dishes.add(DishesListEntity.builder()
+                            .dish(DishEntity.builder()
+                                    .dishId(entry.getKey())
+                                    .build())
+                            .order(SupperOrderEntity.builder()
+                                    .orderId(orderId)
+                                    .build())
+                            .quantity(entry.getValue())
+                    .build());
+        }
+        log.info("Bound [{}] dishes with order: [{}]", dishes.size(), orderId);
+        return dishes;
     }
 }
