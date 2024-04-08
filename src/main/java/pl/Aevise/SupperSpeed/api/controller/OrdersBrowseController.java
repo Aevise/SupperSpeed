@@ -20,6 +20,7 @@ import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,13 +55,10 @@ public class OrdersBrowseController {
             } catch (InvalidDataAccessResourceUsageException ex) {
                 log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
             }
-
-            System.out.println(ordersByUserId.get(0).getClientDTO().getName());
-            System.out.println(ordersByUserId.get(0).getRestaurantDTO().getRestaurantName());
-            System.out.println(ordersByUserId.get(0).getOrderId());
+            var ordersByStatus = sortOrdersByStatus(ordersByUserId);
 
             model.addAttribute("statusListDTO", statusList);
-            model.addAttribute("ordersDTO", ordersByUserId);
+            model.addAttribute("orders", ordersByStatus);
             model.addAttribute("role", userRole);
         }
 
@@ -89,5 +87,21 @@ public class OrdersBrowseController {
                 .stream()
                 .map(supperOrderMapper::mapToDTO)
                 .toList();
+    }
+
+    private HashMap<String, List<SupperOrderDTO>> sortOrdersByStatus(List<SupperOrderDTO> orders) {
+        HashMap<String, List<SupperOrderDTO>> ordersByStatus = new HashMap<>();
+
+        for (SupperOrderDTO order : orders) {
+            ordersByStatus.putIfAbsent(
+                    order.getStatusListDTO().getDescription(),
+                    new ArrayList<>()
+            );
+            ordersByStatus
+                    .get(order.getStatusListDTO().getDescription())
+                    .add(order);
+        }
+
+        return ordersByStatus;
     }
 }

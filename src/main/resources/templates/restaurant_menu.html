@@ -20,45 +20,50 @@
     <br>
 </div>
 
-<table class="table" th:each="category : ${dishesByCategory}">
-    <thead>
-    <tr class="table-primary">
-        <th colspan="4" style="text-align: center;" th:text="${category.getKey().get(0).categoryName}"/>
-    </tr>
+<form action="/supperspeed/orders/submit-order" method="post">
+    <div class="container">
+        <table class="table" th:each="category : ${dishesByCategory}">
+            <thead>
+            <tr class="table-primary">
+                <th colspan="4" style="text-align: center;" th:text="${category.getKey().get(0).categoryName}"/>
+            </tr>
 
-    <tr class="table table-info">
-        <th>Photo</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th style="background-color: transparent; text-align: center;">Quantity</th>
-        <th style="background-color: transparent; text-align: center;">Total Price</th>
-    </tr>
-    </thead>
+            <tr class="table table-info">
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th style="background-color: transparent; text-align: center;">Quantity</th>
+                <th style="background-color: transparent; text-align: center;">Total Price</th>
+            </tr>
+            </thead>
 
-    <tbody id="dishTable">
-    <tr th:each="dish : ${category.getValue()}">
-        <td th:text="${dish.photo}"/>
-        <td th:text="${dish.name}"/>
-        <td th:text="${dish.description}"/>
-        <td th:text="${dish.price}"/>
-        <td class="wrapper" style="text-align: center;">
-            <span class="minus">-</span>
-            <span class="num">0</span>
-            <span class="plus">+</span>
-        </td>
-        <td class="total" style="text-align: center;">0</td>
-    </tr>
-    </tbody>
-</table>
+            <tbody id="dishTable">
+            <tr th:each="dish : ${category.getValue()}" th:data-dish-id="${dish.dishId}">
+                <td th:text="${dish.photo}"/>
+                <td th:text="${dish.name}"/>
+                <td th:text="${dish.description}"/>
+                <td th:text="${dish.price}"/>
+                <td class="wrapper" style="text-align: center;">
+                    <button type="button" class="minus">-</button>
+                    <input type="number" th:name="'amountOfDishWithId_' + ${dish.dishId}" class="num" value="0" min="0" readonly/>
+                    <button type="button" class="plus">+</button>
+                </td>
+                <td class="total" style="text-align: center;">0</td>
+            </tr>
+            </tbody>
+        </table>
+        <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <button class="btn btn-success" type="submit" id="orderButton">Order</button>
+            </div>
+        </div>
+    </div>
+</form>
 
 <br>
 
-<div class="row mt-3">
-    <div class="col-md-4">
-        <a class="btn btn-success" id="orderButton" role="button" th:href="@{/}">Order</a>
-    </div>
-</div>
 
 <br>
 
@@ -73,7 +78,9 @@
         crossorigin="anonymous"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
 
+<script>
     document.addEventListener("DOMContentLoaded", function () {
         const pluses = document.querySelectorAll(".plus"),
             minuses = document.querySelectorAll(".minus"),
@@ -89,8 +96,9 @@
             plus.parentNode.replaceChild(clonedPlus, plus);
 
             clonedPlus.addEventListener("click", () => {
-                let amount = nums[index].innerText || 0;
+                let amount = parseInt(nums[index].value) || 0;
                 amount++;
+                nums[index].value = amount;
 
                 handleOrderPriceUpdate(index, amount, true);
             });
@@ -101,16 +109,17 @@
             minus.parentNode.replaceChild(clonedMinus, minus);
 
             clonedMinus.addEventListener("click", () => {
-                let amount = nums[index].innerText || 0;
+                let amount = parseInt(nums[index].value) || 0;
                 if (amount > 0) {
                     amount--;
+                    nums[index].value = amount;
 
                     handleOrderPriceUpdate(index, amount, false);
                 }
             });
         });
 
-        function handleOrderPriceUpdate(index, amount, addingValue){
+        function handleOrderPriceUpdate(index, amount, addingValue) {
             nums[index].innerText = amount;
 
             let dishPrice = getTotalDishPrice(index, 1);
@@ -123,21 +132,21 @@
             totals[index].innerText = price.toFixed(2);
         }
 
-        function getTotalDishPrice(index, amount){
+        function getTotalDishPrice(index, amount) {
             let price = parseFloat(dishes[index].cells[3].textContent) || 0;
             return amount * price;
         }
 
-        function updateOrderValue(price, addingValue){
-            if(addingValue === true){
+        function updateOrderValue(price, addingValue) {
+            if (addingValue === true) {
                 orderPrice += price;
-            }else {
+            } else {
                 orderPrice -= price;
             }
             setOrderButtonValue();
         }
 
-        function setOrderButtonValue(){
+        function setOrderButtonValue() {
             orderButton.textContent = `Confirm Order: (${orderPrice.toFixed(2)})`;
         }
 

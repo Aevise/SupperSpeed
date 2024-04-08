@@ -8,9 +8,13 @@ import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishCategoryMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
+import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishesListEntity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -22,6 +26,9 @@ public class DishListService {
 
     private final DishService dishService;
     private final DishMapper dishMapper;
+
+    private final
+
 
     @Transactional
     public HashMap<String, List<DishDTO>> getDishListByCategoryFromRestaurant(Integer restaurantId) {
@@ -57,9 +64,12 @@ public class DishListService {
                             .findAllByCategory(dishCategory.getDishCategoryId())
                             .stream()
                             .map(dishMapper::mapToDTO)
+                            .filter(DishDTO::getAvailability)
                             .toList()
             );
         }
+
+        dishesByCategory.entrySet().removeIf(category -> category.getValue().isEmpty());
         return dishesByCategory;
     }
 
@@ -71,4 +81,9 @@ public class DishListService {
                 .toList();
     }
 
+    public void bindDishesWithOrder(Integer orderId, Map<Integer, Integer> dishQuantities) {
+        List<DishesListEntity> dishes = new ArrayList<>();
+
+
+    }
 }

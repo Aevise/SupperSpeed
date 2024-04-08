@@ -64,11 +64,6 @@ public class SearchPageController {
         model.addAttribute("distinctCities", cities);
         model.addAttribute("role", userRole);
 
-        //authorities[0] = "ROLE_ANONYMOUS" - dla uzytkownika niezalogowanego
-        //authorities[0] = "RESTAURANT" - dla zalogowanej restauracji
-        //authorities[0] = "CLIENT" - dla zalogowanego klienta
-
-
         return "search_page";
     }
 

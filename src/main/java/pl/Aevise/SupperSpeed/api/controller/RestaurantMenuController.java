@@ -38,6 +38,7 @@ public class RestaurantMenuController {
 
         var dishMap = dishListService.extractDishesByCategory(dishCategories);
         model.addAttribute("dishesByCategory", dishMap);
+        model.addAttribute("restaurantId", restaurantId);
 
         return "restaurant_menu";
     }

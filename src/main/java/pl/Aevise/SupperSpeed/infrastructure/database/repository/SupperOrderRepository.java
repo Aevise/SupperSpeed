@@ -41,4 +41,9 @@ public class SupperOrderRepository implements SupperOrderDAO {
         }
         return List.of();
     }
+
+    @Override
+    public SupperOrderEntity createNewOrder(SupperOrderEntity supperOrderEntity) {
+        return supperOrderJpaRepository.saveAndFlush(supperOrderEntity);
+    }
 }

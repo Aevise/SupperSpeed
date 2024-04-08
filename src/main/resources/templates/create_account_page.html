@@ -15,7 +15,7 @@
 <body>
 <h1 style="display: flex; justify-content: center;">Are you a client or restaurant owner?</h1>
 <br>
-<div class="accordion" id="accordionExample">
+<div class="accordion" id="MyAccordion">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
             <button aria-controls="collapseOne" aria-expanded="false" class="accordion-button collapsed"
@@ -23,7 +23,7 @@
                 Client
             </button>
         </h2>
-        <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+        <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#MyAccordion"
              id="collapseOne">
             <form method="post" th:action="@{/create/user}">
                 <div class="accordion-body">
@@ -74,7 +74,8 @@
                     Restaurant Owner
                 </button>
             </h2>
-            <div aria-labelledby="headingTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample"
+            <div aria-labelledby="headingTwo" class="accordion-collapse collapse" data-bs-parent="#MyAccordion
+"
                  id="collapseTwo">
                 <form method="post" th:action="@{/create/restaurant}">
                     <div class="accordion-body">
