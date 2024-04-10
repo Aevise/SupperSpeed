@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.StatusListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.SupperOrderRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEntityMapper;
 
 import java.time.OffsetDateTime;
@@ -19,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SupperOrderService {
     private final SupperOrderDAO supperOrderDAO;
+
     private final ClientService clientService;
     private final UserService userService;
     private final ClientEntityMapper clientEntityMapper;
@@ -37,11 +40,35 @@ public class SupperOrderService {
         return ordersByClientId;
     }
 
+    //TODO zmienić na zwykłe supperOrder a mapowanie dopiero zrobić w SupperOrderRepository
     @Transactional
     public SupperOrderEntity createNewOrder(Integer restaurantId, String clientEmail) {
         SupperOrderEntity newOrder = supperOrderDAO.createNewOrder(buildSupperOrderEntity(restaurantId, clientEmail));
         log.info("Successfully created order: [{}]", newOrder.getOrderId());
         return newOrder;
+    }
+
+    @Transactional
+    public boolean updateOrderToPaid(Integer orderId) {
+        SupperOrder fetchedOrder = getOrderById(orderId);
+        boolean success = supperOrderDAO.updateOrderToPaid(fetchedOrder);
+        if(success){
+            log.info("Successfully changed order: [{}] status to [{}]", orderId, OrderStatus.PAID.name().toUpperCase());
+        }else {
+            log.warn("Could not change order: [{}] status to [{}]", orderId, OrderStatus.PAID.name().toUpperCase());
+        }
+        return success;
+
+    }
+
+    private SupperOrder getOrderById(Integer orderId) {
+        SupperOrder order = supperOrderDAO.findById(orderId);
+        if (order != null){
+            log.info("Successfully fetched order with id: [{}]", orderId);
+            return order;
+        }
+        log.warn("Could not fetch order with id: [{}]", orderId);
+        return null;
     }
 
     private SupperOrderEntity buildSupperOrderEntity(Integer restaurantId, String clientEmail) {

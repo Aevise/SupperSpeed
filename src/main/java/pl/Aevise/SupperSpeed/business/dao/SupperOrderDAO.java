@@ -11,4 +11,8 @@ public interface SupperOrderDAO {
     List<SupperOrder> getOrdersByClientId(Integer clientId);
 
     SupperOrderEntity createNewOrder(SupperOrderEntity supperOrderEntity);
+
+    boolean updateOrderToPaid(SupperOrder order);
+
+    SupperOrder findById(Integer orderId);
 }
