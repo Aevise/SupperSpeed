@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
+import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -13,6 +14,8 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.SupperOrderRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEntityMapper;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -90,5 +93,16 @@ public class SupperOrderService {
                         .build())
                 .orderDateTime(OffsetDateTime.now())
                 .build();
+    }
+
+    public BigDecimal extractTotalOrderValue(List<DishListDTO> dishes){
+        BigDecimal value = BigDecimal.ZERO;
+        for (DishListDTO dish : dishes) {
+            value = value
+                    .add(dish.getDishDTO().getPrice()
+                            .multiply(BigDecimal.valueOf(dish.getQuantity())))
+                    .setScale(2, RoundingMode.HALF_UP);
+        }
+        return value;
     }
 }

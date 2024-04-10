@@ -17,7 +17,22 @@
     <h1>Thank you for your order!</h1><br>
 
     <div class="container">
-        <h2 th:text="'Your order [' + ${orderId} + ']:'"></h2>
+        <div class="row">
+            <h2 th:text="'Your order id: [' + ${orderId} + ']:'"></h2>
+        </div>
+        <div class="row" th:if="${dishListDTO.isEmpty() == false}">
+            <div class="col"><strong>Name</strong></div>
+            <div class="col"><strong>Quantity and price</strong></div>
+            <div class="col"><strong>Total price</strong></div>
+        </div>
+        <div  class="row" th:each="dish:${dishListDTO}">
+            <div class="col" th:text="${dish.getDishDTO().name}"></div>
+            <div class="col" th:text="${dish.getQuantity()} + ' x ' + ${dish.getDishDTO().price}"></div>
+            <div class="col" th:text="${dish.getQuantity() * dish.getDishDTO().price}"></div>
+        </div>
+        <div class="row">
+            <h2 th:text="'Total value: '+ ${orderValue.toString()}"></h2>
+        </div>
     </div>
 
     <div class="row">

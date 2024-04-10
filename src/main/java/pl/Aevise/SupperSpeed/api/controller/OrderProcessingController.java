@@ -13,6 +13,8 @@ import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,12 +40,13 @@ public class OrderProcessingController {
         SupperOrderEntity newOrder = supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
 
         Map<Integer, Integer> dishesIdAndQuantities = extractDishIdAndAmount(request.getParameterMap());
-
-        List<DishListDTO> dishListDTOS = dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
+        List<DishListDTO> dishListDTO = dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
+        BigDecimal orderValue = supperOrderService.extractTotalOrderValue(dishListDTO);
 
         model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("dishesIdAndQuantities", dishesIdAndQuantities);
+        model.addAttribute("dishListDTO", dishListDTO);
         model.addAttribute("orderId", newOrder.getOrderId());
+        model.addAttribute("orderValue", orderValue);
         return "order_processing";
     }
 
