@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
+import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishCategoryMapper;
+import pl.Aevise.SupperSpeed.api.dto.mapper.DishListMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
 import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
+import pl.Aevise.SupperSpeed.domain.DishList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishesListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
@@ -29,6 +32,7 @@ public class DishListService {
     private final DishCategoryMapper dishCategoryMapper;
 
     private final DishListRepository dishListRepository;
+    private final DishListMapper dishListMapper;
 
     private final DishService dishService;
     private final DishMapper dishMapper;
@@ -87,16 +91,21 @@ public class DishListService {
 
 
     @Transactional
-    public void saveAllByOrderAndDishQuantity(Integer orderId, Map<Integer, Integer> dishQuantities){
+    public List<DishListDTO> saveAllByOrderAndDishQuantity(Integer orderId, Map<Integer, Integer> dishQuantities){
         List<DishesListEntity> dishesListEntities = bindDishesWithOrder(orderId, dishQuantities);
-        Integer savedDishes = dishListRepository.saveAllByOrderAndDishQuantity(dishesListEntities);
+        List<DishList> savedDishes = dishListRepository.saveAllByOrderAndDishQuantity(dishesListEntities);
 
-        if (savedDishes > 0){
+        List<DishListDTO> dishesDTO = savedDishes.stream()
+                .map(dishListMapper::mapToDTO)
+                .toList();
+
+        if (!dishesDTO.isEmpty()){
             log.info("Successfully saved [{}] dishes for order: [{}]", savedDishes, orderId);
+            return dishesDTO;
         }else {
             log.warn("Did not save any dishes for order: [{}]", orderId);
+            return List.of();
         }
-
     }
 
     private List<DishesListEntity> bindDishesWithOrder(Integer orderId, Map<Integer, Integer> dishQuantities) {

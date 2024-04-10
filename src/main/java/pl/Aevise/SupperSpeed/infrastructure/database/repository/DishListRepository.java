@@ -3,24 +3,26 @@ package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
+import pl.Aevise.SupperSpeed.domain.DishList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishesListEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DishesListKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DishesListJpaRepository;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DishListEntityMapper;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
 public class DishListRepository implements DishListDAO {
 
     private final DishesListJpaRepository dishesListJpaRepository;
+    private final DishListEntityMapper dishListEntityMapper;
 
     @Override
-    public Integer saveAllByOrderAndDishQuantity(List<DishesListEntity> dishesListEntities) {
-        List<DishesListEntity> dishes = dishesListJpaRepository.saveAllAndFlush(dishesListEntities);
-        return dishes.size();
+    public List<DishList> saveAllByOrderAndDishQuantity(List<DishesListEntity> dishesListEntities) {
+        List<DishesListEntity> dishesEntity = dishesListJpaRepository.saveAllAndFlush(dishesListEntities);
+        return dishesEntity.stream()
+                .map(dishListEntityMapper::mapFromEntity)
+                .toList();
     }
 
     @Override

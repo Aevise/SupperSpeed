@@ -8,11 +8,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -36,7 +38,8 @@ public class OrderProcessingController {
         SupperOrderEntity newOrder = supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
 
         Map<Integer, Integer> dishesIdAndQuantities = extractDishIdAndAmount(request.getParameterMap());
-        dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
+
+        List<DishListDTO> dishListDTOS = dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
 
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("dishesIdAndQuantities", dishesIdAndQuantities);
