@@ -33,14 +33,33 @@
                     <div class="row">
                         <div class="col" th:text="'orderID: [' + ${order.getOrderId()} + ']'"></div>
                         <div class="col" th:text="'order date: [' + ${order.getOrderDateTime()} + ']'"></div>
+                        <div class="col" th:if="${role == 'CLIENT' && order.getStatusListDTO().getStatusId() == 1}">
+                            <form method="post" th:action="@{/orders/pay}">
+                                <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                                <button class="btn btn-info" type="submit">Pay for order!</button>
+                            </form>
+                        </div>
+                        <div class="col" th:if="${role == 'RESTAURANT' && order.getStatusListDTO().getStatusId() == 2}">
+                            <form method="post" th:action="@{/orders/proceed}">
+                                <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                                <button class="btn btn-info" type="submit">Accept order!</button>
+                            </form>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col" th:text="'Name: ' + ${order.getClientDTO().getName()}"></div>
                         <div class="col" th:text="'Surname: ' + ${order.getClientDTO().getSurname()}"></div>
                     </div>
-                    <div class="w-100">
+                    <div class="row">
                         <div class="col"
                              th:text="'Restaurant: ' + ${order.getRestaurantDTO().getRestaurantName()}"></div>
+                    </div>
+                    <div class="col" th:if="${order.getStatusListDTO().getStatusId() <= 2}">
+                        <form method="post" th:action="@{/orders/cancel}">
+                            <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                            <input th:name="statusId" th:value="${order.getStatusListDTO().getStatusId()}" type="hidden"/>
+                            <button class="btn btn-danger" type="submit">Cancel order!</button>
+                        </form>
                     </div>
                     <hr class="hr" />
                 </div>

@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.hibernate.persister.collection.mutation.UpdateRowsCoordinator;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,7 +25,9 @@ import java.util.Map;
 public class OrderProcessingController {
 
     static final String ORDER_PROCESSING = "/orders/submit-order";
-    static final String ORDER_PAYMENT = "/orders/submit-order/pay";
+    static final String ORDER_PAYMENT = "/orders/pay";
+    static final String CANCEL_ORDER = "/orders/cancel";
+    static final String PROCEED_ORDER = "/orders/proceed";
 
     private final SupperOrderService supperOrderService;
     private final DishListService dishListService;
@@ -37,17 +40,22 @@ public class OrderProcessingController {
                     @AuthenticationPrincipal UserDetails userDetails,
                     Model model
             ) {
-        SupperOrderEntity newOrder = supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
 
         Map<Integer, Integer> dishesIdAndQuantities = extractDishIdAndAmount(request.getParameterMap());
-        List<DishListDTO> dishListDTO = dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
-        BigDecimal orderValue = supperOrderService.extractTotalOrderValue(dishListDTO);
 
-        model.addAttribute("restaurantId", restaurantId);
-        model.addAttribute("dishListDTO", dishListDTO);
-        model.addAttribute("orderId", newOrder.getOrderId());
-        model.addAttribute("orderValue", orderValue);
-        return "order_processing";
+        if(!dishesIdAndQuantities.isEmpty()){
+            SupperOrderEntity newOrder = supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
+
+            List<DishListDTO> dishListDTO = dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
+            BigDecimal orderValue = supperOrderService.extractTotalOrderValue(dishListDTO);
+
+            model.addAttribute("restaurantId", restaurantId);
+            model.addAttribute("dishListDTO", dishListDTO);
+            model.addAttribute("orderId", newOrder.getOrderId());
+            model.addAttribute("orderValue", orderValue);
+            return "order_processing";
+        }
+        return "error";
     }
 
     @PostMapping(ORDER_PAYMENT)
@@ -56,7 +64,29 @@ public class OrderProcessingController {
     ) {
 
         supperOrderService.updateOrderToPaid(orderId);
-        return "order_processing";
+        return "redirect:/orders";
+    }
+
+    @PostMapping(PROCEED_ORDER)
+    public String proceedOrder(
+            @RequestParam(value = "orderId") Integer orderId
+    ) {
+
+        supperOrderService.proceedOrder(orderId);
+        return "redirect:/orders";
+    }
+
+    @PostMapping(CANCEL_ORDER)
+    public String cancelOrder(
+            @RequestParam(value = "orderId") Integer orderId,
+            @RequestParam(value = "statusId") Integer statusId
+    ) {
+
+        if(statusId > 2){
+            return "error";
+        }
+        supperOrderService.cancelOrder(orderId);
+        return "redirect:/orders";
     }
 
     private Map<Integer, Integer> extractDishIdAndAmount(Map<String, String[]> requestData) {

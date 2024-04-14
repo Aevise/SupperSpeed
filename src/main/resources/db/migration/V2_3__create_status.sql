@@ -8,3 +8,5 @@ INSERT INTO status_list (description)
 VALUES ('delivered');
 INSERT INTO status_list (description)
 VALUES ('realized');
+INSERT INTO status_list (description)
+VALUES ('canceled');

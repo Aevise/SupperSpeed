@@ -5,10 +5,16 @@ public enum OrderStatus {
     PAID(2),
     ACCEPTED(3),
     DELIVERED(4),
-    REALIZED(5);
+    REALIZED(5),
+    CANCELED(6);
 
-    OrderStatus(Integer status_id){
+    private final int statusId;
 
+    OrderStatus(int statusId) {
+        this.statusId = statusId;
     }
 
+    public int getStatusId() {
+        return statusId;
+    }
 }

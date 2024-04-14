@@ -15,4 +15,8 @@ public interface SupperOrderDAO {
     boolean updateOrderToPaid(SupperOrder order);
 
     SupperOrder findById(Integer orderId);
+
+    SupperOrder cancelOrder(SupperOrder supperOrder);
+
+    SupperOrder proceedOrder(int newStatus, SupperOrder fetchedOrder);
 }

@@ -11,7 +11,6 @@ import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.StatusListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.repository.SupperOrderRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEntityMapper;
 
 import java.math.BigDecimal;
@@ -28,6 +27,7 @@ public class SupperOrderService {
     private final ClientService clientService;
     private final UserService userService;
     private final ClientEntityMapper clientEntityMapper;
+    private final StatusListService statusListService;
 
     @Transactional
     public List<SupperOrder> getOrdersByRestaurantId(Integer restaurantId) {
@@ -55,18 +55,44 @@ public class SupperOrderService {
     public boolean updateOrderToPaid(Integer orderId) {
         SupperOrder fetchedOrder = getOrderById(orderId);
         boolean success = supperOrderDAO.updateOrderToPaid(fetchedOrder);
-        if(success){
+        if (success) {
             log.info("Successfully changed order: [{}] status to [{}]", orderId, OrderStatus.PAID.name().toUpperCase());
-        }else {
+        } else {
             log.warn("Could not change order: [{}] status to [{}]", orderId, OrderStatus.PAID.name().toUpperCase());
         }
         return success;
+    }
+
+    @Transactional
+    public void cancelOrder(Integer orderId) {
+        SupperOrder fetchedOrder = getOrderById(orderId);
+
+        SupperOrder updatedOrder = supperOrderDAO.cancelOrder(fetchedOrder);
+        if (updatedOrder.getStatus().getStatusId() == 6) {
+            log.info("Successfully cancelled order: [{}]", orderId);
+        }
+        log.warn("Could not cancel order: [{}]", orderId);
+    }
+
+    public void proceedOrder(Integer orderId) {
+        SupperOrder fetchedOrder = supperOrderDAO.findById(orderId);
+        Integer orderStatus = fetchedOrder.getStatus().getStatusId();
+
+        if (orderStatus >= OrderStatus.NEW.getStatusId() &&
+                orderStatus < OrderStatus.CANCELED.getStatusId()) {
+            SupperOrder updatedOrder = supperOrderDAO.proceedOrder(orderStatus + 1, fetchedOrder);
+            if (updatedOrder.getStatus().getStatusId() > orderStatus) {
+                log.info("Successfully proceeded order: [{}]", orderId);
+            } else {
+                log.warn("Could not proceed order: [{}]", orderId);
+            }
+        }
 
     }
 
     private SupperOrder getOrderById(Integer orderId) {
         SupperOrder order = supperOrderDAO.findById(orderId);
-        if (order != null){
+        if (order != null) {
             log.info("Successfully fetched order with id: [{}]", orderId);
             return order;
         }
@@ -95,7 +121,7 @@ public class SupperOrderService {
                 .build();
     }
 
-    public BigDecimal extractTotalOrderValue(List<DishListDTO> dishes){
+    public BigDecimal extractTotalOrderValue(List<DishListDTO> dishes) {
         BigDecimal value = BigDecimal.ZERO;
         for (DishListDTO dish : dishes) {
             value = value

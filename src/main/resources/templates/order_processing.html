@@ -40,7 +40,7 @@
             <a class="btn btn-info" role="button" th:href="@{/menu(restaurantId=${restaurantId})}">Go back</a>
         </div>
         <div class="col">
-            <form method="post" th:action="@{/orders/submit-order/pay}">
+            <form method="post" th:action="@{/orders/pay}">
                 <input th:name="orderId" th:value="${orderId}" type="hidden"/>
                 <button class="btn btn-info" type="submit">Pay for order!</button>
             </form>

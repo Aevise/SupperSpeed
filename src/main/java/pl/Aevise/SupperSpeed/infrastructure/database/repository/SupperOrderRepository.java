@@ -56,9 +56,7 @@ public class SupperOrderRepository implements SupperOrderDAO {
         if (order.getStatus().getDescription().equalsIgnoreCase(OrderStatus.NEW.name())) {
             SupperOrderEntity supperOrderEntity = supperOrderEntityMapper.mapToEntity(order);
             supperOrderEntity
-                    .setStatus(StatusListEntity.builder()
-                            .statusId(2)
-                            .build());
+                    .setStatus(changeStatus(2));
             supperOrderJpaRepository.saveAndFlush(supperOrderEntity);
             return true;
         }
@@ -69,5 +67,35 @@ public class SupperOrderRepository implements SupperOrderDAO {
     public SupperOrder findById(Integer orderId) {
         Optional<SupperOrderEntity> order = supperOrderJpaRepository.findById(orderId);
         return order.map(supperOrderEntityMapper::mapFromEntity).orElse(null);
+    }
+
+    @Override
+    public SupperOrder cancelOrder(SupperOrder order) {
+        SupperOrderEntity orderEntity = supperOrderEntityMapper.mapToEntity(order);
+
+        orderEntity.setStatus(
+                changeStatus(OrderStatus.CANCELED.getStatusId())
+        );
+        SupperOrderEntity savedOrder = supperOrderJpaRepository.saveAndFlush(orderEntity);
+
+        return supperOrderEntityMapper.mapFromEntity(savedOrder);
+    }
+
+    @Override
+    public SupperOrder proceedOrder(int newStatus, SupperOrder fetchedOrder) {
+        SupperOrderEntity orderEntity = supperOrderEntityMapper.mapToEntity(fetchedOrder);
+
+        orderEntity.setStatus(
+                changeStatus(newStatus)
+        );
+        SupperOrderEntity savedOrder = supperOrderJpaRepository.saveAndFlush(orderEntity);
+
+        return supperOrderEntityMapper.mapFromEntity(savedOrder);
+    }
+
+    private static StatusListEntity changeStatus(int newStatus) {
+        return StatusListEntity.builder()
+                .statusId(newStatus)
+                .build();
     }
 }
