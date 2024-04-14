@@ -61,7 +61,7 @@
                             <button class="btn btn-danger" type="submit">Cancel order!</button>
                         </form>
                     </div>
-                    <div class="col" th:if="${order.getStatusListDTO().getStatusId() <= 5 && role == 'RESTAURANT'}">
+                    <div class="col" th:if="${order.getStatusListDTO().getStatusId() < 5 && role == 'RESTAURANT'}">
                         <form method="post" th:action="@{/orders/cancel}">
                             <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
                             <input th:name="statusId" th:value="${order.getStatusListDTO().getStatusId()}" type="hidden"/>
