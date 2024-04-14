@@ -36,7 +36,7 @@ public class RestaurantMenuController {
             return ERROR;
         }
 
-        var dishMap = dishListService.extractDishesByCategory(dishCategories);
+        var dishMap = dishListService.extractDishesByCategory(dishCategories, true);
         model.addAttribute("dishesByCategory", dishMap);
         model.addAttribute("restaurantId", restaurantId);
 

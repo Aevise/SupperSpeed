@@ -18,4 +18,5 @@ public class DishDTO {
     BigDecimal price;
     String photo;
     Boolean availability;
+    Boolean isHidden;
 }

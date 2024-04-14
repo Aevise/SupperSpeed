@@ -20,4 +20,5 @@ public class Dish {
     BigDecimal price;
     String photo;
     Boolean availability;
+    Boolean isHidden;
 }

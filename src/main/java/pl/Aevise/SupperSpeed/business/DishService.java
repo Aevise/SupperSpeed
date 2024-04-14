@@ -66,6 +66,7 @@ public class DishService {
                         .orElse(false))
                 .restaurant(restaurantService.findByIdEntity(restaurantId))
                 .dishCategory(dishCategoryService.findByIdEntity(categoryId))
+                .isHidden(false)
                 .build();
     }
 }

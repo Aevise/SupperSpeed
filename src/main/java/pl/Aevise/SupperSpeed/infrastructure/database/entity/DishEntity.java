@@ -26,7 +26,7 @@ public class DishEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private RestaurantEntity restaurant;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "dish_category_id", nullable = false)
     private DishCategoryEntity dishCategory;
 
@@ -44,6 +44,9 @@ public class DishEntity {
 
     @Column(name = "availability", nullable = false)
     private Boolean availability;
+
+    @Column(name = "is_hidden", nullable = false)
+    private Boolean isHidden;
 
     @ManyToMany
     @JoinTable(
