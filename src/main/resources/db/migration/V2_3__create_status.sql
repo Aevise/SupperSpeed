@@ -1,12 +1,12 @@
 INSERT INTO status_list (description)
-VALUES ('new');
+VALUES ('New');
 INSERT INTO status_list (description)
-VALUES ('paid');
+VALUES ('Paid');
 INSERT INTO status_list (description)
-VALUES ('accepted');
+VALUES ('Accepted');
 INSERT INTO status_list (description)
-VALUES ('delivered');
+VALUES ('Delivery');
 INSERT INTO status_list (description)
-VALUES ('realized');
+VALUES ('Realized');
 INSERT INTO status_list (description)
-VALUES ('canceled');
+VALUES ('Canceled');

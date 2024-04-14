@@ -4,7 +4,7 @@ public enum OrderStatus {
     NEW(1),
     PAID(2),
     ACCEPTED(3),
-    DELIVERED(4),
+    DELIVERY(4),
     REALIZED(5),
     CANCELED(6);
 
