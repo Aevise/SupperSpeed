@@ -1,10 +1,6 @@
 package pl.Aevise.SupperSpeed.domain;
 
 import lombok.*;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.StatusListEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.UserRatingEntity;
 
 import java.time.OffsetDateTime;
 
@@ -12,12 +8,12 @@ import java.time.OffsetDateTime;
 @Value
 @Builder
 @EqualsAndHashCode(of = "orderId")
-@ToString(of = {"client", "restaurant", "orderDateTime", "status", "userRating"})
+@ToString(of = {"orderDateTime", "status", "userRating"})
 public class SupperOrder {
     Integer orderId;
-    ClientEntity client;
-    RestaurantEntity restaurant;
+    Client client;
+    Restaurant restaurant;
     OffsetDateTime orderDateTime;
-    StatusListEntity status;
-    UserRatingEntity userRating;
+    StatusList status;
+    UserRating userRating;
 }

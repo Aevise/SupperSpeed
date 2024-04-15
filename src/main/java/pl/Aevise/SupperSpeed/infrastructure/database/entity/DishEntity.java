@@ -45,6 +45,9 @@ public class DishEntity {
     @Column(name = "availability", nullable = false)
     private Boolean availability;
 
+    @Column(name = "is_hidden", nullable = false)
+    private Boolean isHidden;
+
     @ManyToMany
     @JoinTable(
             name = "menu_list",

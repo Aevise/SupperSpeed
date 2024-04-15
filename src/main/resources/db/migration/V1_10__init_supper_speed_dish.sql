@@ -8,6 +8,7 @@ CREATE TABLE dish
     price            NUMERIC(8, 2) NOT NULL,
     photo            VARCHAR(128),
     availability     BOOLEAN       NOT NULL,
+    is_hidden        BOOLEAN       DEFAULT FALSE NOT NULL,
     PRIMARY KEY (dish_id),
     CONSTRAINT fk_dish_restaurant_id
         FOREIGN KEY (restaurant_id)

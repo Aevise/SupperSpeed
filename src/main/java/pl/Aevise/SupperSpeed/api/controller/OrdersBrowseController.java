@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.tree.Tree;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,14 +16,12 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.SupperOrderMapper;
 import pl.Aevise.SupperSpeed.business.ProfileService;
 import pl.Aevise.SupperSpeed.business.StatusListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
+import pl.Aevise.SupperSpeed.domain.StatusList;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -89,16 +88,18 @@ public class OrdersBrowseController {
                 .toList();
     }
 
-    private HashMap<String, List<SupperOrderDTO>> sortOrdersByStatus(List<SupperOrderDTO> orders) {
-        HashMap<String, List<SupperOrderDTO>> ordersByStatus = new HashMap<>();
+    private TreeMap<StatusListDTO, List<SupperOrderDTO>> sortOrdersByStatus(List<SupperOrderDTO> orders) {
+        TreeMap<StatusListDTO, List<SupperOrderDTO>> ordersByStatus = new TreeMap<>(
+                Comparator.comparingInt(StatusListDTO::getStatusId)
+        );
 
         for (SupperOrderDTO order : orders) {
             ordersByStatus.putIfAbsent(
-                    order.getStatusListDTO().getDescription(),
+                    order.getStatusListDTO(),
                     new ArrayList<>()
             );
             ordersByStatus
-                    .get(order.getStatusListDTO().getDescription())
+                    .get(order.getStatusListDTO())
                     .add(order);
         }
 

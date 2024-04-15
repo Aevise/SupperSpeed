@@ -48,7 +48,7 @@ public class RestaurantMenuEditionController {
             Integer restaurantId = user.get().getSupperUserId();
             List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
 
-            var dishList = dishListService.extractDishesByCategory(dishCategories);
+            var dishList = dishListService.extractDishesByCategory(dishCategories, false);
 
             model.addAttribute("dishesByCategory", dishList);
             model.addAttribute("userId", restaurantId);
