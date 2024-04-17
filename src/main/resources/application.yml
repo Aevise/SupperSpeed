@@ -1,7 +1,15 @@
+logging:
+  level:
+    org:
+    springframework:
+    security: TRACE
+
 server:
   port: 8080
   servlet:
     context-path: /supperspeed
+
+  access-token: 6e9bcb840461718912b38556131f9b28f50fd2d3
 
 spring:
   datasource:
@@ -32,3 +40,15 @@ spring:
       max-request-size: 2048MB
   security:
     enabled: true
+    oauth2:
+      client:
+        registration:
+          imgur:
+            client-id: 6bdd28332e8362b
+            client-secret: 51ed1c38718827328b239a8a76bf94d09d1c416a
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8080/login/oauth2/code/imgur
+        provider:
+          imgur:
+            token-uri: https://api.imgur.com/oauth2/token
+            authorization-uri: https://api.imgur.com/oauth2/authorize

@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.http.codec.json.Jackson2JsonDecoder;
 import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
@@ -20,8 +22,9 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class PhotoLibraryWebClientConfiguration {
 
-    private static final String BASE_URL = "https://photoslibrary.googleapis.com";
+    private static final String BASE_URL = "https://api.imgur.com/3/";
     public static final int TIMEOUT = 2000;
+
 
     @Bean
     public WebClient webClient(final ObjectMapper objectMapper){

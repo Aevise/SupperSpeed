@@ -15,6 +15,10 @@ import org.springframework.security.config.annotation.web.configurers.LogoutConf
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.*;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
@@ -31,14 +35,21 @@ public class SecurityConfiguration {
     }
 
     private static Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizationConfiguration() {
-        return auth -> auth
-                .requestMatchers("/", "/menu", "/search/**", "/create/**", "/login", "/logout", "error").permitAll()
-                .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
-                .requestMatchers("/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
-                .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(
-                        AvailableRoles.CLIENT.name(),
-                        AvailableRoles.RESTAURANT.name()
-                );
+        return auth -> {
+            try {
+                auth
+                        .requestMatchers("/", "/menu", "/search/**", "/create/**", "/login", "/logout", "error").permitAll()
+                        .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
+                        .requestMatchers("/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
+                        .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(
+                                AvailableRoles.CLIENT.name(),
+                                AvailableRoles.RESTAURANT.name()
+                        )
+                        .requestMatchers("/photo/**").authenticated();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        };
     }
 
     @Bean
@@ -67,6 +78,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationConfiguration())
+                .oauth2Login(Customizer.withDefaults())
                 .formLogin(FormLoginConfigurer::permitAll)
                 .logout(logoutConfiguration());
         return http.build();
@@ -82,4 +94,5 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
 }
