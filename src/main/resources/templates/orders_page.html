@@ -69,6 +69,11 @@
                             <div class="col" th:text="${dish.getQuantity()}"></div>
                             <div class="col" th:text="${dish.getQuantity()} + ' * ' + ${dish.getDishDTO.getPrice()} + ' = ' + ${T(java.math.BigDecimal).valueOf(dish.getQuantity().longValue()).multiply(dish.getDishDTO().getPrice())}"></div>
                         </div>
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col"></div>
+                            <div class="col" th:text="'Total: ' + ${ordersTotalPrice.get(order.getOrderId())}"></div>
+                        </div>
                     </div>
                     <div class="col" th:if="${order.getStatusListDTO().getStatusId() <= 2 && role == 'CLIENT'}">
                         <form method="post" th:action="@{/orders/cancel}">

@@ -64,16 +64,30 @@ public class OrdersBrowseController {
             var ordersByStatus = sortOrdersByStatus(ordersByUserId);
             var dishesByAllOrdersId = getDishesByAllOrdersId(ordersByUserId);
 
-            BigDecimal bigDecimal = BigDecimal.valueOf(2);
-
+            var ordersTotalPrice = getOrderTotalPrice(dishesByAllOrdersId);
 
             model.addAttribute("statusListDTO", statusList);
             model.addAttribute("orders", ordersByStatus);
             model.addAttribute("role", userRole);
             model.addAttribute("dishesByOrderId", dishesByAllOrdersId);
+            model.addAttribute("ordersTotalPrice", ordersTotalPrice);
         }
         return "orders_page";
     }
+
+    private Map<Integer, BigDecimal> getOrderTotalPrice(Map<Integer, List<DishListDTO>> dishesByAllOrdersId) {
+        HashMap<Integer, BigDecimal> ordersTotalPrice = new HashMap<>();
+
+        dishesByAllOrdersId.forEach((orderId, dishes) -> {
+            BigDecimal total = dishes.stream()
+                    .map(dish -> dish.getDishDTO().getPrice().multiply(BigDecimal.valueOf(dish.getQuantity())))
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            ordersTotalPrice.put(orderId, total);
+        });
+
+        return ordersTotalPrice;
+    }
+
 
     private Map<Integer, List<DishListDTO>> getDishesByAllOrdersId(List<SupperOrderDTO> ordersByUserId) {
         Map<Integer, List<DishListDTO>> dishesByOrderId = new TreeMap<>();
