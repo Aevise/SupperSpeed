@@ -9,7 +9,8 @@ import pl.Aevise.SupperSpeed.domain.SupperOrder;
         OffsetDateTimeMapper.class,
         ClientMapper.class,
         RestaurantMapper.class,
-        StatusListMapper.class
+        StatusListMapper.class,
+        UserRatingMapper.class
 })
 public interface SupperOrderMapper {
 
@@ -17,6 +18,7 @@ public interface SupperOrderMapper {
     @Mapping(source = "client", target = "clientDTO")
     @Mapping(source = "restaurant", target = "restaurantDTO")
     @Mapping(source = "status", target = "statusListDTO")
+    @Mapping(source = "userRating", target = "userRatingDTO")
     SupperOrderDTO mapToDTO(final SupperOrder supperOrder);
 
     @Mapping(source = "orderDateTime", target = "orderDateTime", qualifiedByName = "mapStringToOffsetDateTime")

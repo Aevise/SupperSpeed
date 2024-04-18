@@ -8,7 +8,8 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 @Mapper(componentModel = "spring", uses = {
         RestaurantEntityMapper.class,
         ClientEntityMapper.class,
-        StatusListEntityMapper.class
+        StatusListEntityMapper.class,
+        UserRatingEntityMapper.class
 })
 public interface SupperOrderEntityMapper {
 
@@ -16,10 +17,12 @@ public interface SupperOrderEntityMapper {
     @Mapping(source = "restaurant", target = "restaurant")
     @Mapping(source = "client", target = "client")
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "userRating", target = "userRating")
     SupperOrderEntity mapToEntity(SupperOrder supperOrder);
 
     @Mapping(source = "restaurant", target = "restaurant")
     @Mapping(source = "client", target = "client")
     @Mapping(source = "status", target = "status")
+    @Mapping(source = "userRating", target = "userRating")
     SupperOrder mapFromEntity(SupperOrderEntity supperOrderEntity);
 }

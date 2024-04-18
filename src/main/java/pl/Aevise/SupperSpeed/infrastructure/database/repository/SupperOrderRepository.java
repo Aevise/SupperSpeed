@@ -93,6 +93,16 @@ public class SupperOrderRepository implements SupperOrderDAO {
         return supperOrderEntityMapper.mapFromEntity(savedOrder);
     }
 
+    @Override
+    public Optional<SupperOrderEntity> getOrderById(Integer orderId) {
+        return supperOrderJpaRepository.findById(orderId);
+    }
+
+    @Override
+    public void saveOrder(SupperOrderEntity supperOrderEntity) {
+        supperOrderJpaRepository.saveAndFlush(supperOrderEntity);
+    }
+
     private static StatusListEntity changeStatus(int newStatus) {
         return StatusListEntity.builder()
                 .statusId(newStatus)

@@ -2,21 +2,25 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
+import pl.Aevise.SupperSpeed.domain.UserRating;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.StatusListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.UserRatingEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEntityMapper;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -130,5 +134,15 @@ public class SupperOrderService {
                     .setScale(2, RoundingMode.HALF_UP);
         }
         return value;
+    }
+
+    public void updateOrder(UserRatingEntity userRating, Integer orderId) {
+        Optional<SupperOrderEntity> order = supperOrderDAO.getOrderById(orderId);
+        if(order.isPresent()) {
+            log.info("Found order with id: [{}]", order);
+            SupperOrderEntity supperOrderEntity = order.get();
+            supperOrderEntity.setUserRating(userRating);
+            supperOrderDAO.saveOrder(supperOrderEntity);
+        }
     }
 }

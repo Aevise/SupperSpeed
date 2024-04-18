@@ -1,6 +1,7 @@
 package pl.Aevise.SupperSpeed.api.dto.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import pl.Aevise.SupperSpeed.api.dto.UserRatingDTO;
 import pl.Aevise.SupperSpeed.domain.UserRating;
 
