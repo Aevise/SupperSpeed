@@ -2,7 +2,6 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.hibernate.persister.collection.mutation.UpdateRowsCoordinator;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +41,7 @@ public class OrderProcessingController {
 
         Map<Integer, Integer> dishesIdAndQuantities = extractDishIdAndAmount(request.getParameterMap());
 
-        if(!dishesIdAndQuantities.isEmpty()){
+        if (!dishesIdAndQuantities.isEmpty()) {
             SupperOrderEntity newOrder = supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
 
             List<DishListDTO> dishListDTO = dishListService.saveAllByOrderAndDishQuantity(newOrder.getOrderId(), dishesIdAndQuantities);
@@ -82,7 +80,7 @@ public class OrderProcessingController {
             @RequestParam(value = "statusId") Integer statusId
     ) {
 
-        if(statusId > 2){
+        if (statusId > 2) {
             return "error";
         }
         supperOrderService.cancelOrder(orderId);

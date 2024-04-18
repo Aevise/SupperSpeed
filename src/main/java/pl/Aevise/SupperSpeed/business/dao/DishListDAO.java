@@ -10,4 +10,6 @@ public interface DishListDAO {
     List<DishList> saveAllByOrderAndDishQuantity(List<DishesListEntity> dishesListEntities);
 
     void save(DishesListEntity dishesList);
+
+    List<DishList> getDishesByOrderId(int orderId);
 }

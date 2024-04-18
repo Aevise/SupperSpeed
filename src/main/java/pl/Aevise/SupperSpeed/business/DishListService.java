@@ -81,6 +81,21 @@ public class DishListService {
         return dishesByCategory;
     }
 
+    @Transactional
+    public List<DishListDTO> getDishesByOrderId(int orderId){
+        List<DishList> dishesByOrderId = dishListRepository.getDishesByOrderId(orderId);
+        if (!dishesByOrderId.isEmpty()){
+            log.info("Found [{}] dishes bound with order [{}]", dishesByOrderId.size(), orderId );
+
+            return dishesByOrderId.stream()
+                    .map(dishListMapper::mapToDTO)
+                    .toList();
+        }
+        log.warn("Could not find dishes for order [{}]", orderId);
+        return List.of();
+
+    }
+
 
     public List<DishCategoryDTO> getDishCategoriesByRestaurantId(Integer restaurantId) {
         return dishCategoryService

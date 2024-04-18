@@ -2,25 +2,26 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.tree.Tree;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.StatusListDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.StatusListMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.SupperOrderMapper;
+import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.ProfileService;
 import pl.Aevise.SupperSpeed.business.StatusListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
-import pl.Aevise.SupperSpeed.domain.StatusList;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Controller
@@ -29,12 +30,18 @@ import java.util.*;
 public class OrdersBrowseController {
 
     static final String SUPPER_SPEED_ORDERS_BROWSER = "/orders";
+
     private final StatusListService statusListService;
-    private final SecurityService securityService;
     private final StatusListMapper statusListMapper;
+
+    private final SecurityService securityService;
+
     private final ProfileService profileService;
+
     private final SupperOrderService supperOrderService;
     private final SupperOrderMapper supperOrderMapper;
+
+    private final DishListService dishListService;
 
     @GetMapping(SUPPER_SPEED_ORDERS_BROWSER)
     public String getOrders(
@@ -55,14 +62,26 @@ public class OrdersBrowseController {
                 log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
             }
             var ordersByStatus = sortOrdersByStatus(ordersByUserId);
+            var dishesByAllOrdersId = getDishesByAllOrdersId(ordersByUserId);
+
+            BigDecimal bigDecimal = BigDecimal.valueOf(2);
+
 
             model.addAttribute("statusListDTO", statusList);
             model.addAttribute("orders", ordersByStatus);
             model.addAttribute("role", userRole);
+            model.addAttribute("dishesByOrderId", dishesByAllOrdersId);
         }
-
-
         return "orders_page";
+    }
+
+    private Map<Integer, List<DishListDTO>> getDishesByAllOrdersId(List<SupperOrderDTO> ordersByUserId) {
+        Map<Integer, List<DishListDTO>> dishesByOrderId = new TreeMap<>();
+
+        for (SupperOrderDTO supperOrderDTO : ordersByUserId) {
+            dishesByOrderId.putIfAbsent(supperOrderDTO.getOrderId(), dishListService.getDishesByOrderId(supperOrderDTO.getOrderId()));
+        }
+        return dishesByOrderId;
     }
 
 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
 import pl.Aevise.SupperSpeed.domain.DishList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishesListEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DishesListJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DishListEntityMapper;
 
@@ -28,5 +29,16 @@ public class DishListRepository implements DishListDAO {
     @Override
     public void save(DishesListEntity dishesList) {
         dishesListJpaRepository.save(dishesList);
+    }
+
+    @Override
+    public List<DishList> getDishesByOrderId(int orderId) {
+        List<DishesListEntity> dishesListEntities = dishesListJpaRepository.findAllByOrder(SupperOrderEntity.builder()
+                .orderId(orderId)
+                .build());
+
+        return dishesListEntities.stream()
+                .map(dishListEntityMapper::mapFromEntity)
+                .toList();
     }
 }
