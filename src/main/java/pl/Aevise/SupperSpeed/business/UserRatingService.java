@@ -8,10 +8,12 @@ import pl.Aevise.SupperSpeed.api.dto.UserRatingDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.UserRatingMapper;
 import pl.Aevise.SupperSpeed.business.dao.UserRatingDAO;
 import pl.Aevise.SupperSpeed.domain.UserRating;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantResponseEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.UserRatingEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.UserRatingEntityMapper;
 
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -34,4 +36,22 @@ public class UserRatingService {
         supperOrderService.updateOrder(userRatingEntity, orderId);
     }
 
+    public void updateUserRating(RestaurantResponseEntity restaurantResponseEntity, Integer userRatingId) {
+        UserRating userRatingById = getUserRatingById(userRatingId);
+
+        UserRatingEntity userRatingEntity = userRatingEntityMapper.mapToEntity(userRatingById);
+        userRatingEntity.setRestaurantResponse(restaurantResponseEntity);
+
+        //TODO od tego zaczac trzeba zapisac nowe response entity do bazy danych
+    }
+
+    public UserRating getUserRatingById(Integer userRatingId){
+        Optional<UserRatingEntity> userRatingById = userRatingDAO.getUserRatingById(userRatingId);
+        if (userRatingById.isPresent()){
+            log.info("Successfully retrieved userRating with id: [{}]", userRatingById);
+            return userRatingEntityMapper.mapFromEntity(userRatingById.get());
+        }
+        log.warn("Could not find user rating with id: [{}]", userRatingById);
+        return null;
+    }
 }

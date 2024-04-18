@@ -125,7 +125,6 @@ public class OrdersBrowseController {
         TreeMap<StatusListDTO, List<SupperOrderDTO>> ordersByStatus = new TreeMap<>(
                 Comparator.comparingInt(StatusListDTO::getStatusId)
         );
-
         for (SupperOrderDTO order : orders) {
             ordersByStatus.putIfAbsent(
                     order.getStatusListDTO(),
@@ -135,7 +134,6 @@ public class OrdersBrowseController {
                     .get(order.getStatusListDTO())
                     .add(order);
         }
-
         return ordersByStatus;
     }
 }

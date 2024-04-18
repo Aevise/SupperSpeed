@@ -8,6 +8,8 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.UserRatingEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.UserRatingJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.UserRatingEntityMapper;
 
+import java.util.Optional;
+
 @Repository
 @AllArgsConstructor
 public class UserRatingRepository implements UserRatingDAO {
@@ -18,5 +20,10 @@ public class UserRatingRepository implements UserRatingDAO {
     @Override
     public UserRatingEntity saveNewUserRating(UserRating userRating) {
         return userRatingJpaRepository.saveAndFlush(userRatingEntityMapper.mapToEntity(userRating));
+    }
+
+    @Override
+    public Optional<UserRatingEntity> getUserRatingById(Integer userRatingId) {
+        return userRatingJpaRepository.findById(userRatingId);
     }
 }
