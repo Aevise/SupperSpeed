@@ -10,6 +10,8 @@ import pl.Aevise.SupperSpeed.business.dao.RestaurantResponseDAO;
 import pl.Aevise.SupperSpeed.domain.RestaurantResponse;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantResponseEntity;
 
+import java.time.OffsetDateTime;
+
 @Slf4j
 @Service
 @AllArgsConstructor
@@ -23,6 +25,7 @@ public class RestaurantResponseService {
 
     @Transactional
     public void saveRestaurantResponse(RestaurantResponseDTO restaurantResponseDTO, Integer userRatingId) {
+        restaurantResponseDTO.setResponseDateTime(OffsetDateTime.now());
         RestaurantResponse restaurantResponse = restaurantResponseMapper.mapFromDTO(restaurantResponseDTO);
         RestaurantResponseEntity restaurantResponseEntity = restaurantResponseDAO.saveRestaurantResponse(restaurantResponse);
         if(restaurantResponseEntity != null){

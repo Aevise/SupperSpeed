@@ -36,13 +36,14 @@ public class UserRatingService {
         supperOrderService.updateOrder(userRatingEntity, orderId);
     }
 
+    @Transactional
     public void updateUserRating(RestaurantResponseEntity restaurantResponseEntity, Integer userRatingId) {
         UserRating userRatingById = getUserRatingById(userRatingId);
 
         UserRatingEntity userRatingEntity = userRatingEntityMapper.mapToEntity(userRatingById);
-        userRatingEntity.setRestaurantResponse(restaurantResponseEntity);
+        userRatingEntity.setRestaurantResponseEntity(restaurantResponseEntity);
 
-        //TODO od tego zaczac trzeba zapisac nowe response entity do bazy danych
+        userRatingDAO.saveUserRating(userRatingEntity);
     }
 
     public UserRating getUserRatingById(Integer userRatingId){

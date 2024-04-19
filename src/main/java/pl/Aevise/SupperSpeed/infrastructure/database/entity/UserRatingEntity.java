@@ -35,6 +35,6 @@ public class UserRatingEntity {
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_response_id", unique = true)
-    private RestaurantResponseEntity restaurantResponse;
+    private RestaurantResponseEntity restaurantResponseEntity;
 
 }

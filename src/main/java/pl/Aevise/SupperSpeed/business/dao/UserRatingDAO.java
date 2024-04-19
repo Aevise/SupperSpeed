@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface UserRatingDAO {
     UserRatingEntity saveNewUserRating(UserRating userRating);
 
+    void saveUserRating(UserRatingEntity userRatingEntity);
+
     Optional<UserRatingEntity> getUserRatingById(Integer userRatingId);
 }

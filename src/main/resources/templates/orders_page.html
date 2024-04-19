@@ -94,7 +94,6 @@
                     </div>
                     <div class="container"
                          th:if="${order.getStatusListDTO().getStatusId() == 5 && role == 'CLIENT' && order.getUserRatingDTO() == null}">
-                        <div class="row"></div>
                         <div class="row"><b>Rate the order!:</b></div>
                         <div class="row">
 
@@ -147,7 +146,7 @@
                             <div class="col"><b>User Rating:</b></div>
                         </div>
                         <div class="row">
-                            <div class="col" th:text="${order.getUserRatingDTO().getRatingDateTime()}"></div>
+                            <div class="col" th:text="'Rating date: ' + ${order.getUserRatingDTO().getRatingDateTime()}"></div>
                         </div>
                         <div class="row">
                             <div class="col"
@@ -156,7 +155,8 @@
                                  th:text="'Delivery Rating: '+ ${order.getUserRatingDTO().getDeliveryRating()}"></div>
                             <div class="col" th:text="'Comment: '+ ${order.getUserRatingDTO().getDescription()}"></div>
                         </div>
-                        <div class="container" th:if="${role == 'RESTAURANT' && order.getUserRatingDTO().getRestaurantResponse() == null}">
+                        <div class="container"
+                             th:if="${role == 'RESTAURANT' && order.getUserRatingDTO().getRestaurantResponseDTO() == null}">
                             <form method="post" th:action="@{/orders/comment/respond}">
                                 <div class="col">
                                     <label>
@@ -164,11 +164,26 @@
                                         <input th:name="description" type="text"/>
                                     </label>
                                 </div>
-                                <input th:name="userRatingId" th:value="${order.getUserRatingDTO().getUserRatingId()}" type="hidden"/>
+                                <input th:name="userRatingId" th:value="${order.getUserRatingDTO().getUserRatingId()}"
+                                       type="hidden"/>
                                 <div class="col">
                                     <button class="btn btn-info" type="submit">Submit response!</button>
                                 </div>
                             </form>
+                        </div>
+                        <div class="container"
+                             th:if="${order.getUserRatingDTO().getRestaurantResponseDTO() != null}">
+                            <div class="row"><b>Restaurant Response:</b></div>
+                            <div class="row">
+                                <div class="col">Response time:</div>
+                                <div class="col">Response:</div>
+                            </div>
+                            <div class="row">
+                                <div class="col"
+                                     th:text="${order.getUserRatingDTO().getRestaurantResponseDTO().getResponseDateTime()}"></div>
+                                <div class="col"
+                                     th:text="${order.getUserRatingDTO().getRestaurantResponseDTO().getDescription()}"></div>
+                            </div>
                         </div>
                     </div>
                     <hr class="hr"/>

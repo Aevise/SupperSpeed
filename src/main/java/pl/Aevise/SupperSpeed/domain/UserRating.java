@@ -1,7 +1,6 @@
 package pl.Aevise.SupperSpeed.domain;
 
 import lombok.*;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantResponseEntity;
 
 import java.time.OffsetDateTime;
 
@@ -16,5 +15,5 @@ public class UserRating {
     Integer deliveryRating;
     OffsetDateTime ratingDateTime;
     String description;
-    RestaurantResponseEntity restaurantResponse;
+    RestaurantResponse restaurantResponse;
 }
