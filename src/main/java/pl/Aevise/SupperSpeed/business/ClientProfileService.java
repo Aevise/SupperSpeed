@@ -62,6 +62,7 @@ public class ClientProfileService {
             Integer supperUserId = currentUser.get().getSupperUserId();
             log.info("Successfully retrieved user's: [{}] information", supperUserId);
             addressService.updateAddressByUserId(addressDTO, supperUserId);
+            log.info("Successfully updated address for user: [{}]", supperUserId);
         } else {
             log.error("Did not found user with email: [{}]", email);
         }

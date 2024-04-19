@@ -34,7 +34,7 @@ public class ClientEntity {
     @Column(name = "phone")
     private String phone;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true, nullable = false)
     private AddressEntity address;
 

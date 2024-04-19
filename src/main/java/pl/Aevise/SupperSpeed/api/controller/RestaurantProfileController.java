@@ -25,7 +25,6 @@ import java.util.Optional;
 public class RestaurantProfileController {
 
     static final String RESTAURANT_PROFILE = "/restaurant/profile";
-    static final String RESTAURANT_MENU = RESTAURANT_PROFILE + "/restaurant/menu";
 
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;

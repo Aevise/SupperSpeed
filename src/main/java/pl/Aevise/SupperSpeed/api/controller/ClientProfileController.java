@@ -59,7 +59,7 @@ public class ClientProfileController {
         return "client_profile";
     }
 
-    @PostMapping(CLIENT_PROFILE)
+    @PostMapping(UPDATE_PROFILE)
     public String updateProfile
             (
                     @ModelAttribute ClientDTO clientDTO,
