@@ -15,5 +15,7 @@ public class ClientDTO {
     String name;
     String surname;
     String phone;
+    Integer supperUserId;
+    Integer addressId;
 
 }

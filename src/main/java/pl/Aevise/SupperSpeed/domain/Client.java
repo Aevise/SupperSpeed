@@ -12,10 +12,10 @@ import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserE
 public class Client {
 
     Integer id;
-    SupperUserEntity supperUser;
+    SupperUser supperUser;
     String name;
     String surname;
-    AddressEntity address;
+    Address address;
     String phone;
 
 }
