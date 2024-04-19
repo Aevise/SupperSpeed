@@ -48,12 +48,4 @@ public class DishEntity {
     @Column(name = "is_hidden", nullable = false)
     private Boolean isHidden;
 
-    @ManyToMany
-    @JoinTable(
-            name = "menu_list",
-            joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "menu_id")
-    )
-    private Set<MenuEntity> menus;
-
 }
