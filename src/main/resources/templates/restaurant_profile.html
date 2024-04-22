@@ -44,8 +44,9 @@
 
 <div class="container">
     <h3>Your current data:</h3>
-    <form action="/supperspeed/restaurant/profile" method="post">
+    <form th:action="@{/restaurant/profile/update}" method="post">
         <input name="action" type="hidden" value="updateData"/>
+        <input name="userId" type="hidden" th:value="*{userId}"/>
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="restaurantName">Name:</label>
@@ -90,8 +91,9 @@
 <br><br>
 <div class="container">
     <h3>Current address:</h3>
-    <form action="/supperspeed/restaurant/profile" method="post">
+    <form th:action="@{/restaurant/profile/update}" method="post">
         <input name="action" type="hidden" value="updateAddress"/>
+        <input name="userId" type="hidden" th:value="*{userId}"/>
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="customerCountry">Country:</label>
@@ -118,10 +120,26 @@
         </div>
         <div class="row mt-3">
             <div class="col-md-3">
-                <label for="customerAddress">Address:</label>
+                <label for="streetName">Street Name:</label>
             </div>
             <div class="col-md-3">
-                <input id="customerAddress" th:field="*{addressDTO.currentAddress}" type="text">
+                <input id="streetName" th:field="*{addressDTO.streetName}" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="buildingNumber">Building Number:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="buildingNumber" th:field="*{addressDTO.buildingNumber}" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="localNumber">Local Number:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="localNumber" th:field="*{addressDTO.localNumber}" type="text">
             </div>
         </div>
         <div class="row mt-3">

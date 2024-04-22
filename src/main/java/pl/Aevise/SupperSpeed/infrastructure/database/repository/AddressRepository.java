@@ -20,7 +20,6 @@ public class AddressRepository implements AddressDAO {
 
     private final AddressJpaRepository addressJpaRepository;
     private final AddressEntityMapper addressEntityMapper;
-    private final AddressMapper addressMapper;
 
     @Override
     public Optional<Address> findById(Integer id) {
@@ -35,20 +34,21 @@ public class AddressRepository implements AddressDAO {
     }
 
     @Override
-    public void updateAddress(AddressDTO addressDTO, Integer addressId) {
-        AddressEntity address = addressJpaRepository.findById(addressId)
+    public void updateAddress(Address address, Integer addressId) {
+        AddressEntity addressEntity = addressJpaRepository.findById(addressId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Address with id: [%s] not found"
                                 .formatted(addressId)
                 ));
-        Address newAddressData = addressMapper.mapFromDTO(addressDTO);
 
-        address.setCurrentAddress(newAddressData.getCurrentAddress());
-        address.setCity(newAddressData.getCity());
-        address.setCountry(newAddressData.getCountry());
-        address.setPostalCode(newAddressData.getPostalCode());
+        addressEntity.setStreetName(address.getStreetName());
+        addressEntity.setCity(address.getCity());
+        addressEntity.setCountry(address.getCountry());
+        addressEntity.setPostalCode(address.getPostalCode());
+        addressEntity.setBuildingNumber(address.getBuildingNumber());
+        addressEntity.setLocalNumber(address.getLocalNumber());
 
-        addressJpaRepository.saveAndFlush(address);
+        addressJpaRepository.saveAndFlush(addressEntity);
 
     }
 

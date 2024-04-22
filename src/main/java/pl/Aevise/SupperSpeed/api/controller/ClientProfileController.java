@@ -25,7 +25,7 @@ import java.util.Optional;
 public class ClientProfileController {
 
     static final String CLIENT_PROFILE = "/client/profile";
-    static final String UPDATE_PROFILE = "/updateProfile";
+    static final String UPDATE_PROFILE = "/client/profile/update";
 
     private final ClientProfileService clientProfileService;
     private final AddressService addressService;
@@ -54,6 +54,7 @@ public class ClientProfileController {
 
             model.addAttribute("clientDTO", clientDTO);
             model.addAttribute("addressDTO", addressDTO);
+            model.addAttribute("userId", clientDTO.getSupperUserId());
         }
 
         return "client_profile";
@@ -65,7 +66,7 @@ public class ClientProfileController {
                     @ModelAttribute ClientDTO clientDTO,
                     @ModelAttribute AddressDTO addressDTO,
                     BindingResult bindingResult,
-                    @AuthenticationPrincipal UserDetails userDetails,
+                    @RequestParam String userId,
                     @RequestParam(required = false) String action
             ) {
         if (bindingResult.hasErrors()) {
@@ -73,9 +74,9 @@ public class ClientProfileController {
         }
 
         if ("updateAddress".equals(action)) {
-            clientProfileService.updateAddress(addressDTO, userDetails.getUsername());
+            clientProfileService.updateAddress(addressDTO, Integer.valueOf(userId));
         } else {
-            clientProfileService.updateClientInformation(clientDTO, userDetails.getUsername());
+            clientProfileService.updateClientInformation(clientDTO, Integer.valueOf(userId));
         }
         return "redirect:" + CLIENT_PROFILE;
     }

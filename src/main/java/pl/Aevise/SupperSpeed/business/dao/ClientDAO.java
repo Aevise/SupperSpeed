@@ -10,7 +10,7 @@ public interface ClientDAO {
 
     Optional<Client> findByEmail(String email);
 
-    void updateClientInformation(ClientDTO clientDTO, Integer id);
+    void updateClientInformation(Client client, Integer id);
 
     Optional<Client> findById(Integer id);
 

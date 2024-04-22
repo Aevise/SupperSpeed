@@ -53,20 +53,18 @@ public class RestaurantRepository implements RestaurantDAO {
     }
 
     @Override
-    public void updateRestaurantInformation(RestaurantDTO restaurantDTO, Integer userId) {
+    public void updateRestaurantInformation(Restaurant restaurant, Integer userId) {
         Optional<RestaurantEntity> currentRestaurantData = restaurantJpaRepository.findById(userId);
 
-        Restaurant restaurantNewData = restaurantMapper.mapFromDTO(restaurantDTO);
-
         if (currentRestaurantData.isPresent()) {
-            RestaurantEntity restaurant = currentRestaurantData.get();
-            restaurant.setRestaurantName(restaurantNewData.getRestaurantName());
-            restaurant.setOpenHour(restaurantNewData.getOpenHour());
-            restaurant.setCloseHour(restaurantNewData.getCloseHour());
-            restaurant.setPhone(restaurantNewData.getPhone());
-            restaurantJpaRepository.saveAndFlush(restaurant);
-        }
+            RestaurantEntity restaurantEntity = currentRestaurantData.get();
 
+            restaurantEntity.setRestaurantName(restaurant.getRestaurantName());
+            restaurantEntity.setOpenHour(restaurant.getOpenHour());
+            restaurantEntity.setCloseHour(restaurant.getCloseHour());
+            restaurantEntity.setPhone(restaurant.getPhone());
+            restaurantJpaRepository.saveAndFlush(restaurantEntity);
+        }
     }
 
     @Override

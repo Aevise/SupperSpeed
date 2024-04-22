@@ -16,7 +16,7 @@ public interface RestaurantDAO {
 
     Optional<Restaurant> findByEmail(String email);
 
-    void updateRestaurantInformation(RestaurantDTO restaurantDTO, Integer userId);
+    void updateRestaurantInformation(Restaurant restaurant, Integer userId);
 
     Optional<Restaurant> findById(Integer id);
 

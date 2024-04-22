@@ -25,6 +25,7 @@ import java.util.Optional;
 public class RestaurantProfileController {
 
     static final String RESTAURANT_PROFILE = "/restaurant/profile";
+    static final String RESTAURANT_UPDATE = "/restaurant/profile/update";
 
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
@@ -55,26 +56,27 @@ public class RestaurantProfileController {
                             "Could not find restaurant address with id: [%s]"
                                     .formatted(addressId)
                     ));
+
+            Integer userId = restaurantDTO.getRestaurantId();
             model.addAttribute("restaurantDTO", restaurantDTO);
             model.addAttribute("addressDTO", addressDTO);
+            model.addAttribute("userId", userId);
         }
 
         return "restaurant_profile";
     }
 
-    @PostMapping(RESTAURANT_PROFILE)
+    @PostMapping(RESTAURANT_UPDATE)
     public String updateProfileInformation(
             @ModelAttribute RestaurantDTO restaurantDTO,
             @ModelAttribute AddressDTO addressDTO,
-            @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam(required = false) String action
+            @RequestParam(required = false) String action,
+            @RequestParam String userId
     ) {
-
-        String currentUserName = userDetails.getUsername();
         if ("updateAddress".equals(action)) {
-            restaurantService.updateAddress(addressDTO, currentUserName);
+            restaurantService.updateAddress(addressDTO, Integer.valueOf(userId));
         } else {
-            restaurantService.updateRestaurantInformation(restaurantDTO, currentUserName);
+            restaurantService.updateRestaurantInformation(restaurantDTO, Integer.valueOf(userId));
         }
         return "redirect:" + RESTAURANT_PROFILE;
     }

@@ -14,5 +14,7 @@ public class AddressDTO {
     String country;
     String city;
     String postalCode;
-    String currentAddress;
+    String streetName;
+    String buildingNumber;
+    Integer localNumber;
 }

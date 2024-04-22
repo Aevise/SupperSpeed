@@ -6,10 +6,12 @@ import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AddressJpaRepository extends JpaRepository<AddressEntity, Integer> {
 
     @Query("SELECT DISTINCT a.city FROM AddressEntity a WHERE a.city IS NOT NULL")
     List<String> findDistinctCities();
+
 }

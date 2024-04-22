@@ -1,11 +1,11 @@
-INSERT INTO address(address_id, country, city, postal_code, current_address)
-VALUES (1, 'Poland', 'Chelm', '22-100', 'hehe 12');
-INSERT INTO address(address_id, country, city, postal_code, current_address)
-VALUES (2, 'Poland', 'Lublin', '22-100', 'hehe 12');
-INSERT INTO address(address_id, country, city, postal_code, current_address)
-VALUES (3, 'Poland', 'Lublin', '22-100', 'hehe 12');
-INSERT INTO address(address_id, country, city, postal_code, current_address)
-VALUES (4, 'Poland', 'Kreska', '22-100', 'hehe 12');
+INSERT INTO address(address_id, country, city, postal_code, street_name, building_number)
+VALUES (1, 'Poland', 'Chelm', '22-100', 'hehe', 1);
+INSERT INTO address(address_id, country, city, postal_code, street_name, building_number)
+VALUES (2, 'Poland', 'Lublin', '22-100', 'not hehe', 2);
+INSERT INTO address(address_id, country, city, postal_code, street_name, building_number)
+VALUES (3, 'Poland', 'Lublin', '22-100', 'Jaskrawa', 3);
+INSERT INTO address(address_id, country, city, postal_code, street_name, building_number)
+VALUES (4, 'Poland', 'Kreska', '22-100', 'Domowa', 4);
 
 INSERT INTO supper_user(user_id, email, password, active, creation_date_time, last_login_date_time, role_id)
 VALUES (1, 'test1@test.com', '$2a$12$zjYWnQlFwPc0xP.Ls0brs.WFZ/qN/J3Z0.o/M/K7bQRW6SUTLMX42', true, CURRENT_TIMESTAMP,

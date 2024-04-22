@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.ClientMapper;
 import pl.Aevise.SupperSpeed.business.dao.ClientDAO;
 import pl.Aevise.SupperSpeed.domain.Client;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class ClientProfileService {
 
     private final ClientDAO clientDAO;
+    private final ClientMapper clientMapper;
+
     private final AddressService addressService;
     private final ProfileService profileService;
 
@@ -41,31 +44,19 @@ public class ClientProfileService {
     }
 
     @Transactional
-    public void updateClientInformation(ClientDTO newUsersInformation, String email) {
-        Optional<SupperUser> currentUser = profileService.findUserByEmail(email);
+    public void updateClientInformation(ClientDTO clientDTO, Integer userId) {
 
-        if (currentUser.isPresent()) {
-            Integer userId = currentUser.get().getSupperUserId();
-            clientDAO.updateClientInformation(newUsersInformation, userId);
-            log.info("Client's [{}] information updated successfully.", userId);
-        } else {
-            log.error("Could not update information for client: [{}]. Client not found.", email);
-        }
+        Client client = clientMapper.mapFromDTO(clientDTO);
+
+        clientDAO.updateClientInformation(client, userId);
+        log.info("Client's [{}] information updated successfully.", userId);
     }
 
     @Transactional
     @Qualifier("clientUpdateAddress")
-    public void updateAddress(AddressDTO addressDTO, String email) {
-        Optional<SupperUser> currentUser = profileService.findUserByEmail(email);
-
-        if (currentUser.isPresent()) {
-            Integer supperUserId = currentUser.get().getSupperUserId();
-            log.info("Successfully retrieved user's: [{}] information", supperUserId);
-            addressService.updateAddressByUserId(addressDTO, supperUserId);
-            log.info("Successfully updated address for user: [{}]", supperUserId);
-        } else {
-            log.error("Did not found user with email: [{}]", email);
-        }
+    public void updateAddress(AddressDTO addressDTO, Integer userId) {
+        addressService.updateAddressByUserId(addressDTO, userId);
+        log.info("Successfully updated address for user: [{}]", userId);
     }
 
 }

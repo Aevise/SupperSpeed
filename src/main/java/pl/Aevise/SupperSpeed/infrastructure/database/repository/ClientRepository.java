@@ -38,14 +38,12 @@ public class ClientRepository implements ClientDAO {
     }
 
     @Override
-    public void updateClientInformation(ClientDTO clientDTO, Integer id) {
+    public void updateClientInformation(Client client, Integer id) {
         ClientEntity clientEntity = findClientEntityById(id);
 
-        Client clientNewData = clientMapper.mapFromDTO(clientDTO);
-
-        clientEntity.setName(clientNewData.getName());
-        clientEntity.setSurname(clientNewData.getSurname());
-        clientEntity.setPhone(clientNewData.getPhone());
+        clientEntity.setName(client.getName());
+        clientEntity.setSurname(client.getSurname());
+        clientEntity.setPhone(client.getPhone());
 
         clientJpaRepository.saveAndFlush(clientEntity);
     }

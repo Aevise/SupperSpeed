@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
 import pl.Aevise.SupperSpeed.business.dao.AddressDAO;
 import pl.Aevise.SupperSpeed.business.dao.ClientDAO;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
@@ -25,20 +26,28 @@ public class AddressService {
     private final AddressDAO addressDAO;
     private final RestaurantDAO restaurantDAO;
 
+    private final AddressMapper addressMapper;
+
     @Qualifier("UpdateAddress")
     public void updateAddressByUserId(AddressDTO addressDTO, Integer userId) {
         Optional<Client> client = clientDAO.findById(userId);
 
         if (client.isPresent()) {
             Integer addressId = client.get().getAddress().getAddressId();
-            addressDAO.updateAddress(addressDTO, addressId);
+            log.info("Fetched client with id: [{}]", userId);
+
+            Address address = addressMapper.mapFromDTO(addressDTO);
+            addressDAO.updateAddress(address, addressId);
             return;
         }
 
         Optional<Restaurant> restaurant = restaurantDAO.findById(userId);
         if (restaurant.isPresent()) {
             Integer addressId = restaurant.get().getAddress().getAddressId();
-            addressDAO.updateAddress(addressDTO, addressId);
+            log.info("Fetched restaurant with id: [{}]", userId);
+            Address address = addressMapper.mapFromDTO(addressDTO);
+
+            addressDAO.updateAddress(address, addressId);
         }
 
     }

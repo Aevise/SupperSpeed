@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface AddressDAO {
     Optional<Address> findById(Integer id);
 
-    void updateAddress(AddressDTO addressDTO, Integer addressId);
+    void updateAddress(Address address, Integer addressId);
 
     List<Address> findAll();
 

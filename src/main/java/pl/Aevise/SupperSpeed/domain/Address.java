@@ -6,11 +6,13 @@ import lombok.*;
 @Value
 @Builder
 @EqualsAndHashCode(of = "addressId")
-@ToString(of = {"addressId", "country", "city", "postalCode", "currentAddress"})
+@ToString(of = {"addressId", "country", "city", "postalCode", "streetName"})
 public class Address {
     Integer addressId;
     String country;
     String city;
     String postalCode;
-    String currentAddress;
+    String streetName;
+    String buildingNumber;
+    Integer localNumber;
 }

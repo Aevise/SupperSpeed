@@ -4,6 +4,8 @@ CREATE TABLE address
     country         VARCHAR(32) ,
     city            VARCHAR(32) ,
     postal_code     VARCHAR(32) ,
-    current_address VARCHAR(64) ,
+    street_name VARCHAR(64) ,
+    building_number VARCHAR(12),
+    local_number INT,
     PRIMARY KEY (address_id)
 );

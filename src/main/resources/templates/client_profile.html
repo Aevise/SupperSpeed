@@ -19,8 +19,9 @@
     <a class="btn btn-success" role="button" th:href="@{/orders}">View orders</a>
     <div class="col-md-3">
         <h3>Your current data:</h3>
-        <form action="/supperspeed/client/profile" method="post">
+        <form th:action="@{/client/profile/update}" method="post">
             <input name="action" type="hidden" value="updateData"/>
+            <input name="userId" type="hidden" th:value="*{userId}"/>
             <div class="row mt-3">
                 <div class="col-md-3">
                     <label for="customerName">Name:</label>
@@ -52,63 +53,83 @@
                 </div>
             </div>
         </form>
+    </div>
+</div>
 
-        <br><br>
-        <h3>Current address:</h3>
-        <form action="/supperspeed/client/profile" method="post">
-            <input name="action" type="hidden" value="updateAddress"/>
-            <div class="row mt-3">
-                <div class="col-md-3">
-                    <label for="customerCountry">Country:</label>
-                </div>
-                <div class="col-md-3">
-                    <input id="customerCountry" th:field="*{addressDTO.country}" type="text">
-                </div>
+<br><br>
+<div class="container">
+    <h3>Current address:</h3>
+    <form th:action="@{/client/profile/update}" method="post">
+        <input name="action" type="hidden" value="updateAddress"/>
+        <input name="userId" th:value="*{userId}" type="hidden">
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="customerCountry">Country:</label>
             </div>
-            <div class="row mt-3">
-                <div class="col-md-3">
-                    <label for="customerCity">City:</label>
-                </div>
-                <div class="col-md-3">
-                    <input id="customerCity" th:field="*{addressDTO.city}" type="text">
-                </div>
+            <div class="col-md-3">
+                <input id="customerCountry" th:field="*{addressDTO.country}" type="text">
             </div>
-            <div class="row mt-3">
-                <div class="col-md-3">
-                    <label for="customerPostalCode">Postal Code:</label>
-                </div>
-                <div class="col-md-3">
-                    <input id="customerPostalCode" th:field="*{addressDTO.postalCode}" type="text">
-                </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="customerCity">City:</label>
             </div>
-            <div class="row mt-3">
-                <div class="col-md-3">
-                    <label for="customerAddress">Address:</label>
-                </div>
-                <div class="col-md-3">
-                    <input id="customerAddress" th:field="*{addressDTO.currentAddress}" type="text">
-                </div>
+            <div class="col-md-3">
+                <input id="customerCity" th:field="*{addressDTO.city}" type="text">
             </div>
-            <div class="row mt-3">
-                <div class="col-md-6"></div>
-                <div class="col-md-2">
-                    <button class="btn btn-info" type="submit">Update address</button>
-                </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="customerPostalCode">Postal Code:</label>
             </div>
-        </form>
-    </div>
+            <div class="col-md-3">
+                <input id="customerPostalCode" th:field="*{addressDTO.postalCode}" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="streetName">Street Name:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="streetName" th:field="*{addressDTO.streetName}" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="buildingNumber">Building Number:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="buildingNumber" th:field="*{addressDTO.buildingNumber}" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3">
+                <label for="localNumber">Local Number:</label>
+            </div>
+            <div class="col-md-3">
+                <input id="localNumber" th:field="*{addressDTO.localNumber}" type="text">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6"></div>
+            <div class="col-md-2">
+                <button class="btn btn-info" type="submit">Update address</button>
+            </div>
+        </div>
+    </form>
+</div>
 
-    <div class="row mt-3">
-        <div class="col-md-4">
-            <a class="btn btn-info" role="button" th:href="@{/}">Go back, and order Food</a>
-        </div>
+<div class="row mt-3">
+    <div class="col-md-4">
+        <a class="btn btn-info" role="button" th:href="@{/}">Go back, and order Food</a>
     </div>
-    <br>
-    <div class="row mt-3">
-        <div class="col-md-4">
-            <a class="btn btn-danger" role="button" th:href="@{/delete}">Delete profile</a>
-        </div>
+</div>
+<br>
+<div class="row mt-3">
+    <div class="col-md-4">
+        <a class="btn btn-danger" role="button" th:href="@{/delete}">Delete profile</a>
     </div>
+</div>
 </div>
 
 <script
