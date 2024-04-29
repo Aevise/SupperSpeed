@@ -16,7 +16,7 @@ public class UserRatingDTO {
     Integer userRatingId;
     Integer foodRating;
     Integer deliveryRating;
-    OffsetDateTime ratingDateTime;
+    String ratingDateTime;
     String description;
     RestaurantResponseDTO restaurantResponseDTO;
 }

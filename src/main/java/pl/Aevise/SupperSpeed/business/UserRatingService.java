@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.UserRatingDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.UserRatingMapper;
 import pl.Aevise.SupperSpeed.business.dao.UserRatingDAO;
 import pl.Aevise.SupperSpeed.domain.UserRating;
@@ -24,11 +25,13 @@ public class UserRatingService {
     private final UserRatingMapper userRatingMapper;
     private final UserRatingEntityMapper userRatingEntityMapper;
 
+    private OffsetDateTimeMapper offsetDateTimeMapper;
+
     private final SupperOrderService supperOrderService;
 
     @Transactional
     public void saveNewComment(UserRatingDTO userRatingDTO, Integer orderId) {
-        userRatingDTO.setRatingDateTime(OffsetDateTime.now());
+        userRatingDTO.setRatingDateTime(offsetDateTimeMapper.mapOffsetDateTimeToString(OffsetDateTime.now()));
         UserRating userRating = userRatingMapper.mapFromDTO(userRatingDTO);
 
         UserRatingEntity userRatingEntity = userRatingDAO.saveNewUserRating(userRating);

@@ -7,13 +7,16 @@ import pl.Aevise.SupperSpeed.domain.UserRating;
 
 @Mapper(componentModel = "spring",
         uses = {
+                OffsetDateTimeMapper.class,
                 RestaurantResponseMapper.class
         })
 public interface UserRatingMapper {
 
     @Mapping(source = "restaurantResponse", target = "restaurantResponseDTO")
+    @Mapping(source = "ratingDateTime", target = "ratingDateTime", qualifiedByName = "mapOffsetDateTimeToString")
     UserRatingDTO mapToDTO(final UserRating userRating);
 
     @Mapping(source = "restaurantResponseDTO", target = "restaurantResponse")
+    @Mapping(source = "ratingDateTime", target = "ratingDateTime", qualifiedByName = "mapStringToOffsetDateTime")
     UserRating mapFromDTO(UserRatingDTO userRatingDTO);
 }
