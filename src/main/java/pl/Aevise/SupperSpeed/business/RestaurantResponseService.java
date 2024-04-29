@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantResponseDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantResponseMapper;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantResponseDAO;
 import pl.Aevise.SupperSpeed.domain.RestaurantResponse;
@@ -20,12 +21,14 @@ public class RestaurantResponseService {
     private final RestaurantResponseDAO restaurantResponseDAO;
     private final RestaurantResponseMapper restaurantResponseMapper;
 
+    private final OffsetDateTimeMapper offsetDateTimeMapper;
+
     private final UserRatingService userRatingService;
 
 
     @Transactional
     public void saveRestaurantResponse(RestaurantResponseDTO restaurantResponseDTO, Integer userRatingId) {
-        restaurantResponseDTO.setResponseDateTime(OffsetDateTime.now());
+        restaurantResponseDTO.setResponseDateTime(offsetDateTimeMapper.mapOffsetDateTimeToString(OffsetDateTime.now()));
         RestaurantResponse restaurantResponse = restaurantResponseMapper.mapFromDTO(restaurantResponseDTO);
         RestaurantResponseEntity restaurantResponseEntity = restaurantResponseDAO.saveRestaurantResponse(restaurantResponse);
         if(restaurantResponseEntity != null){

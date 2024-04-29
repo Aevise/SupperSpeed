@@ -15,5 +15,5 @@ public class RestaurantResponseDTO {
 
     Integer restaurantResponseId;
     String description;
-    OffsetDateTime responseDateTime;
+    String responseDateTime;
 }

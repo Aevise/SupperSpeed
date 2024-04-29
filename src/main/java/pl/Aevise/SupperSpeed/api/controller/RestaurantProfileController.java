@@ -9,14 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
+import pl.Aevise.SupperSpeed.business.ImageHandlingService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 
+import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -26,11 +29,15 @@ public class RestaurantProfileController {
 
     static final String RESTAURANT_PROFILE = "/restaurant/profile";
     static final String RESTAURANT_UPDATE = "/restaurant/profile/update";
+    static final String UPDATE_LOGO = "/restaurant/profile/update/logo";
 
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
+
     private final AddressService addressService;
     private final AddressMapper addressMapper;
+
+    private final ImageHandlingService imageHandlingService;
 
     @GetMapping(value = RESTAURANT_PROFILE)
     public String getRestaurantProfile(
@@ -78,6 +85,18 @@ public class RestaurantProfileController {
         } else {
             restaurantService.updateRestaurantInformation(restaurantDTO, Integer.valueOf(userId));
         }
+        return "redirect:" + RESTAURANT_PROFILE;
+    }
+
+    @PostMapping(UPDATE_LOGO)
+    public String updateRestaurantLogo(
+            @RequestParam("image")MultipartFile image,
+            @RequestParam("userId") Integer userId,
+            @RequestParam("restaurantName") String restaurantName
+            ) throws IOException {
+
+        imageHandlingService.updateImage(image.getBytes(), userId, restaurantName);
+
         return "redirect:" + RESTAURANT_PROFILE;
     }
 }

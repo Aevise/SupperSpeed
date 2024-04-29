@@ -58,6 +58,7 @@
                              th:text="'Restaurant: ' + ${order.getRestaurantDTO().getRestaurantName()}"></div>
                     </div>
                     <div class="container" th:if="${dishesByOrderId.get(order.getOrderId()).size() > 0}">
+                        <hr class="hr"/>
                         <div class="row"><b>Dishes:</b></div>
                         <div class="row">
                             <div class="col"><b>Name</b></div>
@@ -94,6 +95,7 @@
                     </div>
                     <div class="container"
                          th:if="${order.getStatusListDTO().getStatusId() == 5 && role == 'CLIENT' && order.getUserRatingDTO() == null}">
+                        <hr class="hr"/>
                         <div class="row"><b>Rate the order!:</b></div>
                         <div class="row">
 
@@ -106,7 +108,6 @@
                             <div class="col">
                                 <div class="row">Comment:</div>
                             </div>
-
                         </div>
                         <form method="post" th:action="@{/orders/comment/add}">
                             <div class="row">
@@ -142,6 +143,7 @@
                     </div>
                     <div class="container"
                          th:if="${order.getStatusListDTO().getStatusId() == 5 && order.getUserRatingDTO() != null}">
+                        <hr class="hr"/>
                         <div class="row">
                             <div class="col"><b>User Rating:</b></div>
                         </div>
@@ -157,6 +159,7 @@
                         </div>
                         <div class="container"
                              th:if="${role == 'RESTAURANT' && order.getUserRatingDTO().getRestaurantResponseDTO() == null}">
+                            <hr class="hr"/>
                             <form method="post" th:action="@{/orders/comment/respond}">
                                 <div class="col">
                                     <label>
@@ -173,6 +176,7 @@
                         </div>
                         <div class="container"
                              th:if="${order.getUserRatingDTO().getRestaurantResponseDTO() != null}">
+                            <hr class="hr"/>
                             <div class="row"><b>Restaurant Response:</b></div>
                             <div class="row">
                                 <div class="col">Response time:</div>
@@ -186,7 +190,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="hr"/>
+                    <hr style="height: 5px; background-color: green; border: none;"/>
                 </div>
             </div>
         </div>

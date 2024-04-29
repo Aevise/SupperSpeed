@@ -12,12 +12,21 @@ import java.util.Optional;
 public interface OffsetDateTimeMapper {
 
     DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneOffset.UTC);
+    DateTimeFormatter DATE_FORMAT_FOR_IMAGES = DateTimeFormatter.ofPattern("yyyy_MM_dd").withZone(ZoneOffset.UTC);
 
     @Named("mapOffsetDateTimeToString")
     default String mapOffsetDateTimeToString(OffsetDateTime offsetDateTime) {
         return Optional.ofNullable(offsetDateTime)
                 .map(odt -> odt.atZoneSameInstant(ZoneOffset.UTC))
                 .map(odt -> odt.format(DATE_FORMAT))
+                .orElse(null);
+    }
+
+    @Named("mapOffsetDateTimeToStringForImages")
+    default String mapOffsetDateTimeToStringForImages(OffsetDateTime offsetDateTime) {
+        return Optional.ofNullable(offsetDateTime)
+                .map(odt -> odt.atZoneSameInstant(ZoneOffset.UTC))
+                .map(odt -> odt.format(DATE_FORMAT_FOR_IMAGES))
                 .orElse(null);
     }
 
