@@ -10,7 +10,7 @@ uses = {
         AddressMapper.class
 })
 public interface ClientMapper {
-    @Mapping(source = "address.addressId", target = "addressId")
+//    @Mapping(source = "address.addressId", target = "addressId")
     @Mapping(source = "supperUser.supperUserId", target="supperUserId")
     ClientDTO mapToDTO(final Client client);
 

@@ -11,5 +11,5 @@ import lombok.With;
 @EqualsAndHashCode(of = "logoId")
 public class Logo {
     Integer logoId;
-    byte[] logo;
+    String logoURL;
 }

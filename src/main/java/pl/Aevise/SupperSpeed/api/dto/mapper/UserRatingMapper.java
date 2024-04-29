@@ -18,5 +18,5 @@ public interface UserRatingMapper {
 
     @Mapping(source = "restaurantResponseDTO", target = "restaurantResponse")
     @Mapping(source = "ratingDateTime", target = "ratingDateTime", qualifiedByName = "mapStringToOffsetDateTime")
-    UserRating mapFromDTO(UserRatingDTO userRatingDTO);
+    UserRating mapFromDTO(final UserRatingDTO userRatingDTO);
 }

@@ -19,8 +19,7 @@ public class LogoEntity {
     @Column(name = "logo_id", nullable = false, unique = true)
     private Integer logoId;
 
-    @Lob
-    @Column(name = "logo")
-    private byte[] logo;
+    @Column(name = "logoURL")
+    private String logoURL;
 
 }

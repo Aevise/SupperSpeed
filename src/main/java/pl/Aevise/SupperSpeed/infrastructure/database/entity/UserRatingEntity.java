@@ -33,7 +33,7 @@ public class UserRatingEntity {
     @Column(name = "description", length = 256)
     private String description;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_response_id", unique = true)
     private RestaurantResponseEntity restaurantResponseEntity;
 
