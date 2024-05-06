@@ -9,7 +9,6 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,7 +35,7 @@ public class ImageHandler implements ImageHandlerInterface {
     }
 
     @Override
-    public BufferedImage changeTypeToJPG(byte[] imageBytes){
+    public BufferedImage changeTypeToJPG(byte[] imageBytes) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
         BufferedImage inputImage;
 
@@ -55,9 +54,9 @@ public class ImageHandler implements ImageHandlerInterface {
     }
 
     @Override
-    public String saveImage(BufferedImage resizedImage, String imageName, String folderPath){
+    public String saveImage(BufferedImage resizedImage, String imageName, String folderPath) {
         String fileName = fileNameCreator(imageName);
-        String saveLocation = folderPath + "\\" +  fileName;
+        String saveLocation = folderPath + "\\" + fileName;
         try {
             ImageIO.write(resizedImage, DEFAULT_IMAGE_FORMAT, new File(saveLocation));
             log.info("Successfully saved file: [{}]", fileName);

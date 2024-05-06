@@ -33,10 +33,10 @@
     <br>
     <div class="row" th:if="*{restaurantDTO.getLogo() != null}">
         <div class="col">
-        <img th:src="@{'/images/' + ${restaurantDirectory} + '/'  + ${imageName}}"
-             alt="Restaurant Logo"
-             th:width="*{logoWidth}"
-             th:height="*{logoHeight}"/>
+            <img alt="Restaurant Logo"
+                 th:height="*{logoHeight}"
+                 th:src="@{'/images/' + ${restaurantDirectory} + '/'  + ${imageName}}"
+                 th:width="*{logoWidth}"/>
         </div>
         <div class="col"></div>
     </div>

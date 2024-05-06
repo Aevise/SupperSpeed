@@ -8,7 +8,6 @@ import pl.Aevise.SupperSpeed.business.utils.ImageHandler;
 import pl.Aevise.SupperSpeed.domain.Logo;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
 @Slf4j
@@ -29,9 +28,9 @@ public class ImageHandlingService {
 
         BufferedImage originalImageToJPG = imageHandler.changeTypeToJPG(imageBytes);
         BufferedImage resizedImage = imageHandler.resizeImage(originalImageToJPG);
-        if(dishName == null){
+        if (dishName == null) {
             saveLocation = imageHandler.saveImage(resizedImage, restaurantName + LOGO, directoryForRestaurant);
-        }else {
+        } else {
             saveLocation = imageHandler.saveImage(resizedImage, dishName, directoryForRestaurant);
         }
 
@@ -40,7 +39,7 @@ public class ImageHandlingService {
         restaurantService.setLogo(logo, userId);
     }
 
-    public String getDirectoryForRestaurant(Integer userId, String restaurantName)  {
+    public String getDirectoryForRestaurant(Integer userId, String restaurantName) {
         try {
             return imageHandler.createDirectoryForRestaurant(getRestaurantName(userId, restaurantName));
         } catch (IOException e) {
