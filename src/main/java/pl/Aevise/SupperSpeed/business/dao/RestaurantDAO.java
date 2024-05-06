@@ -1,6 +1,6 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
-import pl.Aevise.SupperSpeed.domain.Logo;
+import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
@@ -26,5 +26,5 @@ public interface RestaurantDAO {
 
     RestaurantEntity createRestaurant(RestaurantEntity restaurantEntity);
 
-    void updateRestaurantLogo(Integer userId, Logo logo);
+    void updateRestaurantLogo(Integer userId, Image image);
 }

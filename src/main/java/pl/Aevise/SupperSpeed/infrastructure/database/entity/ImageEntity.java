@@ -6,20 +6,20 @@ import lombok.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "logoId")
+@EqualsAndHashCode(of = "imageId")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "logo")
-public class LogoEntity {
+@Table(name = "image")
+public class ImageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "logo_id", nullable = false, unique = true)
-    private Integer logoId;
+    @Column(name = "image_id", nullable = false, unique = true)
+    private Integer imageId;
 
-    @Column(name = "logoURL")
-    private String logoURL;
+    @Column(name = "imageURL")
+    private String imageURL;
 
 }

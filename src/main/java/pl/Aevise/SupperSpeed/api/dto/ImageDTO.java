@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LogoDTO {
-    String logoURL;
+public class ImageDTO {
+    String imageURL;
 }

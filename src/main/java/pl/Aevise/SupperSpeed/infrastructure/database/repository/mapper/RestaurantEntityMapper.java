@@ -11,7 +11,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
         uses = {
                 AddressEntityMapper.class,
                 ClientEntityMapper.class,
-                LogoEntityMapper.class
+                ImageEntityMapper.class
         }
 )
 public interface RestaurantEntityMapper {
@@ -21,12 +21,12 @@ public interface RestaurantEntityMapper {
     @Mapping(source = "id", target = "restaurantId")
     @Mapping(source = "address", target = "address")
     @Mapping(source = "cuisine", target = "cuisine")
-    @Mapping(source = "logo", target = "logo")
+    @Mapping(source = "imageEntity", target = "image")
     Restaurant mapFromEntity(RestaurantEntity restaurantEntity);
 
     @Mapping(source = "restaurantId", target = "id")
     @Mapping(source = "address", target = "address")
     @Mapping(source = "cuisine", target = "cuisine")
-    @Mapping(source = "logo", target = "logo")
+    @Mapping(source = "image", target = "imageEntity")
     RestaurantEntity mapToEntity(Restaurant restaurant);
 }

@@ -20,7 +20,7 @@ public class RestaurantDTO {
     LocalTime closeHour;
     String phone;
     CuisineDTO cuisine;
-    LogoDTO logo;
+    ImageDTO imageDTO;
     AddressDTO address;
     //TODO dodac address do mapowania restauracji
 

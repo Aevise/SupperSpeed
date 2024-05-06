@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.Aevise.SupperSpeed.business.dao.ImageDAO;
 import pl.Aevise.SupperSpeed.business.utils.ImageHandler;
-import pl.Aevise.SupperSpeed.domain.Logo;
+import pl.Aevise.SupperSpeed.domain.Image;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -34,9 +34,9 @@ public class ImageHandlingService {
             saveLocation = imageHandler.saveImage(resizedImage, dishName, directoryForRestaurant);
         }
 
-        Logo logo = imageDAO.saveImage(saveLocation);
+        Image image = imageDAO.saveImage(saveLocation);
 
-        restaurantService.setLogo(logo, userId);
+        restaurantService.setLogo(image, userId);
     }
 
     public String getDirectoryForRestaurant(Integer userId, String restaurantName) {

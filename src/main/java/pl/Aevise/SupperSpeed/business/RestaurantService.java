@@ -8,7 +8,7 @@ import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
-import pl.Aevise.SupperSpeed.domain.Logo;
+import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -106,8 +106,8 @@ public class RestaurantService {
     }
 
     @Transactional
-    public void setLogo(Logo logo, Integer userId) {
-        restaurantDAO.updateRestaurantLogo(userId, logo);
+    public void setLogo(Image image, Integer userId) {
+        restaurantDAO.updateRestaurantLogo(userId, image);
         log.info("Restaurant's with id [{}] Logo updated successfully", userId);
     }
 }

@@ -8,8 +8,8 @@ import lombok.With;
 @With
 @Value
 @Builder
-@EqualsAndHashCode(of = "logoId")
-public class Logo {
-    Integer logoId;
-    String logoURL;
+@EqualsAndHashCode(of = "imageId")
+public class Image {
+    Integer imageId;
+    String imageURL;
 }

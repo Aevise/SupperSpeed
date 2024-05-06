@@ -7,7 +7,7 @@ CREATE TABLE restaurant
     phone                VARCHAR(32),
     open_hour            TIME        NOT NULL,
     close_hour           TIME        NOT NULL,
-    logo_id              INT,
+    image_id             INT,
     cuisine_id           INT,
     PRIMARY KEY (supper_restaurant_id),
     CONSTRAINT fk_restaurant_user_id
@@ -17,8 +17,8 @@ CREATE TABLE restaurant
         FOREIGN KEY (address_id)
             REFERENCES address (address_id),
     CONSTRAINT fk_restaurant_logo
-        FOREIGN KEY (logo_id)
-            REFERENCES logo (logo_id),
+        FOREIGN KEY (image_id)
+            REFERENCES image (image_id),
     CONSTRAINT fk_restaurant_cuisine
         FOREIGN KEY (cuisine_id)
             REFERENCES cuisine (cuisine_id)

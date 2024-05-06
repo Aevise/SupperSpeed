@@ -31,7 +31,7 @@
 <div class="container-sm">
     <h1>Current Logo:</h1>
     <br>
-    <div class="row" th:if="*{restaurantDTO.getLogo() != null}">
+    <div class="row" th:if="*{restaurantDTO.getImageDTO() != null}">
         <div class="col">
             <img alt="Restaurant Logo"
                  th:height="*{logoHeight}"

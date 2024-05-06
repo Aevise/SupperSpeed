@@ -53,8 +53,8 @@ public class RestaurantEntity {
     private CuisineEntity cuisine;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "logo_id", unique = true)
-    private LogoEntity logo;
+    @JoinColumn(name = "image_id", unique = true)
+    private ImageEntity imageEntity;
 
     //TODO czy tutaj dodac kiedys Cascade? Do sprawdzenia na testach
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")

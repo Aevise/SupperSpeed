@@ -1,9 +1,9 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
 
-import pl.Aevise.SupperSpeed.domain.Logo;
+import pl.Aevise.SupperSpeed.domain.Image;
 
 public interface ImageDAO {
 
-    Logo saveImage(String fileLocation);
+    Image saveImage(String fileLocation);
 }

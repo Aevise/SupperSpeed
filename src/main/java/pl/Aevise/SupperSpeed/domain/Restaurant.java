@@ -3,7 +3,7 @@ package pl.Aevise.SupperSpeed.domain;
 import lombok.*;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.CuisineEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.LogoEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.ImageEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 
 import java.time.LocalTime;
@@ -23,5 +23,5 @@ public class Restaurant {
     AddressEntity address;
     String phone;
     CuisineEntity cuisine;
-    LogoEntity logo;
+    Image image;
 }

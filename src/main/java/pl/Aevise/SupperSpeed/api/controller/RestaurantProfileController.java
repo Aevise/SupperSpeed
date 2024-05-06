@@ -74,9 +74,9 @@ public class RestaurantProfileController {
             model.addAttribute("restaurantDTO", restaurantDTO);
             model.addAttribute("addressDTO", addressDTO);
             model.addAttribute("userId", userId);
-            if (restaurantDTO.getLogo() != null) {
+            if (restaurantDTO.getImageDTO() != null) {
                 String restaurantDirectory = imageHandlingService.getRestaurantName(userId, restaurantDTO.getRestaurantName());
-                model.addAttribute("imageName", restaurantDTO.getLogo().getLogoURL());
+                model.addAttribute("imageName", restaurantDTO.getImageDTO().getImageURL());
                 model.addAttribute("restaurantDirectory", restaurantDirectory);
                 model.addAttribute("logoWidth", MAX_LOGO_WIDTH);
                 model.addAttribute("logoHeight", MAX_LOGO_HEIGHT);
