@@ -16,6 +16,6 @@ public interface ImageHandlerInterface {
 
     BufferedImage changeTypeToJPG(byte[] imageBytes) throws IOException;
 
-    String saveImage(BufferedImage resizedImage, String imageName) throws IOException;
+    String saveImage(BufferedImage resizedImage, String imageName, String folderPath) throws IOException;
 
 }

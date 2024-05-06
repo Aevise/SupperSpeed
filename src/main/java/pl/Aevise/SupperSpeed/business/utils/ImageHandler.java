@@ -12,6 +12,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 
 @Slf4j
@@ -53,16 +55,22 @@ public class ImageHandler implements ImageHandlerInterface {
     }
 
     @Override
-    public String saveImage(BufferedImage resizedImage, String imageName) throws IOException {
-        String absolutePath = new File(DEFAULT_IMAGE_STORAGE_FOLDER).getAbsolutePath();
-
-        String saveLocation = absolutePath + fileNameCreator(imageName);
+    public String saveImage(BufferedImage resizedImage, String imageName, String folderPath) throws IOException {
+        String fileName = fileNameCreator(imageName);
+        String saveLocation = folderPath + "\\" +  fileName;
         ImageIO.write(resizedImage, DEFAULT_IMAGE_FORMAT, new File(saveLocation));
-        return saveLocation;
+        return fileName;
     }
 
     private String fileNameCreator(String imageName) {
         String date = offsetDateTimeMapper.mapOffsetDateTimeToStringForImages(OffsetDateTime.now());
-        return "\\" + date + "-" + imageName + "." + DEFAULT_IMAGE_FORMAT;
+        return date + "-" + imageName + "." + DEFAULT_IMAGE_FORMAT;
+    }
+
+    public String createDirectoryForRestaurant(String restaurantName) throws IOException {
+        String absolutePath2 = new File(DEFAULT_IMAGE_STORAGE_FOLDER).getAbsolutePath();
+        String absolutePath = new File(DEFAULT_IMAGE_STORAGE_FOLDER).getAbsolutePath() + "\\" + restaurantName;
+        Files.createDirectories(Paths.get(absolutePath));
+        return absolutePath;
     }
 }

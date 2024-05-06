@@ -10,7 +10,8 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = {
                 AddressEntityMapper.class,
-                ClientEntityMapper.class
+                ClientEntityMapper.class,
+                LogoEntityMapper.class
         }
 )
 public interface RestaurantEntityMapper {
@@ -20,10 +21,12 @@ public interface RestaurantEntityMapper {
     @Mapping(source = "id", target = "restaurantId")
     @Mapping(source = "address", target = "address")
     @Mapping(source = "cuisine", target = "cuisine")
+    @Mapping(source = "logo", target = "logo")
     Restaurant mapFromEntity(RestaurantEntity restaurantEntity);
 
     @Mapping(source = "restaurantId", target = "id")
     @Mapping(source = "address", target = "address")
     @Mapping(source = "cuisine", target = "cuisine")
+    @Mapping(source = "logo", target = "logo")
     RestaurantEntity mapToEntity(Restaurant restaurant);
 }

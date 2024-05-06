@@ -6,5 +6,8 @@ import pl.Aevise.SupperSpeed.domain.Logo;
 
 @Mapper(componentModel = "spring")
 public interface LogoMapper {
-    LogoDTO map(final Logo logo);
+
+    LogoDTO mapToDTO(final Logo logo);
+
+    Logo mapFromDTO(final LogoDTO logo);
 }

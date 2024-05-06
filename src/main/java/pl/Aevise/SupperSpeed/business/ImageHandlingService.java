@@ -8,6 +8,7 @@ import pl.Aevise.SupperSpeed.business.utils.ImageHandler;
 import pl.Aevise.SupperSpeed.domain.Logo;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 @Slf4j
@@ -15,20 +16,35 @@ import java.io.IOException;
 @AllArgsConstructor
 public class ImageHandlingService {
 
+    private static final String LOGO = "-LOGO";
+
     private final ImageHandler imageHandler;
 
     private final ImageDAO imageDAO;
     private final RestaurantService restaurantService;
 
-    public void updateImage(byte[] imageBytes, Integer userId, String imageName) throws IOException {
+    public void updateImage(byte[] imageBytes, Integer userId, String restaurantName, String dishName) throws IOException {
+        String directoryForRestaurant = getDirectoryForRestaurant(userId, restaurantName);
+        String saveLocation;
 
         BufferedImage originalImageToJPG = imageHandler.changeTypeToJPG(imageBytes);
         BufferedImage resizedImage = imageHandler.resizeImage(originalImageToJPG);
-        String saveLocation = imageHandler.saveImage(resizedImage, imageName);
+        if(dishName == null){
+            saveLocation = imageHandler.saveImage(resizedImage, restaurantName + LOGO, directoryForRestaurant);
+        }else {
+            saveLocation = imageHandler.saveImage(resizedImage, dishName, directoryForRestaurant);
+        }
 
         Logo logo = imageDAO.saveImage(saveLocation);
-        //TODO update restaurant entity with new logo
 
         restaurantService.setLogo(logo, userId);
+    }
+
+    private String getDirectoryForRestaurant(Integer userId, String restaurantName) throws IOException {
+        return imageHandler.createDirectoryForRestaurant(getRestaurantName(userId, restaurantName));
+    }
+
+    public String getRestaurantName(Integer userId, String restaurantName) {
+        return restaurantName + "_" + userId;
     }
 }

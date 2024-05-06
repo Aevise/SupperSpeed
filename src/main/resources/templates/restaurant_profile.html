@@ -28,16 +28,21 @@
     <br><br>
 </div>
 
-<div class="container">
+<div class="container-sm">
     <h1>Current Logo:</h1>
     <br>
-    <div class="row mt-3">
-        <div class="col-md-3">
-            Wjebane logo
+    <div class="row" th:if="*{restaurantDTO.getLogo() != null}">
+        <div class="col">
+        <img th:src="@{'/images/' + ${restaurantDirectory} + '/'  + ${imageName}}"
+             alt="Restaurant Logo"
+             th:width="*{logoWidth}"
+             th:height="*{logoHeight}"/>
         </div>
-        <hr>
+        <div class="col"></div>
     </div>
-    <div class="row"><i>You can upload only png and jpeg images up to 5MB</i></div>
+</div>
+<div class="container pt-3">
+    <div class=" row"><i>You can upload only png and jpeg images up to 5MB</i></div>
     <div class="row">
         <form enctype="multipart/form-data" method="post" th:action="@{/restaurant/profile/update/logo}">
             <div class="col">

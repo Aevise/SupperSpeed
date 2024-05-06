@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOGO_HEIGHT;
+import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOGO_WIDTH;
+
 @Controller
 @AllArgsConstructor
 public class RestaurantProfileController {
@@ -43,7 +46,7 @@ public class RestaurantProfileController {
     public String getRestaurantProfile(
             Model model,
             @AuthenticationPrincipal UserDetails userDetails
-    ) {
+    ) throws IOException {
 
         Optional<Restaurant> restaurant = restaurantService
                 .findRestaurantByEmail(
@@ -68,6 +71,13 @@ public class RestaurantProfileController {
             model.addAttribute("restaurantDTO", restaurantDTO);
             model.addAttribute("addressDTO", addressDTO);
             model.addAttribute("userId", userId);
+            if (restaurantDTO.getLogo() != null) {
+                String restaurantDirectory = imageHandlingService.getRestaurantName(userId, restaurantDTO.getRestaurantName());
+                model.addAttribute("imageName", restaurantDTO.getLogo().getLogoURL());
+                model.addAttribute("restaurantDirectory", restaurantDirectory);
+                model.addAttribute("logoWidth", MAX_LOGO_WIDTH);
+                model.addAttribute("logoHeight", MAX_LOGO_HEIGHT);
+            }
         }
 
         return "restaurant_profile";
@@ -92,13 +102,11 @@ public class RestaurantProfileController {
     public String updateRestaurantLogo(
             @RequestParam("image") MultipartFile image,
             @RequestParam("userId") Integer userId,
-            @RequestParam("restaurantName") String restaurantName
+            @RequestParam("restaurantName") String restaurantName,
+            @RequestParam(name = "dishName", required = false) String dishName
     ) throws IOException {
 
-        imageHandlingService.updateImage(image.getBytes(), userId, restaurantName);
-
-
-        String originalFilename = image.getOriginalFilename();
+        imageHandlingService.updateImage(image.getBytes(), userId, restaurantName, dishName);
 
         return "redirect:" + RESTAURANT_PROFILE;
     }

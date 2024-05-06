@@ -52,7 +52,7 @@ public class RestaurantEntity {
     @JoinColumn(name = "cuisine_id")
     private CuisineEntity cuisine;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "logo_id", unique = true)
     private LogoEntity logo;
 
