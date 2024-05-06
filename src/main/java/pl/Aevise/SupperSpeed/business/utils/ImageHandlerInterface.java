@@ -12,7 +12,6 @@ public interface ImageHandlerInterface {
 
     BufferedImage resizeImage(BufferedImage image);
 
-    byte[] convertBufferedImageToBytes(BufferedImage image, String format) throws IOException;
 
     BufferedImage changeTypeToJPG(byte[] imageBytes) throws IOException;
 

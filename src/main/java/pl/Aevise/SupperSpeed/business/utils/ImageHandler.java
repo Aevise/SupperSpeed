@@ -36,29 +36,35 @@ public class ImageHandler implements ImageHandlerInterface {
     }
 
     @Override
-    public byte[] convertBufferedImageToBytes(BufferedImage image, String format) throws IOException {
-        //TODO finish this function
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(image, format, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
-    }
-
-    @Override
-    public BufferedImage changeTypeToJPG(byte[] imageBytes) throws IOException {
+    public BufferedImage changeTypeToJPG(byte[] imageBytes){
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageBytes);
+        BufferedImage inputImage;
 
-        BufferedImage inputImage = ImageIO.read(byteArrayInputStream);
+        try {
+            inputImage = ImageIO.read(byteArrayInputStream);
+            log.info("Successfully read file");
+        } catch (IOException e) {
+            log.warn("Could not read file [{}]", e.getMessage());
+            throw new RuntimeException(e);
+        }
 
         BufferedImage changedType = new BufferedImage(inputImage.getWidth(), inputImage.getHeight(), BufferedImage.TYPE_INT_RGB);
         changedType.createGraphics().drawImage(inputImage, 0, 0, null);
+        log.info("Successfully changed file type to JPG");
         return changedType;
     }
 
     @Override
-    public String saveImage(BufferedImage resizedImage, String imageName, String folderPath) throws IOException {
+    public String saveImage(BufferedImage resizedImage, String imageName, String folderPath){
         String fileName = fileNameCreator(imageName);
         String saveLocation = folderPath + "\\" +  fileName;
-        ImageIO.write(resizedImage, DEFAULT_IMAGE_FORMAT, new File(saveLocation));
+        try {
+            ImageIO.write(resizedImage, DEFAULT_IMAGE_FORMAT, new File(saveLocation));
+            log.info("Successfully saved file: [{}]", fileName);
+        } catch (IOException e) {
+            log.warn("Could not save file: [{}] - [{}]", fileName, e.getMessage());
+            throw new RuntimeException(e);
+        }
         return fileName;
     }
 
@@ -68,7 +74,6 @@ public class ImageHandler implements ImageHandlerInterface {
     }
 
     public String createDirectoryForRestaurant(String restaurantName) throws IOException {
-        String absolutePath2 = new File(DEFAULT_IMAGE_STORAGE_FOLDER).getAbsolutePath();
         String absolutePath = new File(DEFAULT_IMAGE_STORAGE_FOLDER).getAbsolutePath() + "\\" + restaurantName;
         Files.createDirectories(Paths.get(absolutePath));
         return absolutePath;
