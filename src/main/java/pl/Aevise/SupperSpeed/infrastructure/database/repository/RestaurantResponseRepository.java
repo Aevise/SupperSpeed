@@ -8,8 +8,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantResponseEn
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.RestaurantResponseJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantResponseEntityMapper;
 
-import java.util.Optional;
-
 @Repository
 @AllArgsConstructor
 public class RestaurantResponseRepository implements RestaurantResponseDAO {

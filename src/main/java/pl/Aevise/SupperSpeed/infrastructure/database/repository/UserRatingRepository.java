@@ -23,7 +23,7 @@ public class UserRatingRepository implements UserRatingDAO {
     }
 
     @Override
-    public void saveUserRating(UserRatingEntity userRatingEntity){
+    public void saveUserRating(UserRatingEntity userRatingEntity) {
         userRatingJpaRepository.saveAndFlush(userRatingEntity);
     }
 

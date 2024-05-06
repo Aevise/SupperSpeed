@@ -13,7 +13,7 @@ public class ImgurRestController {
     private final ImgurPhotoService imgurService;
 
     @GetMapping("photo/get/{imageHash}")
-    public String getImage(@PathVariable String imageHash){
+    public String getImage(@PathVariable String imageHash) {
         String image = imgurService.getImage(imageHash);
 
         return "/";

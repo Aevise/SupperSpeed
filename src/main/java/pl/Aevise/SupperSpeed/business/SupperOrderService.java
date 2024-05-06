@@ -2,14 +2,12 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
-import pl.Aevise.SupperSpeed.domain.UserRating;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.StatusListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
@@ -138,7 +136,7 @@ public class SupperOrderService {
 
     public void updateOrder(UserRatingEntity userRating, Integer orderId) {
         Optional<SupperOrderEntity> order = supperOrderDAO.getOrderById(orderId);
-        if(order.isPresent()) {
+        if (order.isPresent()) {
             log.info("Found order with id: [{}]", order);
             SupperOrderEntity supperOrderEntity = order.get();
             supperOrderEntity.setUserRating(userRating);

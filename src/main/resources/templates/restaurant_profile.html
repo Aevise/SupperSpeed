@@ -39,16 +39,16 @@
     </div>
     <div class="row"><i>You can upload only png and jpeg images up to 5MB</i></div>
     <div class="row">
-        <form method="post" th:action="@{/restaurant/profile/update/logo}" enctype="multipart/form-data">
+        <form enctype="multipart/form-data" method="post" th:action="@{/restaurant/profile/update/logo}">
             <div class="col">
                 <div class="form-group">
-                    <input type="file" name="image" accept="image/png, image/jpeg" class="form-control-file">
+                    <input accept="image/png, image/jpeg" class="form-control-file" name="image" type="file">
                 </div>
             </div>
             <div class="col">
-                <input name="userId" type="hidden" th:value="*{userId}"/>
+                <input name="userId" th:value="*{userId}" type="hidden"/>
                 <input name="restaurantName" th:value="*{restaurantDTO.restaurantName}" type="hidden"/>
-                <button type="submit" class="btn btn-primary">Upload Logo</button>
+                <button class="btn btn-primary" type="submit">Upload Logo</button>
             </div>
         </form>
     </div>
@@ -57,9 +57,9 @@
 
 <div class="container">
     <h3>Your current data:</h3>
-    <form th:action="@{/restaurant/profile/update}" method="post">
+    <form method="post" th:action="@{/restaurant/profile/update}">
         <input name="action" type="hidden" value="updateData"/>
-        <input name="userId" type="hidden" th:value="*{userId}"/>
+        <input name="userId" th:value="*{userId}" type="hidden"/>
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="restaurantName">Name:</label>
@@ -104,9 +104,9 @@
 <br><br>
 <div class="container">
     <h3>Current address:</h3>
-    <form th:action="@{/restaurant/profile/update}" method="post">
+    <form method="post" th:action="@{/restaurant/profile/update}">
         <input name="action" type="hidden" value="updateAddress"/>
-        <input name="userId" type="hidden" th:value="*{userId}"/>
+        <input name="userId" th:value="*{userId}" type="hidden"/>
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="customerCountry">Country:</label>

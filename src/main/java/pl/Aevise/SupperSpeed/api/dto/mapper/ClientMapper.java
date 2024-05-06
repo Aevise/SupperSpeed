@@ -6,12 +6,12 @@ import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
 import pl.Aevise.SupperSpeed.domain.Client;
 
 @Mapper(componentModel = "spring",
-uses = {
-        AddressMapper.class
-})
+        uses = {
+                AddressMapper.class
+        })
 public interface ClientMapper {
-//    @Mapping(source = "address.addressId", target = "addressId")
-    @Mapping(source = "supperUser.supperUserId", target="supperUserId")
+    //    @Mapping(source = "address.addressId", target = "addressId")
+    @Mapping(source = "supperUser.supperUserId", target = "supperUserId")
     ClientDTO mapToDTO(final Client client);
 
     Client mapFromDTO(final ClientDTO clientDTO);

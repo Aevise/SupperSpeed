@@ -108,7 +108,7 @@ public class RestaurantRepository implements RestaurantDAO {
         Optional<RestaurantEntity> restaurantEntity = restaurantJpaRepository.findById(userId);
         LogoEntity logoEntity = logoEntityMapper.mapToEntity(logo);
 
-        if(restaurantEntity.isPresent()){
+        if (restaurantEntity.isPresent()) {
             RestaurantEntity restaurant = restaurantEntity.get();
             restaurant.setLogo(logoEntity);
             restaurantJpaRepository.saveAndFlush(restaurant);

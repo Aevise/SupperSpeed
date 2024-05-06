@@ -18,18 +18,18 @@
     <br>
 </div>
 
-<div class="accordion" th:each="orderSet, orderStat:${orders.entrySet()}" id="MyAccordion">
+<div class="accordion" id="MyAccordion" th:each="orderSet, orderStat:${orders.entrySet()}">
     <div class="accordion-item">
         <h2 class="accordion-header" th:id="'heading' + ${orderSet.getKey().getDescription()}">
             <button aria-expanded="false" class="accordion-button collapsed" data-bs-parent="#MyAccordion"
-                    data-bs-toggle="collapse" type="button"
+                    data-bs-toggle="collapse" th:aria-controls="'collapse' + ${orderSet.getKey().getDescription()}"
                     th:data-bs-target="'#collapse' + ${orderSet.getKey().getDescription()}"
-                    th:aria-controls="'collapse' + ${orderSet.getKey().getDescription()}"
-                    th:text="${orderSet.getKey().getDescription()}">
+                    th:text="${orderSet.getKey().getDescription()}"
+                    type="button">
             </button>
         </h2>
-        <div th:id="'collapse' + ${orderSet.getKey().getDescription()}" class="accordion-collapse collapse"
-             data-bs-parent="#Myaccordion">
+        <div class="accordion-collapse collapse" data-bs-parent="#Myaccordion"
+             th:id="'collapse' + ${orderSet.getKey().getDescription()}">
             <div class="accordion-body" th:each="order:${orderSet.getValue()}">
                 <div class="container">
                     <div class="row">
@@ -113,22 +113,22 @@
                             <div class="row">
                                 <div class="col">
                                     <label>
-                                        <input th:name="foodRating" type="range" min="1" max="5" value="1"
-                                               oninput="this.nextElementSibling.value = this.value"/>
+                                        <input max="5" min="1" oninput="this.nextElementSibling.value = this.value" th:name="foodRating" type="range"
+                                               value="1"/>
                                         <output>1</output>
                                     </label>
                                 </div>
                                 <div class="col">
                                     <label>
-                                        <input th:name="deliveryRating" type="range" min="1" max="5" value="1"
-                                               oninput="this.nextElementSibling.value = this.value"/>
+                                        <input max="5" min="1" oninput="this.nextElementSibling.value = this.value" th:name="deliveryRating" type="range"
+                                               value="1"/>
                                         <output>1</output>
                                     </label>
                                 </div>
                                 <div class="col">
                                     <label>
-                                        <input th:name="description" type="text"
-                                               style="width: 100%; height: 40px; font-size: 12px; padding: 8px;"/>
+                                        <input style="width: 100%; height: 40px; font-size: 12px; padding: 8px;" th:name="description"
+                                               type="text"/>
                                     </label>
                                 </div>
                             </div>
@@ -148,7 +148,8 @@
                             <div class="col"><b>User Rating:</b></div>
                         </div>
                         <div class="row">
-                            <div class="col" th:text="'Rating date: ' + ${order.getUserRatingDTO().getRatingDateTime()}"></div>
+                            <div class="col"
+                                 th:text="'Rating date: ' + ${order.getUserRatingDTO().getRatingDateTime()}"></div>
                         </div>
                         <div class="row">
                             <div class="col"

@@ -31,7 +31,7 @@ public class RestaurantResponseService {
         restaurantResponseDTO.setResponseDateTime(offsetDateTimeMapper.mapOffsetDateTimeToString(OffsetDateTime.now()));
         RestaurantResponse restaurantResponse = restaurantResponseMapper.mapFromDTO(restaurantResponseDTO);
         RestaurantResponseEntity restaurantResponseEntity = restaurantResponseDAO.saveRestaurantResponse(restaurantResponse);
-        if(restaurantResponseEntity != null){
+        if (restaurantResponseEntity != null) {
             log.info("Successfully saved restaurant response with id: [{}]", restaurantResponseEntity.getRestaurantResponseId());
         }
 

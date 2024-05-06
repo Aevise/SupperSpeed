@@ -32,6 +32,7 @@ public class ImageHandler implements ImageHandlerInterface {
                 Scalr.OP_ANTIALIAS
         );
     }
+
     @Override
     public byte[] convertBufferedImageToBytes(BufferedImage image, String format) throws IOException {
         //TODO finish this function
@@ -60,7 +61,7 @@ public class ImageHandler implements ImageHandlerInterface {
         return saveLocation;
     }
 
-    private String fileNameCreator(String imageName){
+    private String fileNameCreator(String imageName) {
         String date = offsetDateTimeMapper.mapOffsetDateTimeToStringForImages(OffsetDateTime.now());
         return "\\" + date + "-" + imageName + "." + DEFAULT_IMAGE_FORMAT;
     }

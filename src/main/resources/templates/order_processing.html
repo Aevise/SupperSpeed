@@ -25,7 +25,7 @@
             <div class="col"><strong>Quantity and price</strong></div>
             <div class="col"><strong>Total price</strong></div>
         </div>
-        <div  class="row" th:each="dish:${dishListDTO}">
+        <div class="row" th:each="dish:${dishListDTO}">
             <div class="col" th:text="${dish.getDishDTO().name}"></div>
             <div class="col" th:text="${dish.getQuantity()} + ' x ' + ${dish.getDishDTO().price}"></div>
             <div class="col" th:text="${dish.getQuantity() * dish.getDishDTO().price}"></div>

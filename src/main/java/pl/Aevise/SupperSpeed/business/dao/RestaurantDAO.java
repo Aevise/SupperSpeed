@@ -1,7 +1,5 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
-import lombok.extern.java.Log;
-import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.domain.Logo;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;

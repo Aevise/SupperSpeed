@@ -3,8 +3,6 @@ package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
-import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
 import pl.Aevise.SupperSpeed.business.dao.AddressDAO;
 import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;

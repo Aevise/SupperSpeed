@@ -24,10 +24,8 @@ public class UserRatingService {
     private final UserRatingDAO userRatingDAO;
     private final UserRatingMapper userRatingMapper;
     private final UserRatingEntityMapper userRatingEntityMapper;
-
-    private OffsetDateTimeMapper offsetDateTimeMapper;
-
     private final SupperOrderService supperOrderService;
+    private OffsetDateTimeMapper offsetDateTimeMapper;
 
     @Transactional
     public void saveNewComment(UserRatingDTO userRatingDTO, Integer orderId) {
@@ -49,9 +47,9 @@ public class UserRatingService {
         userRatingDAO.saveUserRating(userRatingEntity);
     }
 
-    public UserRating getUserRatingById(Integer userRatingId){
+    public UserRating getUserRatingById(Integer userRatingId) {
         Optional<UserRatingEntity> userRatingById = userRatingDAO.getUserRatingById(userRatingId);
-        if (userRatingById.isPresent()){
+        if (userRatingById.isPresent()) {
             log.info("Successfully retrieved userRating with id: [{}]", userRatingById);
             return userRatingEntityMapper.mapFromEntity(userRatingById.get());
         }

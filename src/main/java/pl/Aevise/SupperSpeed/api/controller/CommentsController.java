@@ -28,8 +28,8 @@ public class CommentsController {
     @PostMapping(ADD_COMMENT)
     public String addUserCommentToOrder(
             @ModelAttribute UserRatingDTO userRatingDTO,
-            @RequestParam(name="orderId") Integer orderId
-    ){
+            @RequestParam(name = "orderId") Integer orderId
+    ) {
 
         String s = offsetDateTimeMapper.mapOffsetDateTimeToString(OffsetDateTime.now());
         OffsetDateTime offsetDateTime = offsetDateTimeMapper.mapStringToOffsetDateTime(s);
@@ -43,8 +43,8 @@ public class CommentsController {
     @PostMapping(ADD_RESPONSE)
     public String addRestaurantResponseToComment(
             @ModelAttribute RestaurantResponseDTO restaurantResponseDTO,
-            @RequestParam(name="userRatingId") Integer userRatingId
-    ){
+            @RequestParam(name = "userRatingId") Integer userRatingId
+    ) {
 
         restaurantResponseService.saveRestaurantResponse(restaurantResponseDTO, userRatingId);
 

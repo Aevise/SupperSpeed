@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
-import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.domain.Address;
 
 import java.util.List;

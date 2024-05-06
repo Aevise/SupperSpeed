@@ -82,10 +82,10 @@ public class DishListService {
     }
 
     @Transactional
-    public List<DishListDTO> getDishesByOrderId(int orderId){
+    public List<DishListDTO> getDishesByOrderId(int orderId) {
         List<DishList> dishesByOrderId = dishListRepository.getDishesByOrderId(orderId);
-        if (!dishesByOrderId.isEmpty()){
-            log.info("Found [{}] dishes bound with order [{}]", dishesByOrderId.size(), orderId );
+        if (!dishesByOrderId.isEmpty()) {
+            log.info("Found [{}] dishes bound with order [{}]", dishesByOrderId.size(), orderId);
 
             return dishesByOrderId.stream()
                     .map(dishListMapper::mapToDTO)

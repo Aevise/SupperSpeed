@@ -19,6 +19,11 @@ public class SupperOrderRepository implements SupperOrderDAO {
     private final SupperOrderJpaRepository supperOrderJpaRepository;
     private final SupperOrderEntityMapper supperOrderEntityMapper;
 
+    private static StatusListEntity changeStatus(int newStatus) {
+        return StatusListEntity.builder()
+                .statusId(newStatus)
+                .build();
+    }
 
     @Override
     public List<SupperOrder> getOrdersByRestaurantId(Integer restaurantId) {
@@ -101,11 +106,5 @@ public class SupperOrderRepository implements SupperOrderDAO {
     @Override
     public void saveOrder(SupperOrderEntity supperOrderEntity) {
         supperOrderJpaRepository.saveAndFlush(supperOrderEntity);
-    }
-
-    private static StatusListEntity changeStatus(int newStatus) {
-        return StatusListEntity.builder()
-                .statusId(newStatus)
-                .build();
     }
 }

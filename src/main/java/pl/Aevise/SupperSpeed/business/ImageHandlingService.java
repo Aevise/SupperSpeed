@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pl.Aevise.SupperSpeed.business.dao.ImageDAO;
-import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
 import pl.Aevise.SupperSpeed.business.utils.ImageHandler;
 import pl.Aevise.SupperSpeed.domain.Logo;
 

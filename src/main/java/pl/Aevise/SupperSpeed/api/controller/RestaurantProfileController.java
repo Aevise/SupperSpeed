@@ -20,7 +20,6 @@ import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -91,10 +90,10 @@ public class RestaurantProfileController {
 
     @PostMapping(UPDATE_LOGO)
     public String updateRestaurantLogo(
-            @RequestParam("image")MultipartFile image,
+            @RequestParam("image") MultipartFile image,
             @RequestParam("userId") Integer userId,
             @RequestParam("restaurantName") String restaurantName
-            ) throws IOException {
+    ) throws IOException {
 
         imageHandlingService.updateImage(image.getBytes(), userId, restaurantName);
 

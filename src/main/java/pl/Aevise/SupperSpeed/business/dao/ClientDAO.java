@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
-import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
 import pl.Aevise.SupperSpeed.domain.Client;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 
