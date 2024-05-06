@@ -20,6 +20,7 @@ import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -96,6 +97,9 @@ public class RestaurantProfileController {
             ) throws IOException {
 
         imageHandlingService.updateImage(image.getBytes(), userId, restaurantName);
+
+
+        String originalFilename = image.getOriginalFilename();
 
         return "redirect:" + RESTAURANT_PROFILE;
     }

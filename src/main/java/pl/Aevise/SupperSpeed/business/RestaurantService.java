@@ -8,6 +8,7 @@ import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
+import pl.Aevise.SupperSpeed.domain.Logo;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -21,9 +22,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RestaurantService {
 
-    private final RestaurantDAO restaurantDAO;
     private final ProfileService profileService;
     private final AddressService addressService;
+
+    private final RestaurantDAO restaurantDAO;
     private final RestaurantEntityMapper restaurantEntityMapper;
     private final RestaurantMapper restaurantMapper;
 
@@ -44,15 +46,15 @@ public class RestaurantService {
     }
 
     public void updateAddress(AddressDTO addressDTO, Integer restaurantId) {
-            addressService.updateAddressByUserId(addressDTO, restaurantId);
-            log.info("Updated address for user with id: [{}]", restaurantId);
+        addressService.updateAddressByUserId(addressDTO, restaurantId);
+        log.info("Updated address for user with id: [{}]", restaurantId);
     }
 
     public void updateRestaurantInformation(RestaurantDTO restaurantDTO, Integer userId) {
         Restaurant restaurant = restaurantMapper.mapFromDTO(restaurantDTO);
 
         restaurantDAO.updateRestaurantInformation(restaurant, userId);
-            log.info("Restaurant's [{}] information updated successfully.", userId);
+        log.info("Restaurant's [{}] information updated successfully.", userId);
     }
 
     public Optional<Restaurant> findById(Integer restaurantId) {
@@ -101,5 +103,11 @@ public class RestaurantService {
         }
         log.warn("No restaurant to map available");
         return null;
+    }
+
+    @Transactional
+    public void setLogo(Logo logo, Integer userId) {
+        restaurantDAO.updateRestaurantLogo(userId, logo);
+        log.info("Restaurant's with id [{}] Logo updated successfully", userId);
     }
 }

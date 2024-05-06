@@ -29,5 +29,7 @@ public class ImageHandlingService {
 
         Logo logo = imageDAO.saveImage(saveLocation);
         //TODO update restaurant entity with new logo
+
+        restaurantService.setLogo(logo, userId);
     }
 }

@@ -1,13 +1,15 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
-import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
+import pl.Aevise.SupperSpeed.domain.Logo;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.LogoEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.RestaurantJpaRepository;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.LogoEntityMapper;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
@@ -21,8 +23,12 @@ public class RestaurantRepository implements RestaurantDAO {
 
     private final RestaurantJpaRepository restaurantJpaRepository;
     private final RestaurantEntityMapper restaurantEntityMapper;
-    private final RestaurantMapper restaurantMapper;
+
+    private final LogoEntityMapper logoEntityMapper;
+
     private final SupperUserJpaRepository supperUserJpaRepository;
+
+    private final EntityManager entityManager;
 
     @Override
     public Optional<Restaurant> findByName(String restaurantName) {
@@ -95,5 +101,17 @@ public class RestaurantRepository implements RestaurantDAO {
     @Override
     public RestaurantEntity createRestaurant(RestaurantEntity restaurantEntity) {
         return restaurantJpaRepository.saveAndFlush(restaurantEntity);
+    }
+
+    @Override
+    public void updateRestaurantLogo(Integer userId, Logo logo) {
+        Optional<RestaurantEntity> restaurantEntity = restaurantJpaRepository.findById(userId);
+        LogoEntity logoEntity = logoEntityMapper.mapToEntity(logo);
+
+        if(restaurantEntity.isPresent()){
+            RestaurantEntity restaurant = restaurantEntity.get();
+            restaurant.setLogo(logoEntity);
+            restaurantJpaRepository.saveAndFlush(restaurant);
+        }
     }
 }

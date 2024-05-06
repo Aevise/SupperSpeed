@@ -53,13 +53,15 @@ public class ImageHandler implements ImageHandlerInterface {
 
     @Override
     public String saveImage(BufferedImage resizedImage, String imageName) throws IOException {
-        String saveLocation = fileNameCreator(imageName);
+        String absolutePath = new File(DEFAULT_IMAGE_STORAGE_FOLDER).getAbsolutePath();
+
+        String saveLocation = absolutePath + fileNameCreator(imageName);
         ImageIO.write(resizedImage, DEFAULT_IMAGE_FORMAT, new File(saveLocation));
         return saveLocation;
     }
 
     private String fileNameCreator(String imageName){
         String date = offsetDateTimeMapper.mapOffsetDateTimeToStringForImages(OffsetDateTime.now());
-        return DEFAULT_IMAGE_STORAGE_FOLDER + date + "-" + imageName + DEFAULT_IMAGE_FORMAT;
+        return "\\" + date + "-" + imageName + "." + DEFAULT_IMAGE_FORMAT;
     }
 }

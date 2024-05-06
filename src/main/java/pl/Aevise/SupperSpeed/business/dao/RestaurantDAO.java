@@ -1,6 +1,8 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
+import lombok.extern.java.Log;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
+import pl.Aevise.SupperSpeed.domain.Logo;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
@@ -25,4 +27,6 @@ public interface RestaurantDAO {
     List<Restaurant> findAllByCity(String city);
 
     RestaurantEntity createRestaurant(RestaurantEntity restaurantEntity);
+
+    void updateRestaurantLogo(Integer userId, Logo logo);
 }
