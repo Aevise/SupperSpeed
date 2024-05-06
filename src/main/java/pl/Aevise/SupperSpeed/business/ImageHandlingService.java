@@ -40,8 +40,13 @@ public class ImageHandlingService {
         restaurantService.setLogo(logo, userId);
     }
 
-    private String getDirectoryForRestaurant(Integer userId, String restaurantName) throws IOException {
-        return imageHandler.createDirectoryForRestaurant(getRestaurantName(userId, restaurantName));
+    public String getDirectoryForRestaurant(Integer userId, String restaurantName)  {
+        try {
+            return imageHandler.createDirectoryForRestaurant(getRestaurantName(userId, restaurantName));
+        } catch (IOException e) {
+            log.error("Could not get directory for restaurant: [{}], id: [{}] - [{}]", restaurantName, userId, e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 
     public String getRestaurantName(Integer userId, String restaurantName) {

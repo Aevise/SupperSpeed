@@ -17,6 +17,7 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.ImageHandlingService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
+import pl.Aevise.SupperSpeed.business.utils.FileMigrationUtil;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 
 import java.io.IOException;
@@ -41,6 +42,8 @@ public class RestaurantProfileController {
     private final AddressMapper addressMapper;
 
     private final ImageHandlingService imageHandlingService;
+
+    private final FileMigrationUtil fileMigrationUtil;
 
     @GetMapping(value = RESTAURANT_PROFILE)
     public String getRestaurantProfile(
@@ -88,12 +91,16 @@ public class RestaurantProfileController {
             @ModelAttribute RestaurantDTO restaurantDTO,
             @ModelAttribute AddressDTO addressDTO,
             @RequestParam(required = false) String action,
-            @RequestParam String userId
+            @RequestParam String userId,
+            @RequestParam("oldName") String oldName
     ) {
         if ("updateAddress".equals(action)) {
             restaurantService.updateAddress(addressDTO, Integer.valueOf(userId));
         } else {
             restaurantService.updateRestaurantInformation(restaurantDTO, Integer.valueOf(userId));
+
+            String newName = restaurantDTO.getRestaurantName();
+            fileMigrationUtil.migrateFilesAfterRestaurantNameChange(Integer.valueOf(userId), oldName, newName);
         }
         return "redirect:" + RESTAURANT_PROFILE;
     }

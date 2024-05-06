@@ -65,6 +65,7 @@
     <form method="post" th:action="@{/restaurant/profile/update}">
         <input name="action" type="hidden" value="updateData"/>
         <input name="userId" th:value="*{userId}" type="hidden"/>
+        <input name="oldName" th:value="*{restaurantDTO.restaurantName}" type="hidden"/>
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="restaurantName">Name:</label>
