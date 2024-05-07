@@ -16,7 +16,7 @@ public class DishDTO {
     String name;
     String description;
     BigDecimal price;
-    String photo;
+    ImageDTO imageDTO;
     Boolean availability;
     Boolean isHidden;
 }

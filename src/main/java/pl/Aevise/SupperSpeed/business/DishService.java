@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.business.dao.DishDAO;
 import pl.Aevise.SupperSpeed.domain.Dish;
+import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class DishService {
 
     public List<Dish> findAllByRestaurant(Integer restaurantId) {
         List<Dish> dishesFromRestaurant = dishDAO.findAllByRestaurant(restaurantId);
-        log.info("Found: [{}] dishesByCategory", dishesFromRestaurant.size());
+        log.info("Found: [{}] dishesByRestaurant", dishesFromRestaurant.size());
         return dishesFromRestaurant;
     }
 
@@ -58,7 +59,12 @@ public class DishService {
     public Dish buildDish(DishDTO dishDTO, Integer restaurantId, Integer categoryId) {
         return Dish.builder()
                 .name(dishDTO.getName())
-                .photo(dishDTO.getPhoto())
+                .image(Image.builder()
+                        .imageURL(dishDTO
+                                .getImageDTO()
+                                .getImageURL())
+                        .build()
+                )
                 .price(dishDTO.getPrice())
                 .description(dishDTO.getDescription())
                 .availability(Optional

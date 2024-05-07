@@ -18,7 +18,7 @@ public class Dish {
     String name;
     String description;
     BigDecimal price;
-    String photo;
+    Image image;
     Boolean availability;
     Boolean isHidden;
 }

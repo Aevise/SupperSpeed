@@ -38,8 +38,9 @@ public class DishEntity {
     @Column(name = "price", nullable = false, precision = 8, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "photo", length = 128)
-    private String photo;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", unique = true)
+    private ImageEntity imageEntity;
 
     @Column(name = "availability", nullable = false)
     private Boolean availability;

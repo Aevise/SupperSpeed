@@ -16,7 +16,7 @@ CREATE TABLE restaurant
     CONSTRAINT fk_restaurant_address_id
         FOREIGN KEY (address_id)
             REFERENCES address (address_id),
-    CONSTRAINT fk_restaurant_logo
+    CONSTRAINT fk_restaurant_image
         FOREIGN KEY (image_id)
             REFERENCES image (image_id),
     CONSTRAINT fk_restaurant_cuisine
