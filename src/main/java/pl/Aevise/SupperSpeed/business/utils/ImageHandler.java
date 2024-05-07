@@ -23,13 +23,25 @@ public class ImageHandler implements ImageHandlerInterface {
     private final OffsetDateTimeMapper offsetDateTimeMapper;
 
     @Override
-    public BufferedImage resizeImage(BufferedImage image) {
+    public BufferedImage resizeImageForLogo(BufferedImage image) {
         return Scalr.resize(
                 image,
                 Scalr.Method.ULTRA_QUALITY,
                 Scalr.Mode.AUTOMATIC,
                 ImageHandlerInterface.MAX_LOGO_WIDTH,
                 ImageHandlerInterface.MAX_LOGO_HEIGHT,
+                Scalr.OP_ANTIALIAS
+        );
+    }
+
+    @Override
+    public BufferedImage resizeImageForDish(BufferedImage image) {
+        return Scalr.resize(
+                image,
+                Scalr.Method.ULTRA_QUALITY,
+                Scalr.Mode.AUTOMATIC,
+                ImageHandlerInterface.MAX_IMAGE_WIDTH,
+                ImageHandlerInterface.MAX_IMAGE_HEIGHT,
                 Scalr.OP_ANTIALIAS
         );
     }

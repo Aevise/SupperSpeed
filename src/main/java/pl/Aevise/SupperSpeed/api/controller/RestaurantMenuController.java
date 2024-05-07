@@ -6,9 +6,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
+import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.DishService;
 import pl.Aevise.SupperSpeed.business.ImageHandlingService;
+import pl.Aevise.SupperSpeed.business.RestaurantService;
 
 import java.util.List;
 
@@ -26,11 +29,13 @@ public class RestaurantMenuController {
     private final DishListService dishListService;
     private final ImageHandlingService imageHandlingService;
 
+    private final RestaurantService restaurantService;
+    private final RestaurantMapper restaurantMapper;
+
     @GetMapping(RESTAURANT_MENU)
     public String getRestaurantMenu
             (
                     @RequestParam Integer restaurantId,
-                    @RequestParam String restaurantName,
                     Model model
             ) {
         if (restaurantId <= 0) {
@@ -38,19 +43,20 @@ public class RestaurantMenuController {
         }
         List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
 
+
         if (dishCategories.isEmpty()) {
             return ERROR;
         }
 
         var dishMap = dishListService.extractDishesByCategory(dishCategories, true);
+        RestaurantDTO restaurantDTO = restaurantMapper.mapToDTO(restaurantService.findRestaurantById(restaurantId));
+        String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
 
         model.addAttribute("dishesByCategory", dishMap);
         model.addAttribute("restaurantId", restaurantId);
 
         model.addAttribute("imageWidth", MAX_LOGO_WIDTH);
         model.addAttribute("imageHeight", MAX_LOGO_HEIGHT);
-
-        String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantName);
         model.addAttribute("restaurantDirectory", restaurantDirectory);
 
         return "restaurant_menu";

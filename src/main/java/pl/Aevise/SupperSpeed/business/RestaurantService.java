@@ -110,4 +110,14 @@ public class RestaurantService {
         restaurantDAO.updateRestaurantLogo(userId, image);
         log.info("Restaurant's with id [{}] Logo updated successfully", userId);
     }
+
+    public Restaurant findRestaurantById(Integer restaurantId) {
+        Optional<Restaurant> restaurant = restaurantDAO.findById(restaurantId);
+        if (restaurant.isPresent()) {
+            log.info("Successfully found restaurant with id: [{}]", restaurantId);
+            return restaurant.get();
+        }
+        log.warn("Could not find restaurant with id: [{}]", restaurantId);
+        return null;
+    }
 }

@@ -75,4 +75,9 @@ public class DishService {
                 .isHidden(false)
                 .build();
     }
+
+    public void setDishImage(Image image, Integer dishId) {
+        dishDAO.setDishImage(image, dishId);
+        log.info("Dish with id: [{}] image updated successfully", dishId);
+    }
 }

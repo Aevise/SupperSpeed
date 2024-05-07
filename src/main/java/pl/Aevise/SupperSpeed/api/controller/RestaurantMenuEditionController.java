@@ -18,6 +18,9 @@ import pl.Aevise.SupperSpeed.domain.SupperUser;
 import java.util.List;
 import java.util.Optional;
 
+import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_IMAGE_HEIGHT;
+import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_IMAGE_WIDTH;
+
 @Controller
 @AllArgsConstructor
 public class RestaurantMenuEditionController {
@@ -36,6 +39,7 @@ public class RestaurantMenuEditionController {
     private final DishCategoryService dishCategoryService;
     private final DishService dishService;
     private final RestaurantService restaurantService;
+    private final ImageHandlingService imageHandlingService;
 
 
     @GetMapping(RESTAURANT_MENU_EDIT)
@@ -50,10 +54,18 @@ public class RestaurantMenuEditionController {
 
             var dishList = dishListService.extractDishesByCategory(dishCategories, false);
 
+            String restaurantName = restaurantService.findRestaurantById(restaurantId).getRestaurantName();
+            String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantName);
+
             model.addAttribute("dishesByCategory", dishList);
             model.addAttribute("userId", restaurantId);
             model.addAttribute("categories", dishCategories);
 
+            model.addAttribute("restaurantDirectory", restaurantDirectory);
+            model.addAttribute("imageWidth", MAX_IMAGE_WIDTH);
+            model.addAttribute("imageHeight", MAX_IMAGE_HEIGHT);
+            model.addAttribute("restaurantId", restaurantId);
+            model.addAttribute("restaurantName", restaurantName);
             return "restaurant_menu_edit";
         }
         return ERROR;

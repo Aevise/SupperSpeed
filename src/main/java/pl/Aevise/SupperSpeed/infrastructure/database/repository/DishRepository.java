@@ -7,11 +7,15 @@ import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
 import pl.Aevise.SupperSpeed.business.dao.DishDAO;
 import pl.Aevise.SupperSpeed.domain.Dish;
+import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.ImageEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DishJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DishEntityMapper;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ImageEntityMapper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
@@ -19,6 +23,8 @@ public class DishRepository implements DishDAO {
     private final DishJpaRepository dishJpaRepository;
     private final DishEntityMapper dishEntityMapper;
     private final DishMapper dishMapper;
+
+    private final ImageEntityMapper imageEntityMapper;
 
     @Override
     public List<Dish> findAllByRestaurant(Integer restaurantId) {
@@ -70,6 +76,18 @@ public class DishRepository implements DishDAO {
     public void addDish(Dish dish) {
         DishEntity dishToSave = dishEntityMapper.mapToEntity(dish);
         dishJpaRepository.saveAndFlush(dishToSave);
+    }
+
+    @Override
+    public void setDishImage(Image image, Integer dishId) {
+        Optional<DishEntity> dishEntity = dishJpaRepository.findById(dishId);
+        if (dishEntity.isPresent()) {
+            ImageEntity imageEntity = imageEntityMapper.mapToEntity(image);
+
+            DishEntity dish = dishEntity.get();
+            dish.setImageEntity(imageEntity);
+            dishJpaRepository.saveAndFlush(dish);
+        }
     }
 
 

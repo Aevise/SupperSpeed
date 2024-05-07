@@ -7,7 +7,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 
 @Mapper(componentModel = "spring",
         uses = {
-        ImageEntityMapper.class
+                ImageEntityMapper.class
         })
 public interface DishEntityMapper {
 

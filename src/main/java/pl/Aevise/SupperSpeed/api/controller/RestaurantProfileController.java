@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
@@ -33,7 +32,6 @@ public class RestaurantProfileController {
 
     static final String RESTAURANT_PROFILE = "/restaurant/profile";
     static final String RESTAURANT_UPDATE = "/restaurant/profile/update";
-    static final String UPDATE_LOGO = "/restaurant/profile/update/logo";
 
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
@@ -105,16 +103,4 @@ public class RestaurantProfileController {
         return "redirect:" + RESTAURANT_PROFILE;
     }
 
-    @PostMapping(UPDATE_LOGO)
-    public String updateRestaurantLogo(
-            @RequestParam("image") MultipartFile image,
-            @RequestParam("userId") Integer userId,
-            @RequestParam("restaurantName") String restaurantName,
-            @RequestParam(name = "dishName", required = false) String dishName
-    ) throws IOException {
-
-        imageHandlingService.updateImage(image.getBytes(), userId, restaurantName, dishName);
-
-        return "redirect:" + RESTAURANT_PROFILE;
-    }
 }

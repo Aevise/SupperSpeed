@@ -6,9 +6,9 @@ import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.domain.Dish;
 
 @Mapper(componentModel = "spring",
-uses = {
-        ImageMapper.class
-})
+        uses = {
+                ImageMapper.class
+        })
 public interface DishMapper {
 
     @Mapping(source = "imageDTO", target = "image")

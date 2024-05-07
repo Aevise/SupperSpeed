@@ -21,22 +21,37 @@ public class ImageHandlingService {
 
     private final ImageDAO imageDAO;
     private final RestaurantService restaurantService;
+    private final DishService dishService;
 
-    public void updateImage(byte[] imageBytes, Integer userId, String restaurantName, String dishName) throws IOException {
+    public void uploadLogo(byte[] imageBytes, Integer userId, String restaurantName) throws IOException {
         String directoryForRestaurant = getDirectoryForRestaurant(userId, restaurantName);
         String saveLocation;
 
         BufferedImage originalImageToJPG = imageHandler.changeTypeToJPG(imageBytes);
-        BufferedImage resizedImage = imageHandler.resizeImage(originalImageToJPG);
-        if (dishName == null) {
-            saveLocation = imageHandler.saveImage(resizedImage, restaurantName + LOGO, directoryForRestaurant);
-        } else {
-            saveLocation = imageHandler.saveImage(resizedImage, dishName, directoryForRestaurant);
-        }
+        BufferedImage resizedImage = imageHandler.resizeImageForLogo(originalImageToJPG);
+        saveLocation = imageHandler.saveImage(resizedImage, restaurantName + LOGO, directoryForRestaurant);
+        log.info("Saved resized logo for restaurant: [{}]", restaurantName + LOGO);
 
         Image image = imageDAO.saveImage(saveLocation);
+        log.info("Saved logo in database: [{}]", image.getImageId());
 
         restaurantService.setLogo(image, userId);
+    }
+
+    public void uploadDishImage(byte[] imageBytes, Integer dishId, String dishName, String restaurantName, Integer restaurantId) {
+        String directoryForRestaurant = getDirectoryForRestaurant(restaurantId, restaurantName);
+        String saveLocation;
+
+        BufferedImage originalImageToJPG = imageHandler.changeTypeToJPG(imageBytes);
+
+        BufferedImage resizedImage = imageHandler.resizeImageForDish(originalImageToJPG);
+        saveLocation = imageHandler.saveImage(resizedImage, dishName + "_" + dishId, directoryForRestaurant);
+        log.info("Saved resized image for dish: [{}]", dishName);
+
+        Image image = imageDAO.saveImage(saveLocation);
+        log.info("Saved image in database: [{}]", image.getImageId());
+
+        dishService.setDishImage(image, dishId);
     }
 
     public String getDirectoryForRestaurant(Integer userId, String restaurantName) {
