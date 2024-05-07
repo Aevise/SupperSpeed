@@ -37,10 +37,15 @@
                 <th style="background-color: transparent; text-align: center;">Total Price</th>
             </tr>
             </thead>
-
             <tbody id="dishTable">
             <tr th:data-dish-id="${dish.dishId}" th:each="dish : ${category.getValue()}">
-                <td th:text="${dish.photo}"/>
+                <td>
+                    <img th:if="${dish.getImageDTO() != null}"
+                         alt="Dish Image"
+                         th:height="*{imageHeight}"
+                         th:src="@{'/images/' + ${restaurantDirectory} + '/'  + ${dish.getImageDTO().getImageURL()}}"
+                         th:width="*{imageWidth}"/>
+                </td>
                 <td th:text="${dish.name}"/>
                 <td th:text="${dish.description}"/>
                 <td th:text="${dish.price}"/>
