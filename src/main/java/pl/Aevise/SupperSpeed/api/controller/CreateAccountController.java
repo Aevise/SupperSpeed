@@ -148,6 +148,7 @@ public class CreateAccountController {
                 .openHour(restaurantDTO.getOpenHour())
                 .closeHour(restaurantDTO.getCloseHour())
                 .address(new AddressEntity())
+                .isShown(false)
                 .build();
     }
 

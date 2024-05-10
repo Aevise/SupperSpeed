@@ -21,6 +21,7 @@ public class Restaurant {
     LocalTime closeHour;
     AddressEntity address;
     String phone;
+    boolean isShown;
     CuisineEntity cuisine;
     Image image;
 }

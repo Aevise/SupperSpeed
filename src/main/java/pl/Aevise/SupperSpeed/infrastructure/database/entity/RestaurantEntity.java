@@ -38,6 +38,9 @@ public class RestaurantEntity {
     @Column(name = "open_hour")
     private LocalTime openHour;
 
+    @Column(name = "is_shown")
+    private boolean isShown;
+
     @Column(name = "close_hour")
     private LocalTime closeHour;
 

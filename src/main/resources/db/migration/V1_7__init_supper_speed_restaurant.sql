@@ -9,6 +9,7 @@ CREATE TABLE restaurant
     close_hour           TIME        NOT NULL,
     image_id             INT,
     cuisine_id           INT,
+    is_shown              BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (supper_restaurant_id),
     CONSTRAINT fk_restaurant_user_id
         FOREIGN KEY (supper_restaurant_id)
