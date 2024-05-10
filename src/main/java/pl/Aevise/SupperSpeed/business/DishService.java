@@ -59,12 +59,6 @@ public class DishService {
     public Dish buildDish(DishDTO dishDTO, Integer restaurantId, Integer categoryId) {
         return Dish.builder()
                 .name(dishDTO.getName())
-                .image(Image.builder()
-                        .imageURL(dishDTO
-                                .getImageDTO()
-                                .getImageURL())
-                        .build()
-                )
                 .price(dishDTO.getPrice())
                 .description(dishDTO.getDescription())
                 .availability(Optional
