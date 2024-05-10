@@ -171,6 +171,30 @@
 </div>
 
 <div class="container">
+    <form method="post" th:action="@{/restaurant/profile/toggle}">
+        <input name="userId" th:value="*{userId}" type="hidden"/>
+        <div class="row mt-3"
+             style="display: flex;
+             justify-content: center;
+             gap: 20px;"
+             th:if="*{restaurantDTO.isShown == true}">
+            <button class="btn btn-warning" type="submit">
+                Hide my restaurant
+            </button>
+        </div>
+        <div class="row mt-3"
+             style="display: flex;
+             justify-content: center;
+             gap: 20px;"
+             th:if="*{restaurantDTO.isShown != true}">
+            <button class="btn btn-primary" type="submit">
+                Show my restaurant
+            </button>
+        </div>
+    </form>
+</div>
+
+<div class="container">
     <br><br>
     <div class="row mt-3">
         <div class="col-md-4">
@@ -184,6 +208,7 @@
         </div>
     </div>
 </div>
+
 
 <script
         crossorigin="anonymous"

@@ -19,7 +19,7 @@ public class RestaurantDTO {
     LocalTime openHour;
     LocalTime closeHour;
     String phone;
-    boolean isShown;
+    Boolean isShown;
     CuisineDTO cuisine;
     ImageDTO imageDTO;
     AddressDTO address;

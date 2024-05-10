@@ -27,4 +27,6 @@ public interface RestaurantDAO {
     RestaurantEntity createRestaurant(RestaurantEntity restaurantEntity);
 
     void updateRestaurantLogo(Integer userId, Image image);
+
+    void toggleRestaurantVisibility(Integer userId);
 }

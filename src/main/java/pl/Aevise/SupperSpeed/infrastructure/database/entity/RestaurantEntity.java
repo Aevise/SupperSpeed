@@ -39,7 +39,7 @@ public class RestaurantEntity {
     private LocalTime openHour;
 
     @Column(name = "is_shown")
-    private boolean isShown;
+    private Boolean isShown;
 
     @Column(name = "close_hour")
     private LocalTime closeHour;

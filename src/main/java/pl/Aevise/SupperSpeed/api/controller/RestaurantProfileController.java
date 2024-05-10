@@ -32,6 +32,7 @@ public class RestaurantProfileController {
 
     static final String RESTAURANT_PROFILE = "/restaurant/profile";
     static final String RESTAURANT_UPDATE = "/restaurant/profile/update";
+    static final String RESTAURANT_TOGGLE = "/restaurant/profile/toggle";
 
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
@@ -103,4 +104,11 @@ public class RestaurantProfileController {
         return "redirect:" + RESTAURANT_PROFILE;
     }
 
+    @PostMapping(RESTAURANT_TOGGLE)
+    public String toggleRestaurantVisibility(
+            @RequestParam Integer userId
+    ){
+        restaurantService.toggleRestaurantVisibility(userId);
+        return "redirect:" + RESTAURANT_PROFILE;
+    }
 }

@@ -120,4 +120,10 @@ public class RestaurantService {
         log.warn("Could not find restaurant with id: [{}]", restaurantId);
         return null;
     }
+
+    @Transactional
+    public void toggleRestaurantVisibility(Integer userId) {
+        restaurantDAO.toggleRestaurantVisibility(userId);
+        log.info("Restaurant [{}] visibility changed", userId);
+    }
 }
