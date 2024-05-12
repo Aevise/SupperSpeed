@@ -21,11 +21,11 @@ VALUES (4, 'test4@test.com', '$2a$12$zjYWnQlFwPc0xP.Ls0brs.WFZ/qN/J3Z0.o/M/K7bQR
         CURRENT_TIMESTAMP, 1);
 
 
-INSERT INTO restaurant(supper_restaurant_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
+INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
 VALUES (1, 'test1', 1, CURRENT_TIME, CURRENT_TIME, 5, true);
-INSERT INTO restaurant(supper_restaurant_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
+INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
 VALUES (2, 'test2', 2, CURRENT_TIME, CURRENT_TIME, 5, true);
-INSERT INTO restaurant(supper_restaurant_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
+INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
 VALUES (3, 'test3', 3, CURRENT_TIME, CURRENT_TIME, 9, true);
 INSERT INTO client(supper_client_id, name, surname, phone, address_id)
 VALUES (4, 'test1', 'test2', '+48 123 456 789', 4);

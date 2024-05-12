@@ -20,15 +20,11 @@ import java.util.Set;
 public class RestaurantEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "restaurant_id", unique = true, nullable = false)
     private Integer id;
 
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "restaurant_id")
-//    private Integer restaurantId;
-
-    @MapsId
-    @JoinColumn(name = "supper_restaurant_id")
+    @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private SupperUserEntity supperUser;
 
