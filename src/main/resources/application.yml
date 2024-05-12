@@ -2,14 +2,19 @@ logging:
   level:
     org:
     springframework:
-    security: TRACE
+    security: DEBUG
 
 server:
   port: 8080
   servlet:
     context-path: /supperspeed
-
   access-token: 6e9bcb840461718912b38556131f9b28f50fd2d3
+
+google:
+  api:
+    key: AIzaSyBZ_SIP2pulfzYNyz_-2KY5mI32Y_RvM5M
+  geocode:
+    url: https://maps.googleapis.com/maps/api/geocode/json
 
 spring:
   datasource:
