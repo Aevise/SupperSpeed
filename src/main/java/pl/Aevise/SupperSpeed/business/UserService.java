@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.dao.AddressDAO;
 import pl.Aevise.SupperSpeed.domain.Address;
+import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.domain.exception.NotFoundException;
 import pl.Aevise.SupperSpeed.infrastructure.security.dao.SupperUserDAO;
@@ -38,17 +40,21 @@ public class UserService {
     public void deleteUserByEmail(String email) {
 
         Optional<SupperUser> user = supperUserDAO.findByEmail(email);
-        if (user.isPresent()) {
-            Integer userId = user.get().getSupperUserId();
-            if (clientService.findById(userId).isPresent()) {
-                clientService.deleteClientById(userId);
-            } else {
-                restaurantService.deleteRestaurantById(userId);
-            }
-//            supperUserDAO.deleteUserByEmail(email);
-        } else {
-            log.error("Could not find the user with email: [{}] ", email);
+
+        //TODO ukrywanie uzytkownikow, ktorzy maja wiecej niz jedno zamowienie
+        if(user.isPresent()){
+            restaurantService.detachUserFromRestaurant(email);
+
         }
+
+        supperUserDAO.deleteUserByEmail(email);
+//        if (user.isPresent()) {
+//            Integer userId = user.get().getSupperUserId();
+//            supperUserDAO.deleteUserById(userId);
+//            //TODO ZROBIC RESTAURANT NA ISSHOWN = FALSE
+//        } else {
+//            log.error("Could not find the user with email: [{}] ", email);
+//        }
     }
 
     public Optional<SupperUser> findUserByEmail(String email) {

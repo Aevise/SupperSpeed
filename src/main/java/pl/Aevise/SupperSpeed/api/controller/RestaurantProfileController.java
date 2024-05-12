@@ -50,16 +50,11 @@ public class RestaurantProfileController {
             @AuthenticationPrincipal UserDetails userDetails
     ) throws IOException {
 
-        Optional<Restaurant> restaurant = restaurantService
+        RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(
                         userDetails.getUsername());
 
-        if (restaurant.isPresent()) {
-            RestaurantDTO restaurantDTO = restaurant.map(restaurantMapper::mapToDTO)
-                    .orElseThrow(() -> new NoSuchElementException(
-                            "Restaurant not found. Could not map restaurant to restaurantDTO"
-                    ));
-            Integer addressId = restaurant.get()
+            Integer addressId = restaurantDTO
                     .getAddress()
                     .getAddressId();
             AddressDTO addressDTO = addressService.findById(addressId)
@@ -80,7 +75,6 @@ public class RestaurantProfileController {
                 model.addAttribute("logoWidth", MAX_LOGO_WIDTH);
                 model.addAttribute("logoHeight", MAX_LOGO_HEIGHT);
             }
-        }
 
         return "restaurant_profile";
     }

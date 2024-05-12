@@ -5,12 +5,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.business.UserService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,12 +46,13 @@ public class UserDeleteController {
                     @AuthenticationPrincipal UserDetails userDetails,
                     @RequestParam(required = false) String confirmation
             ) {
-        if ("yes".equals(confirmation)) {
+        var grantedAuthorities = getUsersAuthorities(userDetails);
+        Optional<String> authority = grantedAuthorities.stream().findFirst();
+        if ("yes".equals(confirmation) && authority.isPresent()) {
             userService.deleteUserByEmail(userDetails.getUsername());
             return "redirect:" + CLIENT_LOGOUT;
         }
 
-        var grantedAuthorities = getUsersAuthorities(userDetails);
 
 
         if (grantedAuthorities.contains(AvailableRoles.CLIENT.name())) {

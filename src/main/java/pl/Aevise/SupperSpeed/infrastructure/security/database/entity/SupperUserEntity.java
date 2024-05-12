@@ -36,7 +36,7 @@ public class SupperUserEntity {
     @Column(name = "last_login_date_time", nullable = false)
     private OffsetDateTime lastLoginDateTime;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne()
     @JoinColumn(name = "role_id")
     private RolesEntity role;
 }

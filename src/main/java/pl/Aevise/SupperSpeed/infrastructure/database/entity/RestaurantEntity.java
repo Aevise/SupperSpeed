@@ -47,7 +47,7 @@ public class RestaurantEntity {
     @JoinColumn(name = "address_id", unique = true)
     private AddressEntity address;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cuisine_id")
     private CuisineEntity cuisine;
 

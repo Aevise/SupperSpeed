@@ -13,6 +13,7 @@ import pl.Aevise.SupperSpeed.domain.Restaurant;
 public interface RestaurantMapper {
 
     @Mapping(source = "image", target = "imageDTO")
+    @Mapping(source = "supperUser.supperUserId", target = "userId")
     RestaurantDTO mapToDTO(final Restaurant restaurant);
 
     @Mapping(source = "imageDTO", target = "image")

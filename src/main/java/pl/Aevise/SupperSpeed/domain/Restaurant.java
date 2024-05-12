@@ -14,7 +14,7 @@ import java.time.LocalTime;
 @ToString(of = {"restaurantName", "openHour", "closeHour"})
 public class Restaurant {
 
-    SupperUserEntity supperUser;
+    SupperUser supperUser;
     Integer restaurantId;
     String restaurantName;
     LocalTime openHour;

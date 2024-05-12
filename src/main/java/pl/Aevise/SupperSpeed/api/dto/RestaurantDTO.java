@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class RestaurantDTO {
 
-    //    SupperUserDTO supperUser;
+    Integer userId;
     Integer restaurantId;
     String restaurantName;
     LocalTime openHour;
@@ -23,6 +23,5 @@ public class RestaurantDTO {
     CuisineDTO cuisine;
     ImageDTO imageDTO;
     AddressDTO address;
-    //TODO dodac address do mapowania restauracji
 
 }
