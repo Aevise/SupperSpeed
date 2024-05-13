@@ -14,10 +14,7 @@ import pl.Aevise.SupperSpeed.api.dto.StatusListDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.StatusListMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.SupperOrderMapper;
-import pl.Aevise.SupperSpeed.business.DishListService;
-import pl.Aevise.SupperSpeed.business.ProfileService;
-import pl.Aevise.SupperSpeed.business.StatusListService;
-import pl.Aevise.SupperSpeed.business.SupperOrderService;
+import pl.Aevise.SupperSpeed.business.*;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
@@ -36,6 +33,9 @@ public class OrdersBrowseController {
 
     private final SecurityService securityService;
 
+    private final RestaurantService restaurantService;
+
+    private final ClientProfileService clientProfileService;
 
     private final SupperOrderService supperOrderService;
     private final SupperOrderMapper supperOrderMapper;
@@ -45,14 +45,14 @@ public class OrdersBrowseController {
     @GetMapping(SUPPER_SPEED_ORDERS_BROWSER)
     public String getOrders(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestParam Integer userId,
             Model model
     ) {
         List<StatusListDTO> statusList = getStatusList();
         List<SupperOrderDTO> ordersByUserId = new ArrayList<>();
         String userRole = securityService.getUserAuthority();
+        String userEmail = userDetails.getUsername();
 
-        //TODO przemyslec czy chce za kazdym razem pytac o id clienta/restauracji lub czy to po prostu przekazac raz. Raczej pobierac regualrnie xd
+        Integer userId = getUserId(userRole, userEmail);
 
         try {
             ordersByUserId = getOrdersByUserIdAndAuthority(
@@ -73,6 +73,14 @@ public class OrdersBrowseController {
         model.addAttribute("ordersTotalPrice", ordersTotalPrice);
         model.addAttribute("userId", userId);
         return "orders_page";
+    }
+
+    private Integer getUserId(String userRole, String userEmail) {
+        if(userRole.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())){
+            return restaurantService.findRestaurantByEmail(userEmail).getRestaurantId();
+        }else {
+            return clientProfileService.findClientByEmail(userEmail).get().getId();
+        }
     }
 
     private Map<Integer, BigDecimal> getOrderTotalPrice(Map<Integer, List<DishListDTO>> dishesByAllOrdersId) {
