@@ -24,11 +24,11 @@ public class ImageController {
     @PostMapping(UPLOAD_LOGO)
     public String uploadLogo(
             @RequestParam("image") MultipartFile image,
-            @RequestParam("userId") Integer userId,
+            @RequestParam("restaurantId") Integer restaurantId,
             @RequestParam("restaurantName") String restaurantName
     ) throws IOException {
 
-        imageHandlingService.uploadLogo(image.getBytes(), userId, restaurantName);
+        imageHandlingService.uploadLogo(image.getBytes(), restaurantId, restaurantName);
 
         return "redirect:" + RESTAURANT_PROFILE;
     }

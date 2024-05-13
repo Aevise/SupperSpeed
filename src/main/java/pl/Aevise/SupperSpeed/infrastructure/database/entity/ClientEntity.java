@@ -17,12 +17,13 @@ import java.util.Set;
 @Table(name = "client")
 public class ClientEntity {
 
-    @Id
+    @Id()
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id", unique = true, nullable = false)
     private Integer id;
 
-    @MapsId
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "supper_client_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private SupperUserEntity supperUser;
 
     @Column(name = "name", length = 32, nullable = false)

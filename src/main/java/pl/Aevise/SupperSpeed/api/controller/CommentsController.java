@@ -20,8 +20,6 @@ public class CommentsController {
     private static final String ADD_COMMENT = "/orders/comment/add";
     private static final String ADD_RESPONSE = "/orders/comment/respond";
 
-    private final OffsetDateTimeMapper offsetDateTimeMapper;
-
     private final UserRatingService userRatingService;
     private final RestaurantResponseService restaurantResponseService;
 
@@ -30,11 +28,6 @@ public class CommentsController {
             @ModelAttribute UserRatingDTO userRatingDTO,
             @RequestParam(name = "orderId") Integer orderId
     ) {
-
-        String s = offsetDateTimeMapper.mapOffsetDateTimeToString(OffsetDateTime.now());
-        OffsetDateTime offsetDateTime = offsetDateTimeMapper.mapStringToOffsetDateTime(s);
-
-
         userRatingService.saveNewComment(userRatingDTO, orderId);
 
         return "redirect:" + OrdersBrowseController.SUPPER_SPEED_ORDERS_BROWSER;

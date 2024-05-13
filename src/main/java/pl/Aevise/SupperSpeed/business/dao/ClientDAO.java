@@ -7,8 +7,6 @@ import java.util.Optional;
 
 public interface ClientDAO {
 
-    Optional<Client> findByEmail(String email);
-
     void updateClientInformation(Client client, Integer id);
 
     Optional<Client> findById(Integer id);
@@ -16,4 +14,7 @@ public interface ClientDAO {
     void deleteClientById(Integer userId);
 
     ClientEntity createClient(ClientEntity clientEntity);
+
+    Optional<Client> findByUserId(Integer supperUserId);
+
 }

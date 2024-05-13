@@ -23,7 +23,10 @@
         <a class="btn btn-success" role="button" th:href="@{profile/menu}">View and change menu</a>
     </div>
     <div class="row mt-3" style="display: flex; justify-content: center; gap: 20px;">
-        <a class="btn btn-info" role="button" th:href="@{/orders}">View orders</a>
+        <form method="get" th:action="@{/orders}">
+            <input name="userId" th:value="${restaurantId}" type="hidden">
+            <button class="btn btn-info" type="submit">View my orders</button>
+        </form>
     </div>
     <br><br>
 </div>
@@ -51,7 +54,7 @@
                 </div>
             </div>
             <div class="col">
-                <input name="userId" th:value="*{userId}" type="hidden"/>
+                <input name="restaurantId" th:value="*{restaurantId}" type="hidden"/>
                 <input name="restaurantName" th:value="*{restaurantDTO.restaurantName}" type="hidden"/>
                 <button class="btn btn-primary" type="submit">Upload Logo</button>
             </div>
@@ -64,7 +67,7 @@
     <h3>Your current data:</h3>
     <form method="post" th:action="@{/restaurant/profile/update}">
         <input name="action" type="hidden" value="updateData"/>
-        <input name="userId" th:value="*{userId}" type="hidden"/>
+        <input name="restaurantId" th:value="*{restaurantId}" type="hidden"/>
         <input name="oldName" th:value="*{restaurantDTO.restaurantName}" type="hidden"/>
         <div class="row mt-3">
             <div class="col-md-3">
@@ -112,7 +115,7 @@
     <h3>Current address:</h3>
     <form method="post" th:action="@{/restaurant/profile/update}">
         <input name="action" type="hidden" value="updateAddress"/>
-        <input name="userId" th:value="*{userId}" type="hidden"/>
+        <input name="restaurantId" th:value="*{restaurantId}" type="hidden"/>
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="customerCountry">Country:</label>
@@ -172,7 +175,7 @@
 
 <div class="container">
     <form method="post" th:action="@{/restaurant/profile/toggle}">
-        <input name="userId" th:value="*{userId}" type="hidden"/>
+        <input name="restaurantId" th:value="*{restaurantId}" type="hidden"/>
         <div class="row mt-3"
              style="display: flex;
              justify-content: center;

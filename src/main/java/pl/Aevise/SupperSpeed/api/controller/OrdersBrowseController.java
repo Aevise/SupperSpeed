@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.StatusListDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
@@ -17,7 +18,6 @@ import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.ProfileService;
 import pl.Aevise.SupperSpeed.business.StatusListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
-import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
@@ -36,7 +36,6 @@ public class OrdersBrowseController {
 
     private final SecurityService securityService;
 
-    private final ProfileService profileService;
 
     private final SupperOrderService supperOrderService;
     private final SupperOrderMapper supperOrderMapper;
@@ -46,32 +45,33 @@ public class OrdersBrowseController {
     @GetMapping(SUPPER_SPEED_ORDERS_BROWSER)
     public String getOrders(
             @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam Integer userId,
             Model model
     ) {
         List<StatusListDTO> statusList = getStatusList();
-        Optional<SupperUser> user = profileService.findUserByEmail(userDetails.getUsername());
         List<SupperOrderDTO> ordersByUserId = new ArrayList<>();
         String userRole = securityService.getUserAuthority();
 
-        if (user.isPresent()) {
-            try {
-                ordersByUserId = getOrdersByUserIdAndAuthority(
-                        user.get().getSupperUserId(),
-                        userRole);
-            } catch (InvalidDataAccessResourceUsageException ex) {
-                log.warn("Orders not found for user [{}]", user.get().getSupperUserId());
-            }
-            var ordersByStatus = sortOrdersByStatus(ordersByUserId);
-            var dishesByAllOrdersId = getDishesByAllOrdersId(ordersByUserId);
+        //TODO przemyslec czy chce za kazdym razem pytac o id clienta/restauracji lub czy to po prostu przekazac raz. Raczej pobierac regualrnie xd
 
-            var ordersTotalPrice = getOrderTotalPrice(dishesByAllOrdersId);
-
-            model.addAttribute("statusListDTO", statusList);
-            model.addAttribute("orders", ordersByStatus);
-            model.addAttribute("role", userRole);
-            model.addAttribute("dishesByOrderId", dishesByAllOrdersId);
-            model.addAttribute("ordersTotalPrice", ordersTotalPrice);
+        try {
+            ordersByUserId = getOrdersByUserIdAndAuthority(
+                    userId,
+                    userRole);
+        } catch (InvalidDataAccessResourceUsageException ex) {
+            log.warn("Orders not found for user [{}]", userId);
         }
+        var ordersByStatus = sortOrdersByStatus(ordersByUserId);
+        var dishesByAllOrdersId = getDishesByAllOrdersId(ordersByUserId);
+
+        var ordersTotalPrice = getOrderTotalPrice(dishesByAllOrdersId);
+
+        model.addAttribute("statusListDTO", statusList);
+        model.addAttribute("orders", ordersByStatus);
+        model.addAttribute("role", userRole);
+        model.addAttribute("dishesByOrderId", dishesByAllOrdersId);
+        model.addAttribute("ordersTotalPrice", ordersTotalPrice);
+        model.addAttribute("userId", userId);
         return "orders_page";
     }
 
@@ -106,6 +106,8 @@ public class OrdersBrowseController {
                 .toList();
     }
 
+
+    //TODO ponizsza funkcja do rozdrobnienia na dwa elementy
     private List<SupperOrderDTO> getOrdersByUserIdAndAuthority(Integer userId, String authority) {
         if (authority.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())) {
             return supperOrderService

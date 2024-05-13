@@ -44,7 +44,6 @@ public class UserService {
         //TODO ukrywanie uzytkownikow, ktorzy maja wiecej niz jedno zamowienie
         if(user.isPresent()){
             restaurantService.detachUserFromRestaurant(email);
-
         }
 
         supperUserDAO.deleteUserByEmail(email);

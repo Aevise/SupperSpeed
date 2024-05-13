@@ -23,18 +23,6 @@ public class ClientRepository implements ClientDAO {
     private final ClientEntityMapper clientEntityMapper;
     private final ClientMapper clientMapper;
 
-    @Override
-    public Optional<Client> findByEmail(String email) {
-        Optional<SupperUserEntity> userEntity = supperUserJpaRepository.findByEmail(email);
-
-        Optional<ClientEntity> byId = clientJpaRepository.findById(userEntity.get().getSupperUserId());
-
-        return userEntity
-                .flatMap(supperUserEntity ->
-                        clientJpaRepository
-                                .findById(supperUserEntity.getSupperUserId())
-                                .map(clientEntityMapper::mapFromEntity));
-    }
 
     @Override
     public void updateClientInformation(Client client, Integer id) {
@@ -72,5 +60,14 @@ public class ClientRepository implements ClientDAO {
                         "Could not find user with id: [%s]"
                                 .formatted(userId)
                 ));
+    }
+
+    @Override
+    public Optional<Client> findByUserId(Integer supperUserId) {
+        Optional<ClientEntity> clientEntity = clientJpaRepository.findBySupperUser_SupperUserId(supperUserId);
+        if(clientEntity.isPresent()){
+            return clientEntity.map(clientEntityMapper::mapFromEntity);
+        }
+        return Optional.empty();
     }
 }

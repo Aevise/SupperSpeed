@@ -11,12 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
+import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.*;
 import pl.Aevise.SupperSpeed.domain.Dish;
-import pl.Aevise.SupperSpeed.domain.SupperUser;
 
 import java.util.List;
-import java.util.Optional;
 
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_IMAGE_HEIGHT;
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_IMAGE_WIDTH;
@@ -47,28 +46,24 @@ public class RestaurantMenuEditionController {
             Model model,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        Optional<SupperUser> user = profileService.findUserByEmail(userDetails.getUsername());
-        if (user.isPresent()) {
-            Integer restaurantId = user.get().getSupperUserId();
-            List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
+        RestaurantDTO restaurantByEmail = restaurantService.findRestaurantByEmail(userDetails.getUsername());
+        Integer restaurantId = restaurantByEmail.getRestaurantId();
+        String restaurantName = restaurantByEmail.getRestaurantName();
 
-            var dishList = dishListService.extractDishesByCategory(dishCategories, false);
+        List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
+        var dishList = dishListService.extractDishesByCategory(dishCategories, false);
 
-            String restaurantName = restaurantService.findRestaurantById(restaurantId).getRestaurantName();
-            String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantName);
+        String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantName);
 
-            model.addAttribute("dishesByCategory", dishList);
-            model.addAttribute("userId", restaurantId);
-            model.addAttribute("categories", dishCategories);
+        model.addAttribute("dishesByCategory", dishList);
+        model.addAttribute("restaurantId", restaurantId);
+        model.addAttribute("categories", dishCategories);
 
-            model.addAttribute("restaurantDirectory", restaurantDirectory);
-            model.addAttribute("imageWidth", MAX_IMAGE_WIDTH);
-            model.addAttribute("imageHeight", MAX_IMAGE_HEIGHT);
-            model.addAttribute("restaurantId", restaurantId);
-            model.addAttribute("restaurantName", restaurantName);
-            return "restaurant_menu_edit";
-        }
-        return ERROR;
+        model.addAttribute("restaurantDirectory", restaurantDirectory);
+        model.addAttribute("imageWidth", MAX_IMAGE_WIDTH);
+        model.addAttribute("imageHeight", MAX_IMAGE_HEIGHT);
+        model.addAttribute("restaurantName", restaurantName);
+        return "restaurant_menu_edit";
     }
 
     @PostMapping(RESTAURANT_MENU_UPDATE_DISH)
@@ -110,8 +105,7 @@ public class RestaurantMenuEditionController {
     @PostMapping(RESTAURANT_MENU_ADD_CATEGORY)
     public String addCategory(
             @RequestParam(value = "categoryName") String categoryName,
-            @RequestParam(value = "restaurantId") String restaurantId,
-            @AuthenticationPrincipal UserDetails userDetails
+            @RequestParam(value = "restaurantId") String restaurantId
     ) {
 
         dishCategoryService.addCategory(dishCategoryService.buildDishCategory(restaurantId, categoryName));

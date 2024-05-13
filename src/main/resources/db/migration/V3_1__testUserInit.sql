@@ -27,7 +27,7 @@ INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_ho
 VALUES (2, 'test2', 2, CURRENT_TIME, CURRENT_TIME, 5, true);
 INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
 VALUES (3, 'test3', 3, CURRENT_TIME, CURRENT_TIME, 9, true);
-INSERT INTO client(supper_client_id, name, surname, phone, address_id)
+INSERT INTO client(user_id, name, surname, phone, address_id)
 VALUES (4, 'test1', 'test2', '+48 123 456 789', 4);
 
 INSERT INTO dish_category(dish_category_id, restaurant_id, category_name)
@@ -51,19 +51,19 @@ INSERT INTO dish(dish_id, restaurant_id, dish_category_id, name, description, pr
 VALUES (5, 3, 3, 'Trawa', 'Je jom krowa', '1.3', NULL, true);
 
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (4, 3, CURRENT_TIMESTAMP, 1);
+VALUES (1, 3, CURRENT_TIMESTAMP, 1);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (4, 3, CURRENT_TIMESTAMP, 2);
+VALUES (1, 3, CURRENT_TIMESTAMP, 2);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (4, 3, CURRENT_TIMESTAMP, 3);
+VALUES (1, 3, CURRENT_TIMESTAMP, 3);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (4, 3, CURRENT_TIMESTAMP, 4);
+VALUES (1, 3, CURRENT_TIMESTAMP, 4);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (4, 3, CURRENT_TIMESTAMP, 5);
+VALUES (1, 3, CURRENT_TIMESTAMP, 5);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (4, 3, CURRENT_TIMESTAMP, 5);
+VALUES (1, 3, CURRENT_TIMESTAMP, 5);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (4, 2, CURRENT_TIMESTAMP, 5);
+VALUES (1, 2, CURRENT_TIMESTAMP, 5);
 
 INSERT INTO dishes_list(dish_id, order_id, quantity)
 VALUES (1,1,3);

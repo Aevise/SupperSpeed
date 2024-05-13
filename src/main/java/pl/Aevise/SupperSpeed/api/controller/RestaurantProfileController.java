@@ -12,16 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
-import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.ImageHandlingService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.utils.FileMigrationUtil;
-import pl.Aevise.SupperSpeed.domain.Restaurant;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOGO_HEIGHT;
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOGO_WIDTH;
@@ -35,7 +32,6 @@ public class RestaurantProfileController {
     static final String RESTAURANT_TOGGLE = "/restaurant/profile/toggle";
 
     private final RestaurantService restaurantService;
-    private final RestaurantMapper restaurantMapper;
 
     private final AddressService addressService;
     private final AddressMapper addressMapper;
@@ -64,12 +60,12 @@ public class RestaurantProfileController {
                                     .formatted(addressId)
                     ));
 
-            Integer userId = restaurantDTO.getRestaurantId();
+            Integer restaurantId = restaurantDTO.getRestaurantId();
             model.addAttribute("restaurantDTO", restaurantDTO);
             model.addAttribute("addressDTO", addressDTO);
-            model.addAttribute("userId", userId);
+            model.addAttribute("restaurantId", restaurantId);
             if (restaurantDTO.getImageDTO() != null) {
-                String restaurantDirectory = imageHandlingService.getRestaurantName(userId, restaurantDTO.getRestaurantName());
+                String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
                 model.addAttribute("imageName", restaurantDTO.getImageDTO().getImageURL());
                 model.addAttribute("restaurantDirectory", restaurantDirectory);
                 model.addAttribute("logoWidth", MAX_LOGO_WIDTH);
@@ -84,16 +80,16 @@ public class RestaurantProfileController {
             @ModelAttribute RestaurantDTO restaurantDTO,
             @ModelAttribute AddressDTO addressDTO,
             @RequestParam(required = false) String action,
-            @RequestParam String userId,
-            @RequestParam("oldName") String oldName
+            @RequestParam String restaurantId,
+            @RequestParam(value = "oldName", required = false) String oldName
     ) {
         if ("updateAddress".equals(action)) {
-            restaurantService.updateAddress(addressDTO, Integer.valueOf(userId));
+            restaurantService.updateAddress(addressDTO, Integer.valueOf(restaurantId));
         } else {
-            restaurantService.updateRestaurantInformation(restaurantDTO, Integer.valueOf(userId));
+            restaurantService.updateRestaurantInformation(restaurantDTO, Integer.valueOf(restaurantId));
 
             String newName = restaurantDTO.getRestaurantName();
-            fileMigrationUtil.migrateFilesAfterRestaurantNameChange(Integer.valueOf(userId), oldName, newName);
+            fileMigrationUtil.migrateFilesAfterRestaurantNameChange(Integer.valueOf(restaurantId), oldName, newName);
         }
         return "redirect:" + RESTAURANT_PROFILE;
     }
