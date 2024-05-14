@@ -51,7 +51,7 @@ public class RestaurantMenuEditionController {
         String restaurantName = restaurantByEmail.getRestaurantName();
 
         List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
-        var dishList = dishListService.extractDishesByCategory(dishCategories, false);
+        var dishList = dishService.extractDishesByCategory(dishCategories, false);
 
         String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantName);
 

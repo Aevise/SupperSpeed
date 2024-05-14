@@ -90,5 +90,15 @@ public class DishRepository implements DishDAO {
         }
     }
 
-
+    @Override
+    public Optional<Dish> permanentlyHideDishFromAllUsers(Integer dishId) {
+        Optional<DishEntity> dish = dishJpaRepository.findById(dishId);
+        if(dish.isPresent()){
+            DishEntity dishEntity = dish.get();
+            dishEntity.setIsHidden(true);
+            dishJpaRepository.saveAndFlush(dishEntity);
+            return dish.map(dishEntityMapper::mapFromEntity);
+        }
+        return Optional.empty();
+    }
 }

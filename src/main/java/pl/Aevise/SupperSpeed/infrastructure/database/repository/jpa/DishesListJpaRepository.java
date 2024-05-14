@@ -10,4 +10,5 @@ import java.util.List;
 public interface DishesListJpaRepository extends JpaRepository<DishesListEntity, DishesListKey> {
 
     List<DishesListEntity> findAllByOrder(SupperOrderEntity supperOrderEntity);
+    List<DishesListEntity> findAllByDish_DishId(Integer dishId);
 }
