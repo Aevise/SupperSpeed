@@ -54,10 +54,10 @@ public class ClientProfileController {
 
             model.addAttribute("clientDTO", clientDTO);
             model.addAttribute("addressDTO", addressDTO);
-            model.addAttribute("userId", clientDTO.getSupperUserId());
+            model.addAttribute("clientId", clientDTO.getId());
+            return "client_profile";
         }
-
-        return "client_profile";
+            return "redirect:" + "/login";
     }
 
     @PostMapping(UPDATE_PROFILE)
@@ -66,7 +66,7 @@ public class ClientProfileController {
                     @ModelAttribute ClientDTO clientDTO,
                     @ModelAttribute AddressDTO addressDTO,
                     BindingResult bindingResult,
-                    @RequestParam String userId,
+                    @RequestParam String clientId,
                     @RequestParam(required = false) String action
             ) {
         if (bindingResult.hasErrors()) {
@@ -74,9 +74,9 @@ public class ClientProfileController {
         }
 
         if ("updateAddress".equals(action)) {
-            clientProfileService.updateAddress(addressDTO, Integer.valueOf(userId));
+            clientProfileService.updateAddress(addressDTO, Integer.valueOf(clientId));
         } else {
-            clientProfileService.updateClientInformation(clientDTO, Integer.valueOf(userId));
+            clientProfileService.updateClientInformation(clientDTO, Integer.valueOf(clientId));
         }
         return "redirect:" + CLIENT_PROFILE;
     }

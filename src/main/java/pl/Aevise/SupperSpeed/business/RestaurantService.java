@@ -29,20 +29,18 @@ public class RestaurantService {
     private final RestaurantEntityMapper restaurantEntityMapper;
     private final RestaurantMapper restaurantMapper;
 
-    @Transactional
-    public void deleteRestaurantById(Integer id) {
-        restaurantDAO.deleteRestaurantById(id);
-        log.info("Deleted restaurant with id: [{}]", id);
-    }
 
     @Transactional
-    public Optional<Restaurant> findRestaurantByEmail(String email) {
-        Optional<SupperUser> foundUser = profileService.findUserByEmail(email);
+    public RestaurantDTO findRestaurantByEmail(String email) {
 
-        if (foundUser.isPresent()) {
-            return restaurantDAO.findByEmail(foundUser.get().getEmail());
+        Optional<Restaurant> byUserEmail = restaurantDAO.findByUserEmail(email);
+        if(byUserEmail.isPresent()){
+            log.info("Found restaurant with email: [{}]", email);
+            return restaurantMapper.mapToDTO(byUserEmail.get());
+        }else {
+            log.warn("User with email: [{}] not found", email);
+            throw new RuntimeException("User not found");
         }
-        return Optional.empty();
     }
 
     public void updateAddress(AddressDTO addressDTO, Integer restaurantId) {
@@ -119,5 +117,20 @@ public class RestaurantService {
         }
         log.warn("Could not find restaurant with id: [{}]", restaurantId);
         return null;
+    }
+
+    @Transactional
+    public void toggleRestaurantVisibility(Integer userId) {
+        restaurantDAO.toggleRestaurantVisibility(userId);
+        log.info("Restaurant [{}] visibility changed", userId);
+    }
+
+    public void detachUserFromRestaurant(String email) {
+        Restaurant restaurant = restaurantDAO.detachUserFromRestaurant(email);
+        if(!restaurant.getIsShown() && restaurant.getSupperUser() == null){
+            log.info("Restaurant [{}] detached successfully", restaurant.getRestaurantId());
+        }else {
+            log.warn("Entity could not be detached");
+        }
     }
 }

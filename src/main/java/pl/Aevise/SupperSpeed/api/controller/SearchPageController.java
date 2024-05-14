@@ -95,8 +95,10 @@ public class SearchPageController {
         HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = new HashMap<>();
 
         for (RestaurantDTO restaurant : restaurants) {
-            restaurantsByCuisine.putIfAbsent(restaurant.getCuisine().getCuisine(), new ArrayList<>());
-            restaurantsByCuisine.get(restaurant.getCuisine().getCuisine()).add(restaurant);
+            if(restaurant.getIsShown()){
+                restaurantsByCuisine.putIfAbsent(restaurant.getCuisine().getCuisine(), new ArrayList<>());
+                restaurantsByCuisine.get(restaurant.getCuisine().getCuisine()).add(restaurant);
+            }
         }
         return restaurantsByCuisine;
     }

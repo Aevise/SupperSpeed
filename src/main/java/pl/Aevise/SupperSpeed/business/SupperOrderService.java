@@ -26,10 +26,8 @@ import java.util.Optional;
 public class SupperOrderService {
     private final SupperOrderDAO supperOrderDAO;
 
-    private final ClientService clientService;
-    private final UserService userService;
+    private final ClientProfileService clientProfileService;
     private final ClientEntityMapper clientEntityMapper;
-    private final StatusListService statusListService;
 
     @Transactional
     public List<SupperOrder> getOrdersByRestaurantId(Integer restaurantId) {
@@ -45,10 +43,10 @@ public class SupperOrderService {
         return ordersByClientId;
     }
 
-    //TODO zmienić na zwykłe supperOrder a mapowanie dopiero zrobić w SupperOrderRepository
     @Transactional
     public SupperOrderEntity createNewOrder(Integer restaurantId, String clientEmail) {
-        SupperOrderEntity newOrder = supperOrderDAO.createNewOrder(buildSupperOrderEntity(restaurantId, clientEmail));
+        SupperOrderEntity supperOrderEntity = buildSupperOrderEntity(restaurantId, clientEmail);
+        SupperOrderEntity newOrder = supperOrderDAO.createNewOrder(supperOrderEntity);
         log.info("Successfully created order: [{}]", newOrder.getOrderId());
         return newOrder;
     }
@@ -104,23 +102,19 @@ public class SupperOrderService {
 
     private SupperOrderEntity buildSupperOrderEntity(Integer restaurantId, String clientEmail) {
         return SupperOrderEntity.builder()
-                .client(clientEntityMapper
-                        .mapToEntity(
-                                clientService
-                                        .findById(
-                                                userService
-                                                        .findUserByEmail(clientEmail)
-                                                        .get()
-                                                        .getSupperUserId())
-                                        .get()))
-                .restaurant(RestaurantEntity.builder()
-                        .id(restaurantId)
-                        .build())
-                .status(StatusListEntity.builder()
-                        .statusId(1)
-                        .build())
-                .orderDateTime(OffsetDateTime.now())
-                .build();
+                .client(
+                        clientEntityMapper
+                                .mapToEntity(
+                                        clientProfileService
+                                                .findClientByEmail(clientEmail).get()))
+                                .restaurant(RestaurantEntity.builder()
+                                        .id(restaurantId)
+                                        .build())
+                                .status(StatusListEntity.builder()
+                                        .statusId(1)
+                                        .build())
+                                .orderDateTime(OffsetDateTime.now())
+                                .build();
     }
 
     public BigDecimal extractTotalOrderValue(List<DishListDTO> dishes) {

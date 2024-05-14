@@ -1,6 +1,7 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
@@ -43,19 +44,13 @@ public class RestaurantRepository implements RestaurantDAO {
                 .toList();
     }
 
-    @Override
-    public void deleteRestaurantById(Integer id) {
-        restaurantJpaRepository.deleteById(id);
-    }
 
     @Override
-    public Optional<Restaurant> findByEmail(String email) {
-        Optional<SupperUserEntity> userEntity = supperUserJpaRepository.findByEmail(email);
+    public Optional<Restaurant> findByUserEmail(String email) {
 
-        return userEntity.flatMap(supperUserEntity ->
-                restaurantJpaRepository
-                        .findById(supperUserEntity.getSupperUserId())
-                        .map(restaurantEntityMapper::mapFromEntity));
+        Optional<RestaurantEntity> restaurantEntity = restaurantJpaRepository.findBySupperUser_Email(email);
+        return restaurantEntity.map(restaurantEntityMapper::mapFromEntity);
+
     }
 
     @Override
@@ -112,6 +107,34 @@ public class RestaurantRepository implements RestaurantDAO {
             RestaurantEntity restaurant = restaurantEntity.get();
             restaurant.setImageEntity(imageEntity);
             restaurantJpaRepository.saveAndFlush(restaurant);
+        }
+    }
+
+    @Override
+    public void toggleRestaurantVisibility(Integer userId) {
+        Optional<RestaurantEntity> restaurantEntity = restaurantJpaRepository.findById(userId);
+        if(restaurantEntity.isPresent()){
+            RestaurantEntity restaurant = restaurantEntity.get();
+            boolean negation = !restaurant.getIsShown();
+            restaurant.setIsShown(negation);
+            restaurantJpaRepository.saveAndFlush(restaurant);
+        }else {
+            throw new EntityNotFoundException("Restaurant not found");
+        }
+    }
+
+    @Override
+    public Restaurant detachUserFromRestaurant(String email) {
+        Optional<RestaurantEntity> bySupperUserEmail = restaurantJpaRepository.findBySupperUser_Email(email);
+
+        if(bySupperUserEmail.isPresent()){
+            RestaurantEntity restaurant = bySupperUserEmail.get();
+            restaurant.setIsShown(false);
+            restaurant.setSupperUser(null);
+            restaurantJpaRepository.saveAndFlush(restaurant);
+            return restaurantEntityMapper.mapFromEntity(restaurant);
+        } else {
+            throw new EntityNotFoundException("Could not find restaurant");
         }
     }
 }

@@ -12,7 +12,7 @@ CREATE TABLE dish
     PRIMARY KEY (dish_id),
     CONSTRAINT fk_dish_restaurant_id
         FOREIGN KEY (restaurant_id)
-            REFERENCES restaurant (supper_restaurant_id),
+            REFERENCES restaurant (restaurant_id),
     CONSTRAINT fk_dish_image
         FOREIGN KEY (image_id)
             REFERENCES image (image_id),

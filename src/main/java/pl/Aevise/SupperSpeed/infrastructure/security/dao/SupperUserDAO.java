@@ -8,4 +8,6 @@ public interface SupperUserDAO {
     Optional<SupperUser> findByEmail(String email);
 
     void deleteUserByEmail(String email);
+
+    void deleteUserById(Integer userId);
 }

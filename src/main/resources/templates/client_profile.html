@@ -16,12 +16,15 @@
 
 <div class="container">
     <h1 th:text="'Welcome back ' + *{clientDTO.name}"></h1>
-    <a class="btn btn-success" role="button" th:href="@{/orders}">View orders</a>
+    <form method="get" th:action="@{/orders}">
+        <input name="userId" th:value="${clientId}" type="hidden">
+        <button class="btn btn-info" type="submit">View my orders</button>
+    </form>
     <div class="col-md-3">
         <h3>Your current data:</h3>
         <form method="post" th:action="@{/client/profile/update}">
             <input name="action" type="hidden" value="updateData"/>
-            <input name="userId" th:value="*{userId}" type="hidden"/>
+            <input name="clientId" th:value="*{clientId}" type="hidden"/>
             <div class="row mt-3">
                 <div class="col-md-3">
                     <label for="customerName">Name:</label>
@@ -61,7 +64,7 @@
     <h3>Current address:</h3>
     <form method="post" th:action="@{/client/profile/update}">
         <input name="action" type="hidden" value="updateAddress"/>
-        <input name="userId" th:value="*{userId}" type="hidden">
+        <input name="clientId" th:value="*{clientId}" type="hidden">
         <div class="row mt-3">
             <div class="col-md-3">
                 <label for="customerCountry">Country:</label>

@@ -37,8 +37,9 @@ public class ClientProfileService {
     public Optional<Client> findClientByEmail(String email) {
         Optional<SupperUser> foundUser = profileService.findUserByEmail(email);
 
+
         if (foundUser.isPresent()) {
-            return clientDAO.findByEmail(foundUser.get().getEmail());
+            return clientDAO.findByUserId(foundUser.get().getSupperUserId());
         }
         return Optional.empty();
     }

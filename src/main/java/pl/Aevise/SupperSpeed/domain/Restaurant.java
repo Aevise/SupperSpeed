@@ -14,13 +14,14 @@ import java.time.LocalTime;
 @ToString(of = {"restaurantName", "openHour", "closeHour"})
 public class Restaurant {
 
-    SupperUserEntity supperUser;
+    SupperUser supperUser;
     Integer restaurantId;
     String restaurantName;
     LocalTime openHour;
     LocalTime closeHour;
     AddressEntity address;
     String phone;
+    Boolean isShown;
     CuisineEntity cuisine;
     Image image;
 }

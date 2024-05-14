@@ -33,4 +33,15 @@ public class SupperUserRepository implements SupperUserDAO {
                 "Could not find user with email: [%s]".formatted(email)
         );
     }
+
+    @Override
+    public void deleteUserById(Integer userId) {
+        Optional<SupperUserEntity> user = supperUserJpaRepository.findById(userId);
+        if(user.isPresent()){
+            SupperUserEntity supperUserEntity = user.get();
+            supperUserJpaRepository.delete(supperUserEntity);
+        }else throw new EntityNotFoundException(
+                "Could not find user with id: [%s]".formatted(userId)
+        );
+    }
 }

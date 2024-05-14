@@ -12,9 +12,7 @@ public interface RestaurantDAO {
 
     List<Restaurant> findAvailable();
 
-    void deleteRestaurantById(Integer id);
-
-    Optional<Restaurant> findByEmail(String email);
+    Optional<Restaurant> findByUserEmail(String email);
 
     void updateRestaurantInformation(Restaurant restaurant, Integer userId);
 
@@ -27,4 +25,8 @@ public interface RestaurantDAO {
     RestaurantEntity createRestaurant(RestaurantEntity restaurantEntity);
 
     void updateRestaurantLogo(Integer userId, Image image);
+
+    void toggleRestaurantVisibility(Integer userId);
+
+    Restaurant detachUserFromRestaurant(String email);
 }

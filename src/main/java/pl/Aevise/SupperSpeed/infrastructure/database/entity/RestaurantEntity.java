@@ -20,15 +20,11 @@ import java.util.Set;
 public class RestaurantEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "restaurant_id", unique = true, nullable = false)
     private Integer id;
 
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "restaurant_id")
-//    private Integer restaurantId;
-
-    @MapsId
-    @JoinColumn(name = "supper_restaurant_id")
+    @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private SupperUserEntity supperUser;
 
@@ -37,6 +33,9 @@ public class RestaurantEntity {
 
     @Column(name = "open_hour")
     private LocalTime openHour;
+
+    @Column(name = "is_shown")
+    private Boolean isShown;
 
     @Column(name = "close_hour")
     private LocalTime closeHour;
@@ -48,7 +47,7 @@ public class RestaurantEntity {
     @JoinColumn(name = "address_id", unique = true)
     private AddressEntity address;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cuisine_id")
     private CuisineEntity cuisine;
 

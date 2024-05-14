@@ -5,19 +5,20 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.database.repository.mapper.SupperUserEntityMapper;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = {
                 AddressEntityMapper.class,
                 ClientEntityMapper.class,
-                ImageEntityMapper.class
+                ImageEntityMapper.class,
+                SupperUserEntityMapper.class
         }
 )
 public interface RestaurantEntityMapper {
 
 
-    @Mapping(target = "supperUser", ignore = true)
     @Mapping(source = "id", target = "restaurantId")
     @Mapping(source = "address", target = "address")
     @Mapping(source = "cuisine", target = "cuisine")
