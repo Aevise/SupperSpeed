@@ -10,19 +10,13 @@ server:
     context-path: /supperspeed
   access-token: 6e9bcb840461718912b38556131f9b28f50fd2d3
 
-google:
-  api:
-    key: AIzaSyBZ_SIP2pulfzYNyz_-2KY5mI32Y_RvM5M
-  geocode:
-    url: https://maps.googleapis.com/maps/api/geocode/json
-
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/supper_speed
     username: postgres
-    password: Cypriankos2134
+    password: postgres
     hikari:
       idle-timeout: 10000
       connection-timeout: 20000
