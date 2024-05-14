@@ -10,10 +10,10 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
 import pl.Aevise.SupperSpeed.business.dao.DishDAO;
 import pl.Aevise.SupperSpeed.domain.Dish;
 import pl.Aevise.SupperSpeed.domain.Image;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -45,23 +45,33 @@ public class DishService {
         log.info("Updated dish: [{}] - [{}]", dishDTO.getDishId(), dishDTO.getName());
     }
 
-    public void deleteDish(Integer dishId) {
+    public void deleteOrHideDishByDishId(Integer dishId) {
         boolean dishUsed = dishListService.isDishInOrder(dishId);
 
-        if(dishUsed){
+        if (dishUsed) {
             Optional<Dish> dish = dishDAO.permanentlyHideDishFromAllUsers(dishId);
-            if(dish.isPresent() && dish.get().getIsHidden()){
+            if (dish.isPresent() && dish.get().getIsHidden()) {
                 log.info("Dish [{}] hidden from the users", dishId);
             }
-        }else {
+        } else {
             dishDAO.deleteDish(dishId);
             log.info("Deleted dish [{}]", dishId);
         }
     }
 
-    public void deleteDishes(List<DishEntity> dishes) {
-        dishDAO.deleteDishes(dishes);
-        log.info("Deleted [{}] dishes", dishes.size());
+    @Transactional
+    public void deleteOrHideDishesMap(Map<Boolean, List<Dish>> dishes) {
+        List<Dish> dishesInOrder = dishes.get(true);
+        if (!dishesInOrder.isEmpty()) {
+            dishDAO.permanentlyHideDishesFromAllUsers(dishesInOrder);
+            log.info("Hidden [{}] dishes", dishesInOrder.size());
+        }
+
+        List<Dish> dishesWithoutOrder = dishes.get(false);
+        if (!dishesWithoutOrder.isEmpty()) {
+            dishDAO.deleteDishes(dishesWithoutOrder);
+            log.info("Deleted [{}] dishes", dishesWithoutOrder.size());
+        }
     }
 
     @Transactional
@@ -123,6 +133,7 @@ public class DishService {
                             .stream()
                             .map(dishMapper::mapToDTO)
                             .filter(dishDTO -> !filterUnavailable || dishDTO.getAvailability())
+                            .filter(dishDTO -> !dishDTO.getIsHidden())
                             .toList()
             );
         }

@@ -17,11 +17,13 @@ public interface DishDAO {
 
     void deleteDish(Integer dishId);
 
-    void deleteDishes(List<DishEntity> dishes);
+    void deleteDishes(List<Dish> dishes);
 
     void addDish(Dish dish);
 
     void setDishImage(Image image, Integer dishId);
 
     Optional<Dish> permanentlyHideDishFromAllUsers(Integer dishId);
+
+    void permanentlyHideDishesFromAllUsers(List<Dish> dishesInOrder);
 }

@@ -43,7 +43,7 @@ public class DishCategoryService {
 
     public void deleteCategory(Integer categoryId) {
 
-        dishCategoryDAO.deleteCategoryAndRelatedDishes(categoryId);
+        dishCategoryDAO.deleteCategory(categoryId);
         log.info("Deleted category: [{}]", categoryId);
     }
 

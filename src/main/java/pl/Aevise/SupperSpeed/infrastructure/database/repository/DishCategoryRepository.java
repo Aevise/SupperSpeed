@@ -51,12 +51,7 @@ public class DishCategoryRepository implements DishCategoryDAO {
     }
 
     @Override
-    public void deleteCategoryAndRelatedDishes(Integer categoryId) {
-
-        List<DishEntity> dishesInCategory = dishJpaRepository
-                .findAllByDishCategory_DishCategoryId(categoryId);
-
-        dishRepository.deleteDishes(dishesInCategory);
+    public void deleteCategory(Integer categoryId) {
         dishCategoryJpaRepository.deleteById(categoryId);
     }
 

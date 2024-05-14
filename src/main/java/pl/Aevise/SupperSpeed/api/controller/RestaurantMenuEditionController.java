@@ -15,7 +15,7 @@ import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.*;
 import pl.Aevise.SupperSpeed.domain.Dish;
 
-import java.util.List;
+import java.util.*;
 
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_IMAGE_HEIGHT;
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_IMAGE_WIDTH;
@@ -50,6 +50,8 @@ public class RestaurantMenuEditionController {
         Integer restaurantId = restaurantByEmail.getRestaurantId();
         String restaurantName = restaurantByEmail.getRestaurantName();
 
+        //moze trzeba najpierw pobrac wszystkie zdjecia aby sql nie pytal o to osobno dla kazdego zdjecia??
+
         List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
         var dishList = dishService.extractDishesByCategory(dishCategories, false);
 
@@ -81,8 +83,37 @@ public class RestaurantMenuEditionController {
     public String deleteDish(
             @RequestParam(value = "dishId") Integer dishId
     ) {
-        dishService.deleteDish(dishId);
+        dishService.deleteOrHideDishByDishId(dishId);
         return "redirect:" + RESTAURANT_MENU_EDIT;
+    }
+
+    @PostMapping(RESTAURANT_MENU_DELETE_CATEGORY)
+    public String deleteCategory(
+            @RequestParam(value = "dishCategoryId") Integer categoryId
+    ) {
+        List<Dish> allDishesByCategory = dishService.findAllByCategory(categoryId);
+        if(!allDishesByCategory.isEmpty()){
+            var dishMapByPresenceInOrder = mapOrdersByPresenceInAnyOrder(allDishesByCategory);
+            dishService.deleteOrHideDishesMap(dishMapByPresenceInOrder);
+            dishCategoryService.deleteCategory(categoryId);
+        }else {
+            dishCategoryService.deleteCategory(categoryId);
+        }
+
+
+        return "redirect:" + RESTAURANT_MENU_EDIT;
+    }
+
+    private Map<Boolean, List<Dish>> mapOrdersByPresenceInAnyOrder(List<Dish> allDishesByCategory) {
+        Map<Boolean, List<Dish>> isDishInOrder = new LinkedHashMap<>();
+        isDishInOrder.put(true, new ArrayList<>());
+        isDishInOrder.put(false, new ArrayList<>());
+
+        for (Dish dish : allDishesByCategory) {
+            boolean dishInOrder = dishListService.isDishInOrder(dish.getDishId());
+            isDishInOrder.get(dishInOrder).add(dish);
+        }
+        return isDishInOrder;
     }
 
     @PostMapping(RESTAURANT_MENU_UPDATE_CATEGORY)
@@ -91,14 +122,6 @@ public class RestaurantMenuEditionController {
     ) {
         dishCategoryService.updateCategory(dishCategoryDTO);
 
-        return "redirect:" + RESTAURANT_MENU_EDIT;
-    }
-
-    @PostMapping(RESTAURANT_MENU_DELETE_CATEGORY)
-    public String deleteCategory(
-            @RequestParam(value = "dishCategoryId") Integer categoryId
-    ) {
-        dishCategoryService.deleteCategory(categoryId);
         return "redirect:" + RESTAURANT_MENU_EDIT;
     }
 
