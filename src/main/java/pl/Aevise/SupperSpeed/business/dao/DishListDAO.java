@@ -12,4 +12,6 @@ public interface DishListDAO {
     void save(DishesListEntity dishesList);
 
     List<DishList> getDishesByOrderId(int orderId);
+
+    List<DishList> getDishesByDishId(Integer dishId);
 }

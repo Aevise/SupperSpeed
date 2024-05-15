@@ -6,6 +6,7 @@ import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DishDAO {
     List<Dish> findAllByRestaurant(Integer restaurantId);
@@ -16,9 +17,13 @@ public interface DishDAO {
 
     void deleteDish(Integer dishId);
 
-    void deleteDishes(List<DishEntity> dishes);
+    void deleteDishes(List<Dish> dishes);
 
     void addDish(Dish dish);
 
     void setDishImage(Image image, Integer dishId);
+
+    Optional<Dish> permanentlyHideDishFromAllUsers(Integer dishId);
+
+    void permanentlyHideDishesFromAllUsers(List<Dish> dishesInOrder);
 }

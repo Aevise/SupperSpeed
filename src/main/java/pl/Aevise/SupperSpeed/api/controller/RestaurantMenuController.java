@@ -48,7 +48,7 @@ public class RestaurantMenuController {
             return ERROR;
         }
 
-        var dishMap = dishListService.extractDishesByCategory(dishCategories, true);
+        var dishMap = dishService.extractDishesByCategory(dishCategories, true);
         RestaurantDTO restaurantDTO = restaurantMapper.mapToDTO(restaurantService.findRestaurantById(restaurantId));
         String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
 

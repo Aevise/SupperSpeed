@@ -13,7 +13,7 @@ public interface DishCategoryDAO {
 
     void updateCategory(DishCategoryDTO dishCategory);
 
-    void deleteCategoryAndRelatedDishes(Integer categoryId);
+    void deleteCategory(Integer categoryId);
 
     void addCategory(DishCategoryEntity dishCategory);
 

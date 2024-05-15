@@ -68,8 +68,9 @@ public class DishRepository implements DishDAO {
     }
 
     @Override
-    public void deleteDishes(List<DishEntity> dishes) {
-        dishJpaRepository.deleteAll(dishes);
+    public void deleteDishes(List<Dish> dishes) {
+        List<DishEntity> dishEntityList = dishes.stream().map(dishEntityMapper::mapToEntity).toList();
+        dishJpaRepository.deleteAll(dishEntityList);
     }
 
     @Override
@@ -90,5 +91,28 @@ public class DishRepository implements DishDAO {
         }
     }
 
+    @Override
+    public Optional<Dish> permanentlyHideDishFromAllUsers(Integer dishId) {
+        Optional<DishEntity> dish = dishJpaRepository.findById(dishId);
+        if(dish.isPresent()){
+            DishEntity dishEntity = dish.get();
+            dishEntity.setIsHidden(true);
+            dishJpaRepository.saveAndFlush(dishEntity);
+            return dish.map(dishEntityMapper::mapFromEntity);
+        }
+        return Optional.empty();
+    }
 
+    @Override
+    public void permanentlyHideDishesFromAllUsers(List<Dish> dishesInOrder) {
+        List<DishEntity> dishEntityList = dishesInOrder.stream()
+                .map(dishEntityMapper::mapToEntity)
+                .peek(dishEntity -> {
+                    dishEntity.setIsHidden(true);
+                    dishEntity.setDishCategory(null);
+                })
+                .toList();
+
+        dishJpaRepository.saveAllAndFlush(dishEntityList);
+    }
 }

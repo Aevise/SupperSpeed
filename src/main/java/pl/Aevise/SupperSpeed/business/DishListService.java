@@ -10,6 +10,7 @@ import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishCategoryMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishListMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
+import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
 import pl.Aevise.SupperSpeed.domain.DishList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishesListEntity;
@@ -30,56 +31,12 @@ public class DishListService {
     private final DishCategoryService dishCategoryService;
     private final DishCategoryMapper dishCategoryMapper;
 
-    private final DishListRepository dishListRepository;
+
+    private final DishListRepository dishListRepository;//tego tu nie powinno być
+    private final DishListDAO dishListDAO;
     private final DishListMapper dishListMapper;
 
-    private final DishService dishService;
-    private final DishMapper dishMapper;
 
-
-    @Transactional
-    public HashMap<String, List<DishDTO>> getDishListByCategoryFromRestaurant(Integer restaurantId) {
-        List<DishCategoryDTO> dishCategories = getDishCategoriesByRestaurantId(restaurantId);
-        return extractDishesByCategoryName(dishCategories);
-    }
-
-    @Transactional
-    public HashMap<String, List<DishDTO>> extractDishesByCategoryName(List<DishCategoryDTO> dishCategories) {
-        HashMap<String, List<DishDTO>> dishesByCategory = new HashMap<>();
-
-        for (DishCategoryDTO dishCategory : dishCategories) {
-            dishesByCategory.put(
-                    dishCategory.getCategoryName(),
-                    dishService
-                            .findAllByCategory(dishCategory.getDishCategoryId())
-                            .stream()
-                            .map(dishMapper::mapToDTO)
-                            .toList()
-            );
-        }
-        return dishesByCategory;
-    }
-
-    @Transactional
-    public HashMap<List<DishCategoryDTO>, List<DishDTO>> extractDishesByCategory(List<DishCategoryDTO> dishCategories, boolean filterUnavailable) {
-        HashMap<List<DishCategoryDTO>, List<DishDTO>> dishesByCategory = new HashMap<>();
-
-        for (DishCategoryDTO dishCategory : dishCategories) {
-            dishesByCategory.put(
-                    List.of(dishCategory),
-                    dishService
-                            .findAllByCategory(dishCategory.getDishCategoryId())
-                            .stream()
-                            .map(dishMapper::mapToDTO)
-                            .filter(dishDTO -> !filterUnavailable || dishDTO.getAvailability())
-                            .toList()
-            );
-        }
-        if (filterUnavailable) {
-            dishesByCategory.entrySet().removeIf(category -> category.getValue().isEmpty());
-        }
-        return dishesByCategory;
-    }
 
     @Transactional
     public List<DishListDTO> getDishesByOrderId(int orderId) {
@@ -143,5 +100,15 @@ public class DishListService {
         }
         log.info("Bound [{}] dishes with order: [{}]", dishes.size(), orderId);
         return dishes;
+    }
+
+    public boolean isDishInOrder(Integer dishId) {
+        List<DishList> dishesByDishId = dishListDAO.getDishesByDishId(dishId);
+        if(!dishesByDishId.isEmpty()){
+            log.info("Found dish [{}] in [{}] orders", dishId, dishesByDishId.size());
+            return true;
+        }
+        log.info("Dish [{}] not ordered yet", dishId);
+        return false;
     }
 }

@@ -41,4 +41,15 @@ public class DishListRepository implements DishListDAO {
                 .map(dishListEntityMapper::mapFromEntity)
                 .toList();
     }
+
+    @Override
+    public List<DishList> getDishesByDishId(Integer dishId) {
+        List<DishesListEntity> allByDishDishId = dishesListJpaRepository.findAllByDish_DishId(dishId);
+        if(!allByDishDishId.isEmpty()){
+            return allByDishDishId.stream()
+                    .map(dishListEntityMapper::mapFromEntity)
+                    .toList();
+        }
+        return List.of();
+    }
 }
