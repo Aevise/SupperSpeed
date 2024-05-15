@@ -21,11 +21,12 @@ public class DishEntity {
     @Column(name = "dish_id", nullable = false, unique = true)
     private Integer dishId;
 
+    //zmienic potem na lazy i sie przekonac czy aplikacja po tym kleknie
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private RestaurantEntity restaurant;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "dish_category_id", nullable = false)
     private DishCategoryEntity dishCategory;
 
