@@ -15,7 +15,10 @@ import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.*;
 import pl.Aevise.SupperSpeed.domain.Dish;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_IMAGE_HEIGHT;
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_IMAGE_WIDTH;
@@ -92,11 +95,11 @@ public class RestaurantMenuEditionController {
             @RequestParam(value = "dishCategoryId") Integer categoryId
     ) {
         List<Dish> allDishesByCategory = dishService.findAllByCategory(categoryId);
-        if(!allDishesByCategory.isEmpty()){
+        if (!allDishesByCategory.isEmpty()) {
             var dishMapByPresenceInOrder = mapOrdersByPresenceInAnyOrder(allDishesByCategory);
             dishService.deleteOrHideDishesMap(dishMapByPresenceInOrder);
             dishCategoryService.deleteCategory(categoryId);
-        }else {
+        } else {
             dishCategoryService.deleteCategory(categoryId);
         }
 

@@ -151,7 +151,7 @@ public class SupperOrderService {
 
         if (!restaurants.isEmpty()) {
             for (RestaurantDTO restaurant : restaurants) {
-                if(restaurant.getIsShown()){
+                if (restaurant.getIsShown()) {
                     Integer restaurantId = restaurant.getRestaurantId();
                     List<SupperOrderDTO> ratedOrdersForRestaurant = getRatedOrdersByRestaurantId(restaurantId);
 
@@ -193,9 +193,9 @@ public class SupperOrderService {
         return rating;
     }
 
-    public List<SupperOrderDTO> getRatedOrdersByRestaurantId(Integer restaurantId){
+    public List<SupperOrderDTO> getRatedOrdersByRestaurantId(Integer restaurantId) {
         List<SupperOrder> ratedOrdersByRestaurantId = supperOrderDAO.getRatedOrdersByRestaurantId(restaurantId);
-        if(!ratedOrdersByRestaurantId.isEmpty()){
+        if (!ratedOrdersByRestaurantId.isEmpty()) {
             log.info("Found [{}] rated orders for restaurant with id: [{}]", ratedOrdersByRestaurantId.size(), restaurantId);
             return ratedOrdersByRestaurantId.stream()
                     .map(supperOrderMapper::mapToDTO)
@@ -205,7 +205,7 @@ public class SupperOrderService {
         return List.of();
     }
 
-    public TotalRestaurantRatingDTO getRestaurantRating(List<SupperOrderDTO> ratedOrders){
+    public TotalRestaurantRatingDTO getRestaurantRating(List<SupperOrderDTO> ratedOrders) {
         List<Double> ratings = calculateRestaurantRatingBasedOnRatedOrders(ratedOrders);
         return TotalRestaurantRatingDTO.builder()
                 .amountOfRatedOrders(ratedOrders.size())

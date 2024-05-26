@@ -9,7 +9,6 @@ import pl.Aevise.SupperSpeed.domain.Client;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.ClientJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEntityMapper;
-import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 
 import java.util.Optional;
@@ -65,7 +64,7 @@ public class ClientRepository implements ClientDAO {
     @Override
     public Optional<Client> findByUserId(Integer supperUserId) {
         Optional<ClientEntity> clientEntity = clientJpaRepository.findBySupperUser_SupperUserId(supperUserId);
-        if(clientEntity.isPresent()){
+        if (clientEntity.isPresent()) {
             return clientEntity.map(clientEntityMapper::mapFromEntity);
         }
         return Optional.empty();

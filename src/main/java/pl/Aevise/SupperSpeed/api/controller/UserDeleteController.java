@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +51,6 @@ public class UserDeleteController {
             userService.deleteUserByEmail(userDetails.getUsername());
             return "redirect:" + CLIENT_LOGOUT;
         }
-
 
 
         if (grantedAuthorities.contains(AvailableRoles.CLIENT.name())) {

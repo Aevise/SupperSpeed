@@ -112,8 +112,8 @@ public class SupperOrderRepository implements SupperOrderDAO {
     @Override
     public List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId) {
         List<SupperOrderEntity> ratedOrders = supperOrderJpaRepository.findAllByRestaurant_IdAndUserRatingIsNotNull(restaurantId);
-        if (!ratedOrders.isEmpty()){
-           return ratedOrders.stream()
+        if (!ratedOrders.isEmpty()) {
+            return ratedOrders.stream()
                     .map(supperOrderEntityMapper::mapFromEntity)
                     .toList();
         }

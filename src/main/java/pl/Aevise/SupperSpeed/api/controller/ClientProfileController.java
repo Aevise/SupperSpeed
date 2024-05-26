@@ -57,7 +57,7 @@ public class ClientProfileController {
             model.addAttribute("clientId", clientDTO.getId());
             return "client_profile";
         }
-            return "redirect:" + "/login";
+        return "redirect:" + "/login";
     }
 
     @PostMapping(UPDATE_PROFILE)

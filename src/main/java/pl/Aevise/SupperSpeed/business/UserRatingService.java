@@ -8,7 +8,6 @@ import pl.Aevise.SupperSpeed.api.dto.*;
 import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.UserRatingMapper;
 import pl.Aevise.SupperSpeed.business.dao.UserRatingDAO;
-import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.domain.UserRating;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantResponseEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.UserRatingEntity;
@@ -27,10 +26,8 @@ public class UserRatingService {
     private final UserRatingEntityMapper userRatingEntityMapper;
 
     private final SupperOrderService supperOrderService;
-
-    private OffsetDateTimeMapper offsetDateTimeMapper;
-
     private final DishListService dishListService;
+    private OffsetDateTimeMapper offsetDateTimeMapper;
 
     @Transactional
     public void saveNewComment(UserRatingDTO userRatingDTO, Integer orderId) {
@@ -62,9 +59,9 @@ public class UserRatingService {
         return null;
     }
 
-    public TotalRestaurantRatingDTO getRestaurantRating(Integer restaurantId){
+    public TotalRestaurantRatingDTO getRestaurantRating(Integer restaurantId) {
         List<SupperOrderDTO> ratedOrdersByRestaurantId = supperOrderService.getRatedOrdersByRestaurantId(restaurantId);
-        if(!ratedOrdersByRestaurantId.isEmpty()){
+        if (!ratedOrdersByRestaurantId.isEmpty()) {
             log.info("Successfully got rating for restaurant with id: [{}]", restaurantId);
             return supperOrderService.getRestaurantRating(ratedOrdersByRestaurantId);
         }
@@ -76,12 +73,12 @@ public class UserRatingService {
         List<SupperOrderDTO> ratedOrdersByRestaurantId = supperOrderService.getRatedOrdersByRestaurantId(restaurantId);
         List<OpinionDTO> opinionsAboutRestaurant = new ArrayList<>();
 
-        if(!ratedOrdersByRestaurantId.isEmpty()){
+        if (!ratedOrdersByRestaurantId.isEmpty()) {
             log.info("Found [{}] rated orders for restaurant with id: [{}]", ratedOrdersByRestaurantId.size(), restaurantId);
             for (SupperOrderDTO order : ratedOrdersByRestaurantId) {
                 List<DishListDTO> dishesByOrderId = dishListService.getDishesByOrderId(order.getOrderId());
                 HashMap<DishDTO, Integer> dishes = new HashMap<>();
-                if(!dishesByOrderId.isEmpty()){
+                if (!dishesByOrderId.isEmpty()) {
                     for (DishListDTO dishListDTO : dishesByOrderId) {
                         dishes.putIfAbsent(dishListDTO.getDishDTO(), dishListDTO.getQuantity());
                     }
@@ -89,7 +86,7 @@ public class UserRatingService {
                 opinionsAboutRestaurant.add(buildOpinionDTO(order, order.getUserRatingDTO(), dishes));
             }
             opinionsAboutRestaurant.sort(Comparator.comparing(OpinionDTO::getOrderId));
-        }else {
+        } else {
             log.info("No rated orders found for restaurant with id [{}]", restaurantId);
         }
         return opinionsAboutRestaurant;
@@ -99,7 +96,7 @@ public class UserRatingService {
             SupperOrderDTO supperOrderDTO,
             UserRatingDTO userRatingDTO,
             Map<DishDTO, Integer> dishes
-            ){
+    ) {
         return OpinionDTO.builder()
                 .orderId(supperOrderDTO.getOrderId())
                 .orderDateTime(supperOrderDTO.getOrderDateTime())

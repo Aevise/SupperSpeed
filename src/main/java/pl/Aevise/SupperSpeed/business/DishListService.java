@@ -5,12 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
-import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishCategoryMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishListMapper;
-import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
 import pl.Aevise.SupperSpeed.business.dao.DishListDAO;
 import pl.Aevise.SupperSpeed.domain.DishList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
@@ -19,7 +17,10 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DishesListKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.DishListRepository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 @Slf4j
 @Service
@@ -84,7 +85,7 @@ public class DishListService {
 
     public boolean isDishInOrder(Integer dishId) {
         List<DishList> dishesByDishId = dishListDAO.getDishesByDishId(dishId);
-        if(!dishesByDishId.isEmpty()){
+        if (!dishesByDishId.isEmpty()) {
             log.info("Found dish [{}] in [{}] orders", dishId, dishesByDishId.size());
             return true;
         }

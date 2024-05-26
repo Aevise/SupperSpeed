@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.StatusListDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
@@ -76,9 +75,9 @@ public class OrdersBrowseController {
     }
 
     private Integer getUserId(String userRole, String userEmail) {
-        if(userRole.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())){
+        if (userRole.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())) {
             return restaurantService.findRestaurantByEmail(userEmail).getRestaurantId();
-        }else {
+        } else {
             return clientProfileService.findClientByEmail(userEmail).get().getId();
         }
     }
@@ -95,9 +94,6 @@ public class OrdersBrowseController {
 
         return ordersTotalPrice;
     }
-
-
-
 
 
     private List<StatusListDTO> getStatusList() {

@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.dao.AddressDAO;
 import pl.Aevise.SupperSpeed.domain.Address;
-import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.domain.exception.NotFoundException;
 import pl.Aevise.SupperSpeed.infrastructure.security.dao.SupperUserDAO;
@@ -42,7 +40,7 @@ public class UserService {
         Optional<SupperUser> user = supperUserDAO.findByEmail(email);
 
         //TODO ukrywanie uzytkownikow, ktorzy maja wiecej niz jedno zamowienie
-        if(user.isPresent()){
+        if (user.isPresent()) {
             restaurantService.detachUserFromRestaurant(email);
         }
 

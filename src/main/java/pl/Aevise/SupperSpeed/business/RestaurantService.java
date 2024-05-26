@@ -10,7 +10,6 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
 import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
-import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
 
@@ -34,10 +33,10 @@ public class RestaurantService {
     public RestaurantDTO findRestaurantByEmail(String email) {
 
         Optional<Restaurant> byUserEmail = restaurantDAO.findByUserEmail(email);
-        if(byUserEmail.isPresent()){
+        if (byUserEmail.isPresent()) {
             log.info("Found restaurant with email: [{}]", email);
             return restaurantMapper.mapToDTO(byUserEmail.get());
-        }else {
+        } else {
             log.warn("User with email: [{}] not found", email);
             throw new RuntimeException("User not found");
         }
@@ -137,9 +136,9 @@ public class RestaurantService {
 
     public void detachUserFromRestaurant(String email) {
         Restaurant restaurant = restaurantDAO.detachUserFromRestaurant(email);
-        if(!restaurant.getIsShown() && restaurant.getSupperUser() == null){
+        if (!restaurant.getIsShown() && restaurant.getSupperUser() == null) {
             log.info("Restaurant [{}] detached successfully", restaurant.getRestaurantId());
-        }else {
+        } else {
             log.warn("Entity could not be detached");
         }
     }

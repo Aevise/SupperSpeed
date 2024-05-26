@@ -29,4 +29,5 @@ public interface RestaurantDAO {
     void toggleRestaurantVisibility(Integer userId);
 
     Restaurant detachUserFromRestaurant(String email);
+
 }
