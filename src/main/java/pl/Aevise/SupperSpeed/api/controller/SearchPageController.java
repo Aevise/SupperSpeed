@@ -55,11 +55,7 @@ public class SearchPageController {
         List<AddressDTO> addresses = getAddressDTOList();
         List<RestaurantDTO> restaurants = getRestaurantsByCityDTOList(city);
 
-        List<String> cities = addressService
-                .findDistinctCities()
-                .stream()
-                .sorted()
-                .toList();
+        List<String> cities = addressService.findDistinctCities();
 
         String userRole = securityService.getUserAuthority();
 

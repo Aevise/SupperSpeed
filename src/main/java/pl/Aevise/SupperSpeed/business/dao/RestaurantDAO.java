@@ -30,4 +30,5 @@ public interface RestaurantDAO {
 
     Restaurant detachUserFromRestaurant(String email);
 
+    List<String> getDistinctCitiesWithRestaurants();
 }

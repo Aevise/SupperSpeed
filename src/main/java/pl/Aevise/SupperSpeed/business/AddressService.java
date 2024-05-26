@@ -75,8 +75,17 @@ public class AddressService {
     }
 
     public List<String> findDistinctCities() {
-        List<String> distinctCities = addressDAO.findDistinctCities();
-        log.info("Found [{}] distinct cities", distinctCities.size());
-        return distinctCities;
+        List<String> distinctCities = restaurantDAO.getDistinctCitiesWithRestaurants();
+
+        if(!distinctCities.isEmpty())
+        {
+            log.info("Found [{}] distinct cities", distinctCities.size());
+            return distinctCities
+                    .stream()
+                    .sorted()
+                    .toList();
+        }
+        log.warn("Could not find cities with restaurant");
+        return List.of();
     }
 }

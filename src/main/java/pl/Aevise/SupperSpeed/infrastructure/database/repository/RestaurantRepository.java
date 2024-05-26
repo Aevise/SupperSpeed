@@ -137,4 +137,9 @@ public class RestaurantRepository implements RestaurantDAO {
         }
     }
 
+    @Override
+    public List<String> getDistinctCitiesWithRestaurants() {
+        return restaurantJpaRepository.findDistinctCitiesForRestaurants();
+    }
+
 }
