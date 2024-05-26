@@ -18,20 +18,21 @@
     <div class="row">
         <div class="col text-center font-weight-bold display-4"
              th:text="'Opinions about ' + *{restaurant.restaurantName}"></div>
+        <hr class="hr"/>
     </div>
     <div class="container">
         <div class="border border-2 border-primary rounded p-3">
             <div class="row">
-                <div class="col" th:text="'Total food rating: ' + *{#numbers.formatDecimal(totalRating.foodRating, 1, 2)}"></div>
-                <div class="col" th:text="'Total delivery rating: ' + *{#numbers.formatDecimal(totalRating.deliveryRating, 1, 2)}"></div>
-                <div class="col" th:text="'Total amount of rated orders: ' + *{totalRating.amountOfRatedOrders}"></div>
+                <div class="col" th:text="'Total food rating: ' + ${opinions.size() > 0 ? #numbers.formatDecimal(totalRating.foodRating, 1, 2) : 0.0}"></div>
+                <div class="col" th:text="'Total delivery rating: ' + ${opinions.size() > 0 ? #numbers.formatDecimal(totalRating.deliveryRating, 1, 2) : 0.0}"></div>
+                <div class="col" th:text="'Total amount of rated orders: ' + ${opinions.size() > 0 ? totalRating.amountOfRatedOrders : 0}"></div>
             </div>
         </div>
     </div>
 </div>
 
 
-<div class="container">
+<div class="container" th:if="${opinions.size() > 0}">
     <div class="container" th:each="opinion:${opinions}">
         <hr style="height: 5px; background-color: green; border: none;"/>
         <div class="border border-2 border-info rounded p-3">
