@@ -25,7 +25,7 @@ public class DishEntity {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private RestaurantEntity restaurant;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "dish_category_id", nullable = false)
     private DishCategoryEntity dishCategory;
 

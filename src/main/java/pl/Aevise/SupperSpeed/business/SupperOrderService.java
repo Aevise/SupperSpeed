@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
+import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -17,6 +18,8 @@ import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEnt
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,14 +110,14 @@ public class SupperOrderService {
                                 .mapToEntity(
                                         clientProfileService
                                                 .findClientByEmail(clientEmail).get()))
-                                .restaurant(RestaurantEntity.builder()
-                                        .id(restaurantId)
-                                        .build())
-                                .status(StatusListEntity.builder()
-                                        .statusId(1)
-                                        .build())
-                                .orderDateTime(OffsetDateTime.now())
-                                .build();
+                .restaurant(RestaurantEntity.builder()
+                        .id(restaurantId)
+                        .build())
+                .status(StatusListEntity.builder()
+                        .statusId(1)
+                        .build())
+                .orderDateTime(OffsetDateTime.now())
+                .build();
     }
 
     public BigDecimal extractTotalOrderValue(List<DishListDTO> dishes) {
@@ -138,4 +141,51 @@ public class SupperOrderService {
         }
     }
 
+    public HashMap<Integer, List<Double>> getRestaurantsRatingBasedOnOrders(List<RestaurantDTO> restaurants) {
+        HashMap<Integer, List<Double>> restaurantsRating = new HashMap<>();
+        double noRating = 0.0;
+
+        if (!restaurants.isEmpty()) {
+            for (RestaurantDTO restaurant : restaurants) {
+                if(restaurant.getIsShown()){
+                    Integer restaurantId = restaurant.getRestaurantId();
+                    List<SupperOrder> ratedOrdersForRestaurant = supperOrderDAO.findRatedOrdersByRestaurantId(restaurantId);
+
+                    if (!ratedOrdersForRestaurant.isEmpty()) {
+                        log.info("Found [{}] orders for restaurant with id [{}]", ratedOrdersForRestaurant.size(), restaurantId);
+                        restaurantsRating.putIfAbsent(restaurantId, calculateRestaurantRating(ratedOrdersForRestaurant));
+                    } else {
+                        log.info("Restaurant with id [{}] not rated yet", restaurantId);
+                        restaurantsRating.putIfAbsent(restaurantId, List.of(noRating, noRating, noRating));
+                    }
+                }
+            }
+        }
+        return restaurantsRating;
+    }
+
+    private List<Double> calculateRestaurantRating(List<SupperOrder> orders) {
+        /***
+         * returns a list with food and delivery rating
+         * List<(foodRating), (deliveryRating), (ratedOrders)>
+         ***/
+        List<Double> rating = new ArrayList<>();
+
+        if (!orders.isEmpty()) {
+            double amountOfOrders = orders.size();
+            double summedFoodRating = 0;
+            double summedDeliveryRating = 0;
+
+
+            for (SupperOrder order : orders) {
+                summedFoodRating += order.getUserRating().getFoodRating();
+                summedDeliveryRating += order.getUserRating().getDeliveryRating();
+            }
+            rating.add(summedFoodRating / amountOfOrders);
+            rating.add(summedDeliveryRating / amountOfOrders);
+            rating.add(amountOfOrders);
+        }
+
+        return rating;
+    }
 }

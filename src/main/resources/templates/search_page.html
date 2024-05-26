@@ -20,59 +20,71 @@
     <br>
 </div>
 
-<form class="px-4 py-3" method="get" th:action="@{/search}">
-    <div class="mb-3">
-        <label for="city">City:</label>
-        <select id="city" name="city">
-            <option th:each="city : ${distinctCities}" th:text="${city}" th:value="${city}"></option>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label class="form-label" for="streetName">Street Name </label>
-        <input id="streetName" name="streetName" placeholder="Street Name" type="text">
-    </div>
-    <div>
-        <button class="btn btn-primary" type="submit">Show other restaurants</button>
-    </div>
-</form>
+<div class="container">
+    <form class="px-4 py-3" method="get" th:action="@{/search}">
+        <div class="mb-3">
+            <label for="city">City:</label>
+            <select id="city" name="city">
+                <option th:each="city : ${distinctCities}" th:text="${city}" th:value="${city}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="streetName">Street Name </label>
+            <input id="streetName" name="streetName" placeholder="Street Name" type="text">
+        </div>
+        <div>
+            <button class="btn btn-primary" type="submit">Show other restaurants</button>
+        </div>
+    </form>
+</div>
 <br><br>
 
-<table class="table" th:each="restaurants : ${restaurantsByCuisine}">
-    <thead class="table-primary">
-    <tr>
-        <th colspan="5" style="text-align: center;" th:text="${restaurants.getKey()}"></th>
-    </tr>
-    </thead>
-    <thead class="table-info">
-    <tr>
-        <th>Name</th>
-        <th>Open hour</th>
-        <th>Close hour</th>
-        <th>Street</th>
-        <th>Contact</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="restaurant : ${restaurants.getValue()}">
-        <td th:text="${restaurant.restaurantName}"></td>
-        <td th:text="${restaurant.openHour}"></td>
-        <td th:text="${restaurant.closeHour}"></td>
-        <td th:text="${restaurant.address.streetName}"></td>
-        <td th:text="${restaurant.phone}"></td>
-        <td style="background-color: transparent;">
-            <form method="get" th:action="@{/menu}">
-                <input th:name="restaurantId" th:value="${restaurant.restaurantId}" type="hidden">
-                <input th:name="restaurantName" th:value="${restaurant.restaurantName}" type="hidden">
-                <button class="btn btn-info" th:text="'View menu of '+ ${restaurant.restaurantName}" type="submit">Order
-                    button
-                </button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
 
-<div th:switch="${role}">
+    <table class="table" th:each="restaurants : ${restaurantsByCuisine}">
+        <thead class="table-primary">
+        <tr>
+            <th colspan="8" style="text-align: center;" th:text="${restaurants.getKey()}"></th>
+        </tr>
+        </thead>
+        <thead class="table-info">
+        <tr>
+            <th>Name</th>
+            <th>Open hour</th>
+            <th>Close hour</th>
+            <th>Street</th>
+            <th>Contact</th>
+            <th>Food Rating</th>
+            <th>Delivery Rating</th>
+            <th>Rated Orders</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="restaurant : ${restaurants.getValue()}">
+            <td th:text="${restaurant.restaurantName}"></td>
+            <td th:text="${restaurant.openHour}"></td>
+            <td th:text="${restaurant.closeHour}"></td>
+            <td th:text="${restaurant.address.streetName}"></td>
+            <td th:text="${restaurant.phone}"></td>
+            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[0] > 1 ? restaurantRatings.get(restaurant.restaurantId)[0] : 'Not rated yet'}"></td>
+            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[1] > 1 ? restaurantRatings.get(restaurant.restaurantId)[1] : 'Not rated yet'}"></td>
+            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[2] > 1 ? restaurantRatings.get(restaurant.restaurantId)[2] : 'Not rated yet'}"></td>
+            <td style="background-color: transparent;">
+                <form method="get" th:action="@{/menu}">
+                    <input th:name="restaurantId" th:value="${restaurant.restaurantId}" type="hidden">
+                    <input th:name="restaurantName" th:value="${restaurant.restaurantName}" type="hidden">
+                    <button class="btn btn-info" th:text="'View menu of '+ ${restaurant.restaurantName}" type="submit">
+                        Order
+                        button
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container" th:switch="${role}">
     <div th:case="'RESTAURANT'">
         <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Profile</a>
     </div>
