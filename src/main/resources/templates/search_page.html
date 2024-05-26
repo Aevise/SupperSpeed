@@ -66,9 +66,9 @@
             <td th:text="${restaurant.closeHour}"></td>
             <td th:text="${restaurant.address.streetName}"></td>
             <td th:text="${restaurant.phone}"></td>
-            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[0] > 1 ? restaurantRatings.get(restaurant.restaurantId)[0] : 'Not rated yet'}"></td>
-            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[1] > 1 ? restaurantRatings.get(restaurant.restaurantId)[1] : 'Not rated yet'}"></td>
-            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[2] > 1 ? restaurantRatings.get(restaurant.restaurantId)[2] : 'Not rated yet'}"></td>
+            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[0] > 1 ? #numbers.formatDecimal(restaurantRatings.get(restaurant.restaurantId)[0], 1, 2) : 'Not rated yet'}"></td>
+            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[1] > 1 ? #numbers.formatDecimal(restaurantRatings.get(restaurant.restaurantId)[1], 1, 2) : 'Not rated yet'}"></td>
+            <td th:text="${restaurantRatings.get(restaurant.restaurantId)[2] > 1 ? #numbers.formatInteger(restaurantRatings.get(restaurant.restaurantId)[2], 1) : 'Not rated yet'}"></td>
             <td style="background-color: transparent;">
                 <form method="get" th:action="@{/menu}">
                     <input th:name="restaurantId" th:value="${restaurant.restaurantId}" type="hidden">
@@ -77,6 +77,12 @@
                         Order
                         button
                     </button>
+                </form>
+            </td>
+            <td style="background-color: transparent;">
+                <form method="get" th:action="@{/opinion}">
+                    <input th:name="restaurantId" th:value="${restaurant.restaurantId}" type="hidden">
+                    <button class="btn btn-info" type="submit">Opinion</button>
                 </form>
             </td>
         </tr>

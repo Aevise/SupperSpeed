@@ -26,5 +26,6 @@ public interface SupperOrderDAO {
 
     void saveOrder(SupperOrderEntity supperOrderEntity);
 
-    List<SupperOrder> findRatedOrdersByRestaurantId(Integer restaurantId);
+    List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId);
+
 }

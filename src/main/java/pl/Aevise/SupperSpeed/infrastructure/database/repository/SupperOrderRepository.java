@@ -110,7 +110,7 @@ public class SupperOrderRepository implements SupperOrderDAO {
     }
 
     @Override
-    public List<SupperOrder> findRatedOrdersByRestaurantId(Integer restaurantId) {
+    public List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId) {
         List<SupperOrderEntity> ratedOrders = supperOrderJpaRepository.findAllByRestaurant_IdAndUserRatingIsNotNull(restaurantId);
         if (!ratedOrders.isEmpty()){
            return ratedOrders.stream()
@@ -119,4 +119,5 @@ public class SupperOrderRepository implements SupperOrderDAO {
         }
         return List.of();
     }
+
 }

@@ -62,7 +62,7 @@ public class OrdersBrowseController {
             log.warn("Orders not found for user [{}]", userId);
         }
         var ordersByStatus = sortOrdersByStatus(ordersByUserId);
-        var dishesByAllOrdersId = getDishesByAllOrdersId(ordersByUserId);
+        var dishesByAllOrdersId = dishListService.getDishesByAllOrdersId(ordersByUserId);
 
         var ordersTotalPrice = getOrderTotalPrice(dishesByAllOrdersId);
 
@@ -97,14 +97,7 @@ public class OrdersBrowseController {
     }
 
 
-    private Map<Integer, List<DishListDTO>> getDishesByAllOrdersId(List<SupperOrderDTO> ordersByUserId) {
-        Map<Integer, List<DishListDTO>> dishesByOrderId = new TreeMap<>();
 
-        for (SupperOrderDTO supperOrderDTO : ordersByUserId) {
-            dishesByOrderId.putIfAbsent(supperOrderDTO.getOrderId(), dishListService.getDishesByOrderId(supperOrderDTO.getOrderId()));
-        }
-        return dishesByOrderId;
-    }
 
 
     private List<StatusListDTO> getStatusList() {

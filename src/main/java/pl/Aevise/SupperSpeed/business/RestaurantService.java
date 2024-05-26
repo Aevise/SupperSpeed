@@ -119,6 +119,16 @@ public class RestaurantService {
         return null;
     }
 
+    public RestaurantDTO findRestaurantDTOById(Integer restaurantId) {
+        Optional<Restaurant> restaurant = restaurantDAO.findById(restaurantId);
+        if (restaurant.isPresent()) {
+            log.info("Successfully found restaurant with id: [{}]", restaurantId);
+            return restaurantMapper.mapToDTO(restaurant.get());
+        }
+        log.warn("Could not find restaurant with id: [{}]", restaurantId);
+        return null;
+    }
+
     @Transactional
     public void toggleRestaurantVisibility(Integer userId) {
         restaurantDAO.toggleRestaurantVisibility(userId);

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
+import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishCategoryMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishListMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
@@ -18,10 +19,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DishesListKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.DishListRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -35,24 +33,6 @@ public class DishListService {
     private final DishListRepository dishListRepository;//tego tu nie powinno być
     private final DishListDAO dishListDAO;
     private final DishListMapper dishListMapper;
-
-
-
-    @Transactional
-    public List<DishListDTO> getDishesByOrderId(int orderId) {
-        List<DishList> dishesByOrderId = dishListRepository.getDishesByOrderId(orderId);
-        if (!dishesByOrderId.isEmpty()) {
-            log.info("Found [{}] dishes bound with order [{}]", dishesByOrderId.size(), orderId);
-
-            return dishesByOrderId.stream()
-                    .map(dishListMapper::mapToDTO)
-                    .toList();
-        }
-        log.warn("Could not find dishes for order [{}]", orderId);
-        return List.of();
-
-    }
-
 
     public List<DishCategoryDTO> getDishCategoriesByRestaurantId(Integer restaurantId) {
         return dishCategoryService
@@ -110,5 +90,29 @@ public class DishListService {
         }
         log.info("Dish [{}] not ordered yet", dishId);
         return false;
+    }
+
+    @Transactional
+    public Map<Integer, List<DishListDTO>> getDishesByAllOrdersId(List<SupperOrderDTO> ordersByUserId) {
+        Map<Integer, List<DishListDTO>> dishesByOrderId = new TreeMap<>();
+
+        for (SupperOrderDTO supperOrderDTO : ordersByUserId) {
+            dishesByOrderId.putIfAbsent(supperOrderDTO.getOrderId(), getDishesByOrderId(supperOrderDTO.getOrderId()));
+        }
+        return dishesByOrderId;
+    }
+
+    @Transactional
+    public List<DishListDTO> getDishesByOrderId(int orderId) {
+        List<DishList> dishesByOrderId = dishListRepository.getDishesByOrderId(orderId);
+        if (!dishesByOrderId.isEmpty()) {
+            log.info("Found [{}] dishes bound with order [{}]", dishesByOrderId.size(), orderId);
+
+            return dishesByOrderId.stream()
+                    .map(dishListMapper::mapToDTO)
+                    .toList();
+        }
+        log.warn("Could not find dishes for order [{}]", orderId);
+        return List.of();
     }
 }

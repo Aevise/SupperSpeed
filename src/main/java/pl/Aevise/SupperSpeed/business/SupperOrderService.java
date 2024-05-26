@@ -7,6 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
+import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
+import pl.Aevise.SupperSpeed.api.dto.TotalRestaurantRatingDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.SupperOrderMapper;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -28,6 +31,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SupperOrderService {
     private final SupperOrderDAO supperOrderDAO;
+    private final SupperOrderMapper supperOrderMapper;
 
     private final ClientProfileService clientProfileService;
     private final ClientEntityMapper clientEntityMapper;
@@ -149,11 +153,11 @@ public class SupperOrderService {
             for (RestaurantDTO restaurant : restaurants) {
                 if(restaurant.getIsShown()){
                     Integer restaurantId = restaurant.getRestaurantId();
-                    List<SupperOrder> ratedOrdersForRestaurant = supperOrderDAO.findRatedOrdersByRestaurantId(restaurantId);
+                    List<SupperOrderDTO> ratedOrdersForRestaurant = getRatedOrdersByRestaurantId(restaurantId);
 
                     if (!ratedOrdersForRestaurant.isEmpty()) {
                         log.info("Found [{}] orders for restaurant with id [{}]", ratedOrdersForRestaurant.size(), restaurantId);
-                        restaurantsRating.putIfAbsent(restaurantId, calculateRestaurantRating(ratedOrdersForRestaurant));
+                        restaurantsRating.putIfAbsent(restaurantId, calculateRestaurantRatingBasedOnRatedOrders(ratedOrdersForRestaurant));
                     } else {
                         log.info("Restaurant with id [{}] not rated yet", restaurantId);
                         restaurantsRating.putIfAbsent(restaurantId, List.of(noRating, noRating, noRating));
@@ -164,7 +168,7 @@ public class SupperOrderService {
         return restaurantsRating;
     }
 
-    private List<Double> calculateRestaurantRating(List<SupperOrder> orders) {
+    public List<Double> calculateRestaurantRatingBasedOnRatedOrders(List<SupperOrderDTO> orders) {
         /***
          * returns a list with food and delivery rating
          * List<(foodRating), (deliveryRating), (ratedOrders)>
@@ -177,9 +181,9 @@ public class SupperOrderService {
             double summedDeliveryRating = 0;
 
 
-            for (SupperOrder order : orders) {
-                summedFoodRating += order.getUserRating().getFoodRating();
-                summedDeliveryRating += order.getUserRating().getDeliveryRating();
+            for (SupperOrderDTO order : orders) {
+                summedFoodRating += order.getUserRatingDTO().getFoodRating();
+                summedDeliveryRating += order.getUserRatingDTO().getDeliveryRating();
             }
             rating.add(summedFoodRating / amountOfOrders);
             rating.add(summedDeliveryRating / amountOfOrders);
@@ -188,4 +192,27 @@ public class SupperOrderService {
 
         return rating;
     }
+
+    public List<SupperOrderDTO> getRatedOrdersByRestaurantId(Integer restaurantId){
+        List<SupperOrder> ratedOrdersByRestaurantId = supperOrderDAO.getRatedOrdersByRestaurantId(restaurantId);
+        if(!ratedOrdersByRestaurantId.isEmpty()){
+            log.info("Found [{}] rated orders for restaurant with id: [{}]", ratedOrdersByRestaurantId.size(), restaurantId);
+            return ratedOrdersByRestaurantId.stream()
+                    .map(supperOrderMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Could not find rated orders for restaurant with id: [{}]", restaurantId);
+        return List.of();
+    }
+
+    public TotalRestaurantRatingDTO getRestaurantRating(List<SupperOrderDTO> ratedOrders){
+        List<Double> ratings = calculateRestaurantRatingBasedOnRatedOrders(ratedOrders);
+        return TotalRestaurantRatingDTO.builder()
+                .amountOfRatedOrders(ratedOrders.size())
+                .restaurantId(ratedOrders.get(0).getRestaurantDTO().getRestaurantId())
+                .deliveryRating(ratings.get(1))
+                .foodRating(ratings.get(0))
+                .build();
+    }
+
 }
