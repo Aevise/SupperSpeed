@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
 import java.util.List;
@@ -15,5 +16,8 @@ public interface RestaurantJpaRepository extends JpaRepository<RestaurantEntity,
 
     @Query("SELECT DISTINCT a.city FROM RestaurantEntity r JOIN r.address a")
     List<String> findDistinctCitiesForRestaurants();
+
+    @Query("SELECT r.address FROM RestaurantEntity r WHERE r.id = :restaurantId")
+    Optional<AddressEntity> findAddressByRestaurantId(Integer restaurantId);
 
 }

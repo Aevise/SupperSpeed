@@ -5,8 +5,10 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
+import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ImageEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.RestaurantJpaRepository;
@@ -140,6 +142,11 @@ public class RestaurantRepository implements RestaurantDAO {
     @Override
     public List<String> getDistinctCitiesWithRestaurants() {
         return restaurantJpaRepository.findDistinctCitiesForRestaurants();
+    }
+
+    @Override
+    public Optional<AddressEntity> getAddressByRestaurantId(Integer restaurantId) {
+        return restaurantJpaRepository.findAddressByRestaurantId(restaurantId);
     }
 
 }

@@ -28,9 +28,6 @@ public class DeliveryAddressEntity {
     @Column(name = "district", length = 32, nullable = false)
     private String district;
 
-    @Column(name = "cuisine_name", length = 64, nullable = false)
-    private String cuisine;
-
     @Column(name = "postal_code", length = 64, nullable = false)
     private String postalCode;
 

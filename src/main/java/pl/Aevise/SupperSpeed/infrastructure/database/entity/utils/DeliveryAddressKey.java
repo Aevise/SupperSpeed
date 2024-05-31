@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"orderId"})
+@EqualsAndHashCode(of = {"restaurantId"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

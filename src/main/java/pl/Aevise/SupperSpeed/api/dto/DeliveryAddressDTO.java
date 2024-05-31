@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeliveryAddressDTO {
 
+    Integer deliveryAddressId;
     String country;
     String city;
     String district;
-    String cuisine;
     String postalCode;
     String streetName;
 }

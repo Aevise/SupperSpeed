@@ -13,7 +13,6 @@ public class DeliveryAddress {
     String country;
     String city;
     String district;
-    String cuisine;
     String postalCode;
     String streetName;
 }

@@ -13,6 +13,8 @@ import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
 import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.Client;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.AddressEntityMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +29,7 @@ public class AddressService {
     private final RestaurantDAO restaurantDAO;
 
     private final AddressMapper addressMapper;
+    private final AddressEntityMapper addressEntityMapper;
 
     @Qualifier("UpdateAddress")
     public void updateAddressByUserId(AddressDTO addressDTO, Integer userId) {
@@ -87,5 +90,16 @@ public class AddressService {
         }
         log.warn("Could not find cities with restaurant");
         return List.of();
+    }
+
+    public AddressDTO getByRestaurantId(Integer restaurantId) {
+        Optional<AddressEntity> addressByRestaurantId = restaurantDAO.getAddressByRestaurantId(restaurantId);
+        if(addressByRestaurantId.isPresent()){
+            log.info("Found address for restaurant with id [{}]", restaurantId);
+            Address address = addressEntityMapper.mapFromEntity(addressByRestaurantId.get());
+            return addressMapper.mapToDTO(address);
+        }
+        log.info("Could not find address for restaurant with id [{}]", restaurantId);
+        return null;
     }
 }

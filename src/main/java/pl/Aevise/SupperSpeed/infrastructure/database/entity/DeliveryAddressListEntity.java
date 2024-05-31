@@ -6,7 +6,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddres
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"dish", "order"})
+@EqualsAndHashCode(of = {"restaurantEntity"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,12 +18,12 @@ public class DeliveryAddressListEntity {
     private DeliveryAddressKey id;
 
     @MapsId("restaurantId")
-    @JoinColumn(name = "delivery_address_id")
+    @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
     private RestaurantEntity restaurantEntity;
 
     @MapsId("deliveryAddressId")
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "delivery_address_id")
     @ManyToOne(fetch = FetchType.EAGER)
     private DeliveryAddressEntity deliveryAddressEntity;
 }
