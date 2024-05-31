@@ -9,5 +9,5 @@ CREATE TABLE delivery_address_list
             REFERENCES restaurant (restaurant_id),
     CONSTRAINT fk_deliver_address_delivery_list
         FOREIGN KEY (delivery_address_id)
-            REFERENCES delivery_address_list (delivery_address_id)
+            REFERENCES delivery_address (delivery_address_id)
 );
