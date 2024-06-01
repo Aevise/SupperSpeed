@@ -6,6 +6,7 @@ import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressListDAO;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DeliveryAddressListJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DeliveryAddressListEntityMapper;
 
@@ -29,5 +30,10 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
                         .toList();
         }
         return List.of();
+    }
+
+    @Override
+    public void deleteByAddressAndRestaurantId(DeliveryAddressKey deliveryAddressKeyId) {
+        deliveryAddressListJpaRepository.deleteById(deliveryAddressKeyId);
     }
 }
