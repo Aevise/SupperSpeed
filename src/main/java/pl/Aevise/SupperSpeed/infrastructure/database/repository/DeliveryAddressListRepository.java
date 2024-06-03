@@ -23,7 +23,6 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     @Override
     public List<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId) {
         List<DeliveryAddressListEntity> allByRestaurantEntityId = deliveryAddressListJpaRepository.getAllByRestaurantEntity_Id(restaurantId);
-
         if(!allByRestaurantEntityId.isEmpty()){
                 return allByRestaurantEntityId.stream()
                         .map(deliveryAddressListEntityMapper::mapFromEntity)

@@ -31,4 +31,20 @@ public class DeliveryAddressRepository implements DeliveryAddressDAO {
         }
         return Optional.empty();
     }
+
+    @Override
+    public Optional<DeliveryAddress> checkIfDeliveryAddressExist(DeliveryAddress deliveryAddress) {
+        Optional<DeliveryAddressEntity> byAllFieldsExceptId = deliveryAddressJpaRepository.findByAllFieldsExceptId(
+                deliveryAddress.getCountry(),
+                deliveryAddress.getCity(),
+                deliveryAddress.getDistrict(),
+                deliveryAddress.getPostalCode(),
+                deliveryAddress.getStreetName()
+        );
+
+        if(byAllFieldsExceptId.isPresent()){
+            return byAllFieldsExceptId.map(deliveryAddressEntityMapper::mapFromEntity);
+        }
+        return Optional.empty();
+    }
 }

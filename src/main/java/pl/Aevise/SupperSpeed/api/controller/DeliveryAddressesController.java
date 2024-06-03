@@ -23,6 +23,7 @@ import java.util.List;
 public class DeliveryAddressesController {
     private final String SHOW_DELIVERY_ADDRESSES = "/restaurant/delivery-addresses";
     private final String DELETE_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/delete";
+    private final String ADD_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/add";
 
     private final DeliveryAddressService deliveryAddressService;
 
@@ -56,6 +57,16 @@ public class DeliveryAddressesController {
     ){
         deliveryAddressService.deleteDeliveryAddressById(deliveryAddressId, restaurantId);
 
+        return "redirect:/" + SHOW_DELIVERY_ADDRESSES;
+    }
+
+    @PostMapping(ADD_DELIVERY_ADDRESS)
+    public String addDeliveryAddress(
+            @RequestBody DeliveryAddressDTO deliveryAddressDTO,
+            @RequestParam(name = "restaurantId") Integer restaurantId
+    ){
+
+        deliveryAddressService.addDeliveryAddress(deliveryAddressDTO, restaurantId);
         return "redirect:/" + SHOW_DELIVERY_ADDRESSES;
     }
 
