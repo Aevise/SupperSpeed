@@ -1,6 +1,7 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressListDAO;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
@@ -49,5 +50,11 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
             return byId.map(deliveryAddressListEntityMapper::mapFromEntity);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void test(String s, PageRequest deliveryAddressEntity) {
+        List<DeliveryAddressListEntity> allByDeliveryAddressEntityPostalCodeEquals = deliveryAddressListJpaRepository.getAllByDeliveryAddressEntity_PostalCodeEquals(s, deliveryAddressEntity);
+        System.out.println("");
     }
 }

@@ -1,9 +1,11 @@
 package pl.Aevise.SupperSpeed.business;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 //import pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier;
@@ -57,23 +59,25 @@ public class DeliveryAddressService {
 
     @Transactional
     public void addDeliveryAddress(DeliveryAddressDTO deliveryAddressDTO, Integer restaurantId) {
+
+        deliveryAddressListDAO.test("22-100", PageRequest.of(0, 2, Sort.by("deliveryAddressEntity.streetName").ascending()));
         DeliveryAddress deliveryAddress;
         Integer deliveryAddressId;
         DeliveryAddress newDeliveryAddress = deliveryAddressMapper.mapFromDTO(deliveryAddressDTO);
 
         Optional<DeliveryAddress> deliveryAddress1 = deliveryAddressDAO.checkIfDeliveryAddressExist(newDeliveryAddress);
-        if(deliveryAddress1.isPresent()){
+        if (deliveryAddress1.isPresent()) {
             deliveryAddress = deliveryAddress1.get();
             deliveryAddressId = deliveryAddress.getDeliveryAddressId();
 
             log.info("delivery address already exists in the database. Id: [{}]", deliveryAddressId);
-            if(checkIfRelationAlreadyExist(restaurantId, deliveryAddress)){
+            if (checkIfRelationAlreadyExist(restaurantId, deliveryAddress)) {
                 log.info("Relation between restaurant [{}] and delivery address [{}] already exists!",
                         restaurantId,
                         deliveryAddressId);
                 return;
             }
-        }else {
+        } else {
 //            newDeliveryAddress = beautifyNames(newDeliveryAddress);
             deliveryAddress = deliveryAddressDAO.saveNewDeliveryAddress(newDeliveryAddress);
             log.info("added new delivery address to database. Id: [{}]", deliveryAddress.getDeliveryAddressId());
@@ -119,7 +123,7 @@ public class DeliveryAddressService {
                 .build();
     }
 
-    private DeliveryAddressListEntity buildDeliveryAddressListEntity(Integer deliveryAddressId, Integer restaurantId){
+    private DeliveryAddressListEntity buildDeliveryAddressListEntity(Integer deliveryAddressId, Integer restaurantId) {
         return DeliveryAddressListEntity.builder()
                 .id(DeliveryAddressKey.builder()
                         .deliveryAddressId(deliveryAddressId)

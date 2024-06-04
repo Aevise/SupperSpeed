@@ -1,5 +1,6 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
+import org.springframework.data.domain.PageRequest;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 
 import javax.swing.text.html.Option;
@@ -13,4 +14,5 @@ public interface DeliveryAddressDAO {
     Optional<DeliveryAddress> checkIfDeliveryAddressExist(DeliveryAddress deliveryAddress);
 
     DeliveryAddress saveNewDeliveryAddress(DeliveryAddress newDeliveryAddress);
+
 }
