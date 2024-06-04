@@ -40,7 +40,10 @@ public class DeliveryAddressesController {
                         userDetails.getUsername());
         Integer restaurantId = restaurantDTO.getRestaurantId();
 
+        //TODO ten fragment napierdala N+1 zapytan
         List<DeliveryAddressDTO> allDeliveryAddressesByRestaurantId = deliveryAddressService.getAllDeliveryAddressesByRestaurantId(restaurantId);
+
+
         AddressDTO restaurantAddress = addressService.getByRestaurantId(restaurantId);
 
         List<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, restaurantAddress.getPostalCode());
