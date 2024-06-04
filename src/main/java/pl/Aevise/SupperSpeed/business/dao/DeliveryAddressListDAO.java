@@ -6,6 +6,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListE
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DeliveryAddressListDAO {
     List<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId);
@@ -13,4 +14,6 @@ public interface DeliveryAddressListDAO {
     void deleteByAddressAndRestaurantId(DeliveryAddressKey deliveryAddressKey);
 
     void addNewRestaurantToDeliveryAddress(DeliveryAddressListEntity deliveryAddress);
+
+    Optional<DeliveryAddressList> getByRestaurantAndAddress(DeliveryAddressListEntity deliveryAddressListEntity);
 }

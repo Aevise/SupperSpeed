@@ -41,4 +41,13 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     public void addNewRestaurantToDeliveryAddress(DeliveryAddressListEntity deliveryAddress) {
         deliveryAddressListJpaRepository.save(deliveryAddress);
     }
+
+    @Override
+    public Optional<DeliveryAddressList> getByRestaurantAndAddress(DeliveryAddressListEntity deliveryAddressListEntity) {
+        Optional<DeliveryAddressListEntity> byId = deliveryAddressListJpaRepository.findById(deliveryAddressListEntity.getId());
+        if(byId.isPresent()){
+            return byId.map(deliveryAddressListEntityMapper::mapFromEntity);
+        }
+        return Optional.empty();
+    }
 }
