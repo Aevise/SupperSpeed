@@ -62,4 +62,5 @@ public class AddressRepository implements AddressDAO {
     public List<String> findDistinctCities() {
         return addressJpaRepository.findDistinctCities();
     }
+
 }

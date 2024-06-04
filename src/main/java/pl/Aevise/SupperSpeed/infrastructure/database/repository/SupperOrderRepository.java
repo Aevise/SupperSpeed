@@ -108,4 +108,16 @@ public class SupperOrderRepository implements SupperOrderDAO {
     public void saveOrder(SupperOrderEntity supperOrderEntity) {
         supperOrderJpaRepository.saveAndFlush(supperOrderEntity);
     }
+
+    @Override
+    public List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId) {
+        List<SupperOrderEntity> ratedOrders = supperOrderJpaRepository.findAllByRestaurant_IdAndUserRatingIsNotNull(restaurantId);
+        if (!ratedOrders.isEmpty()) {
+            return ratedOrders.stream()
+                    .map(supperOrderEntityMapper::mapFromEntity)
+                    .toList();
+        }
+        return List.of();
+    }
+
 }

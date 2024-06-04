@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.StatusListDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
@@ -62,7 +61,7 @@ public class OrdersBrowseController {
             log.warn("Orders not found for user [{}]", userId);
         }
         var ordersByStatus = sortOrdersByStatus(ordersByUserId);
-        var dishesByAllOrdersId = getDishesByAllOrdersId(ordersByUserId);
+        var dishesByAllOrdersId = dishListService.getDishesByAllOrdersId(ordersByUserId);
 
         var ordersTotalPrice = getOrderTotalPrice(dishesByAllOrdersId);
 
@@ -76,9 +75,9 @@ public class OrdersBrowseController {
     }
 
     private Integer getUserId(String userRole, String userEmail) {
-        if(userRole.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())){
+        if (userRole.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())) {
             return restaurantService.findRestaurantByEmail(userEmail).getRestaurantId();
-        }else {
+        } else {
             return clientProfileService.findClientByEmail(userEmail).get().getId();
         }
     }
@@ -94,16 +93,6 @@ public class OrdersBrowseController {
         });
 
         return ordersTotalPrice;
-    }
-
-
-    private Map<Integer, List<DishListDTO>> getDishesByAllOrdersId(List<SupperOrderDTO> ordersByUserId) {
-        Map<Integer, List<DishListDTO>> dishesByOrderId = new TreeMap<>();
-
-        for (SupperOrderDTO supperOrderDTO : ordersByUserId) {
-            dishesByOrderId.putIfAbsent(supperOrderDTO.getOrderId(), dishListService.getDishesByOrderId(supperOrderDTO.getOrderId()));
-        }
-        return dishesByOrderId;
     }
 
 

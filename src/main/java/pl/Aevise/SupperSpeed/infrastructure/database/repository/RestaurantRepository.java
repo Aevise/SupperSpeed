@@ -5,14 +5,15 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
+import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ImageEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.RestaurantJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ImageEntityMapper;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
-import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 
 import java.util.List;
@@ -113,12 +114,12 @@ public class RestaurantRepository implements RestaurantDAO {
     @Override
     public void toggleRestaurantVisibility(Integer userId) {
         Optional<RestaurantEntity> restaurantEntity = restaurantJpaRepository.findById(userId);
-        if(restaurantEntity.isPresent()){
+        if (restaurantEntity.isPresent()) {
             RestaurantEntity restaurant = restaurantEntity.get();
             boolean negation = !restaurant.getIsShown();
             restaurant.setIsShown(negation);
             restaurantJpaRepository.saveAndFlush(restaurant);
-        }else {
+        } else {
             throw new EntityNotFoundException("Restaurant not found");
         }
     }
@@ -127,7 +128,7 @@ public class RestaurantRepository implements RestaurantDAO {
     public Restaurant detachUserFromRestaurant(String email) {
         Optional<RestaurantEntity> bySupperUserEmail = restaurantJpaRepository.findBySupperUser_Email(email);
 
-        if(bySupperUserEmail.isPresent()){
+        if (bySupperUserEmail.isPresent()) {
             RestaurantEntity restaurant = bySupperUserEmail.get();
             restaurant.setIsShown(false);
             restaurant.setSupperUser(null);
@@ -137,4 +138,15 @@ public class RestaurantRepository implements RestaurantDAO {
             throw new EntityNotFoundException("Could not find restaurant");
         }
     }
+
+    @Override
+    public List<String> getDistinctCitiesWithRestaurants() {
+        return restaurantJpaRepository.findDistinctCitiesForRestaurants();
+    }
+
+    @Override
+    public Optional<AddressEntity> getAddressByRestaurantId(Integer restaurantId) {
+        return restaurantJpaRepository.findAddressByRestaurantId(restaurantId);
+    }
+
 }

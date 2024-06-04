@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantResponseDTO;
 import pl.Aevise.SupperSpeed.api.dto.UserRatingDTO;
-import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
 import pl.Aevise.SupperSpeed.business.RestaurantResponseService;
 import pl.Aevise.SupperSpeed.business.UserRatingService;
-
-import java.time.OffsetDateTime;
 
 @Controller
 @AllArgsConstructor

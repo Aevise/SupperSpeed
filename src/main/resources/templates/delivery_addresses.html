@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link
+            crossorigin="anonymous"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+            rel="stylesheet"
+    >
+    <title>Create account</title>
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Add new delivery address:</h2>
+        </div>
+    </div>
+    <form method="post" th:action="@{/restaurant/delivery-addresses/add}">
+        <div class="row mt-3">
+            <div class="col">
+                <input name="country"
+                       class="form-control"
+                       th:value="${restaurantAddress.country == null ? '' : restaurantAddress.country}"
+                       type="hidden"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="form-group d-flex align-items-center">
+                    <label for="city" class="mb-0 me-2">City:
+                        <input id="city"
+                               class="form-control"
+                               name="city" th:value="${restaurantAddress.city == null ? '' : restaurantAddress.city}"
+                               type="text"/>
+                    </label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group d-flex align-items-center">
+                    <label for="district" class="mb-0 me-2">District:
+                        <input id="district"
+                               class="form-control"
+                               name="district"
+                               type="text"/>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="form-group d-flex align-items-center">
+                    <label for="postalCode" class="mb-0 me-2">Postal Code:
+                        <input id="postalCode"
+                               name="postalCode"
+                               class="form-control"
+                               th:value="${restaurantAddress.postalCode == null ? '' : restaurantAddress.postalCode}"
+                               type="text"/>
+                    </label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group d-flex align-items-center">
+                    <label th:name="streetName" class="mb-0 me-2">Street Name:
+                        <input id="streetName"
+                               name="streetName"
+                               class="form-control"
+                               th:value="${restaurantAddress.streetName == null ? '' : restaurantAddress.streetName}"
+                               type="text"/>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col"></div>
+            <div class="col" >
+                <button class="btn btn-info" type="submit">Add Delivery Address</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container" th:if="${addresses.isEmpty()}">
+    <div class="row mt-3">
+        <div class="col" style="text-align: center;">
+            <h1>Restaurant doesn't have deliveries set yet.
+                <br>
+                Please fill a form and update your list!</h1>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container" th:unless="${addresses.isEmpty()}">
+    <table class="table">
+        <thead>
+        <tr class="table table-info">
+            <th>City</th>
+            <th>District</th>
+            <th>Postal Code</th>
+            <th>Street Name</th>
+        </tr>
+        </thead>
+        <tbody th:each="address : ${addresses}">
+        <tr>
+            <td th:text="${address.city}"></td>
+            <td th:text="${address.district}"></td>
+            <td th:text="${address.postalCode}"></td>
+            <td th:text="${address.streetName}"></td>
+            <td>
+                <form method="post" th:action="@{/restaurant/delivery-addresses/delete}">
+                    <input th:name="deliveryAddressId" th:value="${address.deliveryAddressId}" type="hidden">
+                    <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+</html>

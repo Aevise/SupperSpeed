@@ -72,5 +72,13 @@ VALUES (2,1,2);
 INSERT INTO dishes_list(dish_id, order_id, quantity)
 VALUES (3,2,1);
 
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('Poland', 'Warsaw', 'Targówek', '03-562', 'Kapryśna');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('Poland', 'Warsaw', 'Targówek', '03-562', 'Pogodna');
+
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) VALUES (3,1);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) VALUES (3,2);
+
 
 

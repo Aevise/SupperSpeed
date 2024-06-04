@@ -89,7 +89,7 @@ public class CreateAccountController {
             return ACCOUNT_EXIST;
         }
 
-        if(restaurantDTO.getOpenHour().isAfter(restaurantDTO.getCloseHour())){
+        if (restaurantDTO.getOpenHour().isAfter(restaurantDTO.getCloseHour())) {
             throw new RuntimeException("Time error open hour shouldn't be after closing hour");
         }
 

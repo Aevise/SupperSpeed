@@ -1,7 +1,9 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
+import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
 import java.util.List;
@@ -29,4 +31,8 @@ public interface RestaurantDAO {
     void toggleRestaurantVisibility(Integer userId);
 
     Restaurant detachUserFromRestaurant(String email);
+
+    List<String> getDistinctCitiesWithRestaurants();
+
+    Optional<AddressEntity> getAddressByRestaurantId(Integer restaurantId);
 }

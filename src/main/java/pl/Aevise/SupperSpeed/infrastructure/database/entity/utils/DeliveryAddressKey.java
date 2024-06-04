@@ -8,16 +8,16 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"dishId"})
+@EqualsAndHashCode(of = {"restaurantId"})
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class IngredientListKey implements Serializable {
+public class DeliveryAddressKey implements Serializable {
 
-    @Column(name = "dish_id")
-    private Integer dishId;
+    @Column(name = "restaurant_id")
+    private Integer restaurantId;
 
-    @Column(name = "ingredient_id")
-    private Integer ingredientId;
+    @Column(name = "delivery_address_id")
+    private Integer deliveryAddressId;
 }

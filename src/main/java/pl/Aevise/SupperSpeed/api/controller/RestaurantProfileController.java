@@ -50,27 +50,27 @@ public class RestaurantProfileController {
                 .findRestaurantByEmail(
                         userDetails.getUsername());
 
-            Integer addressId = restaurantDTO
-                    .getAddress()
-                    .getAddressId();
-            AddressDTO addressDTO = addressService.findById(addressId)
-                    .map(addressMapper::mapToDTO)
-                    .orElseThrow(() -> new NoSuchElementException(
-                            "Could not find restaurant address with id: [%s]"
-                                    .formatted(addressId)
-                    ));
+        Integer addressId = restaurantDTO
+                .getAddress()
+                .getAddressId();
+        AddressDTO addressDTO = addressService.findById(addressId)
+                .map(addressMapper::mapToDTO)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "Could not find restaurant address with id: [%s]"
+                                .formatted(addressId)
+                ));
 
-            Integer restaurantId = restaurantDTO.getRestaurantId();
-            model.addAttribute("restaurantDTO", restaurantDTO);
-            model.addAttribute("addressDTO", addressDTO);
-            model.addAttribute("restaurantId", restaurantId);
-            if (restaurantDTO.getImageDTO() != null) {
-                String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
-                model.addAttribute("imageName", restaurantDTO.getImageDTO().getImageURL());
-                model.addAttribute("restaurantDirectory", restaurantDirectory);
-                model.addAttribute("logoWidth", MAX_LOGO_WIDTH);
-                model.addAttribute("logoHeight", MAX_LOGO_HEIGHT);
-            }
+        Integer restaurantId = restaurantDTO.getRestaurantId();
+        model.addAttribute("restaurantDTO", restaurantDTO);
+        model.addAttribute("addressDTO", addressDTO);
+        model.addAttribute("restaurantId", restaurantId);
+        if (restaurantDTO.getImageDTO() != null) {
+            String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
+            model.addAttribute("imageName", restaurantDTO.getImageDTO().getImageURL());
+            model.addAttribute("restaurantDirectory", restaurantDirectory);
+            model.addAttribute("logoWidth", MAX_LOGO_WIDTH);
+            model.addAttribute("logoHeight", MAX_LOGO_HEIGHT);
+        }
 
         return "restaurant_profile";
     }
@@ -97,7 +97,7 @@ public class RestaurantProfileController {
     @PostMapping(RESTAURANT_TOGGLE)
     public String toggleRestaurantVisibility(
             @RequestParam Integer userId
-    ){
+    ) {
         restaurantService.toggleRestaurantVisibility(userId);
         return "redirect:" + RESTAURANT_PROFILE;
     }

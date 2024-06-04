@@ -3,7 +3,6 @@ package pl.Aevise.SupperSpeed.business.dao;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.domain.Dish;
 import pl.Aevise.SupperSpeed.domain.Image;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 
 import java.util.List;
 import java.util.Optional;

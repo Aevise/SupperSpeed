@@ -18,11 +18,7 @@ public class MainPageController {
     @GetMapping(MAIN_PAGE)
     String getMainPage(Model model) {
 
-        List<String> distinctCities = addressService
-                .findDistinctCities()
-                .stream()
-                .sorted()
-                .toList();
+        List<String> distinctCities = addressService.findDistinctCities();
         model.addAttribute("distinctCities", distinctCities);
 
         return "main_page";

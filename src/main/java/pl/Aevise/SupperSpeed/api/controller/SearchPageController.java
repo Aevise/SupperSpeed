@@ -14,6 +14,7 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.CuisineService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
+import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.Cuisine;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
@@ -29,13 +30,18 @@ public class SearchPageController {
 
     private static final String SEARCH_PAGE = "/search";
 
-    private final CuisineService cuisineService;
     private final SecurityService securityService;
+
+    private final CuisineService cuisineService;
     private final CuisineMapper cuisineMapper;
+
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
+
     private final AddressService addressService;
     private final AddressMapper addressMapper;
+
+    private final SupperOrderService supperOrderService;
 
     @GetMapping(SEARCH_PAGE)
     public String getSearchPage
@@ -49,20 +55,19 @@ public class SearchPageController {
         List<AddressDTO> addresses = getAddressDTOList();
         List<RestaurantDTO> restaurants = getRestaurantsByCityDTOList(city);
 
-        List<String> cities = addressService
-                .findDistinctCities()
-                .stream()
-                .sorted()
-                .toList();
+        List<String> cities = addressService.findDistinctCities();
 
         String userRole = securityService.getUserAuthority();
 
-        HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = mapRestaurantsByCuisine(restaurants);
+        var restaurantsByCuisine = mapRestaurantsByCuisine(restaurants);
+        var restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(restaurants);
+
 
         model.addAttribute("restaurantsByCuisine", restaurantsByCuisine);
         model.addAttribute("currentCity", city);
         model.addAttribute("distinctCities", cities);
         model.addAttribute("role", userRole);
+        model.addAttribute("restaurantRatings", restaurantsRating);
 
         return "search_page";
     }
@@ -95,7 +100,7 @@ public class SearchPageController {
         HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = new HashMap<>();
 
         for (RestaurantDTO restaurant : restaurants) {
-            if(restaurant.getIsShown()){
+            if (restaurant.getIsShown()) {
                 restaurantsByCuisine.putIfAbsent(restaurant.getCuisine().getCuisine(), new ArrayList<>());
                 restaurantsByCuisine.get(restaurant.getCuisine().getCuisine()).add(restaurant);
             }

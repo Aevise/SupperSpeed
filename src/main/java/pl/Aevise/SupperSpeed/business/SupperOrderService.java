@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
+import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
+import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
+import pl.Aevise.SupperSpeed.api.dto.TotalRestaurantRatingDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.SupperOrderMapper;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -17,6 +21,8 @@ import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEnt
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +31,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class SupperOrderService {
     private final SupperOrderDAO supperOrderDAO;
+    private final SupperOrderMapper supperOrderMapper;
 
     private final ClientProfileService clientProfileService;
     private final ClientEntityMapper clientEntityMapper;
@@ -107,14 +114,14 @@ public class SupperOrderService {
                                 .mapToEntity(
                                         clientProfileService
                                                 .findClientByEmail(clientEmail).get()))
-                                .restaurant(RestaurantEntity.builder()
-                                        .id(restaurantId)
-                                        .build())
-                                .status(StatusListEntity.builder()
-                                        .statusId(1)
-                                        .build())
-                                .orderDateTime(OffsetDateTime.now())
-                                .build();
+                .restaurant(RestaurantEntity.builder()
+                        .id(restaurantId)
+                        .build())
+                .status(StatusListEntity.builder()
+                        .statusId(1)
+                        .build())
+                .orderDateTime(OffsetDateTime.now())
+                .build();
     }
 
     public BigDecimal extractTotalOrderValue(List<DishListDTO> dishes) {
@@ -136,6 +143,76 @@ public class SupperOrderService {
             supperOrderEntity.setUserRating(userRating);
             supperOrderDAO.saveOrder(supperOrderEntity);
         }
+    }
+
+    public HashMap<Integer, List<Double>> getRestaurantsRatingBasedOnOrders(List<RestaurantDTO> restaurants) {
+        HashMap<Integer, List<Double>> restaurantsRating = new HashMap<>();
+        double noRating = 0.0;
+
+        if (!restaurants.isEmpty()) {
+            for (RestaurantDTO restaurant : restaurants) {
+                if (restaurant.getIsShown()) {
+                    Integer restaurantId = restaurant.getRestaurantId();
+                    List<SupperOrderDTO> ratedOrdersForRestaurant = getRatedOrdersByRestaurantId(restaurantId);
+
+                    if (!ratedOrdersForRestaurant.isEmpty()) {
+                        log.info("Found [{}] orders for restaurant with id [{}]", ratedOrdersForRestaurant.size(), restaurantId);
+                        restaurantsRating.putIfAbsent(restaurantId, calculateRestaurantRatingBasedOnRatedOrders(ratedOrdersForRestaurant));
+                    } else {
+                        log.info("Restaurant with id [{}] not rated yet", restaurantId);
+                        restaurantsRating.putIfAbsent(restaurantId, List.of(noRating, noRating, noRating));
+                    }
+                }
+            }
+        }
+        return restaurantsRating;
+    }
+
+    public List<Double> calculateRestaurantRatingBasedOnRatedOrders(List<SupperOrderDTO> orders) {
+        /***
+         * returns a list with food and delivery rating
+         * List<(foodRating), (deliveryRating), (ratedOrders)>
+         ***/
+        List<Double> rating = new ArrayList<>();
+
+        if (!orders.isEmpty()) {
+            double amountOfOrders = orders.size();
+            double summedFoodRating = 0;
+            double summedDeliveryRating = 0;
+
+
+            for (SupperOrderDTO order : orders) {
+                summedFoodRating += order.getUserRatingDTO().getFoodRating();
+                summedDeliveryRating += order.getUserRatingDTO().getDeliveryRating();
+            }
+            rating.add(summedFoodRating / amountOfOrders);
+            rating.add(summedDeliveryRating / amountOfOrders);
+            rating.add(amountOfOrders);
+        }
+
+        return rating;
+    }
+
+    public List<SupperOrderDTO> getRatedOrdersByRestaurantId(Integer restaurantId) {
+        List<SupperOrder> ratedOrdersByRestaurantId = supperOrderDAO.getRatedOrdersByRestaurantId(restaurantId);
+        if (!ratedOrdersByRestaurantId.isEmpty()) {
+            log.info("Found [{}] rated orders for restaurant with id: [{}]", ratedOrdersByRestaurantId.size(), restaurantId);
+            return ratedOrdersByRestaurantId.stream()
+                    .map(supperOrderMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Could not find rated orders for restaurant with id: [{}]", restaurantId);
+        return List.of();
+    }
+
+    public TotalRestaurantRatingDTO getRestaurantRating(List<SupperOrderDTO> ratedOrders) {
+        List<Double> ratings = calculateRestaurantRatingBasedOnRatedOrders(ratedOrders);
+        return TotalRestaurantRatingDTO.builder()
+                .amountOfRatedOrders(ratedOrders.size())
+                .restaurantId(ratedOrders.get(0).getRestaurantDTO().getRestaurantId())
+                .deliveryRating(ratings.get(1))
+                .foodRating(ratings.get(0))
+                .build();
     }
 
 }
