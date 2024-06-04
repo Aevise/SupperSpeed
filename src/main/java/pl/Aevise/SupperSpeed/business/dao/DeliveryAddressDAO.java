@@ -11,4 +11,6 @@ public interface DeliveryAddressDAO {
     Optional<DeliveryAddress> findById(Integer deliveryAddressId);
 
     Optional<DeliveryAddress> checkIfDeliveryAddressExist(DeliveryAddress deliveryAddress);
+
+    DeliveryAddress saveNewDeliveryAddress(DeliveryAddress newDeliveryAddress);
 }

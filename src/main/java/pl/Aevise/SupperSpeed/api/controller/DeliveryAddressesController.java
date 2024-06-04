@@ -62,7 +62,7 @@ public class DeliveryAddressesController {
 
     @PostMapping(ADD_DELIVERY_ADDRESS)
     public String addDeliveryAddress(
-            @RequestBody DeliveryAddressDTO deliveryAddressDTO,
+            DeliveryAddressDTO deliveryAddressDTO,
             @RequestParam(name = "restaurantId") Integer restaurantId
     ){
 

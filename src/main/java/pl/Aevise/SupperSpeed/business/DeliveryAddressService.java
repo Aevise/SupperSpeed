@@ -11,6 +11,7 @@ import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressDAO;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressListDAO;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 
 import java.util.ArrayList;
@@ -50,11 +51,24 @@ public class DeliveryAddressService {
         deliveryAddressListDAO.deleteByAddressAndRestaurantId(deliveryAddressKey);
     }
 
+    @Transactional
     public void addDeliveryAddress(DeliveryAddressDTO deliveryAddressDTO, Integer restaurantId) {
-        DeliveryAddress deliveryAddress = deliveryAddressMapper.mapFromDTO(deliveryAddressDTO);
+        DeliveryAddress deliveryAddress;
+        DeliveryAddress newDeliveryAddress = deliveryAddressMapper.mapFromDTO(deliveryAddressDTO);
 
-        Optional<DeliveryAddress> deliveryAddress1 = deliveryAddressDAO.checkIfDeliveryAddressExist(deliveryAddress);
-        
+        Optional<DeliveryAddress> deliveryAddress1 = deliveryAddressDAO.checkIfDeliveryAddressExist(newDeliveryAddress);
+        if(deliveryAddress1.isPresent()){
+            deliveryAddress = deliveryAddress1.get();
+            log.info("delivery address already exists in the database. Id: [{}]", deliveryAddress.getDeliveryAddressId());
+        }else {
+            deliveryAddress = deliveryAddressDAO.saveNewDeliveryAddress(newDeliveryAddress);
+            log.info("added new delivery address to database. Id: [{}]", deliveryAddress.getDeliveryAddressId());
+        }
+        DeliveryAddressList deliveryAddressList = buildDeliveryAddressList(deliveryAddress, restaurantId);
+        deliveryAddressListDAO.addNewRestaurantToDeliveryAddress(deliveryAddressList);
+        log.info("Connected delivery address [{}] with restaurant [{}]",
+                deliveryAddressList.getDeliveryAddress().getDeliveryAddressId(),
+                deliveryAddressList.getRestaurantId());
     }
 
     private List<DeliveryAddressDTO> separateAddresses(List<DeliveryAddressList> deliveryAddressLists) {
@@ -76,6 +90,13 @@ public class DeliveryAddressService {
     private DeliveryAddressKey buildDeliveryAddressKey(Integer deliveryAddressId, Integer restaurantId) {
         return DeliveryAddressKey.builder()
                 .deliveryAddressId(deliveryAddressId)
+                .restaurantId(restaurantId)
+                .build();
+    }
+
+    private DeliveryAddressList buildDeliveryAddressList(DeliveryAddress deliveryAddress, Integer restaurantId){
+        return DeliveryAddressList.builder()
+                .deliveryAddress(deliveryAddress)
                 .restaurantId(restaurantId)
                 .build();
     }

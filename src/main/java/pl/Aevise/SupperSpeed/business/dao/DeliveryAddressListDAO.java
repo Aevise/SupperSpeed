@@ -10,4 +10,6 @@ public interface DeliveryAddressListDAO {
     List<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId);
 
     void deleteByAddressAndRestaurantId(DeliveryAddressKey deliveryAddressKey);
+
+    void addNewRestaurantToDeliveryAddress(DeliveryAddressList deliveryAddress);
 }

@@ -47,4 +47,12 @@ public class DeliveryAddressRepository implements DeliveryAddressDAO {
         }
         return Optional.empty();
     }
+
+    @Override
+    public DeliveryAddress saveNewDeliveryAddress(DeliveryAddress newDeliveryAddress) {
+        DeliveryAddressEntity deliveryAddressEntity = deliveryAddressJpaRepository.saveAndFlush(
+                deliveryAddressEntityMapper.mapToEntity(newDeliveryAddress)
+        );
+        return deliveryAddressEntityMapper.mapFromEntity(deliveryAddressEntity);
+    }
 }
