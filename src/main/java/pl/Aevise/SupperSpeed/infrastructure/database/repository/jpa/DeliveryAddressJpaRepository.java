@@ -8,7 +8,8 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntit
 import java.util.Optional;
 
 public interface DeliveryAddressJpaRepository extends JpaRepository<DeliveryAddressEntity, Integer> {
-    @Query("SELECT d FROM DeliveryAddressEntity d WHERE d.country = :country AND d.city = :city AND d.district = :district AND d.postalCode = :postalCode AND d.streetName = :streetName")
+
+    @Query("SELECT d FROM DeliveryAddressEntity d WHERE LOWER(d.country) = LOWER(:country) AND LOWER(d.city) = LOWER(:city) AND LOWER(d.district) = LOWER(:district) AND LOWER(d.postalCode) = LOWER(:postalCode) AND LOWER(d.streetName) = LOWER(:streetName)")
     Optional<DeliveryAddressEntity> findByAllFieldsExceptId(@Param("country") String country,
                                                            @Param("city") String city,
                                                            @Param("district") String district,

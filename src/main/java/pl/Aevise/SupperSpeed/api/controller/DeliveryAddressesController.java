@@ -57,7 +57,7 @@ public class DeliveryAddressesController {
     ){
         deliveryAddressService.deleteDeliveryAddressById(deliveryAddressId, restaurantId);
 
-        return "redirect:/" + SHOW_DELIVERY_ADDRESSES;
+        return "redirect:" + SHOW_DELIVERY_ADDRESSES;
     }
 
     @PostMapping(ADD_DELIVERY_ADDRESS)
@@ -67,7 +67,7 @@ public class DeliveryAddressesController {
     ){
 
         deliveryAddressService.addDeliveryAddress(deliveryAddressDTO, restaurantId);
-        return "redirect:/" + SHOW_DELIVERY_ADDRESSES;
+        return "redirect:" + SHOW_DELIVERY_ADDRESSES;
     }
 
 

@@ -38,9 +38,7 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     }
 
     @Override
-    public void addNewRestaurantToDeliveryAddress(DeliveryAddressList deliveryAddress) {
-        deliveryAddressListJpaRepository.save(
-                deliveryAddressListEntityMapper.mapToEntity(deliveryAddress)
-        );
+    public void addNewRestaurantToDeliveryAddress(DeliveryAddressListEntity deliveryAddress) {
+        deliveryAddressListJpaRepository.save(deliveryAddress);
     }
 }

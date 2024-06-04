@@ -5,13 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier;
 import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DeliveryAddressMapper;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressDAO;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressListDAO;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 
 import java.util.ArrayList;
@@ -61,14 +64,16 @@ public class DeliveryAddressService {
             deliveryAddress = deliveryAddress1.get();
             log.info("delivery address already exists in the database. Id: [{}]", deliveryAddress.getDeliveryAddressId());
         }else {
+            newDeliveryAddress = beautifyNames(newDeliveryAddress);
             deliveryAddress = deliveryAddressDAO.saveNewDeliveryAddress(newDeliveryAddress);
             log.info("added new delivery address to database. Id: [{}]", deliveryAddress.getDeliveryAddressId());
         }
-        DeliveryAddressList deliveryAddressList = buildDeliveryAddressList(deliveryAddress, restaurantId);
-        deliveryAddressListDAO.addNewRestaurantToDeliveryAddress(deliveryAddressList);
+        Integer deliveryAddressId = deliveryAddress.getDeliveryAddressId();
+        DeliveryAddressListEntity deliveryAddressListEntity = buildDeliveryAddressListEntity(deliveryAddressId, restaurantId);
+        deliveryAddressListDAO.addNewRestaurantToDeliveryAddress(deliveryAddressListEntity);
         log.info("Connected delivery address [{}] with restaurant [{}]",
-                deliveryAddressList.getDeliveryAddress().getDeliveryAddressId(),
-                deliveryAddressList.getRestaurantId());
+                deliveryAddressListEntity.getDeliveryAddressEntity().getDeliveryAddressId(),
+                deliveryAddressListEntity.getRestaurantEntity().getId());
     }
 
     private List<DeliveryAddressDTO> separateAddresses(List<DeliveryAddressList> deliveryAddressLists) {
@@ -94,10 +99,28 @@ public class DeliveryAddressService {
                 .build();
     }
 
-    private DeliveryAddressList buildDeliveryAddressList(DeliveryAddress deliveryAddress, Integer restaurantId){
-        return DeliveryAddressList.builder()
-                .deliveryAddress(deliveryAddress)
-                .restaurantId(restaurantId)
+    private DeliveryAddressListEntity buildDeliveryAddressListEntity(Integer deliveryAddressId, Integer restaurantId){
+        return DeliveryAddressListEntity.builder()
+                .id(DeliveryAddressKey.builder()
+                        .deliveryAddressId(deliveryAddressId)
+                        .restaurantId(restaurantId)
+                        .build())
+                .deliveryAddressEntity(DeliveryAddressEntity.builder()
+                        .deliveryAddressId(deliveryAddressId)
+                        .build())
+                .restaurantEntity(
+                        RestaurantEntity.builder()
+                                .id(restaurantId)
+                                .build()
+                )
                 .build();
+    }
+
+    private DeliveryAddress beautifyNames(DeliveryAddress newDeliveryAddress) {
+        return newDeliveryAddress
+                .withCity(NameBeautifier.handleName(newDeliveryAddress.getCity()))
+                .withCountry(NameBeautifier.handleName(newDeliveryAddress.getCountry()))
+                .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
+                .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
     }
 }
