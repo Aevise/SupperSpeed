@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,6 +89,23 @@ public class DeliveryAddressService {
                 deliveryAddressListEntity.getRestaurantEntity().getId());
     }
 
+    @Transactional
+    public List<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, String postalCode) {
+        List<DeliveryAddress> addresses = deliveryAddressListDAO.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, postalCode);
+        if(!addresses.isEmpty()){
+            log.info("Found [{}] addresses where restaurant [{}] does not deliver for postal code [{}]",
+                    addresses.size(),
+                    restaurantId,
+                    postalCode);
+
+            return addresses.stream()
+                    .map(deliveryAddressMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Restaurant delivers to all addresses with postal code: [{}]", postalCode);
+        return List.of();
+    }
+
     private boolean checkIfRelationAlreadyExist(Integer restaurantId, DeliveryAddress deliveryAddress) {
         Optional<DeliveryAddressList> byRestaurantAndAddress = deliveryAddressListDAO
                 .getByRestaurantAndAddress(buildDeliveryAddressListEntity(
@@ -139,6 +155,7 @@ public class DeliveryAddressService {
                 )
                 .build();
     }
+
 
 //    private DeliveryAddress beautifyNames(DeliveryAddress newDeliveryAddress) {
 //        return newDeliveryAddress

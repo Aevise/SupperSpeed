@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
@@ -44,8 +43,11 @@ public class DeliveryAddressesController {
         List<DeliveryAddressDTO> allDeliveryAddressesByRestaurantId = deliveryAddressService.getAllDeliveryAddressesByRestaurantId(restaurantId);
         AddressDTO restaurantAddress = addressService.getByRestaurantId(restaurantId);
 
+        List<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, restaurantAddress.getPostalCode());
+
         model.addAttribute("addresses", allDeliveryAddressesByRestaurantId);
         model.addAttribute("restaurantAddress", restaurantAddress);
+        model.addAttribute("addressesWithoutDelivery", addressesWithoutDelivery);
         model.addAttribute("restaurantId", restaurantId);
         return "delivery_addresses";
     }

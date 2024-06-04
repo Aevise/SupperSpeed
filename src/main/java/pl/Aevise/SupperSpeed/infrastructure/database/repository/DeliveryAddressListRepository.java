@@ -9,6 +9,7 @@ import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DeliveryAddressListJpaRepository;
+import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DeliveryAddressEntityMapper;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DeliveryAddressListEntityMapper;
 
 import java.util.List;
@@ -19,8 +20,9 @@ import java.util.Optional;
 public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
 
     private final DeliveryAddressListJpaRepository deliveryAddressListJpaRepository;
-
     private final DeliveryAddressListEntityMapper deliveryAddressListEntityMapper;
+
+    private final DeliveryAddressEntityMapper deliveryAddressEntityMapper;
 
     @Override
     public List<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId) {
@@ -56,5 +58,14 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     public void test(String s, PageRequest deliveryAddressEntity) {
         List<DeliveryAddressListEntity> allByDeliveryAddressEntityPostalCodeEquals = deliveryAddressListJpaRepository.getAllByDeliveryAddressEntity_PostalCodeEquals(s, deliveryAddressEntity);
         System.out.println("");
+    }
+
+    @Override
+    public List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, String postalCode) {
+        return deliveryAddressListJpaRepository
+                .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, postalCode)
+                .stream()
+                .map(deliveryAddressEntityMapper::mapFromEntity)
+                .toList();
     }
 }
