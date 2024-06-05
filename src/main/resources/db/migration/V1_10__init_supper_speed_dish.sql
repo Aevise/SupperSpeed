@@ -1,14 +1,14 @@
 CREATE TABLE dish
 (
-    dish_id          SERIAL        NOT NULL,
-    restaurant_id    INT           NOT NULL,
-    dish_category_id INT           ,
-    name             VARCHAR(32)   NOT NULL,
+    dish_id          SERIAL                NOT NULL,
+    restaurant_id    INT                   NOT NULL,
+    dish_category_id INT,
+    name             VARCHAR(32)           NOT NULL,
     description      VARCHAR(128),
-    price            NUMERIC(8, 2) NOT NULL,
+    price            NUMERIC(8, 2)         NOT NULL,
     image_id         INT,
-    availability     BOOLEAN       NOT NULL,
-    is_hidden        BOOLEAN       DEFAULT FALSE NOT NULL,
+    availability     BOOLEAN               NOT NULL,
+    is_hidden        BOOLEAN DEFAULT FALSE NOT NULL,
     PRIMARY KEY (dish_id),
     CONSTRAINT fk_dish_restaurant_id
         FOREIGN KEY (restaurant_id)

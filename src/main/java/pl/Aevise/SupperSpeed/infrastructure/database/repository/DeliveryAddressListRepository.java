@@ -8,7 +8,6 @@ import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DeliveryAddressListJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DeliveryAddressEntityMapper;
@@ -29,18 +28,17 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     @Override
     public List<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId) {
         List<DeliveryAddressListEntity> allByRestaurantEntityId = deliveryAddressListJpaRepository.getAllByRestaurantEntity_Id(restaurantId);
-        if(!allByRestaurantEntityId.isEmpty()){
-                return allByRestaurantEntityId.stream()
-                        .map(deliveryAddressListEntityMapper::mapFromEntity)
-                        .toList();
+        if (!allByRestaurantEntityId.isEmpty()) {
+            return allByRestaurantEntityId.stream()
+                    .map(deliveryAddressListEntityMapper::mapFromEntity)
+                    .toList();
         }
         return List.of();
     }
 
     @Override
-    public void deleteByAddressAndRestaurantId(DeliveryAddressKey deliveryAddressKeyId) {
-        deliveryAddressListJpaRepository.customDelete(deliveryAddressKeyId);
-//        deliveryAddressListJpaRepository.deleteById(deliveryAddressKeyId);
+    public void removeDeliveryAddress(DeliveryAddressKey deliveryAddressKeyId) {
+        deliveryAddressListJpaRepository.deleteById(deliveryAddressKeyId);
     }
 
     @Override
@@ -51,7 +49,7 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     @Override
     public Optional<DeliveryAddressList> getByRestaurantAndAddress(DeliveryAddressListEntity deliveryAddressListEntity) {
         Optional<DeliveryAddressListEntity> byId = deliveryAddressListJpaRepository.findById(deliveryAddressListEntity.getId());
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             return byId.map(deliveryAddressListEntityMapper::mapFromEntity);
         }
         return Optional.empty();

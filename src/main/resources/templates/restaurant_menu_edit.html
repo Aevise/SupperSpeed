@@ -54,9 +54,9 @@
     <tbody>
     <tr th:each="dish : ${category.getValue()}">
         <td>
-            <img th:if="*{dish.getImageDTO() != null}"
-                 alt="Upload image from disk (PNG/JPEG up to 5MB)"
+            <img alt="Upload image from disk (PNG/JPEG up to 5MB)"
                  th:height="*{imageHeight}"
+                 th:if="*{dish.getImageDTO() != null}"
                  th:src="@{'/images/' + ${restaurantDirectory} + '/'  + ${dish.getImageDTO().getImageURL()}}"
                  th:width="*{imageWidth}"/>
             <form enctype="multipart/form-data" method="post" th:action="@{/upload/dishImage}">

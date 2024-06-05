@@ -2,7 +2,6 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.HibernateException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -44,16 +43,10 @@ public class DeliveryAddressService {
     }
 
     @Transactional
-    public void deleteDeliveryAddressById(Integer deliveryAddressId, Integer restaurantId) {
-        try {
-            deliveryAddressDAO.deleteDeliveryAddressById(deliveryAddressId);
-        } catch (HibernateException e) {
-            log.warn("Could not delete address with id: [{}]", deliveryAddressId, e);
-            return;
-        }
+    public void removeDeliveryAddress(Integer deliveryAddressId, Integer restaurantId) {
 
         DeliveryAddressKey deliveryAddressKey = buildDeliveryAddressKey(deliveryAddressId, restaurantId);
-        deliveryAddressListDAO.deleteByAddressAndRestaurantId(deliveryAddressKey);
+        deliveryAddressListDAO.removeDeliveryAddress(deliveryAddressKey);
     }
 
     @Transactional
@@ -96,7 +89,7 @@ public class DeliveryAddressService {
         String postalCode = deliveryAddressDTO.getPostalCode();
 
         List<DeliveryAddress> addresses = deliveryAddressListDAO.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, deliveryAddressMapper.mapFromDTO(deliveryAddressDTO));
-        if(!addresses.isEmpty()){
+        if (!addresses.isEmpty()) {
             log.info("Found [{}] addresses where restaurant [{}] does not deliver for postal code [{}]",
                     addresses.size(),
                     restaurantId,

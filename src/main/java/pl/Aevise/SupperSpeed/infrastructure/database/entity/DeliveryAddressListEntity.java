@@ -19,11 +19,11 @@ public class DeliveryAddressListEntity {
 
     @MapsId("restaurantId")
     @JoinColumn(name = "restaurant_id")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private RestaurantEntity restaurantEntity;
 
     @MapsId("deliveryAddressId")
     @JoinColumn(name = "delivery_address_id")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private DeliveryAddressEntity deliveryAddressEntity;
 }

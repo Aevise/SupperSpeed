@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface DeliveryAddressListDAO {
     List<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId);
 
-    void deleteByAddressAndRestaurantId(DeliveryAddressKey deliveryAddressKey);
+    void removeDeliveryAddress(DeliveryAddressKey deliveryAddressKey);
 
     void addNewRestaurantToDeliveryAddress(DeliveryAddressListEntity deliveryAddress);
 

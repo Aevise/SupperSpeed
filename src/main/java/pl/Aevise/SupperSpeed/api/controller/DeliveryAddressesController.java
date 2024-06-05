@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class DeliveryAddressesController {
     private final String SHOW_DELIVERY_ADDRESSES = "/restaurant/delivery-addresses";
-    private final String DELETE_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/delete";
+    private final String REMOVE_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/remove";
     private final String ADD_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/add";
 
     private final DeliveryAddressService deliveryAddressService;
@@ -34,7 +34,7 @@ public class DeliveryAddressesController {
     public String showDeliveryAddresses(
             @AuthenticationPrincipal UserDetails userDetails,
             Model model
-    ){
+    ) {
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(
                         userDetails.getUsername());
@@ -56,12 +56,12 @@ public class DeliveryAddressesController {
         return "delivery_addresses";
     }
 
-    @PostMapping(DELETE_DELIVERY_ADDRESS)
-    public String deleteDeliveryAddress(
+    @PostMapping(REMOVE_DELIVERY_ADDRESS)
+    public String removeDeliveryAddress(
             @RequestParam(name = "deliveryAddressId") Integer deliveryAddressId,
             @RequestParam(name = "restaurantId") Integer restaurantId
-    ){
-        deliveryAddressService.deleteDeliveryAddressById(deliveryAddressId, restaurantId);
+    ) {
+        deliveryAddressService.removeDeliveryAddress(deliveryAddressId, restaurantId);
 
         return "redirect:" + SHOW_DELIVERY_ADDRESSES;
     }
@@ -70,14 +70,14 @@ public class DeliveryAddressesController {
     public String addDeliveryAddress(
             DeliveryAddressDTO deliveryAddressDTO,
             @RequestParam(name = "restaurantId") Integer restaurantId
-    ){
+    ) {
 
         deliveryAddressService.addDeliveryAddress(deliveryAddressDTO, restaurantId);
         return "redirect:" + SHOW_DELIVERY_ADDRESSES;
     }
 
 
-    private DeliveryAddressDTO buildDeliveryAddressFromRestaurantAddress(AddressDTO addressDTO){
+    private DeliveryAddressDTO buildDeliveryAddressFromRestaurantAddress(AddressDTO addressDTO) {
         return DeliveryAddressDTO.builder()
                 .city(addressDTO.getCity())
                 .country(addressDTO.getCountry())
