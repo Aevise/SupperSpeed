@@ -28,14 +28,13 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     private final DeliveryAddressEntityMapper deliveryAddressEntityMapper;
 
     @Override
-    public List<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId) {
-        List<DeliveryAddressListEntity> allByRestaurantEntityId = deliveryAddressListJpaRepository.getAllByRestaurantEntity_Id(restaurantId);
+    public Page<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
+        Page<DeliveryAddressListEntity> allByRestaurantEntityId = deliveryAddressListJpaRepository.getAllByRestaurantEntity_Id(restaurantId, pageRequest);
         if (!allByRestaurantEntityId.isEmpty()) {
-            return allByRestaurantEntityId.stream()
-                    .map(deliveryAddressListEntityMapper::mapFromEntity)
-                    .toList();
+            return allByRestaurantEntityId
+                    .map(deliveryAddressListEntityMapper::mapFromEntity);
         }
-        return List.of();
+        return Page.empty();
     }
 
     @Override

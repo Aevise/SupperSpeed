@@ -1,6 +1,9 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -8,12 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.Aevise.SupperSpeed.api.controller.utils.PaginationAndSortingUtils;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.DeliveryAddressService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
+import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
 
 import java.util.List;
 
@@ -40,21 +45,38 @@ public class DeliveryAddressesController {
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(
                         userDetails.getUsername());
+        System.out.println("gmm");
         Integer restaurantId = restaurantDTO.getRestaurantId();
-
-        //TODO ten fragment napierdala N+1 zapytan
-        List<DeliveryAddressDTO> allDeliveryAddressesByRestaurantId = deliveryAddressService.getAllDeliveryAddressesByRestaurantId(restaurantId);
 
 
         AddressDTO restaurantAddress = addressService.getByRestaurantId(restaurantId);
 
+        if (sortingDirection == null ||
+                (!sortingDirection.equals(PaginationAndSortingUtils.ASC.name())
+                        && !sortingDirection.equals(PaginationAndSortingUtils.DESC.name()))) {
+            sortingDirection = PaginationAndSortingUtils.ASC.name();
+            page = 0;
+        }
+        Page<DeliveryAddressList> allDeliveryAddressesListByRestaurantId = deliveryAddressService.getAllDeliveryAddressesByRestaurantId(
+                restaurantId,
+                buildPageRequest(
+                        sortingDirection,
+                        page
+                ));
+
+        List<DeliveryAddressDTO> allDeliveryAddressesByRestaurantId = deliveryAddressService.separateAddresses(allDeliveryAddressesListByRestaurantId);
+
+
         List<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
-                .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, buildDeliveryAddressFromRestaurantAddress(restaurantAddress));
+                .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId,
+                        buildDeliveryAddressFromRestaurantAddress(restaurantAddress));
 
         model.addAttribute("addresses", allDeliveryAddressesByRestaurantId);
         model.addAttribute("restaurantAddress", restaurantAddress);
         model.addAttribute("addressesWithoutDelivery", addressesWithoutDelivery);
         model.addAttribute("restaurantId", restaurantId);
+        model.addAttribute("totalNumberOfPages", allDeliveryAddressesListByRestaurantId.getTotalPages());
+        model.addAttribute("sortingDirection", sortingDirection);
         return "delivery_addresses";
     }
 
@@ -86,6 +108,13 @@ public class DeliveryAddressesController {
                 .postalCode(addressDTO.getPostalCode())
                 .streetName(addressDTO.getStreetName())
                 .build();
+    }
+
+    private PageRequest buildPageRequest(String direction, Integer page) {
+        if (direction.equals(PaginationAndSortingUtils.ASC.name())) {
+            return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").ascending());
+        }
+        return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").descending());
     }
 
 }
