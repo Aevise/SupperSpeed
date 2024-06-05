@@ -25,4 +25,7 @@ public interface DeliveryAddressListJpaRepository extends JpaRepository<Delivery
 
     @Query("SELECT r.deliveryAddressEntity FROM DeliveryAddressListEntity r WHERE r.restaurantEntity.id = :restaurantId")
     List<DeliveryAddressEntity> getDeliveryAddressesForRestaurant(@Param("restaurantId") Integer restaurantId);
+
+    @Query("DELETE FROM DeliveryAddressListEntity dal WHERE dal.restaurantEntity.id = :deliveryAddressKeyId.restaurantId AND dal.deliveryAddressEntity.deliveryAddressId = :deliveryAddressKeyId.deliveryAddressId")
+    void customDelete(@Param("deliveryAddressKeyId") DeliveryAddressKey deliveryAddressKeyId);
 }

@@ -8,6 +8,7 @@ import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DeliveryAddressListJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DeliveryAddressEntityMapper;
@@ -38,7 +39,8 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
 
     @Override
     public void deleteByAddressAndRestaurantId(DeliveryAddressKey deliveryAddressKeyId) {
-        deliveryAddressListJpaRepository.deleteById(deliveryAddressKeyId);
+        deliveryAddressListJpaRepository.customDelete(deliveryAddressKeyId);
+//        deliveryAddressListJpaRepository.deleteById(deliveryAddressKeyId);
     }
 
     @Override
