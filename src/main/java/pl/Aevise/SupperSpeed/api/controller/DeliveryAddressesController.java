@@ -33,7 +33,9 @@ public class DeliveryAddressesController {
     @GetMapping(SHOW_DELIVERY_ADDRESSES)
     public String showDeliveryAddresses(
             @AuthenticationPrincipal UserDetails userDetails,
-            Model model
+            Model model,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "dir", required = false) String sortingDirection
     ) {
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(

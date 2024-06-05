@@ -52,7 +52,7 @@ public class DeliveryAddressService {
     @Transactional
     public void addDeliveryAddress(DeliveryAddressDTO deliveryAddressDTO, Integer restaurantId) {
 
-        deliveryAddressListDAO.test("22-100", PageRequest.of(0, 2, Sort.by("deliveryAddressEntity.streetName").ascending()));
+        deliveryAddressListDAO.test("22-100", PageRequest.of(7, 2, Sort.by("deliveryAddressEntity.streetName").ascending()));
 
 
         DeliveryAddress deliveryAddress;
