@@ -13,6 +13,79 @@
 </head>
 
 <body>
+<div class="container" th:unless="${addresses.isEmpty()}">
+    <h1>Current Addresses:</h1>
+    <table class="table">
+        <thead>
+        <tr class="table table-info">
+            <th>City</th>
+            <th>District</th>
+            <th>Postal Code</th>
+            <th>Street Name</th>
+        </tr>
+        </thead>
+        <tbody th:each="address : ${addresses}">
+        <tr>
+            <td th:text="${address.city}"></td>
+            <td th:text="${address.district}"></td>
+            <td th:text="${address.postalCode}"></td>
+            <td th:text="${address.streetName}"></td>
+            <td>
+                <form method="post" th:action="@{/restaurant/delivery-addresses/delete}">
+                    <input th:name="deliveryAddressId" th:value="${address.deliveryAddressId}" type="hidden">
+                    <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="container" th:if="${addresses.isEmpty()}">
+    <div class="row mt-3">
+        <div class="col" style="text-align: center;">
+            <h1>Restaurant doesn't have deliveries set yet.
+                <br>
+                Please fill a form and update your list!</h1>
+        </div>
+    </div>
+</div>
+<br>
+
+<div class="container" th:if="${!addressesWithoutDelivery.isEmpty()}">
+    <h2>Choose from already existing addresses:</h2>
+    <table class="table">
+        <thead>
+        <tr class="table table-success">
+            <th>City</th>
+            <th>District</th>
+            <th>Postal Code</th>
+            <th>Street Name</th>
+        </tr>
+        </thead>
+        <tbody th:each="address : ${addressesWithoutDelivery}">
+        <tr>
+            <td th:text="${address.city}"></td>
+            <td th:text="${address.district}"></td>
+            <td th:text="${address.postalCode}"></td>
+            <td th:text="${address.streetName}"></td>
+            <td>
+                <form method="post" th:action="@{/restaurant/delivery-addresses/add}">
+                    <input th:name="deliveryAddressId" th:value="${address.deliveryAddressId}" type="hidden">
+                    <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
+                    <input th:name="city" th:value="${address.city}" type="hidden">
+                    <input th:name="district" th:value="${address.district}" type="hidden">
+                    <input th:name="postalCode" th:value="${address.postalCode}" type="hidden">
+                    <input th:name="streetName" th:value="${address.streetName}" type="hidden">
+                    <button class="btn btn-info" type="submit">Add</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+
 <div class="container">
     <div class="row">
         <div class="col">
@@ -83,45 +156,7 @@
         </div>
     </form>
 </div>
-
-<div class="container" th:if="${addresses.isEmpty()}">
-    <div class="row mt-3">
-        <div class="col" style="text-align: center;">
-            <h1>Restaurant doesn't have deliveries set yet.
-                <br>
-                Please fill a form and update your list!</h1>
-        </div>
-    </div>
-</div>
 <br>
-<div class="container" th:unless="${addresses.isEmpty()}">
-    <table class="table">
-        <thead>
-        <tr class="table table-info">
-            <th>City</th>
-            <th>District</th>
-            <th>Postal Code</th>
-            <th>Street Name</th>
-        </tr>
-        </thead>
-        <tbody th:each="address : ${addresses}">
-        <tr>
-            <td th:text="${address.city}"></td>
-            <td th:text="${address.district}"></td>
-            <td th:text="${address.postalCode}"></td>
-            <td th:text="${address.streetName}"></td>
-            <td>
-                <form method="post" th:action="@{/restaurant/delivery-addresses/delete}">
-                    <input th:name="deliveryAddressId" th:value="${address.deliveryAddressId}" type="hidden">
-                    <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
-                    <button class="btn btn-danger" type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
 <div class="container">
     <div class="row mt-3">
         <div class="col-md-4">

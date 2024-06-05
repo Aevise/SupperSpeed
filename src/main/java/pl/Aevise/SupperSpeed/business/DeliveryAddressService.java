@@ -3,9 +3,11 @@ package pl.Aevise.SupperSpeed.business;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier;
+//import pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier;
 import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DeliveryAddressMapper;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressDAO;
@@ -56,24 +58,62 @@ public class DeliveryAddressService {
 
     @Transactional
     public void addDeliveryAddress(DeliveryAddressDTO deliveryAddressDTO, Integer restaurantId) {
+
+        deliveryAddressListDAO.test("22-100", PageRequest.of(0, 2, Sort.by("deliveryAddressEntity.streetName").ascending()));
         DeliveryAddress deliveryAddress;
+        Integer deliveryAddressId;
         DeliveryAddress newDeliveryAddress = deliveryAddressMapper.mapFromDTO(deliveryAddressDTO);
 
         Optional<DeliveryAddress> deliveryAddress1 = deliveryAddressDAO.checkIfDeliveryAddressExist(newDeliveryAddress);
-        if(deliveryAddress1.isPresent()){
+        if (deliveryAddress1.isPresent()) {
             deliveryAddress = deliveryAddress1.get();
-            log.info("delivery address already exists in the database. Id: [{}]", deliveryAddress.getDeliveryAddressId());
-        }else {
-            newDeliveryAddress = beautifyNames(newDeliveryAddress);
+            deliveryAddressId = deliveryAddress.getDeliveryAddressId();
+
+            log.info("delivery address already exists in the database. Id: [{}]", deliveryAddressId);
+            if (checkIfRelationAlreadyExist(restaurantId, deliveryAddress)) {
+                log.info("Relation between restaurant [{}] and delivery address [{}] already exists!",
+                        restaurantId,
+                        deliveryAddressId);
+                return;
+            }
+        } else {
+//            newDeliveryAddress = beautifyNames(newDeliveryAddress);
             deliveryAddress = deliveryAddressDAO.saveNewDeliveryAddress(newDeliveryAddress);
             log.info("added new delivery address to database. Id: [{}]", deliveryAddress.getDeliveryAddressId());
         }
-        Integer deliveryAddressId = deliveryAddress.getDeliveryAddressId();
+        deliveryAddressId = deliveryAddress.getDeliveryAddressId();
         DeliveryAddressListEntity deliveryAddressListEntity = buildDeliveryAddressListEntity(deliveryAddressId, restaurantId);
         deliveryAddressListDAO.addNewRestaurantToDeliveryAddress(deliveryAddressListEntity);
         log.info("Connected delivery address [{}] with restaurant [{}]",
                 deliveryAddressListEntity.getDeliveryAddressEntity().getDeliveryAddressId(),
                 deliveryAddressListEntity.getRestaurantEntity().getId());
+    }
+
+    @Transactional
+    public List<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, String postalCode) {
+        List<DeliveryAddress> addresses = deliveryAddressListDAO.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, postalCode);
+        if(!addresses.isEmpty()){
+            log.info("Found [{}] addresses where restaurant [{}] does not deliver for postal code [{}]",
+                    addresses.size(),
+                    restaurantId,
+                    postalCode);
+
+            return addresses.stream()
+                    .map(deliveryAddressMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Restaurant delivers to all addresses with postal code: [{}]", postalCode);
+        return List.of();
+    }
+
+    private boolean checkIfRelationAlreadyExist(Integer restaurantId, DeliveryAddress deliveryAddress) {
+        Optional<DeliveryAddressList> byRestaurantAndAddress = deliveryAddressListDAO
+                .getByRestaurantAndAddress(buildDeliveryAddressListEntity(
+                        deliveryAddress.getDeliveryAddressId(),
+                        restaurantId
+                ));
+
+        return byRestaurantAndAddress.isPresent();
     }
 
     private List<DeliveryAddressDTO> separateAddresses(List<DeliveryAddressList> deliveryAddressLists) {
@@ -99,7 +139,7 @@ public class DeliveryAddressService {
                 .build();
     }
 
-    private DeliveryAddressListEntity buildDeliveryAddressListEntity(Integer deliveryAddressId, Integer restaurantId){
+    private DeliveryAddressListEntity buildDeliveryAddressListEntity(Integer deliveryAddressId, Integer restaurantId) {
         return DeliveryAddressListEntity.builder()
                 .id(DeliveryAddressKey.builder()
                         .deliveryAddressId(deliveryAddressId)
@@ -116,11 +156,12 @@ public class DeliveryAddressService {
                 .build();
     }
 
-    private DeliveryAddress beautifyNames(DeliveryAddress newDeliveryAddress) {
-        return newDeliveryAddress
-                .withCity(NameBeautifier.handleName(newDeliveryAddress.getCity()))
-                .withCountry(NameBeautifier.handleName(newDeliveryAddress.getCountry()))
-                .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
-                .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
-    }
+
+//    private DeliveryAddress beautifyNames(DeliveryAddress newDeliveryAddress) {
+//        return newDeliveryAddress
+//                .withCity(NameBeautifier.handleName(newDeliveryAddress.getCity()))
+//                .withCountry(NameBeautifier.handleName(newDeliveryAddress.getCountry()))
+//                .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
+//                .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
+//    }
 }
