@@ -4,7 +4,7 @@ import java.util.List;
 
 public class NameBeautifier {
 
-    private final static List<String> CHARACTERS_TO_SPLIT = List.of("", "-");
+    private final static List<String> NAME_SEPARATORS = List.of(" ", "-");
 
     public static String capitalizeFirstLetter(String input) {
         if (input == null || input.isEmpty()) {
@@ -19,11 +19,12 @@ public class NameBeautifier {
         }
         String newCityName = cityName;
 
-        for (String character : CHARACTERS_TO_SPLIT) {
+        for (String character : NAME_SEPARATORS) {
             if (cityName.contains(character)) {
                 newCityName = nameSplitterAndModifier(cityName, character);
             }
         }
+
         return newCityName;
     }
 

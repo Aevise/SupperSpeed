@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-//import pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier;
+import pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier;
 import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DeliveryAddressMapper;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressDAO;
@@ -60,6 +60,8 @@ public class DeliveryAddressService {
     public void addDeliveryAddress(DeliveryAddressDTO deliveryAddressDTO, Integer restaurantId) {
 
         deliveryAddressListDAO.test("22-100", PageRequest.of(0, 2, Sort.by("deliveryAddressEntity.streetName").ascending()));
+
+
         DeliveryAddress deliveryAddress;
         Integer deliveryAddressId;
         DeliveryAddress newDeliveryAddress = deliveryAddressMapper.mapFromDTO(deliveryAddressDTO);
@@ -77,7 +79,7 @@ public class DeliveryAddressService {
                 return;
             }
         } else {
-//            newDeliveryAddress = beautifyNames(newDeliveryAddress);
+            newDeliveryAddress = beautifyNames(newDeliveryAddress);
             deliveryAddress = deliveryAddressDAO.saveNewDeliveryAddress(newDeliveryAddress);
             log.info("added new delivery address to database. Id: [{}]", deliveryAddress.getDeliveryAddressId());
         }
@@ -90,8 +92,10 @@ public class DeliveryAddressService {
     }
 
     @Transactional
-    public List<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, String postalCode) {
-        List<DeliveryAddress> addresses = deliveryAddressListDAO.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, postalCode);
+    public List<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddressDTO deliveryAddressDTO) {
+        String postalCode = deliveryAddressDTO.getPostalCode();
+
+        List<DeliveryAddress> addresses = deliveryAddressListDAO.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, deliveryAddressMapper.mapFromDTO(deliveryAddressDTO));
         if(!addresses.isEmpty()){
             log.info("Found [{}] addresses where restaurant [{}] does not deliver for postal code [{}]",
                     addresses.size(),
@@ -157,11 +161,11 @@ public class DeliveryAddressService {
     }
 
 
-//    private DeliveryAddress beautifyNames(DeliveryAddress newDeliveryAddress) {
-//        return newDeliveryAddress
-//                .withCity(NameBeautifier.handleName(newDeliveryAddress.getCity()))
-//                .withCountry(NameBeautifier.handleName(newDeliveryAddress.getCountry()))
-//                .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
-//                .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
-//    }
+    private DeliveryAddress beautifyNames(DeliveryAddress newDeliveryAddress) {
+        return newDeliveryAddress
+                .withCity(NameBeautifier.handleName(newDeliveryAddress.getCity()))
+                .withCountry(NameBeautifier.handleName(newDeliveryAddress.getCountry()))
+                .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
+                .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
+    }
 }

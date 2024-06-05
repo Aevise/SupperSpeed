@@ -46,7 +46,8 @@ public class DeliveryAddressesController {
 
         AddressDTO restaurantAddress = addressService.getByRestaurantId(restaurantId);
 
-        List<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, restaurantAddress.getPostalCode());
+        List<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
+                .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, buildDeliveryAddressFromRestaurantAddress(restaurantAddress));
 
         model.addAttribute("addresses", allDeliveryAddressesByRestaurantId);
         model.addAttribute("restaurantAddress", restaurantAddress);
@@ -75,5 +76,14 @@ public class DeliveryAddressesController {
         return "redirect:" + SHOW_DELIVERY_ADDRESSES;
     }
 
+
+    private DeliveryAddressDTO buildDeliveryAddressFromRestaurantAddress(AddressDTO addressDTO){
+        return DeliveryAddressDTO.builder()
+                .city(addressDTO.getCity())
+                .country(addressDTO.getCountry())
+                .postalCode(addressDTO.getPostalCode())
+                .streetName(addressDTO.getStreetName())
+                .build();
+    }
 
 }

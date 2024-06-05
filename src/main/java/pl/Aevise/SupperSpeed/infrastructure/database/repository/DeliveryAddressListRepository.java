@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressListDAO;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DeliveryAddressListJpaRepository;
@@ -61,10 +62,15 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     }
 
     @Override
-    public List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, String postalCode) {
+    public List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddress deliveryAddress) {
+
+        DeliveryAddressEntity newDeliveryAddress = deliveryAddressEntityMapper.mapToEntity(deliveryAddress);
+        List<DeliveryAddressEntity> deliveryAddressesForRestaurant = deliveryAddressListJpaRepository.getDeliveryAddressesForRestaurant(restaurantId);
+
         return deliveryAddressListJpaRepository
-                .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, postalCode)
+                .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, newDeliveryAddress.getPostalCode())
                 .stream()
+                .filter(currentAddress -> !deliveryAddressesForRestaurant.contains(currentAddress))
                 .map(deliveryAddressEntityMapper::mapFromEntity)
                 .toList();
     }

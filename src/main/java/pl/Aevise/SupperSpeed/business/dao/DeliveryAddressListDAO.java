@@ -20,5 +20,5 @@ public interface DeliveryAddressListDAO {
 
     void test(String s, PageRequest deliveryAddressEntity);
 
-    List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, String postalCode);
+    List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddress deliveryAddress);
 }
