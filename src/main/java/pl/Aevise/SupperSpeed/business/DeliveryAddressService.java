@@ -37,7 +37,7 @@ public class DeliveryAddressService {
     public Page<DeliveryAddressList> getAllDeliveryAddressesByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
         Page<DeliveryAddressList> deliveryAddressLists = deliveryAddressListDAO.getAllByRestaurantId(restaurantId, pageRequest);
         if (!deliveryAddressLists.isEmpty()) {
-            log.info("Successfully fetched page: [{}]/[{}]", deliveryAddressLists.getNumber(), deliveryAddressLists.getTotalPages());
+            log.info("Successfully fetched page: [{}]/[{}]", deliveryAddressLists.getNumber() + 1, deliveryAddressLists.getTotalPages());
             return deliveryAddressLists;
         }
         log.warn("Restaurant with id [{}] does not have delivery addresses", restaurantId);
