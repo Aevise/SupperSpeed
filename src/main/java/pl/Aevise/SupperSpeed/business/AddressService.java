@@ -80,8 +80,7 @@ public class AddressService {
     public List<String> findDistinctCities() {
         List<String> distinctCities = restaurantDAO.getDistinctCitiesWithRestaurants();
 
-        if(!distinctCities.isEmpty())
-        {
+        if (!distinctCities.isEmpty()) {
             log.info("Found [{}] distinct cities", distinctCities.size());
             return distinctCities
                     .stream()
@@ -94,7 +93,7 @@ public class AddressService {
 
     public AddressDTO getByRestaurantId(Integer restaurantId) {
         Optional<AddressEntity> addressByRestaurantId = restaurantDAO.getAddressByRestaurantId(restaurantId);
-        if(addressByRestaurantId.isPresent()){
+        if (addressByRestaurantId.isPresent()) {
             log.info("Found address for restaurant with id [{}]", restaurantId);
             Address address = addressEntityMapper.mapFromEntity(addressByRestaurantId.get());
             return addressMapper.mapToDTO(address);

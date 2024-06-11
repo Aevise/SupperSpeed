@@ -1,7 +1,6 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressDAO;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
@@ -20,14 +19,14 @@ public class DeliveryAddressRepository implements DeliveryAddressDAO {
 
     @Override
     public void deleteDeliveryAddressById(Integer deliveryAddressId) {
-            deliveryAddressJpaRepository.deleteById(deliveryAddressId);
+        deliveryAddressJpaRepository.deleteById(deliveryAddressId);
     }
 
     @Override
     public Optional<DeliveryAddress> findById(Integer deliveryAddressId) {
         Optional<DeliveryAddressEntity> byId = deliveryAddressJpaRepository.findById(deliveryAddressId);
 
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             return byId.map(deliveryAddressEntityMapper::mapFromEntity);
         }
         return Optional.empty();
@@ -43,7 +42,7 @@ public class DeliveryAddressRepository implements DeliveryAddressDAO {
                 deliveryAddress.getStreetName()
         );
 
-        if(byAllFieldsExceptId.isPresent()){
+        if (byAllFieldsExceptId.isPresent()) {
             return byAllFieldsExceptId.map(deliveryAddressEntityMapper::mapFromEntity);
         }
         return Optional.empty();

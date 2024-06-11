@@ -1,9 +1,7 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
-import org.springframework.data.domain.PageRequest;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public interface DeliveryAddressDAO {

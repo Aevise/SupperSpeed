@@ -1,15 +1,15 @@
 CREATE TABLE restaurant
 (
-    restaurant_id        SERIAL      NOT NULL,
-    user_id              INT,
-    address_id           INT,
-    image_id             INT,
-    cuisine_id           INT,
-    restaurant_name      VARCHAR(32) NOT NULL,
-    phone                VARCHAR(32),
-    open_hour            TIME        NOT NULL,
-    close_hour           TIME        NOT NULL,
-    is_shown             BOOLEAN DEFAULT FALSE,
+    restaurant_id   SERIAL      NOT NULL,
+    user_id         INT,
+    address_id      INT,
+    image_id        INT,
+    cuisine_id      INT,
+    restaurant_name VARCHAR(32) NOT NULL,
+    phone           VARCHAR(32),
+    open_hour       TIME        NOT NULL,
+    close_hour      TIME        NOT NULL,
+    is_shown        BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (restaurant_id),
     CONSTRAINT fk_restaurant_user_id
         FOREIGN KEY (user_id)

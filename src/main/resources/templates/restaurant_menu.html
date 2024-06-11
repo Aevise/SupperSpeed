@@ -40,9 +40,9 @@
             <tbody id="dishTable">
             <tr th:data-dish-id="${dish.dishId}" th:each="dish : ${category.getValue()}">
                 <td>
-                    <img th:if="${dish.getImageDTO() != null}"
-                         alt="Dish Image"
+                    <img alt="Dish Image"
                          th:height="*{imageHeight}"
+                         th:if="${dish.getImageDTO() != null}"
                          th:src="@{'/images/' + ${restaurantDirectory} + '/'  + ${dish.getImageDTO().getImageURL()}}"
                          th:width="*{imageWidth}"/>
                 </td>

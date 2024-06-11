@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
-import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;

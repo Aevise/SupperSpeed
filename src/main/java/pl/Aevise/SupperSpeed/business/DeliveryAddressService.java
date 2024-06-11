@@ -2,7 +2,7 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.HibernateException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -34,34 +34,25 @@ public class DeliveryAddressService {
     private final DeliveryAddressDAO deliveryAddressDAO;
 
     @Transactional
-    public List<DeliveryAddressDTO> getAllDeliveryAddressesByRestaurantId(Integer restaurantId) {
-        List<DeliveryAddressList> deliveryAddressLists = deliveryAddressListDAO.getAllByRestaurantId(restaurantId);
+    public Page<DeliveryAddressList> getAllDeliveryAddressesByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
+        Page<DeliveryAddressList> deliveryAddressLists = deliveryAddressListDAO.getAllByRestaurantId(restaurantId, pageRequest);
         if (!deliveryAddressLists.isEmpty()) {
-            return separateAddresses(deliveryAddressLists);
+            log.info("Successfully fetched page: [{}]/[{}]", deliveryAddressLists.getNumber() + 1, deliveryAddressLists.getTotalPages());
+            return deliveryAddressLists;
         }
         log.warn("Restaurant with id [{}] does not have delivery addresses", restaurantId);
-        return List.of();
+        return Page.empty();
     }
 
     @Transactional
-    public void deleteDeliveryAddressById(Integer deliveryAddressId, Integer restaurantId) {
-        try {
-            deliveryAddressDAO.deleteDeliveryAddressById(deliveryAddressId);
-        } catch (HibernateException e) {
-            log.warn("Could not delete address with id: [{}]", deliveryAddressId, e);
-            return;
-        }
+    public void removeDeliveryAddress(Integer deliveryAddressId, Integer restaurantId) {
 
         DeliveryAddressKey deliveryAddressKey = buildDeliveryAddressKey(deliveryAddressId, restaurantId);
-        deliveryAddressListDAO.deleteByAddressAndRestaurantId(deliveryAddressKey);
+        deliveryAddressListDAO.removeDeliveryAddress(deliveryAddressKey);
     }
 
     @Transactional
     public void addDeliveryAddress(DeliveryAddressDTO deliveryAddressDTO, Integer restaurantId) {
-
-        deliveryAddressListDAO.test("22-100", PageRequest.of(0, 2, Sort.by("deliveryAddressEntity.streetName").ascending()));
-
-
         DeliveryAddress deliveryAddress;
         Integer deliveryAddressId;
         DeliveryAddress newDeliveryAddress = deliveryAddressMapper.mapFromDTO(deliveryAddressDTO);
@@ -96,7 +87,7 @@ public class DeliveryAddressService {
         String postalCode = deliveryAddressDTO.getPostalCode();
 
         List<DeliveryAddress> addresses = deliveryAddressListDAO.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, deliveryAddressMapper.mapFromDTO(deliveryAddressDTO));
-        if(!addresses.isEmpty()){
+        if (!addresses.isEmpty()) {
             log.info("Found [{}] addresses where restaurant [{}] does not deliver for postal code [{}]",
                     addresses.size(),
                     restaurantId,
@@ -120,11 +111,11 @@ public class DeliveryAddressService {
         return byRestaurantAndAddress.isPresent();
     }
 
-    private List<DeliveryAddressDTO> separateAddresses(List<DeliveryAddressList> deliveryAddressLists) {
+    public List<DeliveryAddressDTO> separateAddresses(Page<DeliveryAddressList> deliveryAddressLists) {
         List<DeliveryAddressDTO> deliveryAddress = new ArrayList<>();
 
         if (!deliveryAddressLists.isEmpty()) {
-            log.info("Separating [{}] addresses", deliveryAddressLists.size());
+            log.info("Separating [{}] addresses", deliveryAddressLists.getNumberOfElements());
             for (DeliveryAddressList deliveryAddressList : deliveryAddressLists) {
                 deliveryAddress
                         .add(deliveryAddressMapper
