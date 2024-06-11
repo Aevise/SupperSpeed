@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
@@ -22,7 +23,7 @@ import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOG
 @AllArgsConstructor
 public class RestaurantMenuController {
 
-    static final String RESTAURANT_MENU = "/menu";
+    static final String RESTAURANT_MENU = "/menu/{restaurantId}/{restaurantName}";
     static final String ERROR = "error";
 
     private final DishService dishService;
@@ -35,7 +36,8 @@ public class RestaurantMenuController {
     @GetMapping(RESTAURANT_MENU)
     public String getRestaurantMenu
             (
-                    @RequestParam Integer restaurantId,
+                    @PathVariable("restaurantId") Integer restaurantId,
+                    @PathVariable("restaurantName") String restaurantName,
                     Model model
             ) {
         if (restaurantId <= 0) {
@@ -53,7 +55,6 @@ public class RestaurantMenuController {
         model.addAttribute("imageWidth", MAX_LOGO_WIDTH);
         model.addAttribute("imageHeight", MAX_LOGO_HEIGHT);
         model.addAttribute("restaurantDirectory", restaurantDirectory);
-
         return "restaurant_menu";
     }
 }

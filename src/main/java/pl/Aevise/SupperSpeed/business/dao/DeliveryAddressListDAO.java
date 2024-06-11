@@ -19,7 +19,5 @@ public interface DeliveryAddressListDAO {
 
     Optional<DeliveryAddressList> getByRestaurantAndAddress(DeliveryAddressListEntity deliveryAddressListEntity);
 
-    void test(String s, PageRequest deliveryAddressEntity);
-
     List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddress deliveryAddress);
 }

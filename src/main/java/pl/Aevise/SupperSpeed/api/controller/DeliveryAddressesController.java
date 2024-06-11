@@ -25,9 +25,9 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 public class DeliveryAddressesController {
-    private final String SHOW_DELIVERY_ADDRESSES = "/restaurant/delivery-addresses";
-    private final String REMOVE_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/remove";
-    private final String ADD_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/add";
+    private final String SHOW_DELIVERY_ADDRESSES = "/restaurant/profile/delivery-addresses";
+    private final String REMOVE_DELIVERY_ADDRESS = "/restaurant/profile/delivery-addresses/remove";
+    private final String ADD_DELIVERY_ADDRESS = "/restaurant/profile/delivery-addresses/add";
 
     private final DeliveryAddressService deliveryAddressService;
 
@@ -45,15 +45,14 @@ public class DeliveryAddressesController {
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(
                         userDetails.getUsername());
-        System.out.println("gmm");
         Integer restaurantId = restaurantDTO.getRestaurantId();
 
 
         AddressDTO restaurantAddress = addressService.getByRestaurantId(restaurantId);
 
         if (sortingDirection == null ||
-                (!sortingDirection.equals(PaginationAndSortingUtils.ASC.name())
-                        && !sortingDirection.equals(PaginationAndSortingUtils.DESC.name()))) {
+                (!sortingDirection.equals(PaginationAndSortingUtils.ASC.name()) && !sortingDirection.equals(PaginationAndSortingUtils.DESC.name()))
+        ) {
             sortingDirection = PaginationAndSortingUtils.ASC.name();
             page = 0;
         }

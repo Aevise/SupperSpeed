@@ -57,14 +57,6 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     }
 
     @Override
-    public void test(String postalCode, PageRequest deliveryAddressEntity) {
-        Page<DeliveryAddressListEntity> allByDeliveryAddressEntityPostalCodeEquals = deliveryAddressListJpaRepository.getAllByDeliveryAddressEntity_PostalCodeEquals(postalCode, deliveryAddressEntity);
-        List<DeliveryAddressListEntity> deliveryAddressListEntityStream = allByDeliveryAddressEntityPostalCodeEquals.get().toList();
-        int totalPages = allByDeliveryAddressEntityPostalCodeEquals.getTotalPages();
-        System.out.println("");
-    }
-
-    @Override
     public List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddress deliveryAddress) {
 
         DeliveryAddressEntity newDeliveryAddress = deliveryAddressEntityMapper.mapToEntity(deliveryAddress);

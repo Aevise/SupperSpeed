@@ -70,12 +70,9 @@
             <td th:text="${restaurantRatings.get(restaurant.restaurantId)[1] > 1 ? #numbers.formatDecimal(restaurantRatings.get(restaurant.restaurantId)[1], 1, 2) : 'Not rated yet'}"></td>
             <td th:text="${restaurantRatings.get(restaurant.restaurantId)[2] > 0 ? #numbers.formatInteger(restaurantRatings.get(restaurant.restaurantId)[2], 1) : 'Not rated yet'}"></td>
             <td style="background-color: transparent;">
-                <form method="get" th:action="@{/menu}">
-                    <input th:name="restaurantId" th:value="${restaurant.restaurantId}" type="hidden">
-                    <input th:name="restaurantName" th:value="${restaurant.restaurantName}" type="hidden">
+                <form method="get" th:action="@{/menu/{restaurantId}/{restaurantName}(restaurantId=${restaurant.restaurantId},restaurantName=${restaurant.restaurantName})}">
                     <button class="btn btn-info" th:text="'View menu of '+ ${restaurant.restaurantName}" type="submit">
-                        Order
-                        button
+                        Order button
                     </button>
                 </form>
             </td>
