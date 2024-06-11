@@ -13,21 +13,14 @@
 </head>
 
 <body>
-<div class="container">
-    <div style="display: flex; justify-content: center;">
-        <h1>Menu:</h1>
-    </div>
-    <br>
-</div>
-
-<form action="/supperspeed/orders/submit-order" method="post">
-    <div class="container">
+<div class="container" th:if="${dishesByCategory.size() > 0}">
+    <h1>Menu</h1>
+    <form action="/supperspeed/orders/submit-order" method="post">
         <table class="table" th:each="category : ${dishesByCategory}">
             <thead>
             <tr class="table-primary">
                 <th colspan="4" style="text-align: center;" th:text="${category.getKey().get(0).categoryName}"/>
             </tr>
-
             <tr class="table table-info">
                 <th>Photo</th>
                 <th>Name</th>
@@ -65,20 +58,20 @@
                 <button class="btn btn-success" id="orderButton" type="submit">Order</button>
             </div>
         </div>
+    </form>
+</div>
+
+<div class="container" th:unless="${dishesByCategory.size() > 0}">
+    <div style="display: flex; justify-content: center;">
+        <h1>Sorry, restaurant does not have active menu:</h1>
     </div>
-</form>
-
-<br>
-
-
-<br>
-
+    <br>
+</div>
 <div class="row mt-3">
     <div class="col-md-4">
         <a class="btn btn-info" role="button" th:href="@{/}">Go back</a>
     </div>
 </div>
-
 
 <script
         crossorigin="anonymous"

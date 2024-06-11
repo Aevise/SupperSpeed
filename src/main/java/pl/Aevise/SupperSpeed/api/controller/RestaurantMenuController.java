@@ -43,11 +43,6 @@ public class RestaurantMenuController {
         }
         List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
 
-
-        if (dishCategories.isEmpty()) {
-            return ERROR;
-        }
-
         var dishMap = dishService.extractDishesByCategory(dishCategories, true);
         RestaurantDTO restaurantDTO = restaurantMapper.mapToDTO(restaurantService.findRestaurantById(restaurantId));
         String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
