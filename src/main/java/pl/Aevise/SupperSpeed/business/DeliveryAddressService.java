@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier;
@@ -35,7 +34,7 @@ public class DeliveryAddressService {
 
     @Transactional
     public Page<DeliveryAddressList> getAllDeliveryAddressesByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
-        Page<DeliveryAddressList> deliveryAddressLists = deliveryAddressListDAO.getAllByRestaurantId(restaurantId, pageRequest);
+        Page<DeliveryAddressList> deliveryAddressLists = deliveryAddressListDAO.getAllDeliveryAddressesByRestaurantId(restaurantId, pageRequest);
         if (!deliveryAddressLists.isEmpty()) {
             log.info("Successfully fetched page: [{}]/[{}]", deliveryAddressLists.getNumber() + 1, deliveryAddressLists.getTotalPages());
             return deliveryAddressLists;
@@ -85,20 +84,32 @@ public class DeliveryAddressService {
     @Transactional
     public List<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddressDTO deliveryAddressDTO) {
         String postalCode = deliveryAddressDTO.getPostalCode();
+        List<DeliveryAddress> addresses = deliveryAddressListDAO.getAllDeliveryAddressesByRestaurantId(restaurantId);
+        List<DeliveryAddress> addressesForPostalCode = deliveryAddressDAO.getAllByPostalCode(deliveryAddressDTO.getPostalCode());
 
-        List<DeliveryAddress> addresses = deliveryAddressListDAO.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, deliveryAddressMapper.mapFromDTO(deliveryAddressDTO));
-        if (!addresses.isEmpty()) {
-            log.info("Found [{}] addresses where restaurant [{}] does not deliver for postal code [{}]",
-                    addresses.size(),
-                    restaurantId,
-                    postalCode);
-
-            return addresses.stream()
+        if(addressesForPostalCode.isEmpty()){
+            log.info("No addresses with postal code: [{}] added", postalCode);
+            return List.of();
+        }
+        if(addresses.isEmpty()){
+            log.info("Restaurant can deliver to [{}] more places nearby", addressesForPostalCode.size());
+            return addressesForPostalCode.stream()
                     .map(deliveryAddressMapper::mapToDTO)
                     .toList();
         }
-        log.info("Restaurant delivers to all addresses with postal code: [{}]", postalCode);
-        return List.of();
+
+        List<DeliveryAddressDTO> filteredList = addressesForPostalCode.stream()
+                .filter(currentAddress -> !addresses.contains(currentAddress))
+                .map(deliveryAddressMapper::mapToDTO)
+                .toList();
+
+        if(filteredList.isEmpty()){
+            log.info("All [{}] addresses has been added", addressesForPostalCode.size());
+            return List.of();
+        }else {
+            log.info("[{}] More addresses can be added to delivery list", filteredList.size());
+            return filteredList;
+        }
     }
 
     private boolean checkIfRelationAlreadyExist(Integer restaurantId, DeliveryAddress deliveryAddress) {

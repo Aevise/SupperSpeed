@@ -65,7 +65,6 @@ public class DeliveryAddressesController {
 
         List<DeliveryAddressDTO> allDeliveryAddressesByRestaurantId = deliveryAddressService.separateAddresses(allDeliveryAddressesListByRestaurantId);
 
-
         List<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
                 .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId,
                         buildDeliveryAddressFromRestaurantAddress(restaurantAddress));

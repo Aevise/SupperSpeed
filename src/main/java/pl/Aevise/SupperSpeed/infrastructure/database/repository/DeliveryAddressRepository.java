@@ -8,6 +8,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntit
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DeliveryAddressJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DeliveryAddressEntityMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -56,4 +57,14 @@ public class DeliveryAddressRepository implements DeliveryAddressDAO {
         return deliveryAddressEntityMapper.mapFromEntity(deliveryAddressEntity);
     }
 
+    @Override
+    public List<DeliveryAddress> getAllByPostalCode(String postalCode) {
+        List<DeliveryAddressEntity> allByPostalCodeEquals = deliveryAddressJpaRepository.findAllByPostalCodeEquals(postalCode);
+        if(!allByPostalCodeEquals.isEmpty()){
+            return allByPostalCodeEquals.stream()
+                    .map(deliveryAddressEntityMapper::mapFromEntity)
+                    .toList();
+        }
+        return List.of();
+    }
 }

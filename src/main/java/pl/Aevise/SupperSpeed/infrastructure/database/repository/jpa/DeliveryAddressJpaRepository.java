@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface DeliveryAddressJpaRepository extends JpaRepository<DeliveryAddressEntity, Integer> {
@@ -15,5 +16,7 @@ public interface DeliveryAddressJpaRepository extends JpaRepository<DeliveryAddr
                                                             @Param("district") String district,
                                                             @Param("postalCode") String postalCode,
                                                             @Param("streetName") String streetName);
+
+    List<DeliveryAddressEntity> findAllByPostalCodeEquals(String postalCode);
 }
 

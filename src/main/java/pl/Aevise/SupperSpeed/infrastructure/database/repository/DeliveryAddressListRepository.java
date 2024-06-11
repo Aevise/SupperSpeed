@@ -16,7 +16,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.DeliveryA
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Repository
 @AllArgsConstructor
@@ -28,7 +27,7 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     private final DeliveryAddressEntityMapper deliveryAddressEntityMapper;
 
     @Override
-    public Page<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
+    public Page<DeliveryAddressList> getAllDeliveryAddressesByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
         Page<DeliveryAddressListEntity> allByRestaurantEntityId = deliveryAddressListJpaRepository.getAllByRestaurantEntity_Id(restaurantId, pageRequest);
         if (!allByRestaurantEntityId.isEmpty()) {
             return allByRestaurantEntityId
@@ -57,16 +56,15 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     }
 
     @Override
-    public List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddress deliveryAddress) {
-
-        DeliveryAddressEntity newDeliveryAddress = deliveryAddressEntityMapper.mapToEntity(deliveryAddress);
+    public List<DeliveryAddress> getAllDeliveryAddressesByRestaurantId(Integer restaurantId) {
         List<DeliveryAddressEntity> deliveryAddressesForRestaurant = deliveryAddressListJpaRepository.getDeliveryAddressesForRestaurant(restaurantId);
 
-        return deliveryAddressListJpaRepository
-                .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, newDeliveryAddress.getPostalCode())
-                .stream()
-                .filter(currentAddress -> !deliveryAddressesForRestaurant.contains(currentAddress))
-                .map(deliveryAddressEntityMapper::mapFromEntity)
-                .toList();
+        if(!deliveryAddressesForRestaurant.isEmpty()){
+            return deliveryAddressesForRestaurant.stream()
+                    .map(deliveryAddressEntityMapper::mapFromEntity)
+                    .toList();
+        }
+        return List.of();
     }
+
 }

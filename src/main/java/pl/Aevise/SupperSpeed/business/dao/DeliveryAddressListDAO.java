@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DeliveryAddressListDAO {
-    Page<DeliveryAddressList> getAllByRestaurantId(Integer restaurantId, PageRequest pageRequest);
+    Page<DeliveryAddressList> getAllDeliveryAddressesByRestaurantId(Integer restaurantId, PageRequest pageRequest);
 
     void removeDeliveryAddress(DeliveryAddressKey deliveryAddressKey);
 
@@ -19,5 +19,7 @@ public interface DeliveryAddressListDAO {
 
     Optional<DeliveryAddressList> getByRestaurantAndAddress(DeliveryAddressListEntity deliveryAddressListEntity);
 
-    List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddress deliveryAddress);
+    List<DeliveryAddress> getAllDeliveryAddressesByRestaurantId(Integer restaurantId);
+
+//    List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddress deliveryAddress);
 }
