@@ -1,6 +1,8 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressDAO;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;

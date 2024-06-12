@@ -39,8 +39,10 @@ public class DeliveryAddressesController {
     public String showDeliveryAddresses(
             @AuthenticationPrincipal UserDetails userDetails,
             Model model,
-            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(value = "dir", required = false, defaultValue = "asc") String sortingDirection
+            @RequestParam(value = "ca-page", required = false, defaultValue = "0") Integer currAdrPage,
+            @RequestParam(value = "ca-dir", required = false, defaultValue = "asc") String currAdrSortingDirection            ,
+            @RequestParam(value = "ea-page", required = false, defaultValue = "0") Integer exiAdrPage,
+            @RequestParam(value = "ea-dir", required = false, defaultValue = "asc") String exiAdrSortingDirection
     ) {
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(
@@ -49,33 +51,32 @@ public class DeliveryAddressesController {
 
         AddressDTO restaurantAddress = addressService.getByRestaurantId(restaurantId);
 
-//        not needed
-//        if (sortingDirection == null ||
-//                (!sortingDirection.equals(PaginationAndSortingUtils.ASC.getSortingDirection()) && !sortingDirection.equals(PaginationAndSortingUtils.DESC.getSortingDirection()))
-//        ) {
-//            sortingDirection = PaginationAndSortingUtils.ASC.getSortingDirection();
-//            page = 0;
-//        }
         Page<DeliveryAddressList> allDeliveryAddressesListByRestaurantId = deliveryAddressService.getAllDeliveryAddressesByRestaurantId(
                 restaurantId,
-                buildPageRequest(
-                        sortingDirection,
-                        page
+                buildPageRequestForDeliveryAddressList(
+                        currAdrSortingDirection,
+                        currAdrPage
                 ));
-
         List<DeliveryAddressDTO> allDeliveryAddressesByRestaurantId = deliveryAddressService.separateAddresses(allDeliveryAddressesListByRestaurantId);
 
-        List<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
+
+        //uses pagination, so it can filter all results even when there are some addresses left
+        Page<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
                 .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId,
-                        buildDeliveryAddressFromRestaurantAddress(restaurantAddress));
+                        buildDeliveryAddressFromRestaurantAddress(restaurantAddress),
+                        buildPageRequestForDeliveryAddress(
+                                exiAdrSortingDirection,
+                                exiAdrPage
+                        ));
+
 
         model.addAttribute("addresses", allDeliveryAddressesByRestaurantId);
         model.addAttribute("restaurantAddress", restaurantAddress);
         model.addAttribute("addressesWithoutDelivery", addressesWithoutDelivery);
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("totalNumberOfPages", allDeliveryAddressesListByRestaurantId.getTotalPages());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("sortingDirection", sortingDirection);
+        model.addAttribute("CAPage", currAdrPage);
+        model.addAttribute("CASortingDirection", currAdrSortingDirection);
         return "delivery_addresses";
     }
 
@@ -109,11 +110,18 @@ public class DeliveryAddressesController {
                 .build();
     }
 
-    private PageRequest buildPageRequest(String direction, Integer page) {
+    private PageRequest buildPageRequestForDeliveryAddressList(String direction, Integer page) {
         if (direction.equals(PaginationAndSortingUtils.ASC.getSortingDirection())) {
             return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").ascending());
         }
         return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").descending());
+    }
+
+    private PageRequest buildPageRequestForDeliveryAddress(String direction, Integer page) {
+        if (direction.equals(PaginationAndSortingUtils.ASC.getSortingDirection())) {
+            return PageRequest.of(page, 10, Sort.by("streetName").ascending());
+        }
+        return PageRequest.of(page, 10, Sort.by("streetName").descending());
     }
 
 }

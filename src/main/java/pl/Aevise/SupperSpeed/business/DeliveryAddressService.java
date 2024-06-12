@@ -11,6 +11,7 @@ import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DeliveryAddressMapper;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressDAO;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressListDAO;
+import pl.Aevise.SupperSpeed.business.utils.DeliveryAddressPageFilter;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
@@ -82,33 +83,44 @@ public class DeliveryAddressService {
     }
 
     @Transactional
-    public List<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddressDTO deliveryAddressDTO) {
+    public Page<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddressDTO deliveryAddressDTO, PageRequest pageRequest) {
         String postalCode = deliveryAddressDTO.getPostalCode();
+
         List<DeliveryAddress> addresses = deliveryAddressListDAO.getAllDeliveryAddressesByRestaurantId(restaurantId);
+
         List<DeliveryAddress> addressesForPostalCode = deliveryAddressDAO.getAllByPostalCode(deliveryAddressDTO.getPostalCode());
 
         if(addressesForPostalCode.isEmpty()){
             log.info("No addresses with postal code: [{}] added", postalCode);
-            return List.of();
+            return Page.empty();
         }
-        if(addresses.isEmpty()){
-            log.info("Restaurant can deliver to [{}] more places nearby", addressesForPostalCode.size());
-            return addressesForPostalCode.stream()
-                    .map(deliveryAddressMapper::mapToDTO)
-                    .toList();
-        }
+        //TODO zrobic ponizszy komentarz tak aby dzialal i nie oszukiwal
+//        if(addresses.isEmpty()){
+//            log.info("Restaurant can deliver to [{}] more places nearby", addressesForPostalCode.size());
+//            return addressesForPostalCode
+//                    .map(deliveryAddressMapper::mapToDTO);
+//        }
 
-        List<DeliveryAddressDTO> filteredList = addressesForPostalCode.stream()
-                .filter(currentAddress -> !addresses.contains(currentAddress))
-                .map(deliveryAddressMapper::mapToDTO)
-                .toList();
+        Page<DeliveryAddress> filteredList = DeliveryAddressPageFilter
+                .filterAddressesNotInRestaurantDeliveryList(
+                        addressesForPostalCode,
+                        addresses,
+                        pageRequest
+                );
+
+        //TODO usunac te fajne zmienne
+        List<DeliveryAddress> content = filteredList.getContent();
+        long totalElements = filteredList.getTotalElements();
+        int number = filteredList.getNumber();
+        int totalPages = filteredList.getTotalPages();
 
         if(filteredList.isEmpty()){
             log.info("All [{}] addresses has been added", addressesForPostalCode.size());
-            return List.of();
+            return Page.empty();
         }else {
-            log.info("[{}] More addresses can be added to delivery list", filteredList.size());
-            return filteredList;
+            log.info("[{}] More addresses can be added to delivery list", filteredList.getNumberOfElements());
+            return filteredList
+                    .map(deliveryAddressMapper::mapToDTO);
         }
     }
 
