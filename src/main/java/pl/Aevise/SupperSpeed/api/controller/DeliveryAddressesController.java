@@ -39,23 +39,23 @@ public class DeliveryAddressesController {
     public String showDeliveryAddresses(
             @AuthenticationPrincipal UserDetails userDetails,
             Model model,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "dir", required = false) String sortingDirection
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(value = "dir", required = false, defaultValue = "asc") String sortingDirection
     ) {
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(
                         userDetails.getUsername());
         Integer restaurantId = restaurantDTO.getRestaurantId();
 
-
         AddressDTO restaurantAddress = addressService.getByRestaurantId(restaurantId);
 
-        if (sortingDirection == null ||
-                (!sortingDirection.equals(PaginationAndSortingUtils.ASC.name()) && !sortingDirection.equals(PaginationAndSortingUtils.DESC.name()))
-        ) {
-            sortingDirection = PaginationAndSortingUtils.ASC.name();
-            page = 0;
-        }
+//        not needed
+//        if (sortingDirection == null ||
+//                (!sortingDirection.equals(PaginationAndSortingUtils.ASC.getSortingDirection()) && !sortingDirection.equals(PaginationAndSortingUtils.DESC.getSortingDirection()))
+//        ) {
+//            sortingDirection = PaginationAndSortingUtils.ASC.getSortingDirection();
+//            page = 0;
+//        }
         Page<DeliveryAddressList> allDeliveryAddressesListByRestaurantId = deliveryAddressService.getAllDeliveryAddressesByRestaurantId(
                 restaurantId,
                 buildPageRequest(
@@ -74,6 +74,7 @@ public class DeliveryAddressesController {
         model.addAttribute("addressesWithoutDelivery", addressesWithoutDelivery);
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("totalNumberOfPages", allDeliveryAddressesListByRestaurantId.getTotalPages());
+        model.addAttribute("currentPage", page);
         model.addAttribute("sortingDirection", sortingDirection);
         return "delivery_addresses";
     }
@@ -109,7 +110,7 @@ public class DeliveryAddressesController {
     }
 
     private PageRequest buildPageRequest(String direction, Integer page) {
-        if (direction.equals(PaginationAndSortingUtils.ASC.name())) {
+        if (direction.equals(PaginationAndSortingUtils.ASC.getSortingDirection())) {
             return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").ascending());
         }
         return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").descending());
