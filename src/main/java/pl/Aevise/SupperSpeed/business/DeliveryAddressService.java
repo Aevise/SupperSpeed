@@ -95,11 +95,11 @@ public class DeliveryAddressService {
             return Page.empty();
         }
         //TODO zrobic ponizszy komentarz tak aby dzialal i nie oszukiwal
-//        if(addresses.isEmpty()){
-//            log.info("Restaurant can deliver to [{}] more places nearby", addressesForPostalCode.size());
-//            return addressesForPostalCode
-//                    .map(deliveryAddressMapper::mapToDTO);
-//        }
+        if(addresses.isEmpty()){
+            log.info("Restaurant can deliver to [{}] more places nearby", addressesForPostalCode.size());
+            return DeliveryAddressPageFilter.convertListToPage(addressesForPostalCode, pageRequest)
+                    .map(deliveryAddressMapper::mapToDTO);
+        }
 
         Page<DeliveryAddress> filteredList = DeliveryAddressPageFilter
                 .filterAddressesNotInRestaurantDeliveryList(
@@ -107,12 +107,6 @@ public class DeliveryAddressService {
                         addresses,
                         pageRequest
                 );
-
-        //TODO usunac te fajne zmienne
-        List<DeliveryAddress> content = filteredList.getContent();
-        long totalElements = filteredList.getTotalElements();
-        int number = filteredList.getNumber();
-        int totalPages = filteredList.getTotalPages();
 
         if(filteredList.isEmpty()){
             log.info("All [{}] addresses has been added", addressesForPostalCode.size());

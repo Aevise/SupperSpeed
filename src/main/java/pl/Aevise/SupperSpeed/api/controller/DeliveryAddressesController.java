@@ -59,8 +59,6 @@ public class DeliveryAddressesController {
                 ));
         List<DeliveryAddressDTO> allDeliveryAddressesByRestaurantId = deliveryAddressService.separateAddresses(allDeliveryAddressesListByRestaurantId);
 
-
-        //uses pagination, so it can filter all results even when there are some addresses left
         Page<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
                 .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId,
                         buildDeliveryAddressFromRestaurantAddress(restaurantAddress),
@@ -69,6 +67,15 @@ public class DeliveryAddressesController {
                                 exiAdrPage
                         ));
 
+        String EASortingDirection;
+        int EAPage;
+        if(addressesWithoutDelivery.getSort().isEmpty()){
+            EASortingDirection = "asc";
+            EAPage = 0;
+        }else {
+            EASortingDirection = addressesWithoutDelivery.getSort().toString().split(" ")[1].toLowerCase();
+            EAPage = addressesWithoutDelivery.getNumber();
+        }
 
         model.addAttribute("addresses", allDeliveryAddressesByRestaurantId);
         model.addAttribute("restaurantAddress", restaurantAddress);
@@ -77,6 +84,8 @@ public class DeliveryAddressesController {
         model.addAttribute("totalNumberOfPages", allDeliveryAddressesListByRestaurantId.getTotalPages());
         model.addAttribute("CAPage", currAdrPage);
         model.addAttribute("CASortingDirection", currAdrSortingDirection);
+        model.addAttribute("EASortingDirection", EASortingDirection);
+        model.addAttribute("EAPage", EAPage);
         return "delivery_addresses";
     }
 
