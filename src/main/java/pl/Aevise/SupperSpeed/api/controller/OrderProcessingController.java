@@ -9,11 +9,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
+import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapperImpl;
 import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +33,8 @@ public class OrderProcessingController {
 
     private final SupperOrderService supperOrderService;
     private final DishListService dishListService;
+
+    private final OffsetDateTimeMapper offsetDateTimeMapper;
 
     @PostMapping(ORDER_PROCESSING)
     public String getRestaurantMenu
@@ -77,14 +83,25 @@ public class OrderProcessingController {
     @PostMapping(CANCEL_ORDER)
     public String cancelOrder(
             @RequestParam(value = "orderId") Integer orderId,
-            @RequestParam(value = "statusId") Integer statusId
+            @RequestParam(value = "statusId") Integer statusId,
+            @RequestParam(value = "orderDate") String orderDate
     ) {
 
         if (statusId > 2) {
             return "error";
         }
-        supperOrderService.cancelOrder(orderId);
+
+        if(!checkIfMoreThan20MinutesPassed(orderDate)){
+            supperOrderService.cancelOrder(orderId);
+        }
         return "redirect:/orders";
+    }
+
+    private boolean checkIfMoreThan20MinutesPassed(String orderDate) {
+        OffsetDateTime dateOfOrder = offsetDateTimeMapper.mapStringToOffsetDateTime(orderDate);
+        OffsetDateTime now = OffsetDateTime.now();
+        Duration duration = Duration.between(dateOfOrder, now);
+        return duration.toMinutes() > 20;
     }
 
     private Map<Integer, Integer> extractDishIdAndAmount(Map<String, String[]> requestData) {
