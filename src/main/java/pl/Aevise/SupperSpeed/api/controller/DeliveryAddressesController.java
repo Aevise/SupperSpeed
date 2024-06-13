@@ -40,7 +40,7 @@ public class DeliveryAddressesController {
             @AuthenticationPrincipal UserDetails userDetails,
             Model model,
             @RequestParam(value = "ca-page", required = false, defaultValue = "0") Integer currAdrPage,
-            @RequestParam(value = "ca-dir", required = false, defaultValue = "asc") String currAdrSortingDirection            ,
+            @RequestParam(value = "ca-dir", required = false, defaultValue = "asc") String currAdrSortingDirection,
             @RequestParam(value = "ea-page", required = false, defaultValue = "0") Integer exiAdrPage,
             @RequestParam(value = "ea-dir", required = false, defaultValue = "asc") String exiAdrSortingDirection
     ) {
@@ -69,10 +69,10 @@ public class DeliveryAddressesController {
 
         String EASortingDirection;
         int EAPage;
-        if(addressesWithoutDelivery.getSort().isEmpty()){
+        if (addressesWithoutDelivery.getSort().isEmpty()) {
             EASortingDirection = "asc";
             EAPage = 0;
-        }else {
+        } else {
             EASortingDirection = addressesWithoutDelivery.getSort().toString().split(" ")[1].toLowerCase();
             EAPage = addressesWithoutDelivery.getNumber();
         }

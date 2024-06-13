@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
@@ -49,12 +49,16 @@ public class RestaurantMenuController {
         RestaurantDTO restaurantDTO = restaurantMapper.mapToDTO(restaurantService.findRestaurantById(restaurantId));
         String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
 
+        AddressDTO addressDTO = restaurantDTO.getAddress();
+
         model.addAttribute("dishesByCategory", dishMap);
         model.addAttribute("restaurantId", restaurantId);
 
         model.addAttribute("imageWidth", MAX_LOGO_WIDTH);
         model.addAttribute("imageHeight", MAX_LOGO_HEIGHT);
         model.addAttribute("restaurantDirectory", restaurantDirectory);
+        model.addAttribute("restaurantName", restaurantName);
+        model.addAttribute("addressDTO", addressDTO);
         return "restaurant_menu";
     }
 }

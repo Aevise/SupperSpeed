@@ -9,7 +9,7 @@ public enum PaginationAndSortingUtils {
         this.direction = direction;
     }
 
-    public String getSortingDirection(){
+    public String getSortingDirection() {
         return direction;
     }
 }

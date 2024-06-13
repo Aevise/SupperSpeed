@@ -1,7 +1,5 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 
 import java.util.List;

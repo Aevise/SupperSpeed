@@ -59,7 +59,7 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     public List<DeliveryAddress> getAllDeliveryAddressesByRestaurantId(Integer restaurantId) {
         List<DeliveryAddressEntity> deliveryAddressesForRestaurant = deliveryAddressListJpaRepository.getDeliveryAddressesForRestaurant(restaurantId);
 
-        if(!deliveryAddressesForRestaurant.isEmpty()){
+        if (!deliveryAddressesForRestaurant.isEmpty()) {
             return deliveryAddressesForRestaurant.stream()
                     .map(deliveryAddressEntityMapper::mapFromEntity)
                     .toList();

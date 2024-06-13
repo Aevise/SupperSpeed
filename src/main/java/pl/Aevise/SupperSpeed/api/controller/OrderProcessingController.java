@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
-import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapperImpl;
+import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.DishListService;
+import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 
@@ -36,17 +37,20 @@ public class OrderProcessingController {
 
     private final OffsetDateTimeMapper offsetDateTimeMapper;
 
+    private final RestaurantService restaurantService;
+    private final RestaurantMapper restaurantMapper;
+
     @PostMapping(ORDER_PROCESSING)
     public String getRestaurantMenu
             (
                     HttpServletRequest request,
                     @RequestParam(value = "restaurantId") Integer restaurantId,
+                    @RequestParam(value = "restaurantName") String restaurantName,
                     @AuthenticationPrincipal UserDetails userDetails,
                     Model model
             ) {
 
         Map<Integer, Integer> dishesIdAndQuantities = extractDishIdAndAmount(request.getParameterMap());
-
         if (!dishesIdAndQuantities.isEmpty()) {
             SupperOrderEntity newOrder = supperOrderService.createNewOrder(restaurantId, userDetails.getUsername());
 
@@ -54,6 +58,7 @@ public class OrderProcessingController {
             BigDecimal orderValue = supperOrderService.extractTotalOrderValue(dishListDTO);
 
             model.addAttribute("restaurantId", restaurantId);
+            model.addAttribute("restaurantName", restaurantName);
             model.addAttribute("dishListDTO", dishListDTO);
             model.addAttribute("orderId", newOrder.getOrderId());
             model.addAttribute("orderValue", orderValue);
@@ -91,7 +96,7 @@ public class OrderProcessingController {
             return "error";
         }
 
-        if(!checkIfMoreThan20MinutesPassed(orderDate)){
+        if (!checkIfMoreThan20MinutesPassed(orderDate)) {
             supperOrderService.cancelOrder(orderId);
         }
         return "redirect:/orders";

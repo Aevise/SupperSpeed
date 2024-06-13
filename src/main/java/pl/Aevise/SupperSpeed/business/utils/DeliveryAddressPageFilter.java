@@ -34,7 +34,7 @@ public class DeliveryAddressPageFilter {
         List<DeliveryAddress> sortedContent = getSortedContent(pageRequest, deliveryAddresses);
         List<DeliveryAddress> slicedContent = sliceSortedContent(pageRequest, sortedContent);
 
-        if(slicedContent.isEmpty()){
+        if (slicedContent.isEmpty()) {
             return Page.empty();
         }
         return new PageImpl<>(slicedContent,

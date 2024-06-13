@@ -14,7 +14,7 @@ import java.util.List;
 public interface DeliveryAddressListJpaRepository extends JpaRepository<DeliveryAddressListEntity, DeliveryAddressKey> {
 
     @Query("SELECT dale FROM DeliveryAddressListEntity dale JOIN FETCH dale.deliveryAddressEntity WHERE dale.restaurantEntity.id = :restaurantId")
-    Page<DeliveryAddressListEntity> getAllByRestaurantEntity_Id(@Param("restaurantId")Integer restaurantId, PageRequest pageRequest);
+    Page<DeliveryAddressListEntity> getAllByRestaurantEntity_Id(@Param("restaurantId") Integer restaurantId, PageRequest pageRequest);
 
     Page<DeliveryAddressListEntity> getAllByDeliveryAddressEntity_PostalCodeEquals(String postalCode, PageRequest pageable);
 

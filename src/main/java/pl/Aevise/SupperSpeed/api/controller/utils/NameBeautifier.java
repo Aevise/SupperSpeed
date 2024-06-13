@@ -19,7 +19,7 @@ public class NameBeautifier {
         }
         String newCityName = cityName;
 
-        if(!newCityName.contains(NAME_SEPARATORS.get(0)) && !newCityName.contains(NAME_SEPARATORS.get(1))){
+        if (!newCityName.contains(NAME_SEPARATORS.get(0)) && !newCityName.contains(NAME_SEPARATORS.get(1))) {
             return capitalizeFirstLetter(newCityName);
         }
 

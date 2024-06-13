@@ -90,12 +90,12 @@ public class DeliveryAddressService {
 
         List<DeliveryAddress> addressesForPostalCode = deliveryAddressDAO.getAllByPostalCode(deliveryAddressDTO.getPostalCode());
 
-        if(addressesForPostalCode.isEmpty()){
+        if (addressesForPostalCode.isEmpty()) {
             log.info("No addresses with postal code: [{}] added", postalCode);
             return Page.empty();
         }
         //TODO zrobic ponizszy komentarz tak aby dzialal i nie oszukiwal
-        if(addresses.isEmpty()){
+        if (addresses.isEmpty()) {
             log.info("Restaurant can deliver to [{}] more places nearby", addressesForPostalCode.size());
             return DeliveryAddressPageFilter.convertListToPage(addressesForPostalCode, pageRequest)
                     .map(deliveryAddressMapper::mapToDTO);
@@ -108,10 +108,10 @@ public class DeliveryAddressService {
                         pageRequest
                 );
 
-        if(filteredList.isEmpty()){
+        if (filteredList.isEmpty()) {
             log.info("All [{}] addresses has been added", addressesForPostalCode.size());
             return Page.empty();
-        }else {
+        } else {
             log.info("[{}] More addresses can be added to delivery list", filteredList.getNumberOfElements());
             return filteredList
                     .map(deliveryAddressMapper::mapToDTO);
