@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.Aevise.SupperSpeed.api.controller.utils.PaginationAndSortingUtils;
 import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
 import pl.Aevise.SupperSpeed.api.dto.CuisineDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
@@ -48,7 +49,7 @@ public class CreateAccountController {
             Model model
     ) {
 
-        List<CuisineDTO> cuisines = cuisineService.findAllAsDTO();
+        List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
         model.addAttribute("cuisinesListDTO", cuisines);
 
         return "create_account_page";

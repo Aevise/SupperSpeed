@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.Aevise.SupperSpeed.api.controller.utils.PaginationAndSortingUtils;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.CuisineDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
@@ -48,11 +49,21 @@ public class SearchPageController {
             (
                     Model model,
                     @RequestParam(value = "city") String city,
-                    @RequestParam(value = "streetName") String streetName
-
+                    @RequestParam(value = "streetName") String streetName,
+                    @RequestParam(value = "cuisine", required = false) String cuisine
             ) {
-        List<CuisineDTO> cuisines = getCuisineDTOList();
+
+        List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
+
+
+
+        //to chyba mozna usunac bez zadnych obaw
         List<AddressDTO> addresses = getAddressDTOList();
+
+
+
+
+
         List<RestaurantDTO> restaurants = getRestaurantsByCityDTOList(city);
 
         List<String> cities = addressService.findDistinctCities();
@@ -68,7 +79,8 @@ public class SearchPageController {
         model.addAttribute("distinctCities", cities);
         model.addAttribute("role", userRole);
         model.addAttribute("restaurantRatings", restaurantsRating);
-
+        model.addAttribute("cuisines", cuisines);
+        model.addAttribute("streetName", streetName);
         return "search_page";
     }
 
@@ -85,14 +97,6 @@ public class SearchPageController {
 
         return restaurants.stream()
                 .map(restaurantMapper::mapToDTO)
-                .toList();
-    }
-
-    private List<CuisineDTO> getCuisineDTOList() {
-        List<Cuisine> cuisines = cuisineService.findAll();
-
-        return cuisines.stream()
-                .map(cuisineMapper::mapToDTO)
                 .toList();
     }
 
