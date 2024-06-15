@@ -27,7 +27,10 @@ public interface DeliveryAddressListJpaRepository extends JpaRepository<Delivery
     List<DeliveryAddressEntity> getDeliveryAddressesForRestaurant(@Param("restaurantId") Integer restaurantId);
 
     @Query("SELECT r.restaurantEntity FROM DeliveryAddressListEntity  r WHERE r.deliveryAddressEntity.city = :city AND r.deliveryAddressEntity.streetName = :streetName")
-    List<RestaurantEntity> getAllByDeliveryAddressEntity_CityAndAndDeliveryAddressEntity_StreetName(@Param("city") String city, @Param("streetName") String streetName);
+    List<RestaurantEntity> getAllRestaurantsByCityAndStreetName(@Param("city") String city, @Param("streetName") String streetName);
+
+    @Query("SELECT r.restaurantEntity FROM DeliveryAddressListEntity  r WHERE r.deliveryAddressEntity.city = :city AND r.deliveryAddressEntity.streetName = :streetName AND r.restaurantEntity.cuisine.cuisine = :cuisine")
+    List<RestaurantEntity> getAllRestaurantsByCityAndStreetNameAndCuisine(@Param("city") String city, @Param("streetName") String streetName, @Param("cuisine") String cuisine);
 
 
 }

@@ -74,7 +74,19 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
 
     @Override
     public List<Restaurant> getAllByCityAndStreetName(String city, String streetName) {
-        List<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllByDeliveryAddressEntity_CityAndAndDeliveryAddressEntity_StreetName(city, streetName);
+        List<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllRestaurantsByCityAndStreetName(city, streetName);
+
+        if(!restaurants.isEmpty()){
+            return restaurants.stream()
+                    .map(restaurantEntityMapper::mapFromEntity)
+                    .toList();
+        }
+        return List.of();
+    }
+
+    @Override
+    public List<Restaurant> getAllByCityAndStreetNameByCuisine(String city, String streetName, String cuisine) {
+        List<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllRestaurantsByCityAndStreetNameAndCuisine(city, streetName, cuisine);
 
         if(!restaurants.isEmpty()){
             return restaurants.stream()

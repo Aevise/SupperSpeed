@@ -75,7 +75,7 @@ public class RestaurantService {
     public List<RestaurantDTO> findAllByCity(String city) {
         List<Restaurant> restaurants = restaurantDAO.findAllByCity(city);
 
-        if(!restaurants.isEmpty()){
+        if (!restaurants.isEmpty()) {
             log.info("Found [{}] restaurants in city [{}]", restaurants.size(), city);
             return restaurants.stream()
                     .map(restaurantMapper::mapToDTO)
@@ -152,23 +152,55 @@ public class RestaurantService {
         }
     }
 
-    public List<RestaurantDTO> findAllByCityAndStreetNameAndCuisine(String city, String streetName, String cuisine) {
-
+    public List<RestaurantDTO> findAllByCityAndStreetNameOnDelivery(String city, String streetName) {
         List<Restaurant> restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddress(city, streetName);
-
-        if(cuisine.equalsIgnoreCase("all")){
+        if (!restaurantsDeliveringOnAddress.isEmpty()) {
             log.info("Returning all [{}] restaurants", restaurantsDeliveringOnAddress.size());
             return restaurantsDeliveringOnAddress.stream()
                     .map(restaurantMapper::mapToDTO)
                     .toList();
         }
+        log.info("Restaurants do not deliver to this address: [{}]. [{}]", city, streetName);
+        return List.of();
+    }
+
+
+    public List<RestaurantDTO> findAllByCityAndStreetNameAndCuisineOnDelivery(String city, String streetName, String cuisine) {
+        List<Restaurant> restaurantsDeliveringOnAddress;
+        if(cuisine.equalsIgnoreCase("all")){
+            log.info("Searching for all restaurants delivering to address [{}], [{}]", city, streetName);
+            restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddress(city, streetName);
+        }else {
+            log.info("Searching for all restaurants with cuisine [{}], delivering to address [{}], [{}]", cuisine, city, streetName);
+            restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddressByCuisine(city, streetName, cuisine);
+        }
+
+        if(!restaurantsDeliveringOnAddress.isEmpty()){
+            log.info("Found [{}] restaurants", restaurantsDeliveringOnAddress.size());
+            return restaurantsDeliveringOnAddress.stream()
+                    .map(restaurantMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Could not find restaurants delivering to address [{}], [{}]", city, streetName);
+        return List.of();
+    }
+
+    public List<RestaurantDTO> filterRestaurantsByCuisine(String cuisine, List<Restaurant> restaurantsDeliveringOnAddress) {
         List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
                 .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
                 .map(restaurantMapper::mapToDTO)
                 .toList();
-        log.info("Found [{}] restaurant with cuisine [{}] delivery to address [{}], [{}]",
-                filteredRestaurants.size(), cuisine, city, streetName);
+        log.info("Found [{}] restaurant with cuisine [{}]",
+                filteredRestaurants.size(), cuisine);
+        return filteredRestaurants;
+    }
 
+    public List<RestaurantDTO> filterRestaurantDTOsByCuisine(String cuisine, List<RestaurantDTO> restaurantsDeliveringOnAddress) {
+        List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
+                .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
+                .toList();
+        log.info("Found [{}] restaurant with cuisine [{}]",
+                filteredRestaurants.size(), cuisine);
         return filteredRestaurants;
     }
 }

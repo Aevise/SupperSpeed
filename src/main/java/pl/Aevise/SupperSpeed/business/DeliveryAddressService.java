@@ -95,7 +95,6 @@ public class DeliveryAddressService {
             log.info("No addresses with postal code: [{}] added", postalCode);
             return Page.empty();
         }
-        //TODO zrobic ponizszy komentarz tak aby dzialal i nie oszukiwal
         if (addresses.isEmpty()) {
             log.info("Restaurant can deliver to [{}] more places nearby", addressesForPostalCode.size());
             return DeliveryAddressPageFilter.convertListToPage(addressesForPostalCode, pageRequest)
@@ -156,6 +155,17 @@ public class DeliveryAddressService {
         return List.of();
     }
 
+    public List<Restaurant> getRestaurantsDeliveringOnAddressByCuisine(String city, String streetName, String cuisine) {
+        List<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetNameByCuisine(city, streetName, cuisine);
+
+        if(!restaurants.isEmpty()){
+            log.info("Found [{}] restaurants delivering to address [{}], [{}]", restaurants.size(), city, streetName);
+            return restaurants;
+        }
+        log.info("Did not found restaurants delivering to address [{}], [{}]", city, streetName);
+        return List.of();
+    }
+
     private DeliveryAddressKey buildDeliveryAddressKey(Integer deliveryAddressId, Integer restaurantId) {
         return DeliveryAddressKey.builder()
                 .deliveryAddressId(deliveryAddressId)
@@ -189,5 +199,4 @@ public class DeliveryAddressService {
                 .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
                 .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
     }
-
 }

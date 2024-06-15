@@ -22,61 +22,80 @@
     </style>
 </head>
 
+<div class="container" th:switch="${role}">
+    <div class="row my-2 py-2">
+        <div class="col">
+        </div>
+        <div th:case="'RESTAURANT'">
+            <a class="btn btn-info float-end" role="button" th:href="@{/restaurant/profile}">Profile</a>
+        </div>
+        <div th:case="'CLIENT'">
+            <a class="btn btn-info float-end" role="button" th:href="@{/client/profile}">Profile</a>
+        </div>
+        <div th:case="'ROLE_ANONYMOUS'">
+            <a class="btn btn-info float-end" role="button" th:href="@{/login}">Log in</a>
+        </div>
+    </div>
+</div>
+
 <body>
-<div class="container">
+<div class="container" th:if="${streetName.equals('') || streetName == null}">
     <div style="display: flex; justify-content: center;">
-        <h1 th:text="'Feeling hungry? Try one of our SupperRestaurants from ' + ${currentCity} + '!'"></h1>
+        <h1>Please provide your street name</h1>
     </div>
     <br>
 </div>
 
 <div class="container">
-    <div class="container">
-        <h2>Another location:</h2>
-        <form class=" px-4 py-3" method="get" th:action="@{/search}">
-            <div class="row">
-                <div class="col-md-6 mb-2">
-                    <div class="form-group">
-                        <label for="city">City:</label>
-                        <select id="city" name="city" class="form-control">
-                            <option th:each="city : ${distinctCities}" th:text="${city}" th:value="${city}"></option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-2">
-                    <div class="form-group">
-                        <label class="form-label" for="streetName">Street Name:</label>
-                        <input id="streetName" name="streetName" placeholder="Street Name" type="text"
-                               class="form-control">
-                    </div>
-                </div>
-            </div>
-            <div class="row py-2 mb-2">
-                <div class="col">
-                    <label for="cuisine">Cuisine:</label>
-                    <select id="cuisine" name="cuisine" class="form-control">
-                        <option th:each="cuisine : ${cuisines}" th:text="${cuisine.cuisine}"
-                                th:value="${cuisine.cuisine}"></option>
+    <h2>Another location:</h2>
+    <form class=" px-4 py-3" method="get" th:action="@{/search}">
+        <div class="row">
+            <div class="col-md-6 mb-2">
+                <div class="form-group">
+                    <label for="city">City:</label>
+                    <select id="city" name="city" class="form-control">
+                        <option th:each="city : ${distinctCities}" th:text="${city}" th:value="${city}"
+                                th:attr="selected=${city == currentCity}"></option>
                     </select>
                 </div>
             </div>
-            <div>
-                <button class="btn btn-primary" type="submit">Show other restaurants</button>
+            <div class="col-md-6 mb-2">
+                <div class="form-group">
+                    <label class="form-label" for="streetName">Street Name:</label>
+                    <input id="streetName" name="streetName" placeholder="Street Name" type="text"
+                           th:value="${streetName}"
+                           class="form-control">
+                </div>
             </div>
-        </form>
-    </div>
-    <br>
+        </div>
+        <div class="row py-2 mb-2">
+            <div class="col">
+                <label for="cuisine">Cuisine:</label>
+                <select id="cuisine" name="cuisine" class="form-control">
+                    <option th:each="cuisine : ${cuisines}" th:text="${cuisine.cuisine}"
+                            th:value="${cuisine.cuisine}"
+                            th:attr="selected=${cuisine.cuisine == currentCuisine}"></option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <button class="btn btn-primary" type="submit">Show Restaurants</button>
+        </div>
+    </form>
+</div>
+
+<div class="container" th:unless="${streetName.equals('') || streetName == null}">
     <div class="container">
-        <h2>Choose another cuisine:</h2>
+        <h2>Choose another type of cuisine available in your area:</h2>
         <div class="row p-2">
             <div class="d-flex flex-wrap">
                 <div class="me-1 mb-1"
-                     th:each="cuisine: ${cuisines}">
+                     th:each="cuisine: ${cuisinesInCity}">
                     <form method="get" th:action="@{/search}">
                         <input type="hidden" th:name="city" th:value="${currentCity}">
                         <input type="hidden" th:name="streetName" th:value="${streetName}">
-                        <input type="hidden" th:name="cuisine" th:value="${cuisine.cuisine}">
-                        <button class="btn btn-success" type="submit" th:text="${cuisine.cuisine}"></button>
+                        <input type="hidden" th:name="cuisine" th:value="${cuisine}">
+                        <button class="btn btn-success" type="submit" th:text="${cuisine}"></button>
                     </form>
                 </div>
             </div>
@@ -134,17 +153,6 @@
     </div>
 </div>
 
-<div class="container" th:switch="${role}">
-    <div th:case="'RESTAURANT'">
-        <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Profile</a>
-    </div>
-    <div th:case="'CLIENT'">
-        <a class="btn btn-info" role="button" th:href="@{/client/profile}">Profile</a>
-    </div>
-    <div th:case="'ROLE_ANONYMOUS'">
-        <a class="btn btn-info" role="button" th:href="@{/login}">Log in</a>
-    </div>
-</div>
 
 <script
         crossorigin="anonymous"

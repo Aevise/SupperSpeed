@@ -17,13 +17,12 @@ import pl.Aevise.SupperSpeed.business.CuisineService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.domain.Address;
-import pl.Aevise.SupperSpeed.domain.Cuisine;
-import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @AllArgsConstructor
@@ -52,24 +51,27 @@ public class SearchPageController {
                     @RequestParam(value = "streetName") String streetName,
                     @RequestParam(value = "cuisine", required = false, defaultValue = "All") String cuisine
             ) {
-
         List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
-
-        //to chyba mozna usunac bez zadnych obaw
-        List<AddressDTO> addresses = getAddressDTOList();
-
-        List<RestaurantDTO> test = restaurantService.findAllByCityAndStreetNameAndCuisine(city, streetName, cuisine);
-
-
-
-        List<RestaurantDTO> restaurants = restaurantService.findAllByCity(city);
-
+        String finalCuisine = cuisine;
+        if (cuisines.stream().noneMatch(cuisineDTO -> cuisineDTO.getCuisine().equalsIgnoreCase(finalCuisine))) {
+            cuisine = "All";
+        }
         List<String> cities = addressService.findDistinctCities();
-
         String userRole = securityService.getUserAuthority();
 
-        var restaurantsByCuisine = mapRestaurantsByCuisine(restaurants);
-        var restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(restaurants);
+        List<RestaurantDTO> allByCityAndStreetNameOnDelivery = restaurantService.findAllByCityAndStreetNameOnDelivery(city, streetName);
+        Set<String> cuisinesInArea = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery).keySet();
+
+        HashMap<String, List<RestaurantDTO>> restaurantsByCuisine;
+        HashMap<Integer, List<Double>> restaurantsRating;
+        if(!cuisine.equalsIgnoreCase("all")){
+            List<RestaurantDTO> filteredRestaurants = restaurantService.filterRestaurantDTOsByCuisine(cuisine, allByCityAndStreetNameOnDelivery);
+            restaurantsByCuisine = mapRestaurantsByCuisine(filteredRestaurants);
+            restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(filteredRestaurants);
+        }else {
+            restaurantsByCuisine = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery);
+            restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(allByCityAndStreetNameOnDelivery);
+        }
 
 
         model.addAttribute("restaurantsByCuisine", restaurantsByCuisine);
@@ -78,7 +80,9 @@ public class SearchPageController {
         model.addAttribute("role", userRole);
         model.addAttribute("restaurantRatings", restaurantsRating);
         model.addAttribute("cuisines", cuisines);
+        model.addAttribute("currentCuisine", cuisine);
         model.addAttribute("streetName", streetName);
+        model.addAttribute("cuisinesInCity", cuisinesInArea);
         return "search_page";
     }
 
