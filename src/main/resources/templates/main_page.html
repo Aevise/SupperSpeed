@@ -24,6 +24,19 @@
 </head>
 
 <body>
+<div class="container" th:switch="${userRole}">
+    <div class="row my-2 py-2">
+        <div class="col">
+        </div>
+        <div th:case="'RESTAURANT'">
+            <a class="btn btn-info float-end" role="button" th:href="@{/restaurant/profile}">Profile</a>
+        </div>
+        <div th:case="'CLIENT'">
+            <a class="btn btn-info float-end" role="button" th:href="@{/client/profile}">Profile</a>
+        </div>
+    </div>
+</div>
+
 <div class="container" th:if="${distinctCities.size() != 0}">
     <h1 style="display: flex; justify-content: center;">
         To order from one of the restaurants

@@ -19,10 +19,7 @@ import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @AllArgsConstructor
@@ -60,10 +57,13 @@ public class SearchPageController {
         String userRole = securityService.getUserAuthority();
 
         List<RestaurantDTO> allByCityAndStreetNameOnDelivery = restaurantService.findAllByCityAndStreetNameOnDelivery(city, streetName);
-        Set<String> cuisinesInArea = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery).keySet();
+        List<String> cuisinesInArea = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery).keySet()
+                .stream()
+                .sorted(String::compareTo)
+                .toList();
 
-        HashMap<String, List<RestaurantDTO>> restaurantsByCuisine;
-        HashMap<Integer, List<Double>> restaurantsRating;
+        TreeMap<String, List<RestaurantDTO>> restaurantsByCuisine;
+        TreeMap<Integer, List<Double>> restaurantsRating;
         if(!cuisine.equalsIgnoreCase("all")){
             List<RestaurantDTO> filteredRestaurants = restaurantService.filterRestaurantDTOsByCuisine(cuisine, allByCityAndStreetNameOnDelivery);
             restaurantsByCuisine = mapRestaurantsByCuisine(filteredRestaurants);
@@ -95,8 +95,8 @@ public class SearchPageController {
     }
 
 
-    private HashMap<String, List<RestaurantDTO>> mapRestaurantsByCuisine(List<RestaurantDTO> restaurants) {
-        HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = new HashMap<>();
+    private TreeMap<String, List<RestaurantDTO>> mapRestaurantsByCuisine(List<RestaurantDTO> restaurants) {
+        TreeMap<String, List<RestaurantDTO>> restaurantsByCuisine = new TreeMap<>();
 
         for (RestaurantDTO restaurant : restaurants) {
             if (restaurant.getIsShown()) {

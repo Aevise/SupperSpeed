@@ -21,10 +21,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEnt
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -145,8 +142,8 @@ public class SupperOrderService {
         }
     }
 
-    public HashMap<Integer, List<Double>> getRestaurantsRatingBasedOnOrders(List<RestaurantDTO> restaurants) {
-        HashMap<Integer, List<Double>> restaurantsRating = new HashMap<>();
+    public TreeMap<Integer, List<Double>> getRestaurantsRatingBasedOnOrders(List<RestaurantDTO> restaurants) {
+        TreeMap<Integer, List<Double>> restaurantsRating = new TreeMap<>();
         double noRating = 0.0;
 
         if (!restaurants.isEmpty()) {
