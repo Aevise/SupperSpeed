@@ -4,7 +4,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
+import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 
 import java.util.List;
@@ -21,5 +23,6 @@ public interface DeliveryAddressListDAO {
 
     List<DeliveryAddress> getAllDeliveryAddressesByRestaurantId(Integer restaurantId);
 
-//    List<DeliveryAddress> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddress deliveryAddress);
+    List<Restaurant> getAllByCityAndStreetName(String city, String streetName);
+
 }

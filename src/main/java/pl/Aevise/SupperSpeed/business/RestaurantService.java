@@ -28,6 +28,8 @@ public class RestaurantService {
     private final RestaurantEntityMapper restaurantEntityMapper;
     private final RestaurantMapper restaurantMapper;
 
+    private final DeliveryAddressService deliveryAddressService;
+
 
     @Transactional
     public RestaurantDTO findRestaurantByEmail(String email) {
@@ -70,10 +72,17 @@ public class RestaurantService {
         return restaurants;
     }
 
-    public List<Restaurant> findAllByCity(String city) {
+    public List<RestaurantDTO> findAllByCity(String city) {
         List<Restaurant> restaurants = restaurantDAO.findAllByCity(city);
-        log.info("Found [{}] restaurants in city [{}]", restaurants.size(), city);
-        return restaurants;
+
+        if(!restaurants.isEmpty()){
+            log.info("Found [{}] restaurants in city [{}]", restaurants.size(), city);
+            return restaurants.stream()
+                    .map(restaurantMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Could not find any restaurant in city [{}]", city);
+        return List.of();
     }
 
     @Transactional
@@ -141,5 +150,25 @@ public class RestaurantService {
         } else {
             log.warn("Entity could not be detached");
         }
+    }
+
+    public List<RestaurantDTO> findAllByCityAndStreetNameAndCuisine(String city, String streetName, String cuisine) {
+
+        List<Restaurant> restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddress(city, streetName);
+
+        if(cuisine.equalsIgnoreCase("all")){
+            log.info("Returning all [{}] restaurants", restaurantsDeliveringOnAddress.size());
+            return restaurantsDeliveringOnAddress.stream()
+                    .map(restaurantMapper::mapToDTO)
+                    .toList();
+        }
+        List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
+                .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
+                .map(restaurantMapper::mapToDTO)
+                .toList();
+        log.info("Found [{}] restaurant with cuisine [{}] delivery to address [{}], [{}]",
+                filteredRestaurants.size(), cuisine, city, streetName);
+
+        return filteredRestaurants;
     }
 }

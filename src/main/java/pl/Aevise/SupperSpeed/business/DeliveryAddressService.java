@@ -14,6 +14,7 @@ import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressListDAO;
 import pl.Aevise.SupperSpeed.business.utils.DeliveryAddressPageFilter;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
+import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -144,12 +145,24 @@ public class DeliveryAddressService {
         return List.of();
     }
 
+    public List<Restaurant> getRestaurantsDeliveringOnAddress(String city, String streetName) {
+        List<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetName(city, streetName);
+
+        if(!restaurants.isEmpty()){
+            log.info("Found [{}] restaurants delivering to address [{}], [{}]", restaurants.size(), city, streetName);
+            return restaurants;
+        }
+        log.info("Did not found restaurants delivering to address [{}], [{}]", city, streetName);
+        return List.of();
+    }
+
     private DeliveryAddressKey buildDeliveryAddressKey(Integer deliveryAddressId, Integer restaurantId) {
         return DeliveryAddressKey.builder()
                 .deliveryAddressId(deliveryAddressId)
                 .restaurantId(restaurantId)
                 .build();
     }
+
 
     private DeliveryAddressListEntity buildDeliveryAddressListEntity(Integer deliveryAddressId, Integer restaurantId) {
         return DeliveryAddressListEntity.builder()
@@ -176,4 +189,5 @@ public class DeliveryAddressService {
                 .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
                 .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
     }
+
 }

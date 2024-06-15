@@ -1,6 +1,8 @@
 INSERT INTO cuisine (cuisine_name)
 VALUES ('Chinese');
 INSERT INTO cuisine (cuisine_name)
+VALUES ('All');
+INSERT INTO cuisine (cuisine_name)
 VALUES ('Japanese');
 INSERT INTO cuisine (cuisine_name)
 VALUES ('Greek');

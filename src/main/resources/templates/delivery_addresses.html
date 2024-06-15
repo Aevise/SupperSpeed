@@ -77,166 +77,168 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div class="container" th:if="${addresses.isEmpty()}">
-        <div class="row mt-3">
-            <div class="col" style="text-align: center;">
-                <h1>Restaurant doesn't have deliveries set yet.
-                    <br>
-                    Please fill a form and update your list!</h1>
+<div class="container" th:if="${addresses.isEmpty()}">
+    <div class="row mt-3">
+        <div class="col" style="text-align: center;">
+            <h1>Restaurant doesn't have deliveries set yet.
+                <br>
+                Please fill a form and update your list!</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container" th:if="${!addressesWithoutDelivery.isEmpty()}">
+    <h2>Choose from already existing addresses:</h2>
+    <table class="table">
+        <thead>
+        <tr class="table table-success">
+            <th>City</th>
+            <th>District</th>
+            <th>Postal Code</th>
+            <th>Street Name</th>
+        </tr>
+        </thead>
+        <tbody th:each="address : ${addressesWithoutDelivery.getContent()}">
+        <tr>
+            <td th:text="${address.city}"></td>
+            <td th:text="${address.district}"></td>
+            <td th:text="${address.postalCode}"></td>
+            <td th:text="${address.streetName}"></td>
+            <td>
+                <form method="post" th:action="@{/restaurant/profile/delivery-addresses/add}">
+                    <input th:name="deliveryAddressId" th:value="${address.deliveryAddressId}" type="hidden">
+                    <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
+                    <input th:name="city" th:value="${address.city}" type="hidden">
+                    <input th:name="district" th:value="${address.district}" type="hidden">
+                    <input th:name="postalCode" th:value="${address.postalCode}" type="hidden">
+                    <input th:name="streetName" th:value="${address.streetName}" type="hidden">
+                    <button class="btn btn-info" type="submit">Add</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="row p-2">
+        <div class="d-flex flex-wrap">
+            <div class="me-1 mb-1"
+                 th:each="i: ${#numbers.sequence(0, addressesWithoutDelivery.getTotalPages() - 1)}">
+                <form method="get" th:action="@{/restaurant/profile/delivery-addresses}">
+                    <input type="hidden" th:name="ca-dir" th:value="${CASortingDirection}">
+                    <input type="hidden" th:name="ca-page" th:value="${CAPage}">
+                    <input type="hidden" th:name="ea-dir" th:value="${EASortingDirection}">
+                    <input type="hidden" th:name="ea-page" th:value="${i}">
+                    <button class="btn btn-secondary" type="submit" th:text="${i}"></button>
+                </form>
             </div>
         </div>
     </div>
-    <br>
-
-    <div class="container" th:if="${!addressesWithoutDelivery.isEmpty()}">
-        <h2>Choose from already existing addresses:</h2>
-        <table class="table">
-            <thead>
-            <tr class="table table-success">
-                <th>City</th>
-                <th>District</th>
-                <th>Postal Code</th>
-                <th>Street Name</th>
-            </tr>
-            </thead>
-            <tbody th:each="address : ${addressesWithoutDelivery.getContent()}">
-            <tr>
-                <td th:text="${address.city}"></td>
-                <td th:text="${address.district}"></td>
-                <td th:text="${address.postalCode}"></td>
-                <td th:text="${address.streetName}"></td>
-                <td>
-                    <form method="post" th:action="@{/restaurant/profile/delivery-addresses/add}">
-                        <input th:name="deliveryAddressId" th:value="${address.deliveryAddressId}" type="hidden">
-                        <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
-                        <input th:name="city" th:value="${address.city}" type="hidden">
-                        <input th:name="district" th:value="${address.district}" type="hidden">
-                        <input th:name="postalCode" th:value="${address.postalCode}" type="hidden">
-                        <input th:name="streetName" th:value="${address.streetName}" type="hidden">
-                        <button class="btn btn-info" type="submit">Add</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="row p-2">
-            <div class="d-flex flex-wrap">
-                <div class="me-1 mb-1"
-                     th:each="i: ${#numbers.sequence(0, addressesWithoutDelivery.getTotalPages() - 1)}">
-                    <form method="get" th:action="@{/restaurant/profile/delivery-addresses}">
-                        <input type="hidden" th:name="ca-dir" th:value="${CASortingDirection}">
-                        <input type="hidden" th:name="ca-page" th:value="${CAPage}">
-                        <input type="hidden" th:name="ea-dir" th:value="${EASortingDirection}">
-                        <input type="hidden" th:name="ea-page" th:value="${i}">
-                        <button class="btn btn-secondary" type="submit" th:text="${i}"></button>
-                    </form>
-                </div>
+    <div class="row p-2">
+        <div class="d-flex flex-wrap">
+            <div class="me-1 mb-1">
+                <form method="get" th:action="@{/restaurant/profile/delivery-addresses}">
+                    <input type="hidden" th:name="ca-dir" th:value="${CASortingDirection}">
+                    <input type="hidden" th:name="ca-page" th:value="${CAPage}">
+                    <input type="hidden" th:name="ea-dir" th:value="asc">
+                    <input type="hidden" th:name="ea-page" th:value="${EAPage}">
+                    <button class="btn btn-info" type="submit">A-Z</button>
+                </form>
+            </div>
+            <div class="me-1 mb-1">
+                <form method="get" th:action="@{/restaurant/profile/delivery-addresses}">
+                    <input type="hidden" th:name="ca-dir" th:value="${CASortingDirection}">
+                    <input type="hidden" th:name="ca-page" th:value="${CAPage}">
+                    <input type="hidden" th:name="ea-dir" th:value="desc">
+                    <input type="hidden" th:name="ea-page" th:value="${EAPage}">
+                    <button class="btn btn-info" type="submit">Z-A</button>
+                </form>
             </div>
         </div>
-        <div class="row p-2">
-            <div class="d-flex flex-wrap">
-                <div class="me-1 mb-1">
-                    <form method="get" th:action="@{/restaurant/profile/delivery-addresses}">
-                        <input type="hidden" th:name="ca-dir" th:value="${CASortingDirection}">
-                        <input type="hidden" th:name="ca-page" th:value="${CAPage}">
-                        <input type="hidden" th:name="ea-dir" th:value="asc">
-                        <input type="hidden" th:name="ea-page" th:value="${EAPage}">
-                        <button class="btn btn-info" type="submit">A-Z</button>
-                    </form>
-                </div>
-                <div class="me-1 mb-1">
-                    <form method="get" th:action="@{/restaurant/profile/delivery-addresses}">
-                        <input type="hidden" th:name="ca-dir" th:value="${CASortingDirection}">
-                        <input type="hidden" th:name="ca-page" th:value="${CAPage}">
-                        <input type="hidden" th:name="ea-dir" th:value="desc">
-                        <input type="hidden" th:name="ea-page" th:value="${EAPage}">
-                        <button class="btn btn-info" type="submit">Z-A</button>
-                    </form>
-                </div>
+    </div>
+</div>
+
+<br>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Add new delivery address:</h2>
+        </div>
+    </div>
+    <form method="post" th:action="@{/restaurant/profile/delivery-addresses/add}">
+        <div class="row mt-3">
+            <div class="col">
+                <input class="form-control"
+                       name="country"
+                       th:value="${restaurantAddress.country == null ? '' : restaurantAddress.country}"
+                       type="hidden"/>
             </div>
         </div>
-        <br>
-
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <h2>Add new delivery address:</h2>
-                </div>
-            </div>
-            <form method="post" th:action="@{/restaurant/profile/delivery-addresses/add}">
-                <div class="row mt-3">
-                    <div class="col">
+        <div class="row mt-3">
+            <div class="col">
+                <div class="form-group d-flex align-items-center">
+                    <label class="mb-0 me-2" for="city">City:
                         <input class="form-control"
-                               name="country"
-                               th:value="${restaurantAddress.country == null ? '' : restaurantAddress.country}"
-                               type="hidden"/>
-                    </div>
+                               id="city"
+                               name="city"
+                               th:value="${restaurantAddress.city == null ? '' : restaurantAddress.city}"
+                               type="text"/>
+                    </label>
                 </div>
-                <div class="row mt-3">
-                    <div class="col">
-                        <div class="form-group d-flex align-items-center">
-                            <label class="mb-0 me-2" for="city">City:
-                                <input class="form-control"
-                                       id="city"
-                                       name="city"
-                                       th:value="${restaurantAddress.city == null ? '' : restaurantAddress.city}"
-                                       type="text"/>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group d-flex align-items-center">
-                            <label class="mb-0 me-2" for="district">District:
-                                <input class="form-control"
-                                       id="district"
-                                       name="district"
-                                       type="text"/>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col">
-                        <div class="form-group d-flex align-items-center">
-                            <label class="mb-0 me-2" for="postalCode">Postal Code:
-                                <input class="form-control"
-                                       id="postalCode"
-                                       name="postalCode"
-                                       th:value="${restaurantAddress.postalCode == null ? '' : restaurantAddress.postalCode}"
-                                       type="text"/>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group d-flex align-items-center">
-                            <label class="mb-0 me-2" th:name="streetName">Street Name:
-                                <input class="form-control"
-                                       id="streetName"
-                                       name="streetName"
-                                       th:value="${restaurantAddress.streetName == null ? '' : restaurantAddress.streetName}"
-                                       type="text"/>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col"></div>
-                    <div class="col">
-                        <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
-                        <button class="btn btn-info" type="submit">Add Delivery Address</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <br>
-        <div class="container">
-            <div class="row mt-3">
-                <div class="col-md-4">
-                    <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>
+            </div>
+            <div class="col">
+                <div class="form-group d-flex align-items-center">
+                    <label class="mb-0 me-2" for="district">District:
+                        <input class="form-control"
+                               id="district"
+                               name="district"
+                               type="text"/>
+                    </label>
                 </div>
             </div>
         </div>
+        <div class="row mt-3">
+            <div class="col">
+                <div class="form-group d-flex align-items-center">
+                    <label class="mb-0 me-2" for="postalCode">Postal Code:
+                        <input class="form-control"
+                               id="postalCode"
+                               name="postalCode"
+                               th:value="${restaurantAddress.postalCode == null ? '' : restaurantAddress.postalCode}"
+                               type="text"/>
+                    </label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group d-flex align-items-center">
+                    <label class="mb-0 me-2" th:name="streetName">Street Name:
+                        <input class="form-control"
+                               id="streetName"
+                               name="streetName"
+                               th:value="${restaurantAddress.streetName == null ? '' : restaurantAddress.streetName}"
+                               type="text"/>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col"></div>
+            <div class="col">
+                <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
+                <button class="btn btn-info" type="submit">Add Delivery Address</button>
+            </div>
+        </div>
+    </form>
+</div>
+<br>
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>
+        </div>
+    </div>
+</div>
 </body>
 
 

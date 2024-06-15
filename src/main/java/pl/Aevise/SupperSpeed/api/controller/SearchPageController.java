@@ -50,21 +50,19 @@ public class SearchPageController {
                     Model model,
                     @RequestParam(value = "city") String city,
                     @RequestParam(value = "streetName") String streetName,
-                    @RequestParam(value = "cuisine", required = false) String cuisine
+                    @RequestParam(value = "cuisine", required = false, defaultValue = "All") String cuisine
             ) {
 
         List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
 
-
-
         //to chyba mozna usunac bez zadnych obaw
         List<AddressDTO> addresses = getAddressDTOList();
 
+        List<RestaurantDTO> test = restaurantService.findAllByCityAndStreetNameAndCuisine(city, streetName, cuisine);
 
 
 
-
-        List<RestaurantDTO> restaurants = getRestaurantsByCityDTOList(city);
+        List<RestaurantDTO> restaurants = restaurantService.findAllByCity(city);
 
         List<String> cities = addressService.findDistinctCities();
 
@@ -92,13 +90,6 @@ public class SearchPageController {
                 .toList();
     }
 
-    private List<RestaurantDTO> getRestaurantsByCityDTOList(String city) {
-        List<Restaurant> restaurants = restaurantService.findAllByCity(city);
-
-        return restaurants.stream()
-                .map(restaurantMapper::mapToDTO)
-                .toList();
-    }
 
     private HashMap<String, List<RestaurantDTO>> mapRestaurantsByCuisine(List<RestaurantDTO> restaurants) {
         HashMap<String, List<RestaurantDTO>> restaurantsByCuisine = new HashMap<>();

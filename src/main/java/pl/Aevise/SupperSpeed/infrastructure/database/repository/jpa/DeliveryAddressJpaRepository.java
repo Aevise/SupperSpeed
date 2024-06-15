@@ -18,5 +18,7 @@ public interface DeliveryAddressJpaRepository extends JpaRepository<DeliveryAddr
                                                             @Param("streetName") String streetName);
 
     List<DeliveryAddressEntity> findAllByPostalCodeEquals(String postalCode);
+
+
 }
 

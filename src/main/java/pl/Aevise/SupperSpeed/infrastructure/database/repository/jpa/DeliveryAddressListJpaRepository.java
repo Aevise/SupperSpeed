@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public interface DeliveryAddressListJpaRepository extends JpaRepository<Delivery
 
     @Query("SELECT r.deliveryAddressEntity FROM DeliveryAddressListEntity r WHERE r.restaurantEntity.id = :restaurantId")
     List<DeliveryAddressEntity> getDeliveryAddressesForRestaurant(@Param("restaurantId") Integer restaurantId);
+
+    @Query("SELECT r.restaurantEntity FROM DeliveryAddressListEntity  r WHERE r.deliveryAddressEntity.city = :city AND r.deliveryAddressEntity.streetName = :streetName")
+    List<RestaurantEntity> getAllByDeliveryAddressEntity_CityAndAndDeliveryAddressEntity_StreetName(@Param("city") String city, @Param("streetName") String streetName);
 
 
 }
