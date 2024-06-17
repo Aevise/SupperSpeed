@@ -13,6 +13,7 @@ import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.DishService;
 import pl.Aevise.SupperSpeed.business.ImageHandlingService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
+import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class RestaurantMenuController {
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
 
+    private final SecurityService securityService;
+
     @GetMapping(RESTAURANT_MENU)
     public String getRestaurantMenu
             (
@@ -50,6 +53,7 @@ public class RestaurantMenuController {
         String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
 
         AddressDTO addressDTO = restaurantDTO.getAddress();
+        String userRole = securityService.getUserAuthority();
 
         model.addAttribute("dishesByCategory", dishMap);
         model.addAttribute("restaurantId", restaurantId);
@@ -59,6 +63,7 @@ public class RestaurantMenuController {
         model.addAttribute("restaurantDirectory", restaurantDirectory);
         model.addAttribute("restaurantName", restaurantName);
         model.addAttribute("addressDTO", addressDTO);
+        model.addAttribute("userRole", userRole);
         return "restaurant_menu";
     }
 }

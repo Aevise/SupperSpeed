@@ -15,6 +15,8 @@ import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
+import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -37,8 +39,7 @@ public class OrderProcessingController {
 
     private final OffsetDateTimeMapper offsetDateTimeMapper;
 
-    private final RestaurantService restaurantService;
-    private final RestaurantMapper restaurantMapper;
+    private final SecurityService securityService;
 
     @PostMapping(ORDER_PROCESSING)
     public String getRestaurantMenu
@@ -49,6 +50,10 @@ public class OrderProcessingController {
                     @AuthenticationPrincipal UserDetails userDetails,
                     Model model
             ) {
+
+        if(securityService.getUserAuthority().equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())){
+            return "redirect:/orders";
+        }
 
         Map<Integer, Integer> dishesIdAndQuantities = extractDishIdAndAmount(request.getParameterMap());
         if (!dishesIdAndQuantities.isEmpty()) {
