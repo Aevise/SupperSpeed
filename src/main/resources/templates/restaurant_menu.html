@@ -14,7 +14,7 @@
 
 <body>
 <div class="container" th:if="${dishesByCategory.size() > 0}">
-    <h1>Menu</h1>
+    <h1 style="text-align: center;">Menu:</h1>
     <form action="/supperspeed/orders/submit-order" method="post">
         <table class="table" th:each="category : ${dishesByCategory}">
             <thead>

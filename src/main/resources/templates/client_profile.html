@@ -9,7 +9,7 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             rel="stylesheet"
     >
-    <title th:text="${clientDTO.name} +' profile'"></title>
+    <title th:text="${clientDTO.name} +' profile'" style="text-align: center;"></title>
 </head>
 
 <body>
@@ -17,8 +17,12 @@
 <div class="container">
     <h1 th:text="'Welcome back ' + *{clientDTO.name}"></h1>
     <form method="get" th:action="@{/orders}">
-        <input name="userId" th:value="${clientId}" type="hidden">
-        <button class="btn btn-info" type="submit">View my orders</button>
+        <div class="row mt-3"
+             style="display: flex;
+         justify-content: center;
+         gap: 20px;">
+            <button class="btn btn-info" type="submit">View my orders</button>
+        </div>
     </form>
     <div class="col-md-3">
         <h3>Your current data:</h3>
