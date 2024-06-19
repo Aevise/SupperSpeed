@@ -2,6 +2,8 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
@@ -152,37 +154,42 @@ public class RestaurantService {
         }
     }
 
-    public List<RestaurantDTO> findAllByCityAndStreetNameOnDelivery(String city, String streetName) {
-        List<Restaurant> restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddress(city, streetName);
+    public Page<RestaurantDTO> findAllByCityAndStreetNameOnDelivery(String city, String streetName, PageRequest pageRequest) {
+        Page<Restaurant> restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddress(city, streetName, pageRequest);
         if (!restaurantsDeliveringOnAddress.isEmpty()) {
-            log.info("Returning all [{}] restaurants", restaurantsDeliveringOnAddress.size());
-            return restaurantsDeliveringOnAddress.stream()
-                    .map(restaurantMapper::mapToDTO)
-                    .toList();
+            log.info("Returning [{}]/[{}], page [{}]/[{}] restaurants",
+                    restaurantsDeliveringOnAddress.getNumberOfElements(),
+                    restaurantsDeliveringOnAddress.getTotalElements(),
+                    restaurantsDeliveringOnAddress.getNumber(),
+                    restaurantsDeliveringOnAddress.getTotalPages());
+            return restaurantsDeliveringOnAddress
+                    .map(restaurantMapper::mapToDTO);
         }
         log.info("Restaurants do not deliver to this address: [{}]. [{}]", city, streetName);
-        return List.of();
+        return Page.empty();
     }
 
 
-    public List<RestaurantDTO> findAllByCityAndStreetNameAndCuisineOnDelivery(String city, String streetName, String cuisine) {
-        List<Restaurant> restaurantsDeliveringOnAddress;
+    public Page<RestaurantDTO> findAllByCityAndStreetNameAndCuisineOnDelivery(String city, String streetName, String cuisine, PageRequest pageRequest) {
+        Page<Restaurant> restaurantsDeliveringOnAddress;
         if(cuisine.equalsIgnoreCase("all")){
             log.info("Searching for all restaurants delivering to address [{}], [{}]", city, streetName);
-            restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddress(city, streetName);
+            return findAllByCityAndStreetNameOnDelivery(city, streetName, pageRequest);
         }else {
             log.info("Searching for all restaurants with cuisine [{}], delivering to address [{}], [{}]", cuisine, city, streetName);
-            restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddressByCuisine(city, streetName, cuisine);
+            restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddressByCuisine(city, streetName, cuisine, pageRequest);
+            if(!restaurantsDeliveringOnAddress.isEmpty()){
+                log.info("Found [{}] restaurants, returning [{}] elements, page [{}]/[{}]",
+                        restaurantsDeliveringOnAddress.getTotalElements(),
+                        restaurantsDeliveringOnAddress.getNumberOfElements(),
+                        restaurantsDeliveringOnAddress.getNumber(),
+                        restaurantsDeliveringOnAddress.getTotalPages());
+                return restaurantsDeliveringOnAddress
+                        .map(restaurantMapper::mapToDTO);
+            }
+            log.info("Could not find restaurants delivering to address [{}], [{}]", city, streetName);
+            return Page.empty();
         }
-
-        if(!restaurantsDeliveringOnAddress.isEmpty()){
-            log.info("Found [{}] restaurants", restaurantsDeliveringOnAddress.size());
-            return restaurantsDeliveringOnAddress.stream()
-                    .map(restaurantMapper::mapToDTO)
-                    .toList();
-        }
-        log.info("Could not find restaurants delivering to address [{}], [{}]", city, streetName);
-        return List.of();
     }
 
     public List<RestaurantDTO> filterRestaurantsByCuisine(String cuisine, List<Restaurant> restaurantsDeliveringOnAddress) {
@@ -202,5 +209,10 @@ public class RestaurantService {
         log.info("Found [{}] restaurant with cuisine [{}]",
                 filteredRestaurants.size(), cuisine);
         return filteredRestaurants;
+    }
+
+    //---------------------------------------------------------------------
+    public List<String> findCuisinesByDeliveryAddress_CityAndStreetName(String city, String streetName) {
+        return deliveryAddressService.getCuisineFromRestaurantsDeliveringTo(city, streetName);
     }
 }

@@ -23,7 +23,9 @@ public interface DeliveryAddressListDAO {
 
     List<DeliveryAddress> getAllDeliveryAddressesByRestaurantId(Integer restaurantId);
 
-    List<Restaurant> getAllByCityAndStreetName(String city, String streetName);
+    Page<Restaurant> getAllByCityAndStreetName(String city, String streetName, PageRequest pageRequest);
 
-    List<Restaurant> getAllByCityAndStreetNameByCuisine(String city, String streetName, String cuisine);
+    Page<Restaurant> getAllByCityAndStreetNameByCuisine(String city, String streetName, String cuisine, PageRequest pageRequest);
+
+    List<String> getCuisineFromRestaurantsDeliveringTo(String city, String streetName);
 }

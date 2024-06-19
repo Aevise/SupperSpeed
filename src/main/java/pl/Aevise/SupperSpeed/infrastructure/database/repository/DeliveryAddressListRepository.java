@@ -73,26 +73,33 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     }
 
     @Override
-    public List<Restaurant> getAllByCityAndStreetName(String city, String streetName) {
-        List<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllRestaurantsByCityAndStreetName(city, streetName);
+    public Page<Restaurant> getAllByCityAndStreetName(String city, String streetName, PageRequest pageRequest) {
+        Page<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllRestaurantsByCityAndStreetName(city, streetName, pageRequest);
 
         if(!restaurants.isEmpty()){
-            return restaurants.stream()
-                    .map(restaurantEntityMapper::mapFromEntity)
-                    .toList();
+            return restaurants
+                    .map(restaurantEntityMapper::mapFromEntity);
         }
-        return List.of();
+        return Page.empty();
     }
 
     @Override
-    public List<Restaurant> getAllByCityAndStreetNameByCuisine(String city, String streetName, String cuisine) {
-        List<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllRestaurantsByCityAndStreetNameAndCuisine(city, streetName, cuisine);
+    public Page<Restaurant> getAllByCityAndStreetNameByCuisine(String city, String streetName, String cuisine, PageRequest pageRequest) {
+        Page<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllRestaurantsByCityAndStreetNameAndCuisine(city, streetName, cuisine, pageRequest);
 
         if(!restaurants.isEmpty()){
-            return restaurants.stream()
-                    .map(restaurantEntityMapper::mapFromEntity)
-                    .toList();
+            return restaurants
+                    .map(restaurantEntityMapper::mapFromEntity);
         }
-        return List.of();
+        return Page.empty();
+    }
+
+    @Override
+    public List<String> getCuisineFromRestaurantsDeliveringTo(String city, String streetName) {
+        List<String> cuisines = deliveryAddressListJpaRepository.findCuisinesFromRestaurantsDeliveringTo(city, streetName);
+        if(cuisines.isEmpty()){
+            return List.of();
+        }
+        return cuisines;
     }
 }

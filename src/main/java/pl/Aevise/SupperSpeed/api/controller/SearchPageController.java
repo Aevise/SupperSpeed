@@ -1,12 +1,14 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.controller.utils.PaginationAndSortingUtils;
-import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.CuisineDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
@@ -16,7 +18,6 @@ import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.CuisineService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
-import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
 import java.util.*;
@@ -46,8 +47,10 @@ public class SearchPageController {
                     Model model,
                     @RequestParam(value = "city") String city,
                     @RequestParam(value = "streetName") String streetName,
-                    @RequestParam(value = "cuisine", required = false, defaultValue = "All") String cuisine
-            ) {
+                    @RequestParam(value = "cuisine", required = false, defaultValue = "All") String cuisine,
+                    @RequestParam(value = "currDirection", required = false, defaultValue = "asc") String currDirection,
+                    @RequestParam(value = "currPage", required = false, defaultValue = "0") Integer currPage
+                    ) {
         List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
         String finalCuisine = cuisine;
         if (cuisines.stream().noneMatch(cuisineDTO -> cuisineDTO.getCuisine().equalsIgnoreCase(finalCuisine))) {
@@ -56,42 +59,64 @@ public class SearchPageController {
         List<String> cities = addressService.findDistinctCities();
         String userRole = securityService.getUserAuthority();
 
-        List<RestaurantDTO> allByCityAndStreetNameOnDelivery = restaurantService.findAllByCityAndStreetNameOnDelivery(city, streetName);
-        List<String> cuisinesInArea = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery).keySet()
-                .stream()
-                .sorted(String::compareTo)
-                .toList();
+//        Page<RestaurantDTO> allByCityAndStreetNameOnDelivery = restaurantService.findAllByCityAndStreetNameOnDelivery(city, streetName, buildPageRequestForRestaurant("asc", 0));
+//        List<String> cuisinesInArea = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery).keySet()
+//                .stream()
+//                .sorted(String::compareTo)
+//                .toList();
+//
+//        TreeMap<String, List<RestaurantDTO>> restaurantsByCuisine;
+//        TreeMap<Integer, List<Double>> restaurantsRating;
+//        if(!cuisine.equalsIgnoreCase("all")){
+//            List<RestaurantDTO> filteredRestaurants = restaurantService.filterRestaurantDTOsByCuisine(cuisine, allByCityAndStreetNameOnDelivery);
+//            restaurantsByCuisine = mapRestaurantsByCuisine(filteredRestaurants);
+//            restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(filteredRestaurants);
+//        }else {
+//            restaurantsByCuisine = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery);
+//            restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(allByCityAndStreetNameOnDelivery);
+//        }
 
-        TreeMap<String, List<RestaurantDTO>> restaurantsByCuisine;
-        TreeMap<Integer, List<Double>> restaurantsRating;
-        if(!cuisine.equalsIgnoreCase("all")){
-            List<RestaurantDTO> filteredRestaurants = restaurantService.filterRestaurantDTOsByCuisine(cuisine, allByCityAndStreetNameOnDelivery);
-            restaurantsByCuisine = mapRestaurantsByCuisine(filteredRestaurants);
-            restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(filteredRestaurants);
+
+
+        //-----------------------
+        Page<RestaurantDTO> availableRestaurants;
+        if(cuisine.equalsIgnoreCase("all")){
+            availableRestaurants = restaurantService.findAllByCityAndStreetNameOnDelivery(city,
+                    streetName,
+                    buildPageRequestForRestaurant(currDirection, currPage));
+
         }else {
-            restaurantsByCuisine = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery);
-            restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(allByCityAndStreetNameOnDelivery);
+            availableRestaurants = restaurantService.findAllByCityAndStreetNameAndCuisineOnDelivery(city,
+                    streetName,
+                    cuisine,
+                    buildPageRequestForRestaurant(currDirection, currPage));
         }
 
+        TreeMap<String, List<RestaurantDTO>> restaurantsByCuisine = mapRestaurantsByCuisine(availableRestaurants.toList());
+        TreeMap<Integer, List<Double>> restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(availableRestaurants.toList());
+        List<String> cuisinesInArea = restaurantService.findCuisinesByDeliveryAddress_CityAndStreetName(city, streetName);
+        int numberOfPages = availableRestaurants.getTotalPages();
+
+
+
+        //-----------------------
 
         model.addAttribute("restaurantsByCuisine", restaurantsByCuisine);
-        model.addAttribute("currentCity", city);
         model.addAttribute("distinctCities", cities);
         model.addAttribute("role", userRole);
         model.addAttribute("restaurantRatings", restaurantsRating);
         model.addAttribute("cuisines", cuisines);
-        model.addAttribute("currentCuisine", cuisine);
-        model.addAttribute("streetName", streetName);
         model.addAttribute("cuisinesInCity", cuisinesInArea);
+
+        model.addAttribute("currentCity", city);
+        model.addAttribute("streetName", streetName);
+        model.addAttribute("currentCuisine", cuisine);
+        model.addAttribute("totalNumberOfPages", numberOfPages);
+        model.addAttribute("currentDirection", currDirection);
+        model.addAttribute("currentPage", currPage);
+
+
         return "search_page";
-    }
-
-    private List<AddressDTO> getAddressDTOList() {
-        List<Address> address = addressService.findAll();
-
-        return address.stream()
-                .map(addressMapper::mapToDTO)
-                .toList();
     }
 
 
@@ -105,5 +130,20 @@ public class SearchPageController {
             }
         }
         return restaurantsByCuisine;
+    }
+
+    private PageRequest buildPageRequestForRestaurant(String direction, Integer page) {
+        if (direction.equals(PaginationAndSortingUtils.ASC.getSortingDirection())) {
+            return PageRequest.of(page,
+                    10,
+                    Sort.by("restaurantEntity.cuisine.cuisine")
+                            .and(Sort.by("restaurantEntity.restaurantName"))
+                            .ascending());
+        }
+        return PageRequest.of(page,
+                10,
+                Sort.by("restaurantEntity.cuisine.cuisine")
+                        .and(Sort.by("restaurantEntity.restaurantName"))
+                        .descending());
     }
 }

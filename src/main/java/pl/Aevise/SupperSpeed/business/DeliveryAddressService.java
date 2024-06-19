@@ -144,26 +144,39 @@ public class DeliveryAddressService {
         return List.of();
     }
 
-    public List<Restaurant> getRestaurantsDeliveringOnAddress(String city, String streetName) {
-        List<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetName(city, streetName);
+    public Page<Restaurant> getRestaurantsDeliveringOnAddress(String city, String streetName, PageRequest pageRequest) {
+        Page<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetName(city, streetName, pageRequest);
 
         if(!restaurants.isEmpty()){
-            log.info("Found [{}] restaurants delivering to address [{}], [{}]", restaurants.size(), city, streetName);
+            log.info("Found [{}]/[{}], page [{}]/[{}] restaurants delivering to address [{}], [{}]",
+                    restaurants.getNumberOfElements(),
+                    restaurants.getTotalElements(),
+                    restaurants.getNumber(),
+                    restaurants.getTotalPages(),
+                    city,
+                    streetName);
             return restaurants;
         }
         log.info("Did not found restaurants delivering to address [{}], [{}]", city, streetName);
-        return List.of();
+        return Page.empty();
     }
 
-    public List<Restaurant> getRestaurantsDeliveringOnAddressByCuisine(String city, String streetName, String cuisine) {
-        List<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetNameByCuisine(city, streetName, cuisine);
+    public Page<Restaurant> getRestaurantsDeliveringOnAddressByCuisine(String city, String streetName, String cuisine, PageRequest pageRequest) {
+        Page<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetNameByCuisine(city, streetName, cuisine, pageRequest);
 
         if(!restaurants.isEmpty()){
-            log.info("Found [{}] restaurants delivering to address [{}], [{}]", restaurants.size(), city, streetName);
+            log.info("Found [{}]/[{}], page [{}]/[{}] restaurants with cuisine [{}] delivering to address [{}], [{}]",
+                    restaurants.getNumberOfElements(),
+                    restaurants.getTotalElements(),
+                    restaurants.getNumber(),
+                    restaurants.getTotalPages(),
+                    cuisine,
+                    city,
+                    streetName);
             return restaurants;
         }
         log.info("Did not found restaurants delivering to address [{}], [{}]", city, streetName);
-        return List.of();
+        return Page.empty();
     }
 
     private DeliveryAddressKey buildDeliveryAddressKey(Integer deliveryAddressId, Integer restaurantId) {
@@ -198,5 +211,16 @@ public class DeliveryAddressService {
                 .withCountry(NameBeautifier.handleName(newDeliveryAddress.getCountry()))
                 .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
                 .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
+    }
+
+    //---------------------------------------------------------
+    public List<String> getCuisineFromRestaurantsDeliveringTo(String city, String streetName) {
+        List<String> cuisines = deliveryAddressListDAO.getCuisineFromRestaurantsDeliveringTo(city, streetName);
+        if(!cuisines.isEmpty()){
+            log.info("Found [{}] types of cuisines delivering to address [{}], [{}]", cuisines.size(), city, streetName);
+            return cuisines;
+        }
+        log.info("Restaurants does not deliver to address [{}], [{}]", city, streetName);
+        return List.of();
     }
 }

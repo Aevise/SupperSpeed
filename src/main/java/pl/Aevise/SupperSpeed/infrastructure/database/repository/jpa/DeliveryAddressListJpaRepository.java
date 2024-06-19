@@ -27,10 +27,12 @@ public interface DeliveryAddressListJpaRepository extends JpaRepository<Delivery
     List<DeliveryAddressEntity> getDeliveryAddressesForRestaurant(@Param("restaurantId") Integer restaurantId);
 
     @Query("SELECT r.restaurantEntity FROM DeliveryAddressListEntity  r WHERE r.deliveryAddressEntity.city = :city AND r.deliveryAddressEntity.streetName = :streetName")
-    List<RestaurantEntity> getAllRestaurantsByCityAndStreetName(@Param("city") String city, @Param("streetName") String streetName);
+    Page<RestaurantEntity> getAllRestaurantsByCityAndStreetName(@Param("city") String city, @Param("streetName") String streetName, PageRequest pageRequest);
 
     @Query("SELECT r.restaurantEntity FROM DeliveryAddressListEntity  r WHERE r.deliveryAddressEntity.city = :city AND r.deliveryAddressEntity.streetName = :streetName AND r.restaurantEntity.cuisine.cuisine = :cuisine")
-    List<RestaurantEntity> getAllRestaurantsByCityAndStreetNameAndCuisine(@Param("city") String city, @Param("streetName") String streetName, @Param("cuisine") String cuisine);
+    Page<RestaurantEntity> getAllRestaurantsByCityAndStreetNameAndCuisine(@Param("city") String city, @Param("streetName") String streetName, @Param("cuisine") String cuisine, PageRequest pageRequest);
 
 
+    @Query("SELECT DISTINCT r.restaurantEntity.cuisine.cuisine FROM DeliveryAddressListEntity r WHERE r.deliveryAddressEntity.city = :city AND r.deliveryAddressEntity.streetName = :streetName")
+    List<String> findCuisinesFromRestaurantsDeliveringTo(String city, String streetName);
 }
