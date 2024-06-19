@@ -191,31 +191,6 @@
             </div>
         </div>
     </div>
-    <div class="row p-2">
-        <div class="d-flex flex-wrap">
-            <div class="me-1 mb-1">Sort by food rating:</div>
-            <div class="me-1 mb-1">
-                <form method="get" th:action="@{/search}">
-                    <input type="hidden" th:name="city" th:value="${currentCity}">
-                    <input type="hidden" th:name="streetName" th:value="${streetName}">
-                    <input type="hidden" th:name="cuisine" th:value="${currentCuisine}">
-                    <input type="hidden" th:name="currDirection" th:value="asc">
-                    <input type="hidden" th:name="currPage" th:value="${currentPage}">
-                    <button class="btn btn-info" type="submit">0-5</button>
-                </form>
-            </div>
-            <div class="me-1 mb-1">
-                <form method="get" th:action="@{/search}">
-                    <input type="hidden" th:name="city" th:value="${currentCity}">
-                    <input type="hidden" th:name="streetName" th:value="${streetName}">
-                    <input type="hidden" th:name="cuisine" th:value="${currentCuisine}">
-                    <input type="hidden" th:name="currDirection" th:value="desc">
-                    <input type="hidden" th:name="currPage" th:value="${currentPage}">
-                    <button class="btn btn-info" type="submit">5-0</button>
-                </form>
-            </div>
-        </div>
-    </div>
     <div class="row my-3 py-3">
         <div class="col-md-4">
             <a class="btn btn-info" role="button" th:href="@{/}">Go back</a>
