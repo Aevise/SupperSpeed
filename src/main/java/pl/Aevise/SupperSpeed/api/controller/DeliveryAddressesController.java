@@ -120,14 +120,14 @@ public class DeliveryAddressesController {
     }
 
     private PageRequest buildPageRequestForDeliveryAddressList(String direction, Integer page) {
-        if (direction.equals(PaginationAndSortingUtils.ASC.getSortingDirection())) {
+        if (direction.equalsIgnoreCase(PaginationAndSortingUtils.ASC.getSortingDirection())) {
             return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").ascending());
         }
         return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").descending());
     }
 
     private PageRequest buildPageRequestForDeliveryAddress(String direction, Integer page) {
-        if (direction.equals(PaginationAndSortingUtils.ASC.getSortingDirection())) {
+        if (direction.equalsIgnoreCase(PaginationAndSortingUtils.ASC.getSortingDirection())) {
             return PageRequest.of(page, 10, Sort.by("streetName").ascending());
         }
         return PageRequest.of(page, 10, Sort.by("streetName").descending());

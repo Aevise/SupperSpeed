@@ -2,6 +2,8 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
@@ -200,6 +202,21 @@ public class SupperOrderService {
         }
         log.info("Could not find rated orders for restaurant with id: [{}]", restaurantId);
         return List.of();
+    }
+    public Page<SupperOrderDTO> getRatedOrdersByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
+        Page<SupperOrder> ratedOrdersByRestaurantId = supperOrderDAO.getRatedOrdersByRestaurantId(restaurantId, pageRequest);
+        if (!ratedOrdersByRestaurantId.isEmpty()) {
+            log.info("Found [{}]/[{}], page [{}]/[{}] rated orders for restaurant with id: [{}]",
+                    ratedOrdersByRestaurantId.getNumberOfElements(),
+                    ratedOrdersByRestaurantId.getTotalElements(),
+                    ratedOrdersByRestaurantId.getNumber(),
+                    ratedOrdersByRestaurantId.getTotalPages(),
+                    restaurantId);
+            return ratedOrdersByRestaurantId
+                    .map(supperOrderMapper::mapToDTO);
+        }
+        log.info("Could not find rated orders for restaurant with id: [{}]", restaurantId);
+        return Page.empty();
     }
 
     public TotalRestaurantRatingDTO getRestaurantRating(List<SupperOrderDTO> ratedOrders) {
