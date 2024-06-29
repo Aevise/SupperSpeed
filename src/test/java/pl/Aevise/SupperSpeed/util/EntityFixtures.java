@@ -23,7 +23,8 @@ public class EntityFixtures {
     public final static String POLAND = "Poland";
     public final static Map<String, String> CUISINES = ImmutableMap.of(
             "Italian", "Italian",
-            "Polish", "Polish"
+            "Polish", "Polish",
+            "Spanish", "Spanish"
     );
 
     public static RolesEntity rolesEntity1() {
