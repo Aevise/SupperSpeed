@@ -1,8 +1,10 @@
 package pl.Aevise.SupperSpeed.util;
 
 import lombok.experimental.UtilityClass;
+import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.CuisineEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
@@ -10,6 +12,9 @@ import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @UtilityClass
 public class EntityFixtures {
@@ -18,6 +23,10 @@ public class EntityFixtures {
     public final static String WARSZAWA = "Warszawa";
     public final static String LUBLIN = "Lublin";
     public final static String CHELM = "Chelm";
+    public final static Map<String, String> CUISINES = ImmutableMap.of(
+            "Italian", "Italian",
+            "Polish", "Polish"
+    );
 
     public static RolesEntity rolesEntity1() {
         return RolesEntity.builder()
@@ -190,6 +199,18 @@ public class EntityFixtures {
                 .name("test2")
                 .surname("client2")
                 .phone("+12 345 678 901")
+                .build();
+    }
+
+    public static CuisineEntity cuisineEntity1(){
+        return CuisineEntity.builder()
+                .cuisine(CUISINES.get("Italian"))
+                .build();
+    }
+
+    public static CuisineEntity cuisineEntity2(){
+        return CuisineEntity.builder()
+                .cuisine(CUISINES.get("Polish"))
                 .build();
     }
 }

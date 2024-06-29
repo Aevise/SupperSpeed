@@ -5,7 +5,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "cuisineId")
+@EqualsAndHashCode(of = "cuisine")
 @ToString(of = {"cuisine"})
 @Builder
 @NoArgsConstructor
