@@ -30,14 +30,14 @@ VALUES (3, 'restaurant3', 3, CURRENT_TIME, CURRENT_TIME, 9, true);
 INSERT INTO client(user_id, name, surname, phone, address_id)
 VALUES (4, 'client1', 'client2', '+48 123 456 789', 4);
 
-INSERT INTO dish_category(dish_category_id, restaurant_id, category_name)
-VALUES (1, 3, 'Dania rybne');
-INSERT INTO dish_category(dish_category_id, restaurant_id, category_name)
-VALUES (2, 3, 'Dania mięsne');
-INSERT INTO dish_category(dish_category_id, restaurant_id, category_name)
-VALUES (3, 3, 'Dania wegańskie');
-INSERT INTO dish_category(dish_category_id, restaurant_id, category_name)
-VALUES (4, 2, 'Dania wegańskie');
+INSERT INTO dish_category(restaurant_id, category_name)
+VALUES (3, 'Dania rybne');
+INSERT INTO dish_category(restaurant_id, category_name)
+VALUES (3, 'Dania mięsne');
+INSERT INTO dish_category(restaurant_id, category_name)
+VALUES (3, 'Dania wegańskie');
+INSERT INTO dish_category(restaurant_id, category_name)
+VALUES (2, 'Dania wegańskie');
 
 INSERT INTO dish(dish_id, restaurant_id, dish_category_id, name, description, price, image_id, availability)
 VALUES (1, 3, 1, 'Ryba po grecku', 'Jakas tam rybka po grecku', '12.3', NULL, true);

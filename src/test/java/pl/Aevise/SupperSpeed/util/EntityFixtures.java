@@ -9,8 +9,6 @@ import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @UtilityClass
@@ -27,6 +25,11 @@ public class EntityFixtures {
             "Spanish", "Spanish"
     );
 
+    public final static Map<String, String> DISH_CATEGORY = ImmutableMap.of(
+            "Meat", "Meat",
+            "Vegan", "Vegan"
+    );
+
     public static RolesEntity rolesEntity1() {
         return RolesEntity.builder()
                 .roleId(1)
@@ -41,7 +44,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static AddressEntity addressEntity1(){
+    public static AddressEntity addressEntity1() {
         return AddressEntity.builder()
                 .country(POLAND)
                 .city(WARSZAWA)
@@ -51,7 +54,8 @@ public class EntityFixtures {
                 .localNumber(1)
                 .build();
     }
-    public static AddressEntity addressEntity2(){
+
+    public static AddressEntity addressEntity2() {
         return AddressEntity.builder()
                 .country(POLAND)
                 .city(WARSZAWA)
@@ -61,7 +65,8 @@ public class EntityFixtures {
                 .localNumber(2)
                 .build();
     }
-    public static AddressEntity addressEntity3(){
+
+    public static AddressEntity addressEntity3() {
         return AddressEntity.builder()
                 .country(POLAND)
                 .city(LUBLIN)
@@ -72,7 +77,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static AddressEntity addressEntity4(){
+    public static AddressEntity addressEntity4() {
         return AddressEntity.builder()
                 .country(POLAND)
                 .city(LUBLIN)
@@ -82,7 +87,8 @@ public class EntityFixtures {
                 .localNumber(4)
                 .build();
     }
-    public static AddressEntity addressEntity5(){
+
+    public static AddressEntity addressEntity5() {
         return AddressEntity.builder()
                 .country(POLAND)
                 .city(LUBLIN)
@@ -136,6 +142,7 @@ public class EntityFixtures {
                 .role(rolesEntity1())
                 .build();
     }
+
     public static SupperUserEntity supperUserEntity5() {
         return SupperUserEntity.builder()
                 .email("test5@gmail.com")
@@ -147,7 +154,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static RestaurantEntity restaurantEntity1(){
+    public static RestaurantEntity restaurantEntity1() {
         return RestaurantEntity.builder()
                 .supperUser(supperUserEntity1())
                 .address(addressEntity1())
@@ -158,7 +165,8 @@ public class EntityFixtures {
                 .closeHour(LocalTime.MIDNIGHT)
                 .build();
     }
-    public static RestaurantEntity restaurantEntity2(){
+
+    public static RestaurantEntity restaurantEntity2() {
         return RestaurantEntity.builder()
                 .supperUser(supperUserEntity2())
                 .address(addressEntity2())
@@ -170,7 +178,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static RestaurantEntity restaurantEntity3(){
+    public static RestaurantEntity restaurantEntity3() {
         return RestaurantEntity.builder()
                 .supperUser(supperUserEntity3())
                 .address(addressEntity3())
@@ -182,7 +190,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static ClientEntity clientEntity1(){
+    public static ClientEntity clientEntity1() {
         return ClientEntity.builder()
                 .supperUser(supperUserEntity4())
                 .address(addressEntity4())
@@ -191,7 +199,8 @@ public class EntityFixtures {
                 .phone("+12 345 678 901")
                 .build();
     }
-    public static ClientEntity clientEntity2(){
+
+    public static ClientEntity clientEntity2() {
         return ClientEntity.builder()
                 .supperUser(supperUserEntity5())
                 .address(addressEntity5())
@@ -201,19 +210,19 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static CuisineEntity cuisineEntity1(){
+    public static CuisineEntity cuisineEntity1() {
         return CuisineEntity.builder()
                 .cuisine(CUISINES.get("Italian"))
                 .build();
     }
 
-    public static CuisineEntity cuisineEntity2(){
+    public static CuisineEntity cuisineEntity2() {
         return CuisineEntity.builder()
                 .cuisine(CUISINES.get("Polish"))
                 .build();
     }
 
-    public static DeliveryAddressEntity deliveryAddressEntity1(){
+    public static DeliveryAddressEntity deliveryAddressEntity1() {
         return DeliveryAddressEntity.builder()
                 .country(POLAND)
                 .city(WARSZAWA)
@@ -223,7 +232,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static DeliveryAddressEntity deliveryAddressEntity2(){
+    public static DeliveryAddressEntity deliveryAddressEntity2() {
         return DeliveryAddressEntity.builder()
                 .country(POLAND)
                 .city(LUBLIN)
@@ -233,7 +242,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static DeliveryAddressEntity deliveryAddressEntity3(){
+    public static DeliveryAddressEntity deliveryAddressEntity3() {
         return DeliveryAddressEntity.builder()
                 .country(POLAND)
                 .city(LUBLIN)
