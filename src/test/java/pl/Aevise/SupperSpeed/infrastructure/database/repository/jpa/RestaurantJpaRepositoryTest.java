@@ -10,7 +10,6 @@ import org.springframework.test.context.TestPropertySource;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.util.List;
 import java.util.Optional;
@@ -59,8 +58,8 @@ class RestaurantJpaRepositoryTest {
         Optional<AddressEntity> fetchedAddress2 = restaurantJpaRepository.findAddressByRestaurantId(restaurantEntity2().getId());
         AddressEntity testAddressEntity1 = null, testAddressEntity2 = null;
 
-        if (fetchedAddress1.isPresent())testAddressEntity1 = fetchedAddress1.get();
-        if(fetchedAddress2.isPresent()) testAddressEntity2 = fetchedAddress2.get();
+        if (fetchedAddress1.isPresent()) testAddressEntity1 = fetchedAddress1.get();
+        if (fetchedAddress2.isPresent()) testAddressEntity2 = fetchedAddress2.get();
 
         //then
         assertThat(testAddressEntity1).isNotNull().isEqualTo(addressEntity1());
@@ -92,7 +91,6 @@ class RestaurantJpaRepositoryTest {
         assertThat(restaurantsInPoznan).hasSize(0);
     }
 
-//    Optional<RestaurantEntity> findBySupperUser_Email(String email);
     @Test
     void findBySupperUser_Email() {
         //given
@@ -110,7 +108,7 @@ class RestaurantJpaRepositoryTest {
         RestaurantEntity testRestaurantEntity1 = null, testRestaurantEntity2 = null;
 
         if (fetchedRestaurant1.isPresent()) testRestaurantEntity1 = fetchedRestaurant1.get();
-        if(fetchedRestaurant2.isPresent()) testRestaurantEntity2 = fetchedRestaurant2.get();
+        if (fetchedRestaurant2.isPresent()) testRestaurantEntity2 = fetchedRestaurant2.get();
 
         //then
         assertThat(testRestaurantEntity1).isNotNull().isEqualTo(restaurantEntity1());
