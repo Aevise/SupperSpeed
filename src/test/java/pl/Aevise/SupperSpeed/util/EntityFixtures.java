@@ -2,10 +2,7 @@ package pl.Aevise.SupperSpeed.util;
 
 import lombok.experimental.UtilityClass;
 import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.CuisineEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.*;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
@@ -23,6 +20,7 @@ public class EntityFixtures {
     public final static String WARSZAWA = "Warszawa";
     public final static String LUBLIN = "Lublin";
     public final static String CHELM = "Chelm";
+    public final static String POLAND = "Poland";
     public final static Map<String, String> CUISINES = ImmutableMap.of(
             "Italian", "Italian",
             "Polish", "Polish"
@@ -44,7 +42,7 @@ public class EntityFixtures {
 
     public static AddressEntity addressEntity1(){
         return AddressEntity.builder()
-                .country("Poland")
+                .country(POLAND)
                 .city(WARSZAWA)
                 .postalCode("11-222")
                 .streetName("Jaskrawa")
@@ -54,7 +52,7 @@ public class EntityFixtures {
     }
     public static AddressEntity addressEntity2(){
         return AddressEntity.builder()
-                .country("Poland")
+                .country(POLAND)
                 .city(WARSZAWA)
                 .postalCode("11-222")
                 .streetName("Jaskrawa")
@@ -64,7 +62,7 @@ public class EntityFixtures {
     }
     public static AddressEntity addressEntity3(){
         return AddressEntity.builder()
-                .country("Poland")
+                .country(POLAND)
                 .city(LUBLIN)
                 .postalCode("11-222")
                 .streetName("Jaskrawa")
@@ -75,7 +73,7 @@ public class EntityFixtures {
 
     public static AddressEntity addressEntity4(){
         return AddressEntity.builder()
-                .country("Poland")
+                .country(POLAND)
                 .city(LUBLIN)
                 .postalCode("11-222")
                 .streetName("Jaskrawa")
@@ -85,7 +83,7 @@ public class EntityFixtures {
     }
     public static AddressEntity addressEntity5(){
         return AddressEntity.builder()
-                .country("Poland")
+                .country(POLAND)
                 .city(LUBLIN)
                 .postalCode("11-222")
                 .streetName("Jaskrawa")
@@ -211,6 +209,36 @@ public class EntityFixtures {
     public static CuisineEntity cuisineEntity2(){
         return CuisineEntity.builder()
                 .cuisine(CUISINES.get("Polish"))
+                .build();
+    }
+
+    public static DeliveryAddressEntity deliveryAddressEntity1(){
+        return DeliveryAddressEntity.builder()
+                .country(POLAND)
+                .city(WARSZAWA)
+                .district("district1")
+                .postalCode("11-111")
+                .streetName("street1")
+                .build();
+    }
+
+    public static DeliveryAddressEntity deliveryAddressEntity2(){
+        return DeliveryAddressEntity.builder()
+                .country(POLAND)
+                .city(LUBLIN)
+                .district("district2")
+                .postalCode("22-222")
+                .streetName("street2")
+                .build();
+    }
+
+    public static DeliveryAddressEntity deliveryAddressEntity3(){
+        return DeliveryAddressEntity.builder()
+                .country(POLAND)
+                .city(LUBLIN)
+                .district("district3")
+                .postalCode("22-222")
+                .streetName("street3")
                 .build();
     }
 }
