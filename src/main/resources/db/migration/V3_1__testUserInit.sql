@@ -39,16 +39,16 @@ VALUES (3, 'Dania wegańskie');
 INSERT INTO dish_category(restaurant_id, category_name)
 VALUES (2, 'Dania wegańskie');
 
-INSERT INTO dish(dish_id, restaurant_id, dish_category_id, name, description, price, image_id, availability)
-VALUES (1, 3, 1, 'Ryba po grecku', 'Jakas tam rybka po grecku', '12.3', NULL, true);
-INSERT INTO dish(dish_id, restaurant_id, dish_category_id, name, description, price, image_id, availability)
-VALUES (2, 3, 1, 'Mintaj', 'Jaki jest każdy wie', '10.3', NULL, true);
-INSERT INTO dish(dish_id, restaurant_id, dish_category_id, name, description, price, image_id, availability)
-VALUES (3, 3, 2, 'Jeleń', 'Prosto z drogi', '35.3', NULL, true);
-INSERT INTO dish(dish_id, restaurant_id, dish_category_id, name, description, price, image_id, availability)
-VALUES (4, 3, 2, 'Dzik', 'Ten już nie jest ani dziki ani zły', '45.3', NULL, true);
-INSERT INTO dish(dish_id, restaurant_id, dish_category_id, name, description, price, image_id, availability)
-VALUES (5, 3, 3, 'Trawa', 'Je jom krowa', '1.3', NULL, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
+VALUES (3, 1, 'Ryba po grecku', 'Jakas tam rybka po grecku', '12.3', NULL, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
+VALUES (3, 1, 'Mintaj', 'Jaki jest każdy wie', '10.3', NULL, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
+VALUES (3, 2, 'Jeleń', 'Prosto z drogi', '35.3', NULL, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
+VALUES (3, 2, 'Dzik', 'Ten już nie jest ani dziki ani zły', '45.3', NULL, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
+VALUES (3, 3, 'Trawa', 'Je jom krowa', '1.3', NULL, true);
 
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
 VALUES (1, 3, CURRENT_TIMESTAMP, 1);

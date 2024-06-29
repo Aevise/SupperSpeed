@@ -3,10 +3,12 @@ package pl.Aevise.SupperSpeed.util;
 import lombok.experimental.UtilityClass;
 import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.*;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DishesListKey;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -249,6 +251,49 @@ public class EntityFixtures {
                 .district("district3")
                 .postalCode("22-222")
                 .streetName("street3")
+                .build();
+    }
+
+    public static DishEntity dishEntity1(){
+        return DishEntity.builder()
+                .name("dish_test1")
+                .price(BigDecimal.ONE)
+                .availability(true)
+                .isHidden(false)
+                .build();
+    }
+
+    public static DishEntity dishEntity2(){
+        return DishEntity.builder()
+                .name("dish_test2")
+                .price(BigDecimal.ONE)
+                .availability(true)
+                .isHidden(false)
+                .build();
+    }
+
+    public static SupperOrderEntity buildSupperOrderEntity(RestaurantEntity restaurant){
+        return SupperOrderEntity.builder()
+                .client(ClientEntity.builder()
+                        .id(1)
+                        .build())
+                .restaurant(restaurant)
+                .orderDateTime(OffsetDateTime.now())
+                .status(StatusListEntity.builder()
+                        .statusId(1)
+                        .build())
+                .build();
+    }
+
+    public static DishesListEntity buildDishesListEntity(DishEntity dish, SupperOrderEntity order){
+        return DishesListEntity.builder()
+                .id(DishesListKey.builder()
+                        .dishId(dish.getDishId())
+                        .orderId(order.getOrderId())
+                        .build())
+                .dish(dish)
+                .order(order)
+                .quantity(100)
                 .build();
     }
 }

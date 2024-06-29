@@ -183,8 +183,6 @@ class DeliveryAddressListJpaRepositoryTest {
         assertThat(restaurants4).hasSize(0);
     }
 
-//    @Query("SELECT DISTINCT r.restaurantEntity.cuisine.cuisine FROM DeliveryAddressListEntity r WHERE r.deliveryAddressEntity.city = :city AND r.deliveryAddressEntity.streetName = :streetName")
-//    List<String> findCuisinesFromRestaurantsDeliveringTo(String city, String streetName);
     @Test
     void findCuisinesFromRestaurantsDeliveringTo() {
         //given
