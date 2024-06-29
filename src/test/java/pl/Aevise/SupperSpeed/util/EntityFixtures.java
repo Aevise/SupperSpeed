@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.util;
 
 import lombok.experimental.UtilityClass;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
@@ -16,6 +17,7 @@ public class EntityFixtures {
     private final static String testPassword = "$2a$12$zjYWnQlFwPc0xP.Ls0brs.WFZ/qN/J3Z0.o/M/K7bQRW6SUTLMX42";
     public final static String WARSZAWA = "Warszawa";
     public final static String LUBLIN = "Lublin";
+    public final static String CHELM = "Chelm";
 
     public static RolesEntity rolesEntity1() {
         return RolesEntity.builder()
@@ -31,11 +33,8 @@ public class EntityFixtures {
                 .build();
     }
 
-//    INSERT INTO address(address_id, country, city, postal_code, street_name, building_number)
-//VALUES (1, 'Poland', 'Chelm', '22-100', 'hehe', 1);
     public static AddressEntity addressEntity1(){
         return AddressEntity.builder()
-                .addressId(1)
                 .country("Poland")
                 .city(WARSZAWA)
                 .postalCode("11-222")
@@ -46,7 +45,6 @@ public class EntityFixtures {
     }
     public static AddressEntity addressEntity2(){
         return AddressEntity.builder()
-                .addressId(2)
                 .country("Poland")
                 .city(WARSZAWA)
                 .postalCode("11-222")
@@ -57,7 +55,6 @@ public class EntityFixtures {
     }
     public static AddressEntity addressEntity3(){
         return AddressEntity.builder()
-                .addressId(3)
                 .country("Poland")
                 .city(LUBLIN)
                 .postalCode("11-222")
@@ -67,46 +64,30 @@ public class EntityFixtures {
                 .build();
     }
 
+    public static AddressEntity addressEntity4(){
+        return AddressEntity.builder()
+                .country("Poland")
+                .city(LUBLIN)
+                .postalCode("11-222")
+                .streetName("Jaskrawa")
+                .buildingNumber("4")
+                .localNumber(4)
+                .build();
+    }
+    public static AddressEntity addressEntity5(){
+        return AddressEntity.builder()
+                .country("Poland")
+                .city(LUBLIN)
+                .postalCode("11-222")
+                .streetName("Jaskrawa")
+                .buildingNumber("5")
+                .localNumber(5)
+                .build();
+    }
+
     public static SupperUserEntity supperUserEntity1() {
         return SupperUserEntity.builder()
-                .supperUserId(1)
                 .email("test1@gmail.com")
-                .password(testPassword)
-                .active(true)
-                .creationDateTime(OffsetDateTime.now())
-                .lastLoginDateTime(OffsetDateTime.now())
-                .role(rolesEntity1())
-                .build();
-    }
-
-    public static SupperUserEntity supperUserEntity2() {
-        return SupperUserEntity.builder()
-                .supperUserId(2)
-                .email("test2@gmail.com")
-                .password(testPassword)
-                .active(true)
-                .creationDateTime(OffsetDateTime.now())
-                .lastLoginDateTime(OffsetDateTime.now())
-                .role(rolesEntity1())
-                .build();
-    }
-
-    public static SupperUserEntity supperUserEntity3() {
-        return SupperUserEntity.builder()
-                .supperUserId(3)
-                .email("test3@gmail.com")
-                .password(testPassword)
-                .active(true)
-                .creationDateTime(OffsetDateTime.now())
-                .lastLoginDateTime(OffsetDateTime.now())
-                .role(rolesEntity1())
-                .build();
-    }
-
-    public static SupperUserEntity supperUserEntity4() {
-        return SupperUserEntity.builder()
-                .supperUserId(4)
-                .email("test4@gmail.com")
                 .password(testPassword)
                 .active(true)
                 .creationDateTime(OffsetDateTime.now())
@@ -115,14 +96,54 @@ public class EntityFixtures {
                 .build();
     }
 
-//    INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
-//VALUES (1, 'test1', 1, CURRENT_TIME, CURRENT_TIME, 5, true);
+    public static SupperUserEntity supperUserEntity2() {
+        return SupperUserEntity.builder()
+                .email("test2@gmail.com")
+                .password(testPassword)
+                .active(true)
+                .creationDateTime(OffsetDateTime.now())
+                .lastLoginDateTime(OffsetDateTime.now())
+                .role(rolesEntity2())
+                .build();
+    }
+
+    public static SupperUserEntity supperUserEntity3() {
+        return SupperUserEntity.builder()
+                .email("test3@gmail.com")
+                .password(testPassword)
+                .active(true)
+                .creationDateTime(OffsetDateTime.now())
+                .lastLoginDateTime(OffsetDateTime.now())
+                .role(rolesEntity2())
+                .build();
+    }
+
+    public static SupperUserEntity supperUserEntity4() {
+        return SupperUserEntity.builder()
+                .email("test4@gmail.com")
+                .password(testPassword)
+                .active(true)
+                .creationDateTime(OffsetDateTime.now())
+                .lastLoginDateTime(OffsetDateTime.now())
+                .role(rolesEntity1())
+                .build();
+    }
+    public static SupperUserEntity supperUserEntity5() {
+        return SupperUserEntity.builder()
+                .email("test5@gmail.com")
+                .password(testPassword)
+                .active(true)
+                .creationDateTime(OffsetDateTime.now())
+                .lastLoginDateTime(OffsetDateTime.now())
+                .role(rolesEntity1())
+                .build();
+    }
+
     public static RestaurantEntity restaurantEntity1(){
         return RestaurantEntity.builder()
-                .id(1)
                 .supperUser(supperUserEntity1())
                 .address(addressEntity1())
-                .restaurantName("test1")
+                .restaurantName("restaurant_test_1")
                 .isShown(false)
                 .phone("+48 123 456 789")
                 .openHour(LocalTime.NOON)
@@ -131,10 +152,9 @@ public class EntityFixtures {
     }
     public static RestaurantEntity restaurantEntity2(){
         return RestaurantEntity.builder()
-                .id(2)
                 .supperUser(supperUserEntity2())
                 .address(addressEntity2())
-                .restaurantName("test2")
+                .restaurantName("restaurant_test_2")
                 .isShown(false)
                 .phone("+48 123 456 789")
                 .openHour(LocalTime.NOON)
@@ -144,14 +164,32 @@ public class EntityFixtures {
 
     public static RestaurantEntity restaurantEntity3(){
         return RestaurantEntity.builder()
-                .id(3)
                 .supperUser(supperUserEntity3())
                 .address(addressEntity3())
-                .restaurantName("test3")
+                .restaurantName("restaurant_test_3")
                 .isShown(false)
                 .phone("+48 123 456 789")
                 .openHour(LocalTime.NOON)
                 .closeHour(LocalTime.MIDNIGHT)
+                .build();
+    }
+
+    public static ClientEntity clientEntity1(){
+        return ClientEntity.builder()
+                .supperUser(supperUserEntity4())
+                .address(addressEntity4())
+                .name("test1")
+                .surname("client1")
+                .phone("+12 345 678 901")
+                .build();
+    }
+    public static ClientEntity clientEntity2(){
+        return ClientEntity.builder()
+                .supperUser(supperUserEntity5())
+                .address(addressEntity5())
+                .name("test2")
+                .surname("client2")
+                .phone("+12 345 678 901")
                 .build();
     }
 }

@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "supperUser")
+@EqualsAndHashCode(of = {"restaurantName", "cuisine", "openHour", "closeHour"})
 @ToString(of = {"restaurantName", "cuisine", "openHour", "closeHour"})
 @Builder
 @NoArgsConstructor
