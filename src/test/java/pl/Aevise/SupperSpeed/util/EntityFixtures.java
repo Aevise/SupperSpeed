@@ -14,6 +14,8 @@ import java.time.OffsetDateTime;
 public class EntityFixtures {
 
     private final static String testPassword = "$2a$12$zjYWnQlFwPc0xP.Ls0brs.WFZ/qN/J3Z0.o/M/K7bQRW6SUTLMX42";
+    public final static String WARSZAWA = "Warszawa";
+    public final static String LUBLIN = "Lublin";
 
     public static RolesEntity rolesEntity1() {
         return RolesEntity.builder()
@@ -35,7 +37,7 @@ public class EntityFixtures {
         return AddressEntity.builder()
                 .addressId(1)
                 .country("Poland")
-                .city("Warszawa")
+                .city(WARSZAWA)
                 .postalCode("11-222")
                 .streetName("Jaskrawa")
                 .buildingNumber("1")
@@ -46,7 +48,7 @@ public class EntityFixtures {
         return AddressEntity.builder()
                 .addressId(2)
                 .country("Poland")
-                .city("Lublin")
+                .city(WARSZAWA)
                 .postalCode("11-222")
                 .streetName("Jaskrawa")
                 .buildingNumber("2")
@@ -57,7 +59,7 @@ public class EntityFixtures {
         return AddressEntity.builder()
                 .addressId(3)
                 .country("Poland")
-                .city("Warszawa")
+                .city(LUBLIN)
                 .postalCode("11-222")
                 .streetName("Jaskrawa")
                 .buildingNumber("3")
