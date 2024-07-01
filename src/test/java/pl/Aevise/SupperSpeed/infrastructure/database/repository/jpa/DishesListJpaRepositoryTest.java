@@ -34,12 +34,7 @@ class DishesListJpaRepositoryTest {
     @BeforeEach
     void createDishesAndOrders() {
         //create restaurant
-        restaurantJpaRepository.save(restaurantEntity1());
-        List<RestaurantEntity> all = restaurantJpaRepository.findAll();
-        RestaurantEntity restaurant = all.stream()
-                .filter(r -> r.getRestaurantName().equals(restaurantEntity1().getRestaurantName()))
-                .findFirst()
-                .orElseThrow();
+        RestaurantEntity restaurant = restaurantJpaRepository.save(restaurantEntity1());
 
         //create dishes
         var dishes = List.of(
@@ -49,25 +44,18 @@ class DishesListJpaRepositoryTest {
         for (DishEntity dish : dishes) {
             dish.setRestaurant(restaurant);
         }
-        dishJpaRepository.saveAllAndFlush(dishes);
-        var fetchedDishes = dishJpaRepository.findAll().stream()
-                .filter(d -> d.getName().equals(dishEntity1().getName())
-                        || d.getName().equals(dishEntity2().getName()))
-                .toList();
+        List<DishEntity> savedDishes = dishJpaRepository.saveAllAndFlush(dishes);
 
         //create orders
-        supperOrderJpaRepository.saveAndFlush(buildSupperOrderEntity(restaurant));
-        supperOrderJpaRepository.saveAndFlush(buildSupperOrderEntity(restaurant));
+        SupperOrderEntity order1 = supperOrderJpaRepository.saveAndFlush(buildSupperOrderEntity(restaurant));
+        SupperOrderEntity order2 = supperOrderJpaRepository.saveAndFlush(buildSupperOrderEntity(restaurant));
 
-        var orders = supperOrderJpaRepository.findAll().stream()
-                .filter(o -> o.getRestaurant().getRestaurantName().equals(restaurantEntity1().getRestaurantName()))
-                .toList();
 
         //createDishesList
         var dishesList = List.of(
-                buildDishesListEntity(fetchedDishes.get(0), orders.get(0)),
-                buildDishesListEntity(fetchedDishes.get(0), orders.get(1)),
-                buildDishesListEntity(fetchedDishes.get(1), orders.get(1))
+                buildDishesListEntity(savedDishes.get(0), order1),
+                buildDishesListEntity(savedDishes.get(0), order2),
+                buildDishesListEntity(savedDishes.get(1), order2)
         );
         dishesListJpaRepository.saveAllAndFlush(dishesList);
     }

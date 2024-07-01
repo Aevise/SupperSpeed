@@ -272,6 +272,15 @@ public class EntityFixtures {
                 .build();
     }
 
+    public static DishEntity dishEntity3(){
+        return DishEntity.builder()
+                .name("dish_test3")
+                .price(BigDecimal.ONE)
+                .availability(true)
+                .isHidden(false)
+                .build();
+    }
+
     public static SupperOrderEntity buildSupperOrderEntity(RestaurantEntity restaurant){
         return SupperOrderEntity.builder()
                 .client(ClientEntity.builder()
