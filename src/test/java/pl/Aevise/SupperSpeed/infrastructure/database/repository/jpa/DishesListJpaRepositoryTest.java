@@ -30,11 +30,15 @@ class DishesListJpaRepositoryTest {
     private final DishJpaRepository dishJpaRepository;
     private final SupperOrderJpaRepository supperOrderJpaRepository;
     private final RestaurantJpaRepository restaurantJpaRepository;
+    private final ClientJpaRepository clientJpaRepository;
 
     @BeforeEach
     void createDishesAndOrders() {
         //create restaurant
-        RestaurantEntity restaurant = restaurantJpaRepository.save(restaurantEntity1());
+        RestaurantEntity restaurant = restaurantJpaRepository.saveAndFlush(restaurantEntity1());
+
+        //create client
+        ClientEntity client = clientJpaRepository.saveAndFlush(clientEntity1());
 
         //create dishes
         var dishes = List.of(
@@ -47,8 +51,8 @@ class DishesListJpaRepositoryTest {
         List<DishEntity> savedDishes = dishJpaRepository.saveAllAndFlush(dishes);
 
         //create orders
-        SupperOrderEntity order1 = supperOrderJpaRepository.saveAndFlush(buildSupperOrderEntity(restaurant));
-        SupperOrderEntity order2 = supperOrderJpaRepository.saveAndFlush(buildSupperOrderEntity(restaurant));
+        SupperOrderEntity order1 = supperOrderJpaRepository.saveAndFlush(buildSupperOrderEntity(restaurant, client));
+        SupperOrderEntity order2 = supperOrderJpaRepository.saveAndFlush(buildSupperOrderEntity(restaurant, client));
 
 
         //createDishesList

@@ -77,11 +77,11 @@ class DishJpaRepositoryTest {
         List<DishEntity> dishes2 = dishJpaRepository.findAllByRestaurant_Id(999999999);
 
         //then
-        assertThat(dishes1).doesNotContainNull().hasSize(2).containsExactlyInAnyOrder(dishEntity1(), dishEntity2());
+        assertThat(dishes1).doesNotContainNull().hasSize(3)
+                .containsExactlyInAnyOrder(dishEntity1(), dishEntity2(), dishEntity3());
         assertThat(dishes2).hasSize(0);
     }
 
-    //    List<DishEntity> findAllByDishCategory_DishCategoryId(Integer categoryId);
     @Test
     void checkThatYouCanGetAllDishesBasedOnCategoryId() {
         //given

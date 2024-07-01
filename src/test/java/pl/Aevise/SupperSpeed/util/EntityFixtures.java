@@ -281,12 +281,10 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static SupperOrderEntity buildSupperOrderEntity(RestaurantEntity restaurant){
+    public static SupperOrderEntity buildSupperOrderEntity(RestaurantEntity restaurant, ClientEntity clientEntity){
         return SupperOrderEntity.builder()
-                .client(ClientEntity.builder()
-                        .id(1)
-                        .build())
                 .restaurant(restaurant)
+                .client(clientEntity)
                 .orderDateTime(OffsetDateTime.now())
                 .status(StatusListEntity.builder()
                         .statusId(1)
@@ -303,6 +301,24 @@ public class EntityFixtures {
                 .dish(dish)
                 .order(order)
                 .quantity(100)
+                .build();
+    }
+
+    public static UserRatingEntity buildUserRating1(){
+        return UserRatingEntity.builder()
+                .foodRating(1)
+                .deliveryRating(1)
+                .ratingDateTime(OffsetDateTime.now())
+                .description("test1")
+                .build();
+    }
+
+    public static UserRatingEntity buildUserRating2(){
+        return UserRatingEntity.builder()
+                .foodRating(2)
+                .deliveryRating(2)
+                .ratingDateTime(OffsetDateTime.now())
+                .description("test2")
                 .build();
     }
 }
