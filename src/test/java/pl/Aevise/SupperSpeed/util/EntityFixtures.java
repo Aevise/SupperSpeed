@@ -1,7 +1,6 @@
 package pl.Aevise.SupperSpeed.util;
 
 import lombok.experimental.UtilityClass;
-import org.testcontainers.shaded.com.google.common.collect.ImmutableMap;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.*;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DishesListKey;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.RolesEntity;
@@ -11,26 +10,11 @@ import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
-import java.util.Map;
+
+import static pl.Aevise.SupperSpeed.util.Constants.*;
 
 @UtilityClass
 public class EntityFixtures {
-
-    private final static String testPassword = "$2a$12$zjYWnQlFwPc0xP.Ls0brs.WFZ/qN/J3Z0.o/M/K7bQRW6SUTLMX42";
-    public final static String WARSZAWA = "Warszawa";
-    public final static String LUBLIN = "Lublin";
-    public final static String CHELM = "Chelm";
-    public final static String POLAND = "Poland";
-    public final static Map<String, String> CUISINES = ImmutableMap.of(
-            "Italian", "Italian",
-            "Polish", "Polish",
-            "Spanish", "Spanish"
-    );
-
-    public final static Map<String, String> DISH_CATEGORY = ImmutableMap.of(
-            "Meat", "Meat",
-            "Vegan", "Vegan"
-    );
 
     public static RolesEntity rolesEntity1() {
         return RolesEntity.builder()
@@ -136,7 +120,7 @@ public class EntityFixtures {
 
     public static SupperUserEntity supperUserEntity4() {
         return SupperUserEntity.builder()
-                .email("test4@gmail.com")
+                .email(TEST_CLIENT_EMAIL_1)
                 .password(testPassword)
                 .active(true)
                 .creationDateTime(OffsetDateTime.now())
@@ -254,7 +238,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static DishEntity dishEntity1(){
+    public static DishEntity dishEntity1() {
         return DishEntity.builder()
                 .name("dish_test1")
                 .price(BigDecimal.ONE)
@@ -263,7 +247,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static DishEntity dishEntity2(){
+    public static DishEntity dishEntity2() {
         return DishEntity.builder()
                 .name("dish_test2")
                 .price(BigDecimal.ONE)
@@ -272,7 +256,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static DishEntity dishEntity3(){
+    public static DishEntity dishEntity3() {
         return DishEntity.builder()
                 .name("dish_test3")
                 .price(BigDecimal.ONE)
@@ -281,7 +265,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static SupperOrderEntity buildSupperOrderEntity(RestaurantEntity restaurant, ClientEntity clientEntity){
+    public static SupperOrderEntity buildSupperOrderEntity(RestaurantEntity restaurant, ClientEntity clientEntity) {
         return SupperOrderEntity.builder()
                 .restaurant(restaurant)
                 .client(clientEntity)
@@ -292,7 +276,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static DishesListEntity buildDishesListEntity(DishEntity dish, SupperOrderEntity order){
+    public static DishesListEntity buildDishesListEntity(DishEntity dish, SupperOrderEntity order) {
         return DishesListEntity.builder()
                 .id(DishesListKey.builder()
                         .dishId(dish.getDishId())
@@ -304,7 +288,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static UserRatingEntity buildUserRating1(){
+    public static UserRatingEntity buildUserRating1() {
         return UserRatingEntity.builder()
                 .foodRating(1)
                 .deliveryRating(1)
@@ -313,7 +297,7 @@ public class EntityFixtures {
                 .build();
     }
 
-    public static UserRatingEntity buildUserRating2(){
+    public static UserRatingEntity buildUserRating2() {
         return UserRatingEntity.builder()
                 .foodRating(2)
                 .deliveryRating(2)

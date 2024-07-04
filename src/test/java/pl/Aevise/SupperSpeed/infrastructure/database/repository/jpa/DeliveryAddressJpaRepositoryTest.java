@@ -16,6 +16,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.deliveryAddressEntity1;
 

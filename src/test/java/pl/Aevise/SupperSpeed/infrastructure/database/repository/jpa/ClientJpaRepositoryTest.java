@@ -27,7 +27,6 @@ import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 class ClientJpaRepositoryTest {
 
     private final ClientJpaRepository clientJpaRepository;
-//    Optional<ClientEntity> findBySupperUser_SupperUserId(Integer userId);
     @Test
     void findClientBySupperUserId() {
         //given

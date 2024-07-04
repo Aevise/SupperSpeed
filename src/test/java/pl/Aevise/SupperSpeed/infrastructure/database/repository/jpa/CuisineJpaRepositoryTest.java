@@ -13,6 +13,7 @@ import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestC
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static pl.Aevise.SupperSpeed.util.Constants.CUISINES;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 
 @DataJpaTest
