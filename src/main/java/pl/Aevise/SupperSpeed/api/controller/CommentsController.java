@@ -10,6 +10,8 @@ import pl.Aevise.SupperSpeed.api.dto.UserRatingDTO;
 import pl.Aevise.SupperSpeed.business.RestaurantResponseService;
 import pl.Aevise.SupperSpeed.business.UserRatingService;
 
+import static pl.Aevise.SupperSpeed.api.controller.OrdersBrowseController.*;
+
 @Controller
 @AllArgsConstructor
 public class CommentsController {
@@ -27,7 +29,7 @@ public class CommentsController {
     ) {
         userRatingService.saveNewComment(userRatingDTO, orderId);
 
-        return "redirect:" + OrdersBrowseController.SUPPER_SPEED_ORDERS_BROWSER;
+        return "redirect:" + SUPPER_SPEED_ORDERS_BROWSER;
     }
 
     @PostMapping(ADD_RESPONSE)
@@ -35,10 +37,8 @@ public class CommentsController {
             @ModelAttribute RestaurantResponseDTO restaurantResponseDTO,
             @RequestParam(name = "userRatingId") Integer userRatingId
     ) {
-
         restaurantResponseService.saveRestaurantResponse(restaurantResponseDTO, userRatingId);
 
-
-        return "redirect:" + OrdersBrowseController.SUPPER_SPEED_ORDERS_BROWSER;
+        return "redirect:" + SUPPER_SPEED_ORDERS_BROWSER;
     }
 }

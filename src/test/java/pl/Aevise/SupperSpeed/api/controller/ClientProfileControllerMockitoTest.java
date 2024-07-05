@@ -72,8 +72,4 @@ class ClientProfileControllerMockitoTest {
         assertThat(model.getAttribute("addressDTO")).isEqualTo(addressDTO4());
         assertThat(model.getAttribute("clientId")).isEqualTo(clientDTO1().getId());
     }
-
-    @Test
-    void updateProfile() {
-    }
 }
