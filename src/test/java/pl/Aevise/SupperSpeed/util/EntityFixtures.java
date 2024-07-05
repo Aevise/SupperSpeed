@@ -144,7 +144,7 @@ public class EntityFixtures {
         return RestaurantEntity.builder()
                 .supperUser(supperUserEntity1())
                 .address(addressEntity1())
-                .restaurantName("restaurant_test_1")
+                .restaurantName(TEST_RESTAURANT_EMAIL_1)
                 .isShown(false)
                 .phone("+48 123 456 789")
                 .openHour(LocalTime.NOON)

@@ -1,10 +1,10 @@
 package pl.Aevise.SupperSpeed.util;
 
 import lombok.experimental.UtilityClass;
-import pl.Aevise.SupperSpeed.domain.Address;
-import pl.Aevise.SupperSpeed.domain.Client;
-import pl.Aevise.SupperSpeed.domain.SupperUser;
+import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
+import pl.Aevise.SupperSpeed.domain.*;
 
+import java.time.LocalTime;
 import java.time.OffsetDateTime;
 
 import static pl.Aevise.SupperSpeed.util.Constants.*;
@@ -33,6 +33,12 @@ public class POJOFixtures {
                 .build();
     }
 
+    public static Restaurant restaurant1() {
+        return Restaurant.builder()
+                .restaurantId(1)
+                .build();
+    }
+
     public static Address address4() {
         return Address.builder()
                 .addressId(4)
@@ -44,4 +50,62 @@ public class POJOFixtures {
                 .localNumber(4)
                 .build();
     }
-}
+
+    public static DeliveryAddressList deliveryAddressList1(){
+        return DeliveryAddressList.builder()
+                .restaurantId(restaurant1().getRestaurantId())
+                .deliveryAddress(deliveryAddress1())
+                .build();
+    }
+
+    public static DeliveryAddressList deliveryAddressList2(){
+        return DeliveryAddressList.builder()
+                .restaurantId(restaurant1().getRestaurantId())
+                .deliveryAddress(deliveryAddress2())
+                .build();
+    }
+
+    public static DeliveryAddress deliveryAddress1() {
+        return DeliveryAddress.builder()
+                .deliveryAddressId(1)
+                .country(POLAND)
+                .city(WARSZAWA)
+                .district("Targowek")
+                .postalCode("12-345")
+                .streetName("Test1")
+                .build();
+    }
+
+        public static DeliveryAddress deliveryAddress2(){
+            return DeliveryAddress.builder()
+                    .deliveryAddressId(2)
+                    .country(POLAND)
+                    .city(WARSZAWA)
+                    .district("Targowek")
+                    .postalCode("12-345")
+                    .streetName("Test2")
+                    .build();
+        }
+
+        public static DeliveryAddress deliveryAddress3(){
+            return DeliveryAddress.builder()
+                    .deliveryAddressId(3)
+                    .country(POLAND)
+                    .city(WARSZAWA)
+                    .district("Targowek")
+                    .postalCode("12-345")
+                    .streetName("Test3")
+                    .build();
+        }
+
+        public static DeliveryAddress deliveryAddress4(){
+            return DeliveryAddress.builder()
+                    .deliveryAddressId(4)
+                    .country(POLAND)
+                    .city(WARSZAWA)
+                    .district("Targowek")
+                    .postalCode("12-345")
+                    .streetName("Test4")
+                    .build();
+        }
+    }

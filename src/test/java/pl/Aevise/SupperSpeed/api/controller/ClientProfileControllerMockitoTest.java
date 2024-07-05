@@ -8,7 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.ui.ExtendedModelMap;
 import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
@@ -42,10 +41,8 @@ class ClientProfileControllerMockitoTest {
     @Mock
     private AddressMapper addressMapper;
 
-
     @InjectMocks
     private ClientProfileController clientProfileController;
-
 
     @Test
     @WithMockUser(username = TEST_CLIENT_EMAIL_1, authorities = "CLIENT")

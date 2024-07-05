@@ -61,7 +61,7 @@ public class DeliveryAddressesController {
 
         Page<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
                 .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId,
-                        buildDeliveryAddressFromRestaurantAddress(restaurantAddress),
+                        restaurantAddress.getPostalCode(),
                         buildPageRequestForDeliveryAddress(
                                 exiAdrSortingDirection,
                                 exiAdrPage
@@ -132,5 +132,4 @@ public class DeliveryAddressesController {
         }
         return PageRequest.of(page, 10, Sort.by("streetName").descending());
     }
-
 }

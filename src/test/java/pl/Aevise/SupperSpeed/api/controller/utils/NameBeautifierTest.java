@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier.*;
 
-@TestPropertySource(locations = "classpath:application-test.yml")
 class NameBeautifierTest {
 
     @ParameterizedTest

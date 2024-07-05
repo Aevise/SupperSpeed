@@ -84,15 +84,13 @@ public class DeliveryAddressService {
     }
 
     @Transactional
-    public Page<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddressDTO deliveryAddressDTO, PageRequest pageRequest) {
-        String postalCode = deliveryAddressDTO.getPostalCode();
-
+    public Page<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, String restaurantPostalCode, PageRequest pageRequest) {
         List<DeliveryAddress> addresses = deliveryAddressListDAO.getAllDeliveryAddressesByRestaurantId(restaurantId);
 
-        List<DeliveryAddress> addressesForPostalCode = deliveryAddressDAO.getAllByPostalCode(deliveryAddressDTO.getPostalCode());
+        List<DeliveryAddress> addressesForPostalCode = deliveryAddressDAO.getAllByPostalCode(restaurantPostalCode);
 
         if (addressesForPostalCode.isEmpty()) {
-            log.info("No addresses with postal code: [{}] added", postalCode);
+            log.info("No addresses with postal code: [{}] added", restaurantPostalCode);
             return Page.empty();
         }
         if (addresses.isEmpty()) {
