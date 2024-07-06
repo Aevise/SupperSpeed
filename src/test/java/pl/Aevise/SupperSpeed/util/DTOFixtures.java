@@ -6,8 +6,11 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.TimeZone;
 
 import static pl.Aevise.SupperSpeed.util.Constants.*;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 import static pl.Aevise.SupperSpeed.util.POJOFixtures.client1;
 
 @UtilityClass
@@ -125,6 +128,40 @@ public class DTOFixtures {
                 .amountOfRatedOrders(1)
                 .foodRating(2.0)
                 .deliveryRating(3.0)
+                .build();
+    }
+
+    public static DishDTO dishDTO1(){
+        return DishDTO.builder()
+                .dishId(1)
+                .name(dishEntity1().getName())
+                .price(dishEntity1().getPrice())
+                .availability(dishEntity1().getAvailability())
+                .isHidden(dishEntity1().getIsHidden())
+                .build();
+    }
+    public static StatusListDTO statusListDTO1(){
+        return StatusListDTO.builder()
+                .statusId(1)
+                .description("new")
+                .build();
+    }
+
+    public static SupperOrderDTO supperOrderDTO1(){
+        return SupperOrderDTO.builder()
+                .orderId(1)
+                .orderDateTime(String.valueOf(OffsetDateTime.of(2020, 12, 10, 12, 0, 0, 0, ZoneOffset.ofHours(0))))
+                .clientDTO(clientDTO1())
+                .restaurantDTO(restaurantDTO1())
+                .statusListDTO(statusListDTO1())
+                .build();
+    }
+
+    public static DishListDTO dishListDTO1(){
+        return DishListDTO.builder()
+                .dishDTO(dishDTO1())
+                .supperOrderDTO(supperOrderDTO1())
+                .quantity(1)
                 .build();
     }
 

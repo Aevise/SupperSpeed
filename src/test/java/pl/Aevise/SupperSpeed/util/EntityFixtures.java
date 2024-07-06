@@ -267,6 +267,7 @@ public class EntityFixtures {
 
     public static SupperOrderEntity buildSupperOrderEntity(RestaurantEntity restaurant, ClientEntity clientEntity) {
         return SupperOrderEntity.builder()
+                .orderId(1)
                 .restaurant(restaurant)
                 .client(clientEntity)
                 .orderDateTime(OffsetDateTime.now())

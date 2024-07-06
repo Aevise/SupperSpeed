@@ -87,25 +87,12 @@ public class POJOFixtures {
                     .build();
         }
 
-        public static DeliveryAddress deliveryAddress3(){
-            return DeliveryAddress.builder()
-                    .deliveryAddressId(3)
-                    .country(POLAND)
-                    .city(WARSZAWA)
-                    .district("Targowek")
-                    .postalCode("12-345")
-                    .streetName("Test3")
-                    .build();
-        }
-
-        public static DeliveryAddress deliveryAddress4(){
-            return DeliveryAddress.builder()
-                    .deliveryAddressId(4)
-                    .country(POLAND)
-                    .city(WARSZAWA)
-                    .district("Targowek")
-                    .postalCode("12-345")
-                    .streetName("Test4")
-                    .build();
+        public static SupperOrder supperOrder1(){
+        return SupperOrder.builder()
+                .orderId(1)
+                .client(client1())
+                .restaurant(restaurant1())
+                .orderDateTime(OffsetDateTime.now())
+                .build();
         }
     }

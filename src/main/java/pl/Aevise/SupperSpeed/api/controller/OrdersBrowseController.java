@@ -104,7 +104,6 @@ public class OrdersBrowseController {
     }
 
 
-    //TODO ponizsza funkcja do rozdrobnienia na dwa elementy
     private List<SupperOrderDTO> getOrdersByUserIdAndAuthority(Integer userId, String authority) {
         if (authority.equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())) {
             return supperOrderService
