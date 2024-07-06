@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
-import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.ui.ExtendedModelMap;
 import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
@@ -24,10 +22,10 @@ import pl.Aevise.SupperSpeed.business.RestaurantService;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static pl.Aevise.SupperSpeed.util.Constants.*;
+import static pl.Aevise.SupperSpeed.util.Constants.TEST_RESTAURANT_EMAIL_1;
+import static pl.Aevise.SupperSpeed.util.Constants.testPassword;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
 import static pl.Aevise.SupperSpeed.util.POJOFixtures.deliveryAddressList1;
 import static pl.Aevise.SupperSpeed.util.POJOFixtures.deliveryAddressList2;
@@ -135,6 +133,6 @@ class DeliveryAddressesControllerMockitoTest {
                         PageRequest.of(0, 10, Sort.by("streetName").ascending()),
                         "delivery_addresses",
                         List.of())
-                        );
+        );
     }
 }

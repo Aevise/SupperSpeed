@@ -1,13 +1,11 @@
 package pl.Aevise.SupperSpeed.util;
 
 import lombok.experimental.UtilityClass;
-import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
-import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
-import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
-import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
+import pl.Aevise.SupperSpeed.api.dto.*;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 
 import java.time.LocalTime;
+import java.time.OffsetDateTime;
 
 import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.POJOFixtures.client1;
@@ -98,6 +96,35 @@ public class DTOFixtures {
                 .district("Targowek")
                 .postalCode("12-345")
                 .streetName("Test4")
+                .build();
+    }
+
+    public static CuisineDTO cuisineDTO1(){
+        return CuisineDTO.builder()
+                .cuisine(CUISINES.get("Italian"))
+                .build();
+    }
+    public static CuisineDTO cuisineDTO2(){
+        return CuisineDTO.builder()
+                .cuisine(CUISINES.get("Polish"))
+                .build();
+    }
+
+    public static OpinionDTO opinionDTO1(){
+        return OpinionDTO.builder()
+                .orderId(1)
+                .orderDateTime(OffsetDateTime.now().toString())
+                .clientDTO(clientDTO1())
+                .restaurantDTO(restaurantDTO1())
+                .build();
+    }
+
+    public static TotalRestaurantRatingDTO totalRestaurantRatingDTO1(){
+        return TotalRestaurantRatingDTO.builder()
+                .restaurantId(restaurantDTO1().getRestaurantId())
+                .amountOfRatedOrders(1)
+                .foodRating(2.0)
+                .deliveryRating(3.0)
                 .build();
     }
 
