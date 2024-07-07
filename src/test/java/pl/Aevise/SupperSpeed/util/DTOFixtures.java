@@ -165,4 +165,17 @@ public class DTOFixtures {
                 .build();
     }
 
+    public static DishCategoryDTO dishCategoryDTO1(){
+        return DishCategoryDTO.builder()
+                .dishCategoryId(1)
+                .categoryName("dish category test 1")
+                .build();
+    }
+    public static DishCategoryDTO dishCategoryDTO2(){
+        return DishCategoryDTO.builder()
+                .dishCategoryId(2)
+                .categoryName("dish category test 2")
+                .build();
+    }
+
 }
