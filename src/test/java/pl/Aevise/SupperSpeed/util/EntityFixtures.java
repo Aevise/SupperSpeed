@@ -144,11 +144,11 @@ public class EntityFixtures {
         return RestaurantEntity.builder()
                 .supperUser(supperUserEntity1())
                 .address(addressEntity1())
-                .restaurantName(TEST_RESTAURANT_EMAIL_1)
+                .restaurantName("restaurant_test_1")
                 .isShown(false)
                 .phone("+48 123 456 789")
-                .openHour(LocalTime.NOON)
-                .closeHour(LocalTime.MIDNIGHT)
+                .openHour(LocalTime.MIDNIGHT)
+                .closeHour(LocalTime.NOON)
                 .build();
     }
 
@@ -267,7 +267,6 @@ public class EntityFixtures {
 
     public static SupperOrderEntity buildSupperOrderEntity(RestaurantEntity restaurant, ClientEntity clientEntity) {
         return SupperOrderEntity.builder()
-                .orderId(1)
                 .restaurant(restaurant)
                 .client(clientEntity)
                 .orderDateTime(OffsetDateTime.now())

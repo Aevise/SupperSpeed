@@ -108,7 +108,7 @@ public class CreateAccountController {
         return "redirect:" + CREATE_ACCOUNT_PAGE;
     }
 
-    ClientEntity createClientEntity(
+    private ClientEntity createClientEntity(
             SupperUserDTO supperUserDTO,
             ClientDTO clientDTO,
             String role,
@@ -131,7 +131,7 @@ public class CreateAccountController {
                 .build();
     }
 
-    RestaurantEntity createRestaurantEntity(
+    private RestaurantEntity createRestaurantEntity(
             SupperUserDTO supperUserDTO,
             RestaurantDTO restaurantDTO,
             String role,
@@ -158,11 +158,11 @@ public class CreateAccountController {
                 .build();
     }
 
-    boolean checkIfUserExist(String email) {
+    private boolean checkIfUserExist(String email) {
         return userService.findUserByEmail(email).isPresent();
     }
 
-    RolesEntity getRoleById(Integer roleId) {
+    private RolesEntity getRoleById(Integer roleId) {
         return rolesService
                 .findById(roleId)
                 .orElse(null);

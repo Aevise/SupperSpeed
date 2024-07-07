@@ -3,6 +3,7 @@ package pl.Aevise.SupperSpeed.util;
 import lombok.experimental.UtilityClass;
 import pl.Aevise.SupperSpeed.api.dto.*;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
+import pl.Aevise.SupperSpeed.infrastructure.security.dto.SupperUserDTO;
 
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
@@ -15,6 +16,16 @@ import static pl.Aevise.SupperSpeed.util.POJOFixtures.client1;
 
 @UtilityClass
 public class DTOFixtures {
+
+    public static SupperUserDTO supperUserDTO1(){
+        return SupperUserDTO.builder()
+                .supperUserId(1)
+                .email(TEST_RESTAURANT_EMAIL_1)
+                .active(true)
+                .creationDateTime(OffsetDateTime.of(2020, 10, 10, 10, 0, 0,0, ZoneOffset.UTC))
+                .lastLoginDateTime(OffsetDateTime.of(2020, 10, 10, 10, 0, 0,0, ZoneOffset.UTC))
+                .build();
+    }
 
     public static ClientDTO clientDTO1() {
         return ClientDTO.builder()
@@ -31,9 +42,10 @@ public class DTOFixtures {
                 .userId(1)
                 .restaurantId(1)
                 .restaurantName("restaurant_test_1")
-                .openHour(LocalTime.NOON)
-                .closeHour(LocalTime.MIDNIGHT)
+                .openHour(LocalTime.MIDNIGHT)
+                .closeHour(LocalTime.NOON)
                 .phone("+48 123 456 789")
+                .isShown(true)
                 .address(addressDTO1())
                 .build();
     }

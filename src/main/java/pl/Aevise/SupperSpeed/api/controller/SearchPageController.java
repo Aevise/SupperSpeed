@@ -33,13 +33,10 @@ public class SearchPageController {
     private final SecurityService securityService;
 
     private final CuisineService cuisineService;
-    private final CuisineMapper cuisineMapper;
 
     private final RestaurantService restaurantService;
-    private final RestaurantMapper restaurantMapper;
 
     private final AddressService addressService;
-    private final AddressMapper addressMapper;
 
     private final SupperOrderService supperOrderService;
 
@@ -61,25 +58,6 @@ public class SearchPageController {
         List<String> cities = addressService.findDistinctCities();
         String userRole = securityService.getUserAuthority();
 
-//        Page<RestaurantDTO> allByCityAndStreetNameOnDelivery = restaurantService.findAllByCityAndStreetNameOnDelivery(city, streetName, buildPageRequestForRestaurant("asc", 0));
-//        List<String> cuisinesInArea = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery).keySet()
-//                .stream()
-//                .sorted(String::compareTo)
-//                .toList();
-//
-//        TreeMap<String, List<RestaurantDTO>> restaurantsByCuisine;
-//        TreeMap<Integer, List<Double>> restaurantsRating;
-//        if(!cuisine.equalsIgnoreCase("all")){
-//            List<RestaurantDTO> filteredRestaurants = restaurantService.filterRestaurantDTOsByCuisine(cuisine, allByCityAndStreetNameOnDelivery);
-//            restaurantsByCuisine = mapRestaurantsByCuisine(filteredRestaurants);
-//            restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(filteredRestaurants);
-//        }else {
-//            restaurantsByCuisine = mapRestaurantsByCuisine(allByCityAndStreetNameOnDelivery);
-//            restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(allByCityAndStreetNameOnDelivery);
-//        }
-
-
-        //-----------------------
         Page<RestaurantDTO> availableRestaurants;
         if (cuisine.equalsIgnoreCase("all")) {
             availableRestaurants = restaurantService.findAllByCityAndStreetNameOnDelivery(city,
@@ -98,9 +76,6 @@ public class SearchPageController {
         List<String> cuisinesInArea = restaurantService.findCuisinesByDeliveryAddress_CityAndStreetName(city, streetName);
         int numberOfPages = availableRestaurants.getTotalPages();
 
-
-        //-----------------------
-
         model.addAttribute("restaurantsByCuisine", restaurantsByCuisine);
         model.addAttribute("distinctCities", cities);
         model.addAttribute("role", userRole);
@@ -114,7 +89,6 @@ public class SearchPageController {
         model.addAttribute("totalNumberOfPages", numberOfPages);
         model.addAttribute("currentDirection", currDirection);
         model.addAttribute("currentPage", currPage);
-
 
         return "search_page";
     }

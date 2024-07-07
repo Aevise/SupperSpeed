@@ -94,6 +94,7 @@ class OrderProcessingControllerMockitoTest {
         String restaurantName = restaurantDTO1().getRestaurantName();
         Map<String, String[]> servletResponse = Map.of("amountOfDishWithId_1", new String[]{"1"});
         SupperOrderEntity order = buildSupperOrderEntity(restaurantEntity1(), clientEntity1());
+        order.setOrderId(1);
         Map<Integer, Integer> dishesAndQuantities = Map.of(1,1);
         List<DishListDTO> dishes = List.of(dishListDTO1());
 
