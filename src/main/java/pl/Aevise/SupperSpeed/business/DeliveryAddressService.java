@@ -145,7 +145,7 @@ public class DeliveryAddressService {
     public Page<Restaurant> getRestaurantsDeliveringOnAddress(String city, String streetName, PageRequest pageRequest) {
         Page<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetName(city, streetName, pageRequest);
 
-        if(!restaurants.isEmpty()){
+        if (!restaurants.isEmpty()) {
             log.info("Found [{}]/[{}], page [{}]/[{}] restaurants delivering to address [{}], [{}]",
                     restaurants.getNumberOfElements(),
                     restaurants.getTotalElements(),
@@ -162,7 +162,7 @@ public class DeliveryAddressService {
     public Page<Restaurant> getRestaurantsDeliveringOnAddressByCuisine(String city, String streetName, String cuisine, PageRequest pageRequest) {
         Page<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetNameByCuisine(city, streetName, cuisine, pageRequest);
 
-        if(!restaurants.isEmpty()){
+        if (!restaurants.isEmpty()) {
             log.info("Found [{}]/[{}], page [{}]/[{}] restaurants with cuisine [{}] delivering to address [{}], [{}]",
                     restaurants.getNumberOfElements(),
                     restaurants.getTotalElements(),
@@ -214,7 +214,7 @@ public class DeliveryAddressService {
     //---------------------------------------------------------
     public List<String> getCuisineFromRestaurantsDeliveringTo(String city, String streetName) {
         List<String> cuisines = deliveryAddressListDAO.getCuisineFromRestaurantsDeliveringTo(city, streetName);
-        if(!cuisines.isEmpty()){
+        if (!cuisines.isEmpty()) {
             log.info("Found [{}] types of cuisines delivering to address [{}], [{}]", cuisines.size(), city, streetName);
             return cuisines;
         }

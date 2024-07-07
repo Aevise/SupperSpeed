@@ -42,7 +42,7 @@ class RestaurantMenuEditionControllerMockitoTest {
     RestaurantMenuEditionController restaurantMenuEditionController;
 
     @Test
-    void getRestaurantMenuEdit() {
+    void checkThatYouCanGetRestaurantMenuInEditionMode() {
         //given
         UserDetails userDetails = User.withUsername(TEST_RESTAURANT_EMAIL_1).password(testPassword).authorities("RESTAURANT").build();
         RestaurantDTO restaurantDTO = restaurantDTO1();

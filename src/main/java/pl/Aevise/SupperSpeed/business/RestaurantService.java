@@ -172,13 +172,13 @@ public class RestaurantService {
 
     public Page<RestaurantDTO> findAllByCityAndStreetNameAndCuisineOnDelivery(String city, String streetName, String cuisine, PageRequest pageRequest) {
         Page<Restaurant> restaurantsDeliveringOnAddress;
-        if(cuisine.equalsIgnoreCase("all")){
+        if (cuisine.equalsIgnoreCase("all")) {
             log.info("Searching for all restaurants delivering to address [{}], [{}]", city, streetName);
             return findAllByCityAndStreetNameOnDelivery(city, streetName, pageRequest);
-        }else {
+        } else {
             log.info("Searching for all restaurants with cuisine [{}], delivering to address [{}], [{}]", cuisine, city, streetName);
             restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddressByCuisine(city, streetName, cuisine, pageRequest);
-            if(!restaurantsDeliveringOnAddress.isEmpty()){
+            if (!restaurantsDeliveringOnAddress.isEmpty()) {
                 log.info("Found [{}] restaurants, returning [{}] elements, page [{}]/[{}]",
                         restaurantsDeliveringOnAddress.getTotalElements(),
                         restaurantsDeliveringOnAddress.getNumberOfElements(),

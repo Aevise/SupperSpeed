@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
-import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.DishListService;
-import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
@@ -51,7 +49,7 @@ public class OrderProcessingController {
                     Model model
             ) {
 
-        if(securityService.getUserAuthority().equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())){
+        if (securityService.getUserAuthority().equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())) {
             return "redirect:/orders";
         }
 

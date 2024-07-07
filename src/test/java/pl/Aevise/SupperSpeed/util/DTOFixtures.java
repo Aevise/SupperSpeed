@@ -37,6 +37,13 @@ public class DTOFixtures {
                 .address(addressDTO1())
                 .build();
     }
+
+    public static ImageDTO imageDTO1(){
+        return ImageDTO.builder()
+                .imageURL("testURL1")
+                .build();
+    }
+
     public static AddressDTO addressDTO4() {
         return AddressDTO.builder()
                 .addressId(4)
@@ -51,6 +58,7 @@ public class DTOFixtures {
 
     public static AddressDTO addressDTO1() {
         return AddressDTO.builder()
+                .addressId(1)
                 .country(POLAND)
                 .city(WARSZAWA)
                 .postalCode("11-222")

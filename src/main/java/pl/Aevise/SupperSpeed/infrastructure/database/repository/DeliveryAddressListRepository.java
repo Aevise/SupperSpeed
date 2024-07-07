@@ -76,7 +76,7 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     public Page<Restaurant> getAllByCityAndStreetName(String city, String streetName, PageRequest pageRequest) {
         Page<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllRestaurantsByCityAndStreetName(city, streetName, pageRequest);
 
-        if(!restaurants.isEmpty()){
+        if (!restaurants.isEmpty()) {
             return restaurants
                     .map(restaurantEntityMapper::mapFromEntity);
         }
@@ -87,7 +87,7 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     public Page<Restaurant> getAllByCityAndStreetNameByCuisine(String city, String streetName, String cuisine, PageRequest pageRequest) {
         Page<RestaurantEntity> restaurants = deliveryAddressListJpaRepository.getAllRestaurantsByCityAndStreetNameAndCuisine(city, streetName, cuisine, pageRequest);
 
-        if(!restaurants.isEmpty()){
+        if (!restaurants.isEmpty()) {
             return restaurants
                     .map(restaurantEntityMapper::mapFromEntity);
         }
@@ -97,7 +97,7 @@ public class DeliveryAddressListRepository implements DeliveryAddressListDAO {
     @Override
     public List<String> getCuisineFromRestaurantsDeliveringTo(String city, String streetName) {
         List<String> cuisines = deliveryAddressListJpaRepository.findCuisinesFromRestaurantsDeliveringTo(city, streetName);
-        if(cuisines.isEmpty()){
+        if (cuisines.isEmpty()) {
             return List.of();
         }
         return cuisines;

@@ -23,7 +23,10 @@ import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEnt
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.TreeMap;
 
 @Slf4j
 @Service
@@ -203,6 +206,7 @@ public class SupperOrderService {
         log.info("Could not find rated orders for restaurant with id: [{}]", restaurantId);
         return List.of();
     }
+
     public Page<SupperOrderDTO> getRatedOrdersByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
         Page<SupperOrder> ratedOrdersByRestaurantId = supperOrderDAO.getRatedOrdersByRestaurantId(restaurantId, pageRequest);
         if (!ratedOrdersByRestaurantId.isEmpty()) {

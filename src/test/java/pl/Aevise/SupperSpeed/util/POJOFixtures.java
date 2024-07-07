@@ -39,6 +39,18 @@ public class POJOFixtures {
                 .build();
     }
 
+    public static Address address1() {
+        return Address.builder()
+                .addressId(1)
+                .country(POLAND)
+                .city(WARSZAWA)
+                .postalCode("11-222")
+                .streetName("Jaskrawa")
+                .buildingNumber("1")
+                .localNumber(1)
+                .build();
+    }
+
     public static Address address4() {
         return Address.builder()
                 .addressId(4)

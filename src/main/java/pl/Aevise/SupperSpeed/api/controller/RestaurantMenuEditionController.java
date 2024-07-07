@@ -37,7 +37,7 @@ public class RestaurantMenuEditionController {
 //    static final String ERROR = "error";
 
     private final DishListService dishListService;
-//    private final ProfileService profileService;
+    //    private final ProfileService profileService;
     private final DishCategoryService dishCategoryService;
     private final DishService dishService;
     private final RestaurantService restaurantService;

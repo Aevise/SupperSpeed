@@ -42,14 +42,14 @@ public class CuisineService {
         return list;
     }
 
-    public List<CuisineDTO> findAllSorted(String dir){
+    public List<CuisineDTO> findAllSorted(String dir) {
         List<CuisineDTO> cuisines = new ArrayList<>(findAllAsDTO());
 
-        if(!cuisines.isEmpty()){
-            if(dir.equals(PaginationAndSortingUtils.DESC.getSortingDirection())){
+        if (!cuisines.isEmpty()) {
+            if (dir.equals(PaginationAndSortingUtils.DESC.getSortingDirection())) {
                 log.info("Cuisines sorted in descending direction");
                 cuisines.sort(Comparator.comparing(CuisineDTO::getCuisine).reversed());
-            }else {
+            } else {
                 log.info("Cuisines sorted in ascending direction");
                 cuisines.sort(Comparator.comparing(CuisineDTO::getCuisine));
             }

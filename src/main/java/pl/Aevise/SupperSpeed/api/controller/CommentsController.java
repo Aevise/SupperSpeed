@@ -10,7 +10,7 @@ import pl.Aevise.SupperSpeed.api.dto.UserRatingDTO;
 import pl.Aevise.SupperSpeed.business.RestaurantResponseService;
 import pl.Aevise.SupperSpeed.business.UserRatingService;
 
-import static pl.Aevise.SupperSpeed.api.controller.OrdersBrowseController.*;
+import static pl.Aevise.SupperSpeed.api.controller.OrdersBrowseController.SUPPER_SPEED_ORDERS_BROWSER;
 
 @Controller
 @AllArgsConstructor

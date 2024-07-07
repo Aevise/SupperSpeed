@@ -14,8 +14,6 @@ import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.UserRatingService;
 
-import java.util.List;
-
 @Controller
 @AllArgsConstructor
 public class OpinionController {

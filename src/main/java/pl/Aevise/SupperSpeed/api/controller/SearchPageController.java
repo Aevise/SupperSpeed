@@ -20,7 +20,9 @@ import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
 
 @Controller
 @AllArgsConstructor
@@ -50,7 +52,7 @@ public class SearchPageController {
                     @RequestParam(value = "cuisine", required = false, defaultValue = "All") String cuisine,
                     @RequestParam(value = "currDirection", required = false, defaultValue = "asc") String currDirection,
                     @RequestParam(value = "currPage", required = false, defaultValue = "0") Integer currPage
-                    ) {
+            ) {
         List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
         String finalCuisine = cuisine;
         if (cuisines.stream().noneMatch(cuisineDTO -> cuisineDTO.getCuisine().equalsIgnoreCase(finalCuisine))) {
@@ -77,15 +79,14 @@ public class SearchPageController {
 //        }
 
 
-
         //-----------------------
         Page<RestaurantDTO> availableRestaurants;
-        if(cuisine.equalsIgnoreCase("all")){
+        if (cuisine.equalsIgnoreCase("all")) {
             availableRestaurants = restaurantService.findAllByCityAndStreetNameOnDelivery(city,
                     streetName,
                     buildPageRequestForRestaurant(currDirection, currPage));
 
-        }else {
+        } else {
             availableRestaurants = restaurantService.findAllByCityAndStreetNameAndCuisineOnDelivery(city,
                     streetName,
                     cuisine,
@@ -96,7 +97,6 @@ public class SearchPageController {
         TreeMap<Integer, List<Double>> restaurantsRating = supperOrderService.getRestaurantsRatingBasedOnOrders(availableRestaurants.toList());
         List<String> cuisinesInArea = restaurantService.findCuisinesByDeliveryAddress_CityAndStreetName(city, streetName);
         int numberOfPages = availableRestaurants.getTotalPages();
-
 
 
         //-----------------------
