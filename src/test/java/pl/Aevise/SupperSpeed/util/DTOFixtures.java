@@ -50,6 +50,18 @@ public class DTOFixtures {
                 .build();
     }
 
+    public static RestaurantDTO restaurantDTO2() {
+        return RestaurantDTO.builder()
+                .userId(2)
+                .restaurantId(2)
+                .restaurantName("restaurant_test_2")
+                .openHour(LocalTime.MIDNIGHT)
+                .closeHour(LocalTime.NOON)
+                .phone("+48 123 456 789")
+                .isShown(true)
+                .build();
+    }
+
     public static ImageDTO imageDTO1(){
         return ImageDTO.builder()
                 .imageURL("testURL1")

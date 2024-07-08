@@ -17,9 +17,6 @@ public class DeliveryAddressPageFilter {
             List<DeliveryAddress> addressesWhereRestaurantDelivers,
             PageRequest pageRequest
     ) {
-        /**
-         * Filters page with given predicate and returns new Page with original metadata
-         */
         List<DeliveryAddress> filteredContent = addressesWhereRestaurantDoesNotDeliver.stream()
                 .filter(address -> !addressesWhereRestaurantDelivers.contains(address))
                 .toList();
