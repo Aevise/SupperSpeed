@@ -86,4 +86,14 @@ public class GlobalExceptionHandler {
         return modelView;
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ModelAndView handleException(UserNotFoundException ex){
+        String message = String.format("Error:\n[%s]", ex.getMessage());
+        log.error(message, ex);
+        ModelAndView modelView = new ModelAndView("error");
+        modelView.addObject("errorMessage", message);
+        return modelView;
+    }
+
 }
