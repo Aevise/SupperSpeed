@@ -2,6 +2,8 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
@@ -27,6 +29,8 @@ public class RestaurantService {
     private final RestaurantDAO restaurantDAO;
     private final RestaurantEntityMapper restaurantEntityMapper;
     private final RestaurantMapper restaurantMapper;
+
+    private final DeliveryAddressService deliveryAddressService;
 
 
     @Transactional
@@ -70,10 +74,17 @@ public class RestaurantService {
         return restaurants;
     }
 
-    public List<Restaurant> findAllByCity(String city) {
+    public List<RestaurantDTO> findAllByCity(String city) {
         List<Restaurant> restaurants = restaurantDAO.findAllByCity(city);
-        log.info("Found [{}] restaurants in city [{}]", restaurants.size(), city);
-        return restaurants;
+
+        if (!restaurants.isEmpty()) {
+            log.info("Found [{}] restaurants in city [{}]", restaurants.size(), city);
+            return restaurants.stream()
+                    .map(restaurantMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Could not find any restaurant in city [{}]", city);
+        return List.of();
     }
 
     @Transactional
@@ -141,5 +152,67 @@ public class RestaurantService {
         } else {
             log.warn("Entity could not be detached");
         }
+    }
+
+    public Page<RestaurantDTO> findAllByCityAndStreetNameOnDelivery(String city, String streetName, PageRequest pageRequest) {
+        Page<Restaurant> restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddress(city, streetName, pageRequest);
+        if (!restaurantsDeliveringOnAddress.isEmpty()) {
+            log.info("Returning [{}]/[{}], page [{}]/[{}] restaurants",
+                    restaurantsDeliveringOnAddress.getNumberOfElements(),
+                    restaurantsDeliveringOnAddress.getTotalElements(),
+                    restaurantsDeliveringOnAddress.getNumber(),
+                    restaurantsDeliveringOnAddress.getTotalPages());
+            return restaurantsDeliveringOnAddress
+                    .map(restaurantMapper::mapToDTO);
+        }
+        log.info("Restaurants do not deliver to this address: [{}]. [{}]", city, streetName);
+        return Page.empty();
+    }
+
+
+    public Page<RestaurantDTO> findAllByCityAndStreetNameAndCuisineOnDelivery(String city, String streetName, String cuisine, PageRequest pageRequest) {
+        Page<Restaurant> restaurantsDeliveringOnAddress;
+        if (cuisine.equalsIgnoreCase("all")) {
+            log.info("Searching for all restaurants delivering to address [{}], [{}]", city, streetName);
+            return findAllByCityAndStreetNameOnDelivery(city, streetName, pageRequest);
+        } else {
+            log.info("Searching for all restaurants with cuisine [{}], delivering to address [{}], [{}]", cuisine, city, streetName);
+            restaurantsDeliveringOnAddress = deliveryAddressService.getRestaurantsDeliveringOnAddressByCuisine(city, streetName, cuisine, pageRequest);
+            if (!restaurantsDeliveringOnAddress.isEmpty()) {
+                log.info("Found [{}] restaurants, returning [{}] elements, page [{}]/[{}]",
+                        restaurantsDeliveringOnAddress.getTotalElements(),
+                        restaurantsDeliveringOnAddress.getNumberOfElements(),
+                        restaurantsDeliveringOnAddress.getNumber(),
+                        restaurantsDeliveringOnAddress.getTotalPages());
+                return restaurantsDeliveringOnAddress
+                        .map(restaurantMapper::mapToDTO);
+            }
+            log.info("Could not find restaurants delivering to address [{}], [{}]", city, streetName);
+            return Page.empty();
+        }
+    }
+
+    public List<RestaurantDTO> filterRestaurantsByCuisine(String cuisine, List<Restaurant> restaurantsDeliveringOnAddress) {
+        List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
+                .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
+                .map(restaurantMapper::mapToDTO)
+                .toList();
+        log.info("Found [{}] restaurant with cuisine [{}]",
+                filteredRestaurants.size(), cuisine);
+        return filteredRestaurants;
+    }
+
+    public List<RestaurantDTO> filterRestaurantDTOsByCuisine(String cuisine, List<RestaurantDTO> restaurantsDeliveringOnAddress) {
+        List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
+                .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
+                .toList();
+        log.info("Found [{}] restaurant with cuisine [{}]",
+                filteredRestaurants.size(), cuisine);
+        return filteredRestaurants;
+    }
+
+    //---------------------------------------------------------------------
+    public List<String> findCuisinesByDeliveryAddress_CityAndStreetName(String city, String streetName) {
+        return deliveryAddressService.getCuisineFromRestaurantsDeliveringTo(city, streetName);
     }
 }

@@ -52,7 +52,6 @@ public class UserDeleteController {
             return "redirect:" + CLIENT_LOGOUT;
         }
 
-
         if (grantedAuthorities.contains(AvailableRoles.CLIENT.name())) {
             return "redirect:" + CLIENT_PROFILE;
         }

@@ -18,183 +18,190 @@
     <br>
 </div>
 
-<div class="accordion" id="MyAccordion" th:each="orderSet, orderStat:${orders.entrySet()}">
-    <div class="accordion-item">
-        <h2 class="accordion-header" th:id="'heading' + ${orderSet.getKey().getDescription()}">
-            <button aria-expanded="false" class="accordion-button collapsed" data-bs-parent="#MyAccordion"
-                    data-bs-toggle="collapse" th:aria-controls="'collapse' + ${orderSet.getKey().getDescription()}"
-                    th:data-bs-target="'#collapse' + ${orderSet.getKey().getDescription()}"
-                    th:text="${orderSet.getKey().getDescription()}"
-                    type="button">
-            </button>
-        </h2>
-        <div class="accordion-collapse collapse" data-bs-parent="#Myaccordion"
-             th:id="'collapse' + ${orderSet.getKey().getDescription()}">
-            <div class="accordion-body" th:each="order:${orderSet.getValue()}">
-                <div class="container">
-                    <div class="row">
-                        <div class="col" th:text="'orderID: [' + ${order.getOrderId()} + ']'"></div>
-                        <div class="col" th:text="'order date: [' + ${order.getOrderDateTime()} + ']'"></div>
-                        <div class="col" th:if="${role == 'CLIENT' && order.getStatusListDTO().getStatusId() == 1}">
-                            <form method="post" th:action="@{/orders/pay}">
-                                <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
-                                <button class="btn btn-info" type="submit">Pay for order!</button>
-                            </form>
-                        </div>
-                        <div class="col"
-                             th:if="${role == 'RESTAURANT' && order.getStatusListDTO().getStatusId() > 1 && order.getStatusListDTO().getStatusId() < 5}">
-                            <form method="post" th:action="@{/orders/proceed}">
-                                <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
-                                <button class="btn btn-info" type="submit">Proceed order!</button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col" th:text="'Name: ' + ${order.getClientDTO().getName()}"></div>
-                        <div class="col" th:text="'Surname: ' + ${order.getClientDTO().getSurname()}"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col"
-                             th:text="'Restaurant: ' + ${order.getRestaurantDTO().getRestaurantName()}"></div>
-                    </div>
-                    <div class="container" th:if="${dishesByOrderId.get(order.getOrderId()).size() > 0}">
-                        <hr class="hr"/>
-                        <div class="row"><b>Dishes:</b></div>
+<div class="container">
+    <div class="accordion" id="MyAccordion" th:each="orderSet, orderStat:${orders.entrySet()}">
+        <div class="accordion-item">
+            <h2 class="accordion-header" th:id="'heading' + ${orderSet.getKey().getDescription()}">
+                <button aria-expanded="false" class="accordion-button collapsed" data-bs-parent="#MyAccordion"
+                        data-bs-toggle="collapse" th:aria-controls="'collapse' + ${orderSet.getKey().getDescription()}"
+                        th:data-bs-target="'#collapse' + ${orderSet.getKey().getDescription()}"
+                        th:text="${orderSet.getKey().getDescription()}"
+                        type="button">
+                </button>
+            </h2>
+            <div class="accordion-collapse collapse" data-bs-parent="#Myaccordion"
+                 th:id="'collapse' + ${orderSet.getKey().getDescription()}">
+                <div class="accordion-body" th:each="order:${orderSet.getValue()}">
+                    <div class="container">
                         <div class="row">
-                            <div class="col"><b>Name</b></div>
-                            <div class="col"><b>Quantity</b></div>
-                            <div class="col"><b>Price</b></div>
-                        </div>
-                        <div class="row" th:each="dish:${dishesByOrderId.get(order.getOrderId())}">
-                            <div class="col" th:text="${dish.getDishDTO().getName()}"></div>
-                            <div class="col" th:text="${dish.getQuantity()}"></div>
+                            <div class="col" th:text="'orderID: [' + ${order.getOrderId()} + ']'"></div>
+                            <div class="col" th:text="'order date: [' + ${order.getOrderDateTime()} + ']'"></div>
+                            <div class="col" th:if="${role == 'CLIENT' && order.getStatusListDTO().getStatusId() == 1}">
+                                <form method="post" th:action="@{/orders/pay}">
+                                    <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                                    <button class="btn btn-info" type="submit">Pay for order!</button>
+                                </form>
+                            </div>
                             <div class="col"
-                                 th:text="${dish.getQuantity()} + ' * ' + ${dish.getDishDTO.getPrice()} + ' = ' + ${T(java.math.BigDecimal).valueOf(dish.getQuantity().longValue()).multiply(dish.getDishDTO().getPrice())}"></div>
+                                 th:if="${role == 'RESTAURANT' && order.getStatusListDTO().getStatusId() > 1 && order.getStatusListDTO().getStatusId() < 5}">
+                                <form method="post" th:action="@{/orders/proceed}">
+                                    <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                                    <button class="btn btn-info" type="submit">Proceed order!</button>
+                                </form>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col"></div>
-                            <div class="col"></div>
-                            <div class="col" th:text="'Total: ' + ${ordersTotalPrice.get(order.getOrderId())}"></div>
+                            <div class="col" th:text="'Name: ' + ${order.getClientDTO().getName()}"></div>
+                            <div class="col" th:text="'Surname: ' + ${order.getClientDTO().getSurname()}"></div>
                         </div>
-                    </div>
-                    <div class="col" th:if="${order.getStatusListDTO().getStatusId() <= 2 && role == 'CLIENT'}">
-                        <form method="post" th:action="@{/orders/cancel}">
-                            <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
-                            <input th:name="statusId" th:value="${order.getStatusListDTO().getStatusId()}"
-                                   type="hidden"/>
-                            <button class="btn btn-danger" type="submit">Cancel order!</button>
-                        </form>
-                    </div>
-                    <div class="col" th:if="${order.getStatusListDTO().getStatusId() < 5 && role == 'RESTAURANT'}">
-                        <form method="post" th:action="@{/orders/cancel}">
-                            <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
-                            <input th:name="statusId" th:value="${order.getStatusListDTO().getStatusId()}"
-                                   type="hidden"/>
-                            <button class="btn btn-danger" type="submit">Cancel order!</button>
-                        </form>
-                    </div>
-                    <div class="container"
-                         th:if="${order.getStatusListDTO().getStatusId() == 5 && role == 'CLIENT' && order.getUserRatingDTO() == null}">
-                        <hr class="hr"/>
-                        <div class="row"><b>Rate the order!:</b></div>
                         <div class="row">
-
-                            <div class="col">
-                                <div class="row">Food rating:</div>
-                            </div>
-                            <div class="col">
-                                <div class="row">Delivery rating:</div>
-                            </div>
-                            <div class="col">
-                                <div class="row">Comment:</div>
-                            </div>
+                            <div class="col"
+                                 th:text="'Restaurant: ' + ${order.getRestaurantDTO().getRestaurantName()}"></div>
                         </div>
-                        <form method="post" th:action="@{/orders/comment/add}">
+                        <div class="container" th:if="${dishesByOrderId.get(order.getOrderId()).size() > 0}">
+                            <hr class="hr"/>
+                            <div class="row"><b>Dishes:</b></div>
                             <div class="row">
-                                <div class="col">
-                                    <label>
-                                        <input max="5" min="1" oninput="this.nextElementSibling.value = this.value"
-                                               th:name="foodRating" type="range"
-                                               value="1"/>
-                                        <output>1</output>
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label>
-                                        <input max="5" min="1" oninput="this.nextElementSibling.value = this.value"
-                                               th:name="deliveryRating" type="range"
-                                               value="1"/>
-                                        <output>1</output>
-                                    </label>
-                                </div>
-                                <div class="col">
-                                    <label>
-                                        <input style="width: 100%; height: 40px; font-size: 12px; padding: 8px;"
-                                               th:name="description"
-                                               type="text"/>
-                                    </label>
-                                </div>
+                                <div class="col"><b>Name</b></div>
+                                <div class="col"><b>Quantity</b></div>
+                                <div class="col"><b>Price</b></div>
                             </div>
-                            <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                            <div class="row" th:each="dish:${dishesByOrderId.get(order.getOrderId())}">
+                                <div class="col" th:text="${dish.getDishDTO().getName()}"></div>
+                                <div class="col" th:text="${dish.getQuantity()}"></div>
+                                <div class="col"
+                                     th:text="${dish.getQuantity()} + ' * ' + ${dish.getDishDTO.getPrice()} + ' = ' + ${T(java.math.BigDecimal).valueOf(dish.getQuantity().longValue()).multiply(dish.getDishDTO().getPrice())}"></div>
+                            </div>
                             <div class="row">
                                 <div class="col"></div>
-                                <div class="col">
-                                    <button class="btn btn-info" type="submit">Submit comment!</button>
-                                </div>
+                                <div class="col"></div>
+                                <div class="col"
+                                     th:text="'Total: ' + ${ordersTotalPrice.get(order.getOrderId())}"></div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="container"
-                         th:if="${order.getStatusListDTO().getStatusId() == 5 && order.getUserRatingDTO() != null}">
-                        <hr class="hr"/>
-                        <div class="row">
-                            <div class="col"><b>User Rating:</b></div>
                         </div>
-                        <div class="row">
-                            <div class="col"
-                                 th:text="'Rating date: ' + ${order.getUserRatingDTO().getRatingDateTime()}"></div>
+                        <div class="col" th:if="${order.getStatusListDTO().getStatusId() <= 2 && role == 'CLIENT'}">
+                            <form method="post" th:action="@{/orders/cancel}">
+                                <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                                <input th:name="statusId" th:value="${order.getStatusListDTO().getStatusId()}"
+                                       type="hidden"/>
+                                <input th:name="orderDate" th:value="${order.getOrderDateTime()}" type="hidden">
+                                <button class="btn btn-danger" type="submit">Cancel order!</button>
+                            </form>
                         </div>
-                        <div class="row">
-                            <div class="col"
-                                 th:text="'Food Rating: '+ ${order.getUserRatingDTO().getFoodRating()}"></div>
-                            <div class="col"
-                                 th:text="'Delivery Rating: '+ ${order.getUserRatingDTO().getDeliveryRating()}"></div>
-                            <div class="col" th:text="'Comment: '+ ${order.getUserRatingDTO().getDescription()}"></div>
+                        <div class="col" th:if="${order.getStatusListDTO().getStatusId() < 5 && role == 'RESTAURANT'}">
+                            <form method="post" th:action="@{/orders/cancel}">
+                                <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                                <input th:name="statusId" th:value="${order.getStatusListDTO().getStatusId()}"
+                                       type="hidden"/>
+                                <input th:name="orderDate" th:value="${order.getOrderDateTime()}" type="hidden">
+                                <button class="btn btn-danger" type="submit">Cancel order!</button>
+                            </form>
                         </div>
                         <div class="container"
-                             th:if="${role == 'RESTAURANT' && order.getUserRatingDTO().getRestaurantResponseDTO() == null}">
+                             th:if="${order.getStatusListDTO().getStatusId() == 5 && role == 'CLIENT' && order.getUserRatingDTO() == null}">
                             <hr class="hr"/>
-                            <form method="post" th:action="@{/orders/comment/respond}">
+                            <div class="row"><b>Rate the order!:</b></div>
+                            <div class="row">
+
                                 <div class="col">
-                                    <label>
-                                        Write your response:
-                                        <input th:name="description" type="text"/>
-                                    </label>
+                                    <div class="row">Food rating:</div>
                                 </div>
-                                <input th:name="userRatingId" th:value="${order.getUserRatingDTO().getUserRatingId()}"
-                                       type="hidden"/>
                                 <div class="col">
-                                    <button class="btn btn-info" type="submit">Submit response!</button>
+                                    <div class="row">Delivery rating:</div>
+                                </div>
+                                <div class="col">
+                                    <div class="row">Comment:</div>
+                                </div>
+                            </div>
+                            <form method="post" th:action="@{/orders/comment/add}">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>
+                                            <input max="5" min="1" oninput="this.nextElementSibling.value = this.value"
+                                                   th:name="foodRating" type="range"
+                                                   value="1"/>
+                                            <output>1</output>
+                                        </label>
+                                    </div>
+                                    <div class="col">
+                                        <label>
+                                            <input max="5" min="1" oninput="this.nextElementSibling.value = this.value"
+                                                   th:name="deliveryRating" type="range"
+                                                   value="1"/>
+                                            <output>1</output>
+                                        </label>
+                                    </div>
+                                    <div class="col">
+                                        <label>
+                                            <input style="width: 100%; height: 40px; font-size: 12px; padding: 8px;"
+                                                   th:name="description"
+                                                   type="text"/>
+                                        </label>
+                                    </div>
+                                </div>
+                                <input th:name="orderId" th:value="${order.getOrderId()}" type="hidden"/>
+                                <div class="row">
+                                    <div class="col"></div>
+                                    <div class="col">
+                                        <button class="btn btn-info" type="submit">Submit comment!</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                         <div class="container"
-                             th:if="${order.getUserRatingDTO().getRestaurantResponseDTO() != null}">
+                             th:if="${order.getStatusListDTO().getStatusId() == 5 && order.getUserRatingDTO() != null}">
                             <hr class="hr"/>
-                            <div class="row"><b>Restaurant Response:</b></div>
                             <div class="row">
-                                <div class="col">Response time:</div>
-                                <div class="col">Response:</div>
+                                <div class="col"><b>User Rating:</b></div>
                             </div>
                             <div class="row">
                                 <div class="col"
-                                     th:text="${order.getUserRatingDTO().getRestaurantResponseDTO().getResponseDateTime()}"></div>
+                                     th:text="'Rating date: ' + ${order.getUserRatingDTO().getRatingDateTime()}"></div>
+                            </div>
+                            <div class="row">
                                 <div class="col"
-                                     th:text="${order.getUserRatingDTO().getRestaurantResponseDTO().getDescription()}"></div>
+                                     th:text="'Food Rating: '+ ${order.getUserRatingDTO().getFoodRating()}"></div>
+                                <div class="col"
+                                     th:text="'Delivery Rating: '+ ${order.getUserRatingDTO().getDeliveryRating()}"></div>
+                                <div class="col"
+                                     th:text="'Comment: '+ ${order.getUserRatingDTO().getDescription()}"></div>
+                            </div>
+                            <div class="container"
+                                 th:if="${role == 'RESTAURANT' && order.getUserRatingDTO().getRestaurantResponseDTO() == null}">
+                                <hr class="hr"/>
+                                <form method="post" th:action="@{/orders/comment/respond}">
+                                    <div class="col">
+                                        <label>
+                                            Write your response:
+                                            <input th:name="description" type="text"/>
+                                        </label>
+                                    </div>
+                                    <input th:name="userRatingId"
+                                           th:value="${order.getUserRatingDTO().getUserRatingId()}"
+                                           type="hidden"/>
+                                    <div class="col">
+                                        <button class="btn btn-info" type="submit">Submit response!</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="container"
+                                 th:if="${order.getUserRatingDTO().getRestaurantResponseDTO() != null}">
+                                <hr class="hr"/>
+                                <div class="row"><b>Restaurant Response:</b></div>
+                                <div class="row">
+                                    <div class="col">Response time:</div>
+                                    <div class="col">Response:</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col"
+                                         th:text="${order.getUserRatingDTO().getRestaurantResponseDTO().getResponseDateTime()}"></div>
+                                    <div class="col"
+                                         th:text="${order.getUserRatingDTO().getRestaurantResponseDTO().getDescription()}"></div>
+                                </div>
                             </div>
                         </div>
+                        <hr style="height: 5px; background-color: green; border: none;"/>
                     </div>
-                    <hr style="height: 5px; background-color: green; border: none;"/>
                 </div>
             </div>
         </div>
@@ -202,12 +209,14 @@
 </div>
 
 <br>
-<div th:switch="${role}">
-    <div th:case="'RESTAURANT'">
-        <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>
-    </div>
-    <div th:case="'CLIENT'">
-        <a class="btn btn-info" role="button" th:href="@{/client/profile}">Go back</a>
+<div class="container">
+    <div th:switch="${role}">
+        <div th:case="'RESTAURANT'">
+            <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>
+        </div>
+        <div th:case="'CLIENT'">
+            <a class="btn btn-info" role="button" th:href="@{/client/profile}">Go back</a>
+        </div>
     </div>
 </div>
 

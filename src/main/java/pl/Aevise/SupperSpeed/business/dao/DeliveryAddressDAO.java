@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.business.dao;
 
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface DeliveryAddressDAO {
@@ -12,5 +13,7 @@ public interface DeliveryAddressDAO {
     Optional<DeliveryAddress> checkIfDeliveryAddressExist(DeliveryAddress deliveryAddress);
 
     DeliveryAddress saveNewDeliveryAddress(DeliveryAddress newDeliveryAddress);
+
+    List<DeliveryAddress> getAllByPostalCode(String postalCode);
 
 }

@@ -17,7 +17,7 @@
 <div class="container">
     <div class="row">
         <div class="col text-center font-weight-bold display-4"
-             th:text="'Opinions about ' + *{restaurant.restaurantName}"></div>
+             th:text="'Opinions about ' + *{restaurant.restaurantName} + ':'"></div>
         <hr class="hr"/>
     </div>
     <div class="container">
@@ -91,12 +91,46 @@
             </div>
         </div>
     </div>
+    <div class="row p-2">
+        <div class="d-flex flex-wrap">
+            <div class="me-1 mb-1"
+                 th:each="i: ${#numbers.sequence(0, totalNumberOfPages - 1)}">
+                <form method="get" th:action="@{/opinion}">
+                    <input type="hidden" th:name="restaurantId" th:value="${restaurant.restaurantId}">
+                    <input type="hidden" th:name="currDir" th:value="${currDir}">
+                    <input type="hidden" th:name="currPage" th:value="${i}">
+                    <button class="btn btn-secondary" type="submit" th:text="${i}"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row p-2">
+        <div class="d-flex flex-wrap">
+            <div class="me-1 mb-1">Sort by order date:</div>
+            <div class="me-1 mb-1">
+                <form method="get" th:action="@{/opinion}">
+                    <input type="hidden" th:name="restaurantId" th:value="${restaurant.restaurantId}">
+                    <input type="hidden" th:name="dir" th:value="asc">
+                    <input type="hidden" th:name="page" th:value="${currPage}">
+                    <button class="btn btn-info" type="submit">Ascending</button>
+                </form>
+            </div>
+            <div class="me-1 mb-1">
+                <form method="get" th:action="@{/opinion}">
+                    <input type="hidden" th:name="restaurantId" th:value="${restaurant.restaurantId}">
+                    <input type="hidden" th:name="dir" th:value="desc">
+                    <input type="hidden" th:name="page" th:value="${currPage}">
+                    <button class="btn btn-info" type="submit">Descending</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="container">
     <div class="row mt-3">
         <div class="col-md-4">
-            <a class="btn btn-info" role="button" th:href="@{/}">Go back</a>
+            <a class="btn btn-info" role="button" onclick="history.back()">Go back</a>
         </div>
     </div>
 </div>

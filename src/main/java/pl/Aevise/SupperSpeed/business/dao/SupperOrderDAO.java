@@ -1,5 +1,7 @@
 package pl.Aevise.SupperSpeed.business.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 
@@ -26,6 +28,7 @@ public interface SupperOrderDAO {
 
     void saveOrder(SupperOrderEntity supperOrderEntity);
 
-    List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId);
+    Page<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId, PageRequest pageRequest);
 
+    List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId);
 }

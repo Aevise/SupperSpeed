@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.NameBeautifier;
@@ -12,8 +11,10 @@ import pl.Aevise.SupperSpeed.api.dto.DeliveryAddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DeliveryAddressMapper;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressDAO;
 import pl.Aevise.SupperSpeed.business.dao.DeliveryAddressListDAO;
+import pl.Aevise.SupperSpeed.business.utils.DeliveryAddressPageFilter;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddress;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
+import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -35,7 +36,7 @@ public class DeliveryAddressService {
 
     @Transactional
     public Page<DeliveryAddressList> getAllDeliveryAddressesByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
-        Page<DeliveryAddressList> deliveryAddressLists = deliveryAddressListDAO.getAllByRestaurantId(restaurantId, pageRequest);
+        Page<DeliveryAddressList> deliveryAddressLists = deliveryAddressListDAO.getAllDeliveryAddressesByRestaurantId(restaurantId, pageRequest);
         if (!deliveryAddressLists.isEmpty()) {
             log.info("Successfully fetched page: [{}]/[{}]", deliveryAddressLists.getNumber() + 1, deliveryAddressLists.getTotalPages());
             return deliveryAddressLists;
@@ -83,22 +84,36 @@ public class DeliveryAddressService {
     }
 
     @Transactional
-    public List<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, DeliveryAddressDTO deliveryAddressDTO) {
-        String postalCode = deliveryAddressDTO.getPostalCode();
+    public Page<DeliveryAddressDTO> getAddressesWithoutDeliveryBasedOnPostalCode(Integer restaurantId, String restaurantPostalCode, PageRequest pageRequest) {
+        List<DeliveryAddress> addresses = deliveryAddressListDAO.getAllDeliveryAddressesByRestaurantId(restaurantId);
 
-        List<DeliveryAddress> addresses = deliveryAddressListDAO.getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId, deliveryAddressMapper.mapFromDTO(deliveryAddressDTO));
-        if (!addresses.isEmpty()) {
-            log.info("Found [{}] addresses where restaurant [{}] does not deliver for postal code [{}]",
-                    addresses.size(),
-                    restaurantId,
-                    postalCode);
+        List<DeliveryAddress> addressesForPostalCode = deliveryAddressDAO.getAllByPostalCode(restaurantPostalCode);
 
-            return addresses.stream()
-                    .map(deliveryAddressMapper::mapToDTO)
-                    .toList();
+        if (addressesForPostalCode.isEmpty()) {
+            log.info("No addresses with postal code: [{}] added", restaurantPostalCode);
+            return Page.empty();
         }
-        log.info("Restaurant delivers to all addresses with postal code: [{}]", postalCode);
-        return List.of();
+        if (addresses.isEmpty()) {
+            log.info("Restaurant can deliver to [{}] more places nearby", addressesForPostalCode.size());
+            return DeliveryAddressPageFilter.convertListToPage(addressesForPostalCode, pageRequest)
+                    .map(deliveryAddressMapper::mapToDTO);
+        }
+
+        Page<DeliveryAddress> filteredList = DeliveryAddressPageFilter
+                .filterAddressesNotInRestaurantDeliveryList(
+                        addressesForPostalCode,
+                        addresses,
+                        pageRequest
+                );
+
+        if (filteredList.isEmpty()) {
+            log.info("All [{}] addresses has been added", addressesForPostalCode.size());
+            return Page.empty();
+        } else {
+            log.info("[{}] More addresses can be added to delivery list", filteredList.getNumberOfElements());
+            return filteredList
+                    .map(deliveryAddressMapper::mapToDTO);
+        }
     }
 
     private boolean checkIfRelationAlreadyExist(Integer restaurantId, DeliveryAddress deliveryAddress) {
@@ -127,12 +142,48 @@ public class DeliveryAddressService {
         return List.of();
     }
 
+    public Page<Restaurant> getRestaurantsDeliveringOnAddress(String city, String streetName, PageRequest pageRequest) {
+        Page<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetName(city, streetName, pageRequest);
+
+        if (!restaurants.isEmpty()) {
+            log.info("Found [{}]/[{}], page [{}]/[{}] restaurants delivering to address [{}], [{}]",
+                    restaurants.getNumberOfElements(),
+                    restaurants.getTotalElements(),
+                    restaurants.getNumber(),
+                    restaurants.getTotalPages(),
+                    city,
+                    streetName);
+            return restaurants;
+        }
+        log.info("Did not found restaurants delivering to address [{}], [{}]", city, streetName);
+        return Page.empty();
+    }
+
+    public Page<Restaurant> getRestaurantsDeliveringOnAddressByCuisine(String city, String streetName, String cuisine, PageRequest pageRequest) {
+        Page<Restaurant> restaurants = deliveryAddressListDAO.getAllByCityAndStreetNameByCuisine(city, streetName, cuisine, pageRequest);
+
+        if (!restaurants.isEmpty()) {
+            log.info("Found [{}]/[{}], page [{}]/[{}] restaurants with cuisine [{}] delivering to address [{}], [{}]",
+                    restaurants.getNumberOfElements(),
+                    restaurants.getTotalElements(),
+                    restaurants.getNumber(),
+                    restaurants.getTotalPages(),
+                    cuisine,
+                    city,
+                    streetName);
+            return restaurants;
+        }
+        log.info("Did not found restaurants delivering to address [{}], [{}]", city, streetName);
+        return Page.empty();
+    }
+
     private DeliveryAddressKey buildDeliveryAddressKey(Integer deliveryAddressId, Integer restaurantId) {
         return DeliveryAddressKey.builder()
                 .deliveryAddressId(deliveryAddressId)
                 .restaurantId(restaurantId)
                 .build();
     }
+
 
     private DeliveryAddressListEntity buildDeliveryAddressListEntity(Integer deliveryAddressId, Integer restaurantId) {
         return DeliveryAddressListEntity.builder()
@@ -158,5 +209,16 @@ public class DeliveryAddressService {
                 .withCountry(NameBeautifier.handleName(newDeliveryAddress.getCountry()))
                 .withStreetName(NameBeautifier.handleName(newDeliveryAddress.getStreetName()))
                 .withDistrict(NameBeautifier.handleName(newDeliveryAddress.getDistrict()));
+    }
+
+    //---------------------------------------------------------
+    public List<String> getCuisineFromRestaurantsDeliveringTo(String city, String streetName) {
+        List<String> cuisines = deliveryAddressListDAO.getCuisineFromRestaurantsDeliveringTo(city, streetName);
+        if (!cuisines.isEmpty()) {
+            log.info("Found [{}] types of cuisines delivering to address [{}], [{}]", cuisines.size(), city, streetName);
+            return cuisines;
+        }
+        log.info("Restaurants does not deliver to address [{}], [{}]", city, streetName);
+        return List.of();
     }
 }

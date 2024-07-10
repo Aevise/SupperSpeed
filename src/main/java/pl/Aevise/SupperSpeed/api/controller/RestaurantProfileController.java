@@ -96,9 +96,9 @@ public class RestaurantProfileController {
 
     @PostMapping(RESTAURANT_TOGGLE)
     public String toggleRestaurantVisibility(
-            @RequestParam Integer userId
+            @RequestParam Integer restaurantId
     ) {
-        restaurantService.toggleRestaurantVisibility(userId);
+        restaurantService.toggleRestaurantVisibility(restaurantId);
         return "redirect:" + RESTAURANT_PROFILE;
     }
 }

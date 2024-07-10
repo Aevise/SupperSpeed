@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
@@ -12,6 +13,7 @@ import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.DishService;
 import pl.Aevise.SupperSpeed.business.ImageHandlingService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
+import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOG
 @AllArgsConstructor
 public class RestaurantMenuController {
 
-    static final String RESTAURANT_MENU = "/menu";
+    static final String RESTAURANT_MENU = "/menu/{restaurantId}/{restaurantName}";
     static final String ERROR = "error";
 
     private final DishService dishService;
@@ -32,10 +34,13 @@ public class RestaurantMenuController {
     private final RestaurantService restaurantService;
     private final RestaurantMapper restaurantMapper;
 
+    private final SecurityService securityService;
+
     @GetMapping(RESTAURANT_MENU)
     public String getRestaurantMenu
             (
-                    @RequestParam Integer restaurantId,
+                    @PathVariable("restaurantId") Integer restaurantId,
+                    @PathVariable("restaurantName") String restaurantName,
                     Model model
             ) {
         if (restaurantId <= 0) {
@@ -47,13 +52,18 @@ public class RestaurantMenuController {
         RestaurantDTO restaurantDTO = restaurantMapper.mapToDTO(restaurantService.findRestaurantById(restaurantId));
         String restaurantDirectory = imageHandlingService.getRestaurantName(restaurantId, restaurantDTO.getRestaurantName());
 
+        AddressDTO addressDTO = restaurantDTO.getAddress();
+        String userRole = securityService.getUserAuthority();
+
         model.addAttribute("dishesByCategory", dishMap);
         model.addAttribute("restaurantId", restaurantId);
 
         model.addAttribute("imageWidth", MAX_LOGO_WIDTH);
         model.addAttribute("imageHeight", MAX_LOGO_HEIGHT);
         model.addAttribute("restaurantDirectory", restaurantDirectory);
-
+        model.addAttribute("restaurantName", restaurantName);
+        model.addAttribute("addressDTO", addressDTO);
+        model.addAttribute("userRole", userRole);
         return "restaurant_menu";
     }
 }

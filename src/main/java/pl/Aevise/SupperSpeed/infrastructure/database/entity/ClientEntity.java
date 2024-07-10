@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = "supperUser")
+@EqualsAndHashCode(of = "id")
 @ToString(of = {"name", "surname"})
 @Builder
 @NoArgsConstructor
@@ -22,8 +22,8 @@ public class ClientEntity {
     @Column(name = "client_id", unique = true, nullable = false)
     private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private SupperUserEntity supperUser;
 
     @Column(name = "name", length = 32, nullable = false)

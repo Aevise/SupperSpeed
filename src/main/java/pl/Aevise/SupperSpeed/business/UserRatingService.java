@@ -2,6 +2,9 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.*;
@@ -69,12 +72,15 @@ public class UserRatingService {
         return null;
     }
 
-    public List<OpinionDTO> getOpinionsAboutOrdersFromRestaurant(Integer restaurantId) {
-        List<SupperOrderDTO> ratedOrdersByRestaurantId = supperOrderService.getRatedOrdersByRestaurantId(restaurantId);
+    public Page<OpinionDTO> getOpinionsAboutOrdersFromRestaurant(Integer restaurantId, PageRequest pageRequest) {
+        Page<SupperOrderDTO> ratedOrdersByRestaurantId = supperOrderService.getRatedOrdersByRestaurantId(restaurantId, pageRequest);
         List<OpinionDTO> opinionsAboutRestaurant = new ArrayList<>();
 
         if (!ratedOrdersByRestaurantId.isEmpty()) {
-            log.info("Found [{}] rated orders for restaurant with id: [{}]", ratedOrdersByRestaurantId.size(), restaurantId);
+            log.info("Fetched [{}]/[{}] rated orders for restaurant with id: [{}]",
+                    ratedOrdersByRestaurantId.getNumberOfElements(),
+                    ratedOrdersByRestaurantId.getTotalElements(),
+                    restaurantId);
             for (SupperOrderDTO order : ratedOrdersByRestaurantId) {
                 List<DishListDTO> dishesByOrderId = dishListService.getDishesByOrderId(order.getOrderId());
                 HashMap<DishDTO, Integer> dishes = new HashMap<>();
@@ -85,11 +91,16 @@ public class UserRatingService {
                 }
                 opinionsAboutRestaurant.add(buildOpinionDTO(order, order.getUserRatingDTO(), dishes));
             }
-            opinionsAboutRestaurant.sort(Comparator.comparing(OpinionDTO::getOrderId));
         } else {
             log.info("No rated orders found for restaurant with id [{}]", restaurantId);
         }
-        return opinionsAboutRestaurant;
+        if (opinionsAboutRestaurant.isEmpty()) {
+            return Page.empty();
+        }
+        return new PageImpl<>(opinionsAboutRestaurant,
+                pageRequest,
+                opinionsAboutRestaurant.size()
+        );
     }
 
     private OpinionDTO buildOpinionDTO(

@@ -14,7 +14,7 @@
 
 <body>
 <div class="container" th:if="${dishesByCategory.size() > 0}">
-    <h1>Menu</h1>
+    <h1 style="text-align: center;">Menu:</h1>
     <form action="/supperspeed/orders/submit-order" method="post">
         <table class="table" th:each="category : ${dishesByCategory}">
             <thead>
@@ -44,7 +44,8 @@
                 <td th:text="${dish.price}"/>
                 <td class="wrapper" style="text-align: center;">
                     <button class="minus" type="button">-</button>
-                    <input class="num" min="0" readonly th:name="'amountOfDishWithId_' + ${dish.dishId}" type="number"
+                    <input class="num" min="0" readonly th:name="'amountOfDishWithId_' + ${dish.dishId}"
+                           type="number"
                            value="0"/>
                     <button class="plus" type="button">+</button>
                 </td>
@@ -53,9 +54,12 @@
             </tbody>
         </table>
         <input th:name="restaurantId" th:value="${restaurantId}" type="hidden">
-        <div class="row mt-3">
-            <div class="col-md-4">
-                <button class="btn btn-success" id="orderButton" type="submit">Order</button>
+        <input th:name="restaurantName" th:value="${restaurantName}" type="hidden">
+        <div class="row mt-3" th:unless="${userRole.equals('RESTAURANT')}">
+            <div class="d-flex flex-row-reverse">
+                <div class="col-md-4">
+                    <button class="btn btn-success" id="orderButton" type="submit">Order</button>
+                </div>
             </div>
         </div>
     </form>
@@ -67,9 +71,12 @@
     </div>
     <br>
 </div>
-<div class="row mt-3">
-    <div class="col-md-4">
-        <a class="btn btn-info" role="button" th:href="@{/}">Go back</a>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <a class="btn btn-info" role="button" onclick="history.back()">Go back</a>
+        </div>
     </div>
 </div>
 

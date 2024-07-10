@@ -2,6 +2,8 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
@@ -22,9 +24,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.TreeMap;
 
 @Slf4j
 @Service
@@ -145,8 +147,8 @@ public class SupperOrderService {
         }
     }
 
-    public HashMap<Integer, List<Double>> getRestaurantsRatingBasedOnOrders(List<RestaurantDTO> restaurants) {
-        HashMap<Integer, List<Double>> restaurantsRating = new HashMap<>();
+    public TreeMap<Integer, List<Double>> getRestaurantsRatingBasedOnOrders(List<RestaurantDTO> restaurants) {
+        TreeMap<Integer, List<Double>> restaurantsRating = new TreeMap<>();
         double noRating = 0.0;
 
         if (!restaurants.isEmpty()) {
@@ -203,6 +205,22 @@ public class SupperOrderService {
         }
         log.info("Could not find rated orders for restaurant with id: [{}]", restaurantId);
         return List.of();
+    }
+
+    public Page<SupperOrderDTO> getRatedOrdersByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
+        Page<SupperOrder> ratedOrdersByRestaurantId = supperOrderDAO.getRatedOrdersByRestaurantId(restaurantId, pageRequest);
+        if (!ratedOrdersByRestaurantId.isEmpty()) {
+            log.info("Found [{}]/[{}], page [{}]/[{}] rated orders for restaurant with id: [{}]",
+                    ratedOrdersByRestaurantId.getNumberOfElements(),
+                    ratedOrdersByRestaurantId.getTotalElements(),
+                    ratedOrdersByRestaurantId.getNumber(),
+                    ratedOrdersByRestaurantId.getTotalPages(),
+                    restaurantId);
+            return ratedOrdersByRestaurantId
+                    .map(supperOrderMapper::mapToDTO);
+        }
+        log.info("Could not find rated orders for restaurant with id: [{}]", restaurantId);
+        return Page.empty();
     }
 
     public TotalRestaurantRatingDTO getRestaurantRating(List<SupperOrderDTO> ratedOrders) {

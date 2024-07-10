@@ -25,9 +25,9 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 public class DeliveryAddressesController {
-    private final String SHOW_DELIVERY_ADDRESSES = "/restaurant/delivery-addresses";
-    private final String REMOVE_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/remove";
-    private final String ADD_DELIVERY_ADDRESS = "/restaurant/delivery-addresses/add";
+    private final String SHOW_DELIVERY_ADDRESSES = "/restaurant/profile/delivery-addresses";
+    private final String REMOVE_DELIVERY_ADDRESS = "/restaurant/profile/delivery-addresses/remove";
+    private final String ADD_DELIVERY_ADDRESS = "/restaurant/profile/delivery-addresses/add";
 
     private final DeliveryAddressService deliveryAddressService;
 
@@ -39,44 +39,53 @@ public class DeliveryAddressesController {
     public String showDeliveryAddresses(
             @AuthenticationPrincipal UserDetails userDetails,
             Model model,
-            @RequestParam(value = "page", required = false) Integer page,
-            @RequestParam(value = "dir", required = false) String sortingDirection
+            @RequestParam(value = "ca-page", required = false, defaultValue = "0") Integer currAdrPage,
+            @RequestParam(value = "ca-dir", required = false, defaultValue = "asc") String currAdrSortingDirection,
+            @RequestParam(value = "ea-page", required = false, defaultValue = "0") Integer exiAdrPage,
+            @RequestParam(value = "ea-dir", required = false, defaultValue = "asc") String exiAdrSortingDirection
     ) {
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(
                         userDetails.getUsername());
-        System.out.println("gmm");
         Integer restaurantId = restaurantDTO.getRestaurantId();
-
 
         AddressDTO restaurantAddress = addressService.getByRestaurantId(restaurantId);
 
-        if (sortingDirection == null ||
-                (!sortingDirection.equals(PaginationAndSortingUtils.ASC.name())
-                        && !sortingDirection.equals(PaginationAndSortingUtils.DESC.name()))) {
-            sortingDirection = PaginationAndSortingUtils.ASC.name();
-            page = 0;
-        }
         Page<DeliveryAddressList> allDeliveryAddressesListByRestaurantId = deliveryAddressService.getAllDeliveryAddressesByRestaurantId(
                 restaurantId,
-                buildPageRequest(
-                        sortingDirection,
-                        page
+                buildPageRequestForDeliveryAddressList(
+                        currAdrSortingDirection,
+                        currAdrPage
                 ));
-
         List<DeliveryAddressDTO> allDeliveryAddressesByRestaurantId = deliveryAddressService.separateAddresses(allDeliveryAddressesListByRestaurantId);
 
-
-        List<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
+        Page<DeliveryAddressDTO> addressesWithoutDelivery = deliveryAddressService
                 .getAddressesWithoutDeliveryBasedOnPostalCode(restaurantId,
-                        buildDeliveryAddressFromRestaurantAddress(restaurantAddress));
+                        restaurantAddress.getPostalCode(),
+                        buildPageRequestForDeliveryAddress(
+                                exiAdrSortingDirection,
+                                exiAdrPage
+                        ));
+
+        String EASortingDirection;
+        int EAPage;
+        if (addressesWithoutDelivery.getSort().isEmpty()) {
+            EASortingDirection = "asc";
+            EAPage = 0;
+        } else {
+            EASortingDirection = addressesWithoutDelivery.getSort().toString().split(" ")[1].toLowerCase();
+            EAPage = addressesWithoutDelivery.getNumber();
+        }
 
         model.addAttribute("addresses", allDeliveryAddressesByRestaurantId);
         model.addAttribute("restaurantAddress", restaurantAddress);
         model.addAttribute("addressesWithoutDelivery", addressesWithoutDelivery);
         model.addAttribute("restaurantId", restaurantId);
         model.addAttribute("totalNumberOfPages", allDeliveryAddressesListByRestaurantId.getTotalPages());
-        model.addAttribute("sortingDirection", sortingDirection);
+        model.addAttribute("CAPage", currAdrPage);
+        model.addAttribute("CASortingDirection", currAdrSortingDirection);
+        model.addAttribute("EASortingDirection", EASortingDirection);
+        model.addAttribute("EAPage", EAPage);
         return "delivery_addresses";
     }
 
@@ -110,11 +119,17 @@ public class DeliveryAddressesController {
                 .build();
     }
 
-    private PageRequest buildPageRequest(String direction, Integer page) {
-        if (direction.equals(PaginationAndSortingUtils.ASC.name())) {
+    private PageRequest buildPageRequestForDeliveryAddressList(String direction, Integer page) {
+        if (direction.equalsIgnoreCase(PaginationAndSortingUtils.ASC.getSortingDirection())) {
             return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").ascending());
         }
         return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").descending());
     }
 
+    private PageRequest buildPageRequestForDeliveryAddress(String direction, Integer page) {
+        if (direction.equalsIgnoreCase(PaginationAndSortingUtils.ASC.getSortingDirection())) {
+            return PageRequest.of(page, 10, Sort.by("streetName").ascending());
+        }
+        return PageRequest.of(page, 10, Sort.by("streetName").descending());
+    }
 }

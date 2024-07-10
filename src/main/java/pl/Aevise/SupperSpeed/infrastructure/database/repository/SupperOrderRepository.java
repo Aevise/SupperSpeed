@@ -1,6 +1,8 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
@@ -110,6 +112,16 @@ public class SupperOrderRepository implements SupperOrderDAO {
     }
 
     @Override
+    public Page<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId, PageRequest pageRequest) {
+        Page<SupperOrderEntity> ratedOrders = supperOrderJpaRepository.findAllByRestaurant_IdAndUserRatingIsNotNull(restaurantId, pageRequest);
+        if (!ratedOrders.isEmpty()) {
+            return ratedOrders
+                    .map(supperOrderEntityMapper::mapFromEntity);
+        }
+        return Page.empty();
+    }
+
+    @Override
     public List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId) {
         List<SupperOrderEntity> ratedOrders = supperOrderJpaRepository.findAllByRestaurant_IdAndUserRatingIsNotNull(restaurantId);
         if (!ratedOrders.isEmpty()) {
@@ -119,5 +131,4 @@ public class SupperOrderRepository implements SupperOrderDAO {
         }
         return List.of();
     }
-
 }

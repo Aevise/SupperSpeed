@@ -20,95 +20,98 @@
     <br>
 </div>
 
-<table class="table" th:each="category : ${dishesByCategory}">
-    <thead>
-    <tr class="table-primary">
-        <form method="post" th:action="@{/restaurant/profile/menu/updateCategory}">
-            <th colspan="5" style="text-align: center;">
-                <label>
-                    <input th:name="categoryName" th:value="${category.getKey().get(0).categoryName}" type="text"/>
-                </label>
-            </th>
+<div class="container">
+    <table class="table" th:each="category : ${dishesByCategory}">
+        <thead>
+        <tr class="table-primary">
+            <form method="post" th:action="@{/restaurant/profile/menu/updateCategory}">
+                <th colspan="5" style="text-align: center;" >
+                    <label>
+                        <input th:name="categoryName" th:value="${category.getKey().get(0).categoryName}" type="text"/>
+                    </label>
+                </th>
+                <th style="background-color: transparent;">
+                    <input th:name="dishCategoryId" th:value="${category.getKey().get(0).dishCategoryId}" type="hidden">
+                    <button class="btn btn-info" type="submit">Update Category</button>
+                </th>
+            </form>
+
             <th style="background-color: transparent;">
-                <input th:name="dishCategoryId" th:value="${category.getKey().get(0).dishCategoryId}" type="hidden">
-                <button class="btn btn-info" type="submit">Update Category</button>
+                <form method="post" th:action="@{/restaurant/profile/menu/deleteCategory}">
+                    <input th:name="dishCategoryId" th:value="${category.getKey().get(0).dishCategoryId}" type="hidden">
+                    <button class="btn btn-danger" type="submit">Delete Category</button>
+                </form>
             </th>
-        </form>
+        </tr>
 
-        <th style="background-color: transparent;">
-            <form method="post" th:action="@{/restaurant/profile/menu/deleteCategory}">
-                <input th:name="dishCategoryId" th:value="${category.getKey().get(0).dishCategoryId}" type="hidden">
-                <button class="btn btn-danger" type="submit">Delete Category</button>
-            </form>
-        </th>
-    </tr>
-
-    <tr class="table table-info">
-        <th>Photo</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Price</th>
-        <th>Availability</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="dish : ${category.getValue()}">
-        <td>
-            <img alt="Upload image from disk (PNG/JPEG up to 5MB)"
-                 th:height="*{imageHeight}"
-                 th:if="*{dish.getImageDTO() != null}"
-                 th:src="@{'/images/' + ${restaurantDirectory} + '/'  + ${dish.getImageDTO().getImageURL()}}"
-                 th:width="*{imageWidth}"/>
-            <form enctype="multipart/form-data" method="post" th:action="@{/upload/dishImage}">
-                <div class="col">
-                    <div class="form-group">
-                        <input accept="image/png, image/jpeg" class="form-control-file" name="image" type="file">
+        <tr class="table table-info">
+            <th>Photo</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Availability</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="dish : ${category.getValue()}">
+            <td>
+                <img alt="Upload image from disk (PNG/JPEG up to 5MB)"
+                     th:height="*{imageHeight}"
+                     th:if="*{dish.getImageDTO() != null}"
+                     th:src="@{'/images/' + ${restaurantDirectory} + '/'  + ${dish.getImageDTO().getImageURL()}}"
+                     th:width="*{imageWidth}"/>
+                <form enctype="multipart/form-data" method="post" th:action="@{/upload/dishImage}">
+                    <div class="col">
+                        <div class="form-group">
+                            <input accept="image/png, image/jpeg" class="form-control-file" name="image" type="file">
+                        </div>
                     </div>
-                </div>
-                <div class="col">
-                    <input name="dishId" th:value="*{dish.dishId}" type="hidden"/>
-                    <input name="dishName" th:value="*{dish.name}" type="hidden"/>
-                    <input name="restaurantName" th:value="*{restaurantName}" type="hidden"/>
-                    <input name="restaurantId" th:value="*{restaurantId}" type="hidden"/>
-                    <button class="btn btn-primary" type="submit">Upload Image</button>
-                </div>
+                    <div class="col">
+                        <input name="dishId" th:value="*{dish.dishId}" type="hidden"/>
+                        <input name="dishName" th:value="*{dish.name}" type="hidden"/>
+                        <input name="restaurantName" th:value="*{restaurantName}" type="hidden"/>
+                        <input name="restaurantId" th:value="*{restaurantId}" type="hidden"/>
+                        <button class="btn btn-primary" type="submit">Upload Image</button>
+                    </div>
+                </form>
+            </td>
+            <form method="post" th:action="@{/restaurant/profile/menu/updateDish}">
+                <td>
+                    <label>
+                        <input th:name="name" th:value="${dish.name}" type="text"/>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input th:name="description" th:value="${dish.description}" type="text"/>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input th:name="price" th:value="${dish.price}" type="text"/>
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input id="editAvailability" name="availability" th:checked="${dish.availability}"
+                               type="checkbox"/>
+                    </label>
+                </td>
+                <td>
+                    <input th:name="dishId" th:value="${dish.dishId}" type="hidden">
+                    <button class="btn btn-info" type="submit">Update Dish</button>
+                </td>
             </form>
-        </td>
-        <form method="post" th:action="@{/restaurant/profile/menu/updateDish}">
             <td>
-                <label>
-                    <input th:name="name" th:value="${dish.name}" type="text"/>
-                </label>
+                <form method="post" th:action="@{/restaurant/profile/menu/deleteDish}">
+                    <input th:name="dishId" th:value="${dish.dishId}" type="hidden">
+                    <button class="btn btn-danger" type="submit">Delete Dish</button>
+                </form>
             </td>
-            <td>
-                <label>
-                    <input th:name="description" th:value="${dish.description}" type="text"/>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <input th:name="price" th:value="${dish.price}" type="text"/>
-                </label>
-            </td>
-            <td>
-                <label>
-                    <input id="editAvailability" name="availability" th:checked="${dish.availability}" type="checkbox"/>
-                </label>
-            </td>
-            <td>
-                <input th:name="dishId" th:value="${dish.dishId}" type="hidden">
-                <button class="btn btn-info" type="submit">Update Dish</button>
-            </td>
-        </form>
-        <td>
-            <form method="post" th:action="@{/restaurant/profile/menu/deleteDish}">
-                <input th:name="dishId" th:value="${dish.dishId}" type="hidden">
-                <button class="btn btn-danger" type="submit">Delete Dish</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 <br>
 <div class="container">
@@ -194,7 +197,7 @@
     </form>
 </div>
 
-<div class="row mt-3">
+<div class="row m-3 py-3">
     <div class="col-md-4">
         <a class="btn btn-info" role="button" th:href="@{/restaurant/profile}">Go back</a>
     </div>

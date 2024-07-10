@@ -19,12 +19,15 @@ public class NameBeautifier {
         }
         String newCityName = cityName;
 
+        if (!newCityName.contains(NAME_SEPARATORS.get(0)) && !newCityName.contains(NAME_SEPARATORS.get(1))) {
+            return capitalizeFirstLetter(newCityName);
+        }
+
         for (String character : NAME_SEPARATORS) {
             if (cityName.contains(character)) {
                 newCityName = nameSplitterAndModifier(cityName, character);
             }
         }
-
         return newCityName;
     }
 
