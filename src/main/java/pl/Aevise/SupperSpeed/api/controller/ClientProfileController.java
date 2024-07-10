@@ -1,7 +1,9 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,8 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.ClientMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.ClientProfileService;
 import pl.Aevise.SupperSpeed.domain.Client;
+import pl.Aevise.SupperSpeed.domain.exception.NotFoundException;
+import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.util.Optional;
 
@@ -57,20 +61,23 @@ public class ClientProfileController {
             model.addAttribute("clientId", clientDTO.getId());
             return "client_profile";
         }
-        return "redirect:" + "/login";
+        throw new NotFoundException(Client.class.toString());
     }
 
     @PostMapping(UPDATE_PROFILE)
     public String updateProfile
             (
-                    @ModelAttribute ClientDTO clientDTO,
-                    @ModelAttribute AddressDTO addressDTO,
-                    BindingResult bindingResult,
+                    @Valid @ModelAttribute("clientDTO") ClientDTO clientDTO,
+                    @ModelAttribute("addressDTO") AddressDTO addressDTO,
                     @RequestParam String clientId,
                     @RequestParam(required = false) String action
             ) {
-        if (bindingResult.hasErrors()) {
-            return "redirect:" + CLIENT_PROFILE;
+
+        var first = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream()
+                .findFirst().get();
+        if (!first.getAuthority().equals("ROLE_" + AvailableRoles.CLIENT.name())) {
+            return "redirect:/";
         }
 
         if ("updateAddress".equals(action)) {
