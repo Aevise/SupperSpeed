@@ -23,7 +23,7 @@ public class UserRatingDTO {
     String description;
     RestaurantResponseDTO restaurantResponseDTO;
 
-    public final Map<String, String> asMap(){
+    public final Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
         ofNullable(userRatingId).ifPresent(value -> result.put("userRatingId", userRatingId.toString()));
         ofNullable(foodRating).ifPresent(value -> result.put("foodRating", foodRating.toString()));

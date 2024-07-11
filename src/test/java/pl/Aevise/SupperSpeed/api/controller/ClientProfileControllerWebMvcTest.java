@@ -16,6 +16,7 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
@@ -62,7 +63,7 @@ class ClientProfileControllerWebMvcTest {
 
 
     @Test
-    @WithMockUser(username = TEST_CLIENT_EMAIL_1, roles = "CLIENT")
+    @WithMockUser(username = TEST_CLIENT_EMAIL_1, authorities = "CLIENT")
     void checkThatYouCanGetClientProfile() throws Exception {
         //given
         Client client = client1();
@@ -88,7 +89,7 @@ class ClientProfileControllerWebMvcTest {
     }
 
     @Test
-    @WithMockUser(username = TEST_CLIENT_EMAIL_1, roles = "CLIENT")
+    @WithMockUser(username = TEST_CLIENT_EMAIL_1, authorities = "CLIENT")
     void checkThatYouCannotGetUserProfileIfItDoesNotExist() throws Exception {
         //given, when
         when(clientProfileService.findClientByEmail(TEST_CLIENT_EMAIL_1)).thenReturn(Optional.empty());
@@ -102,7 +103,7 @@ class ClientProfileControllerWebMvcTest {
     }
 
     @Test
-    @WithMockUser(username = TEST_CLIENT_EMAIL_1, roles = "CLIENT")
+    @WithMockUser(username = TEST_CLIENT_EMAIL_1, authorities = "CLIENT")
     void checkThatYouCanUpdateClientInformation() throws Exception {
         //given
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -120,7 +121,7 @@ class ClientProfileControllerWebMvcTest {
     }
 
     @Test
-    @WithMockUser(username = TEST_CLIENT_EMAIL_1, roles = "CLIENT")
+    @WithMockUser(username = TEST_CLIENT_EMAIL_1, authorities = "CLIENT")
     void checkThatYouCanUpdateClientAddressInformation() throws Exception {
         //given
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -137,7 +138,7 @@ class ClientProfileControllerWebMvcTest {
     }
 
     @Test
-    @WithMockUser(username = TEST_RESTAURANT_EMAIL_1, roles = "RESTAURANT")
+    @WithMockUser(username = TEST_RESTAURANT_EMAIL_1, authorities = "RESTAURANT")
     void shouldNotAllowAnyActionForNonClientUser() throws Exception {
         //given
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -167,9 +168,30 @@ class ClientProfileControllerWebMvcTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    void checkThatYouGetErrorWhenTryToUpdateProfileWithoutAnyAuthorities() throws Exception {
+        //given
+        LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        Map<String, String> parametersMap = addressDTO1().asMap();
+        parametersMap.putIfAbsent("clientId", clientDTO1().getId().toString());
+        parametersMap.putIfAbsent("action", "updateAddress");
+        parametersMap.forEach(parameters::add);
+
+        //when, then
+        ResultActions perform = mockMvc.perform(post(UPDATE_PROFILE)
+                .params(parameters)
+                .with(SecurityMockMvcRequestPostProcessors.csrf())
+                .with(SecurityMockMvcRequestPostProcessors.user(TEST_CLIENT_EMAIL_1).authorities()));
+
+        perform
+                .andExpect(status().isUnauthorized())
+                .andExpect(model().attributeExists("errorMessage"))
+                .andExpect(view().name("error"));
+    }
+
     @ParameterizedTest
     @MethodSource
-    @WithMockUser(username = TEST_CLIENT_EMAIL_1, roles = "CLIENT")
+    @WithMockUser(username = TEST_CLIENT_EMAIL_1, authorities = "CLIENT")
     void phoneValidationShouldWorkCorrectly(Boolean correctPhone, String phone) throws Exception {
         //given
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();

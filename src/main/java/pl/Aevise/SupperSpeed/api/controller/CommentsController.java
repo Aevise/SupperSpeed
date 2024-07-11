@@ -23,7 +23,7 @@ import static pl.Aevise.SupperSpeed.api.controller.OrdersBrowseController.SUPPER
 public class CommentsController {
 
     public static final String ADD_COMMENT = "/orders/comment/add";
-    private static final String ADD_RESPONSE = "/orders/comment/respond";
+    public static final String ADD_RESPONSE = "/orders/comment/respond";
 
     private final UserRatingService userRatingService;
     private final RestaurantResponseService restaurantResponseService;
@@ -35,8 +35,8 @@ public class CommentsController {
     ) {
         var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream().findFirst()
-                .orElseThrow(()-> new UserNotFoundException("No user found"));
-        if(authority.getAuthority().equals("ROLE_" + AvailableRoles.CLIENT.name())){
+                .orElseThrow(()-> new AccessDeniedException("You do not have the required authority to view this page."));
+        if(authority.getAuthority().equals(AvailableRoles.CLIENT.name())){
             userRatingService.saveNewComment(userRatingDTO, orderId);
 
             return "redirect:" + SUPPER_SPEED_ORDERS_BROWSER;
@@ -51,8 +51,8 @@ public class CommentsController {
     ) {
         var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream().findFirst()
-                .orElseThrow(()-> new UserNotFoundException("No user found"));
-        if(authority.getAuthority().equals("ROLE_" + AvailableRoles.CLIENT.name())) {
+                .orElseThrow(()-> new AccessDeniedException("You do not have the required authority to view this page."));
+        if(authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
             restaurantResponseService.saveRestaurantResponse(restaurantResponseDTO, userRatingId);
             return "redirect:" + SUPPER_SPEED_ORDERS_BROWSER;
         }

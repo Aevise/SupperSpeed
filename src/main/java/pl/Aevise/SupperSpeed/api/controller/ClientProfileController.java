@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,8 +49,7 @@ public class ClientProfileController {
                 .findClientByEmail(userDetails.getUsername());
 
         if (client.isPresent()) {
-            ClientDTO clientDTO = client.map(clientMapper::mapToDTO)
-                    .get();
+            ClientDTO clientDTO = clientMapper.mapToDTO(client.get());
 
             AddressDTO addressDTO = addressService
                     .findById(client.get().getAddress().getAddressId())
@@ -75,8 +75,8 @@ public class ClientProfileController {
 
         var first = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream()
-                .findFirst().get();
-        if (!first.getAuthority().equals("ROLE_" + AvailableRoles.CLIENT.name())) {
+                .findFirst().orElseThrow(()-> new AccessDeniedException("You do not have the required authority to view this page."));
+        if (!first.getAuthority().equals(AvailableRoles.CLIENT.name())) {
             return "redirect:/";
         }
 
