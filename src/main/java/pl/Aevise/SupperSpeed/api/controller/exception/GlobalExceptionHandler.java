@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     public ModelAndView handleException(AccessDeniedException ex){
         String message = String.format("Error:\n[%s]", ex.getMessage());
         log.error(message, ex);
@@ -96,4 +96,13 @@ public class GlobalExceptionHandler {
         return modelView;
     }
 
+    @ExceptionHandler(IncorrectOpeningHourException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView handleException(IncorrectOpeningHourException ex) {
+        String message = String.format("Error:\n[%s]", ex.getMessage());
+        log.error(message, ex);
+        ModelAndView modelView = new ModelAndView("error");
+        modelView.addObject("errorMessage", message);
+        return modelView;
+    }
 }
