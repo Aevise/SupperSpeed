@@ -2,28 +2,26 @@ package pl.Aevise.SupperSpeed.util;
 
 import lombok.experimental.UtilityClass;
 import pl.Aevise.SupperSpeed.api.dto.*;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.dto.SupperUserDTO;
 
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.TimeZone;
 
 import static pl.Aevise.SupperSpeed.util.Constants.*;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.dishEntity1;
 import static pl.Aevise.SupperSpeed.util.POJOFixtures.client1;
 
 @UtilityClass
 public class DTOFixtures {
 
-    public static SupperUserDTO supperUserDTO1(){
+    public static SupperUserDTO supperUserDTO1() {
         return SupperUserDTO.builder()
                 .supperUserId(1)
                 .email(TEST_RESTAURANT_EMAIL_1)
                 .active(true)
-                .creationDateTime(OffsetDateTime.of(2020, 10, 10, 10, 0, 0,0, ZoneOffset.UTC))
-                .lastLoginDateTime(OffsetDateTime.of(2020, 10, 10, 10, 0, 0,0, ZoneOffset.UTC))
+                .creationDateTime(OffsetDateTime.of(2020, 10, 10, 10, 0, 0, 0, ZoneOffset.UTC))
+                .lastLoginDateTime(OffsetDateTime.of(2020, 10, 10, 10, 0, 0, 0, ZoneOffset.UTC))
                 .build();
     }
 
@@ -62,7 +60,7 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static ImageDTO imageDTO1(){
+    public static ImageDTO imageDTO1() {
         return ImageDTO.builder()
                 .imageURL("testURL1")
                 .build();
@@ -92,7 +90,7 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static DeliveryAddressDTO deliveryAddressDTO1(){
+    public static DeliveryAddressDTO deliveryAddressDTO1() {
         return DeliveryAddressDTO.builder()
                 .deliveryAddressId(1)
                 .country(POLAND)
@@ -103,7 +101,7 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static DeliveryAddressDTO deliveryAddressDTO2(){
+    public static DeliveryAddressDTO deliveryAddressDTO2() {
         return DeliveryAddressDTO.builder()
                 .deliveryAddressId(2)
                 .country(POLAND)
@@ -113,7 +111,8 @@ public class DTOFixtures {
                 .streetName("Test2")
                 .build();
     }
-    public static DeliveryAddressDTO deliveryAddressDTO3(){
+
+    public static DeliveryAddressDTO deliveryAddressDTO3() {
         return DeliveryAddressDTO.builder()
                 .deliveryAddressId(3)
                 .country(POLAND)
@@ -123,7 +122,8 @@ public class DTOFixtures {
                 .streetName("Test3")
                 .build();
     }
-    public static DeliveryAddressDTO deliveryAddressDTO4(){
+
+    public static DeliveryAddressDTO deliveryAddressDTO4() {
         return DeliveryAddressDTO.builder()
                 .deliveryAddressId(4)
                 .country(POLAND)
@@ -134,18 +134,19 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static CuisineDTO cuisineDTO1(){
+    public static CuisineDTO cuisineDTO1() {
         return CuisineDTO.builder()
                 .cuisine(CUISINES.get("Italian"))
                 .build();
     }
-    public static CuisineDTO cuisineDTO2(){
+
+    public static CuisineDTO cuisineDTO2() {
         return CuisineDTO.builder()
                 .cuisine(CUISINES.get("Polish"))
                 .build();
     }
 
-    public static OpinionDTO opinionDTO1(){
+    public static OpinionDTO opinionDTO1() {
         return OpinionDTO.builder()
                 .orderId(1)
                 .orderDateTime(OffsetDateTime.now().toString())
@@ -154,7 +155,7 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static TotalRestaurantRatingDTO totalRestaurantRatingDTO1(){
+    public static TotalRestaurantRatingDTO totalRestaurantRatingDTO1() {
         return TotalRestaurantRatingDTO.builder()
                 .restaurantId(restaurantDTO1().getRestaurantId())
                 .amountOfRatedOrders(1)
@@ -163,7 +164,7 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static DishDTO dishDTO1(){
+    public static DishDTO dishDTO1() {
         return DishDTO.builder()
                 .dishId(1)
                 .name(dishEntity1().getName())
@@ -172,14 +173,15 @@ public class DTOFixtures {
                 .isHidden(dishEntity1().getIsHidden())
                 .build();
     }
-    public static StatusListDTO statusListDTO1(){
+
+    public static StatusListDTO statusListDTO1() {
         return StatusListDTO.builder()
                 .statusId(1)
                 .description("new")
                 .build();
     }
 
-    public static SupperOrderDTO supperOrderDTO1(){
+    public static SupperOrderDTO supperOrderDTO1() {
         return SupperOrderDTO.builder()
                 .orderId(1)
                 .orderDateTime(String.valueOf(OffsetDateTime.of(2020, 12, 10, 12, 0, 0, 0, ZoneOffset.ofHours(0))))
@@ -189,7 +191,7 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static DishListDTO dishListDTO1(){
+    public static DishListDTO dishListDTO1() {
         return DishListDTO.builder()
                 .dishDTO(dishDTO1())
                 .supperOrderDTO(supperOrderDTO1())
@@ -197,17 +199,27 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static DishCategoryDTO dishCategoryDTO1(){
+    public static DishCategoryDTO dishCategoryDTO1() {
         return DishCategoryDTO.builder()
                 .dishCategoryId(1)
                 .categoryName("dish category test 1")
                 .build();
     }
-    public static DishCategoryDTO dishCategoryDTO2(){
+
+    public static DishCategoryDTO dishCategoryDTO2() {
         return DishCategoryDTO.builder()
                 .dishCategoryId(2)
                 .categoryName("dish category test 2")
                 .build();
     }
 
+    public static UserRatingDTO userRatingDTO1() {
+        return UserRatingDTO.builder()
+                .userRatingId(1)
+                .foodRating(2)
+                .deliveryRating(2)
+                .ratingDateTime(OffsetDateTime.of(2020, 12, 10, 10, 10, 10, 10, ZoneOffset.UTC).toString())
+                .description("test rating 1")
+                .build();
+    }
 }
