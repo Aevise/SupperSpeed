@@ -1,6 +1,8 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,10 +36,10 @@ public class CreateAccountController {
     //TODO zmienić potem na false i dodac aktywowanie uzytkownika za pomoca maila
     static final boolean userDefaultActive = true;
     static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-    private static final String CREATE_ACCOUNT_PAGE = "/create";
-    private static final String CREATE_ACCOUNT_USER = "/create/user";
-    private static final String CREATE_ACCOUNT_RESTAURANT = "/create/restaurant";
-    private static final String ACCOUNT_EXIST = "/create/exist";
+    public static final String CREATE_ACCOUNT_PAGE = "/create";
+    public static final String CREATE_ACCOUNT_USER = "/create/user";
+    public static final String CREATE_ACCOUNT_RESTAURANT = "/create/restaurant";
+    public static final String ACCOUNT_EXIST = "/create/exist";
     private final UserService userService;
     private final ClientService clientService;
     private final RestaurantService restaurantService;
@@ -48,7 +50,9 @@ public class CreateAccountController {
     String getAccountCreationForm(
             Model model
     ) {
-
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().toList();
+        SecurityContext context = SecurityContextHolder.getContext();
         List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
         model.addAttribute("cuisinesListDTO", cuisines);
 

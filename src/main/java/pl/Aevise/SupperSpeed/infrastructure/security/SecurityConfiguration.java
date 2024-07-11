@@ -34,7 +34,7 @@ public class SecurityConfiguration {
         return auth -> {
             try {
                 auth
-                        .requestMatchers("/", "/menu/**", "/search/**", "/create/**", "/login", "/logout", "/images/**", "error", "/opinion").permitAll()
+                        .requestMatchers("/", "/menu/**", "/search/**", "/create/**", "/login", "/logout", "/images/**", "error", "/opinion").anonymous()
                         .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
                         .requestMatchers("/restaurant/**", "/upload/**").hasAuthority(AvailableRoles.RESTAURANT.name())
                         .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(
