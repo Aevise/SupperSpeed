@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MainPageController {
 
-    private static final String MAIN_PAGE = "/";
+    public static final String MAIN_PAGE = "/";
     private final AddressService addressService;
     private final CuisineService cuisineService;
     private final SecurityService securityService;
