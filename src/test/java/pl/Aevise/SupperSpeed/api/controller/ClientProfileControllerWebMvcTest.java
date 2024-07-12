@@ -184,7 +184,7 @@ class ClientProfileControllerWebMvcTest {
                 .with(SecurityMockMvcRequestPostProcessors.user(TEST_CLIENT_EMAIL_1).authorities()));
 
         perform
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isNotAcceptable())
                 .andExpect(model().attributeExists("errorMessage"))
                 .andExpect(view().name("error"));
     }

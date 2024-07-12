@@ -190,8 +190,6 @@ class DeliveryAddressesControllerWebMvcTest {
         parametersMap.forEach(params::add);
 
         //when
-        doNothing().when(deliveryAddressService).removeDeliveryAddress(deliveryAddressId, restaurantId);
-
         ResultActions result = mockMvc.perform(post(REMOVE_DELIVERY_ADDRESS)
                 .params(params)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -238,8 +236,6 @@ class DeliveryAddressesControllerWebMvcTest {
         parametersMap.forEach(params::add);
 
         //when
-        doNothing().when(deliveryAddressService).addDeliveryAddress(deliveryAddressDTO, restaurantId);
-
         ResultActions result = mockMvc.perform(post(REMOVE_DELIVERY_ADDRESS)
                 .params(params)
                 .with(SecurityMockMvcRequestPostProcessors.csrf())

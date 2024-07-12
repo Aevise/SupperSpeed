@@ -1,11 +1,14 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import pl.Aevise.SupperSpeed.business.ImageHandlingService;
+import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.io.IOException;
 
@@ -16,8 +19,8 @@ import static pl.Aevise.SupperSpeed.api.controller.RestaurantProfileController.R
 @AllArgsConstructor
 public class ImageController {
 
-    static final String UPLOAD_LOGO = "/upload/logo";
-    static final String UPLOAD_DISH_IMAGE = "/upload/dishImage";
+    public static final String UPLOAD_LOGO = "/upload/logo";
+    public static final String UPLOAD_DISH_IMAGE = "/upload/dishImage";
 
     private final ImageHandlingService imageHandlingService;
 
@@ -27,10 +30,15 @@ public class ImageController {
             @RequestParam("restaurantId") Integer restaurantId,
             @RequestParam("restaurantName") String restaurantName
     ) throws IOException {
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
+        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+            imageHandlingService.uploadLogo(image.getBytes(), restaurantId, restaurantName);
 
-        imageHandlingService.uploadLogo(image.getBytes(), restaurantId, restaurantName);
-
-        return "redirect:" + RESTAURANT_PROFILE;
+            return "redirect:" + RESTAURANT_PROFILE;
+        }
+        throw new AccessDeniedException("You do not have the required authority to view this page.");
     }
 
     @PostMapping(UPLOAD_DISH_IMAGE)
@@ -41,9 +49,14 @@ public class ImageController {
             @RequestParam("restaurantName") String restaurantName,
             @RequestParam("restaurantId") Integer restaurantId
     ) throws IOException {
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
+        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+            imageHandlingService.uploadDishImage(image.getBytes(), dishId, dishName, restaurantName, restaurantId);
 
-        imageHandlingService.uploadDishImage(image.getBytes(), dishId, dishName, restaurantName, restaurantId);
-
-        return "redirect:" + RESTAURANT_MENU_EDIT;
+            return "redirect:" + RESTAURANT_MENU_EDIT;
+        }
+        throw new AccessDeniedException("You do not have the required authority to view this page.");
     }
 }

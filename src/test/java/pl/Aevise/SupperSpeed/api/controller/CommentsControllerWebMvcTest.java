@@ -59,7 +59,7 @@ class CommentsControllerWebMvcTest {
 
         //then
         perform
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isNotAcceptable())
                 .andExpect(model().attributeExists("errorMessage"))
                 .andExpect(view().name("error"));
     }
@@ -79,7 +79,7 @@ class CommentsControllerWebMvcTest {
 
         //then
         perform
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isNotAcceptable())
                 .andExpect(model().attributeExists("errorMessage"))
                 .andExpect(view().name("error"));
     }
@@ -122,7 +122,7 @@ class CommentsControllerWebMvcTest {
 
         //then
         perform
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isNotAcceptable())
                 .andExpect(model().attributeExists("errorMessage"))
                 .andExpect(view().name("error"));
     }
@@ -143,7 +143,7 @@ class CommentsControllerWebMvcTest {
 
         //then
         perform
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isNotAcceptable())
                 .andExpect(model().attributeExists("errorMessage"))
                 .andExpect(view().name("error"));
     }
