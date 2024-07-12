@@ -15,119 +15,126 @@
 <body>
 <h1 style="display: flex; justify-content: center;">Are you a client or restaurant owner?</h1>
 <br>
-<div class="accordion" id="MyAccordion">
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-            <button aria-controls="collapseOne" aria-expanded="false" class="accordion-button collapsed"
-                    data-bs-target="#collapseOne" data-bs-toggle="collapse" type="button">
-                Client
-            </button>
-        </h2>
-        <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#MyAccordion"
-             id="collapseOne">
-            <form method="post" th:action="@{/create/user}">
-                <div class="accordion-body">
-                    <h3 style="display: flex; justify-content: center;">User Data:</h3>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <label for="clientEmail">Email: </label>
-                                <input id="clientEmail" name="email" type="text">
-                            </div>
-                            <div class="col">
-                                <label for="clientPassword">Password: </label>
-                                <input id="clientPassword" name="password" type="password">
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <h3 style="display: flex; justify-content: center;"> Please provide your information:</h3>
-                    <br>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <label for="clientName">Name: </label>
-                                <input id="clientName" name="name" type="text">
-                            </div>
-                        </div>
-                        <div class="col">
-                            <label for="clientSurname">Surname: </label>
-                            <input id="clientSurname" name="surname" type="text">
-                        </div>
-                        <div class="col">
-                            <label for="clientPhone">Phone: </label>
-                            <input id="clientPhone" name="phone" type="text">
-                        </div>
-                    </div>
-                </div>
-                <input id="client_role_id" name="role_id" type="hidden" value="1">
-                <div class="row mt-3">
-                    <button class="btn btn-info" role="button" type="submit">Register</button>
-                </div>
-            </form>
-        </div>
-        <br>
+<div class="container">
+    <div class="accordion" id="MyAccordion">
         <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-                <button aria-controls="collapseTwo" aria-expanded="false" class="accordion-button collapsed"
-                        data-bs-target="#collapseTwo" data-bs-toggle="collapse" type="button">
-                    Restaurant Owner
+            <h2 class="accordion-header" id="headingOne">
+                <button aria-controls="collapseOne" aria-expanded="false" class="accordion-button collapsed"
+                        data-bs-target="#collapseOne" data-bs-toggle="collapse" type="button">
+                    Client
                 </button>
             </h2>
-            <div aria-labelledby="headingTwo" class="accordion-collapse collapse" data-bs-parent="#MyAccordion
-"
-                 id="collapseTwo">
-                <form method="post" th:action="@{/create/restaurant}">
-                    <div class="accordion-body">
-                        <h3 style="display: flex; justify-content: center;">User Data:</h3>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="restaurantEmail">Email: </label>
-                                    <input id="restaurantEmail" name="email" type="text">
+            <div aria-labelledby="headingOne" class="accordion-collapse collapse" data-bs-parent="#MyAccordion"
+                 id="collapseOne">
+                <div class="container">
+                    <form method="post" th:action="@{/create/user}">
+                        <div class="accordion-body">
+                            <h3 style="display: flex; justify-content: center;">User Data:</h3>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="clientEmail">Email: </label>
+                                        <input id="clientEmail" name="email" type="text">
+                                    </div>
+                                    <div class="col">
+                                        <label for="clientPassword">Password: </label>
+                                        <input id="clientPassword" name="password" type="password">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <h3 style="display: flex; justify-content: center;"> Please provide your information:</h3>
+                            <br>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <label for="clientName">Name: </label>
+                                        <input id="clientName" name="name" type="text">
+                                    </div>
                                 </div>
                                 <div class="col">
-                                    <label for="restaurantPassword">Password: </label>
-                                    <input id="restaurantPassword" name="password" type="password">
+                                    <label for="clientSurname">Surname: </label>
+                                    <input id="clientSurname" name="surname" type="text">
+                                </div>
+                                <div class="col">
+                                    <label for="clientPhone">Phone: </label>
+                                    <input id="clientPhone" name="phone" type="text">
                                 </div>
                             </div>
                         </div>
-                        <br>
-                        <h3 style="display: flex; justify-content: center;"> Please provide your information:</h3>
-                        <br>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="restaurant_name">Name: </label>
-                                    <input id="restaurant_name" name="restaurantName" type="text">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <label for="restaurantPhone">Phone: </label>
-                                <input id="restaurantPhone" name="phone" type="text">
-                            </div>
-                            <div class="col">
-                                <label for="open_hour">Open Hour: </label>
-                                <input id="open_hour" name="openHour" type="text">
-                            </div>
-                            <div class="col">
-                                <label for="close_hour">Close Hour: </label>
-                                <input id="close_hour" name="closeHour" type="text">
-                            </div>
-                            <div class="col">
-                                <label for="cuisine">Cuisine : </label>
-                                <select id="cuisine" name="cuisine">
-                                    <option th:each="cuisine : ${cuisinesListDTO}" th:text="${cuisine.cuisine}"
-                                            th:value="${cuisine.cuisine}"></option>
-                                </select>
-                            </div>
-                        </div>
-                        <input id="restaurant_role_id" name="role_id" type="hidden" value="2">
+                        <input id="client_role_id" name="role_id" type="hidden" value="1">
                         <div class="row mt-3">
                             <button class="btn btn-info" role="button" type="submit">Register</button>
                         </div>
+                    </form>
+                </div>
+            </div>
+            <br>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                    <button aria-controls="collapseTwo" aria-expanded="false" class="accordion-button collapsed"
+                            data-bs-target="#collapseTwo" data-bs-toggle="collapse" type="button">
+                        Restaurant Owner
+                    </button>
+                </h2>
+                <div aria-labelledby="headingTwo" class="accordion-collapse collapse" data-bs-parent="#MyAccordion
+"
+                     id="collapseTwo">
+                    <div class="container">
+                        <form method="post" th:action="@{/create/restaurant}">
+                            <div class="accordion-body">
+                                <h3 style="display: flex; justify-content: center;">User Data:</h3>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="restaurantEmail">Email: </label>
+                                            <input id="restaurantEmail" name="email" type="text">
+                                        </div>
+                                        <div class="col">
+                                            <label for="restaurantPassword">Password: </label>
+                                            <input id="restaurantPassword" name="password" type="password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <h3 style="display: flex; justify-content: center;"> Please provide your
+                                    information:</h3>
+                                <br>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="restaurant_name">Name: </label>
+                                            <input id="restaurant_name" name="restaurantName" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <label for="restaurantPhone">Phone: </label>
+                                        <input id="restaurantPhone" name="phone" type="text">
+                                    </div>
+                                    <div class="col">
+                                        <label for="open_hour">Open Hour: </label>
+                                        <input id="open_hour" name="openHour" type="text">
+                                    </div>
+                                    <div class="col">
+                                        <label for="close_hour">Close Hour: </label>
+                                        <input id="close_hour" name="closeHour" type="text">
+                                    </div>
+                                    <div class="col">
+                                        <label for="cuisine">Cuisine : </label>
+                                        <select id="cuisine" name="cuisine">
+                                            <option th:each="cuisine : ${cuisinesListDTO}" th:text="${cuisine.cuisine}"
+                                                    th:value="${cuisine.cuisine}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <input id="restaurant_role_id" name="role_id" type="hidden" value="2">
+                                <div class="row mt-3">
+                                    <button class="btn btn-info" role="button" type="submit">Register</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>

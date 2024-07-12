@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
+import pl.Aevise.SupperSpeed.api.controller.exception.IncorrectOpeningHourException;
 import pl.Aevise.SupperSpeed.api.controller.utils.PaginationAndSortingUtils;
 import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
@@ -27,6 +28,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static pl.Aevise.SupperSpeed.api.controller.CreateAccountController.ACCOUNT_EXIST;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.clientEntity1;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.restaurantEntity1;
@@ -79,7 +81,7 @@ class CreateAccountControllerMockitoTest {
         String result = createAccountController.createClient(supperUserDTO, clientDTO, roleId, password);
 
         //then
-        assertEquals(result, "/create/exist");
+        assertEquals(result, "redirect:" + ACCOUNT_EXIST + "?email=" + supperUserDTO.getEmail());
     }
 
     @Test
@@ -106,18 +108,19 @@ class CreateAccountControllerMockitoTest {
         //given
         SupperUserDTO supperUserDTO = supperUserDTO1();
         SupperUser supperUser = POJOFixtures.supperUser4();
+        String email = supperUserDTO.getEmail();
         RestaurantDTO restaurantDTO = restaurantDTO1();
         String cuisine = cuisineDTO1().getCuisine();
         String roleId = "1";
         String password = "pass";
 
         //when
-        when(userService.findUserByEmail(supperUserDTO.getEmail())).thenReturn(Optional.of(supperUser));
+        when(userService.findUserByEmail(email)).thenReturn(Optional.of(supperUser));
 
         String result = createAccountController.createRestaurant(supperUserDTO, restaurantDTO, roleId, password, cuisine);
 
         //then
-        assertEquals(result, "/create/exist");
+        assertEquals(result, "redirect:" + ACCOUNT_EXIST + "?email=" + supperUserDTO.getEmail());
     }
 
     @Test
@@ -128,7 +131,7 @@ class CreateAccountControllerMockitoTest {
         String cuisine = cuisineDTO1().getCuisine();
         String roleId = "1";
         String password = "pass";
-        String expectedErrorMessage = "Time error open hour shouldn't be after closing hour";
+        String expectedErrorMessage = "Open hour shouldn't be after closing hour";
 
         restaurantDTO.setCloseHour(LocalTime.MIDNIGHT);
         restaurantDTO.setOpenHour(LocalTime.NOON);
@@ -136,7 +139,7 @@ class CreateAccountControllerMockitoTest {
         //when
         when(userService.findUserByEmail(supperUserDTO.getEmail())).thenReturn(Optional.empty());
 
-        RuntimeException expectedException = assertThrows(RuntimeException.class,
+        RuntimeException expectedException = assertThrows(IncorrectOpeningHourException.class,
                 () -> createAccountController.createRestaurant(supperUserDTO, restaurantDTO, roleId, password, cuisine));
 
         //then

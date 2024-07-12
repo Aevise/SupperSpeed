@@ -1,5 +1,6 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import pl.Aevise.SupperSpeed.api.controller.exception.IncorrectOpeningHourException;
 import pl.Aevise.SupperSpeed.api.controller.utils.PaginationAndSortingUtils;
 import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
 import pl.Aevise.SupperSpeed.api.dto.CuisineDTO;
@@ -18,6 +21,7 @@ import pl.Aevise.SupperSpeed.business.ClientService;
 import pl.Aevise.SupperSpeed.business.CuisineService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.UserService;
+import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.AddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
@@ -28,6 +32,7 @@ import pl.Aevise.SupperSpeed.infrastructure.security.dto.SupperUserDTO;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -61,13 +66,13 @@ public class CreateAccountController {
 
     @PostMapping(CREATE_ACCOUNT_USER)
     String createClient(
-            @ModelAttribute SupperUserDTO supperUserDTO,
-            @ModelAttribute ClientDTO clientDTO,
+            @Valid @ModelAttribute SupperUserDTO supperUserDTO,
+            @Valid @ModelAttribute ClientDTO clientDTO,
             @RequestParam("role_id") String role_id,
             @RequestParam("password") String password
     ) {
         if (checkIfUserExist(supperUserDTO.getEmail())) {
-            return ACCOUNT_EXIST;
+            return "redirect:" + ACCOUNT_EXIST + "?email=" + supperUserDTO.getEmail();
         }
 
         clientService.createClient(
@@ -84,18 +89,19 @@ public class CreateAccountController {
 
     @PostMapping(CREATE_ACCOUNT_RESTAURANT)
     String createRestaurant(
-            @ModelAttribute SupperUserDTO supperUserDTO,
-            @ModelAttribute RestaurantDTO restaurantDTO,
+            @Valid @ModelAttribute SupperUserDTO supperUserDTO,
+            @Valid @ModelAttribute RestaurantDTO restaurantDTO,
             @RequestParam("role_id") String role_id,
             @RequestParam("password") String password,
             @RequestParam("cuisine") String cuisine
     ) {
         if (checkIfUserExist(supperUserDTO.getEmail())) {
-            return ACCOUNT_EXIST;
+            return "redirect:" + ACCOUNT_EXIST + "?email=" + supperUserDTO.getEmail();
+
         }
 
         if (restaurantDTO.getOpenHour().isAfter(restaurantDTO.getCloseHour())) {
-            throw new RuntimeException("Time error open hour shouldn't be after closing hour");
+            throw new IncorrectOpeningHourException("Open hour shouldn't be after closing hour");
         }
 
 
@@ -110,6 +116,15 @@ public class CreateAccountController {
         );
 
         return "redirect:" + CREATE_ACCOUNT_PAGE;
+    }
+
+    @GetMapping(ACCOUNT_EXIST)
+    String getAccountExistPage(
+            Model model,
+            @RequestParam String email
+    ) {
+        model.addAttribute("email", email);
+        return "account_exist";
     }
 
     private ClientEntity createClientEntity(

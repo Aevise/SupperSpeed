@@ -25,6 +25,16 @@ public class DTOFixtures {
                 .build();
     }
 
+    public static SupperUserDTO supperUserDTO2() {
+        return SupperUserDTO.builder()
+                .supperUserId(1)
+                .email(TEST_CLIENT_EMAIL_1)
+                .active(true)
+                .creationDateTime(OffsetDateTime.of(2020, 10, 10, 10, 0, 0, 0, ZoneOffset.UTC))
+                .lastLoginDateTime(OffsetDateTime.of(2020, 10, 10, 10, 0, 0, 0, ZoneOffset.UTC))
+                .build();
+    }
+
     public static ClientDTO clientDTO1() {
         return ClientDTO.builder()
                 .id(client1().getId())
