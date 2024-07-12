@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,15 +21,16 @@ import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.DeliveryAddressService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
+import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.util.List;
 
 @Controller
 @AllArgsConstructor
 public class DeliveryAddressesController {
-    private final String SHOW_DELIVERY_ADDRESSES = "/restaurant/profile/delivery-addresses";
-    private final String REMOVE_DELIVERY_ADDRESS = "/restaurant/profile/delivery-addresses/remove";
-    private final String ADD_DELIVERY_ADDRESS = "/restaurant/profile/delivery-addresses/add";
+    public static final String SHOW_DELIVERY_ADDRESSES = "/restaurant/profile/delivery-addresses";
+    public static final String REMOVE_DELIVERY_ADDRESS = "/restaurant/profile/delivery-addresses/remove";
+    public static final String ADD_DELIVERY_ADDRESS = "/restaurant/profile/delivery-addresses/add";
 
     private final DeliveryAddressService deliveryAddressService;
 
@@ -94,9 +97,15 @@ public class DeliveryAddressesController {
             @RequestParam(name = "deliveryAddressId") Integer deliveryAddressId,
             @RequestParam(name = "restaurantId") Integer restaurantId
     ) {
-        deliveryAddressService.removeDeliveryAddress(deliveryAddressId, restaurantId);
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
+        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+            deliveryAddressService.removeDeliveryAddress(deliveryAddressId, restaurantId);
 
-        return "redirect:" + SHOW_DELIVERY_ADDRESSES;
+            return "redirect:" + SHOW_DELIVERY_ADDRESSES;
+        }
+        throw new AccessDeniedException("You do not have the required authority to view this page.");
     }
 
     @PostMapping(ADD_DELIVERY_ADDRESS)
@@ -104,9 +113,14 @@ public class DeliveryAddressesController {
             DeliveryAddressDTO deliveryAddressDTO,
             @RequestParam(name = "restaurantId") Integer restaurantId
     ) {
-
-        deliveryAddressService.addDeliveryAddress(deliveryAddressDTO, restaurantId);
-        return "redirect:" + SHOW_DELIVERY_ADDRESSES;
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
+        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+            deliveryAddressService.addDeliveryAddress(deliveryAddressDTO, restaurantId);
+            return "redirect:" + SHOW_DELIVERY_ADDRESSES;
+        }
+        throw new AccessDeniedException("You do not have the required authority to view this page.");
     }
 
 
