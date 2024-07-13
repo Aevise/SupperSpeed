@@ -16,7 +16,9 @@
 
 <div class="container">
     <div class="row">
-        <div class="col text-center font-weight-bold display-4"
+        <div th:if="${opinions.size() <= 0}" class="col text-center font-weight-bold display-4"
+             th:text="'Restaurant ' + *{restaurant.restaurantName} + ' has not been rated yet!'"></div>
+        <div th:unless="${opinions.size() <= 0}" class="col text-center font-weight-bold display-4"
              th:text="'Opinions about ' + *{restaurant.restaurantName} + ':'"></div>
         <hr class="hr"/>
     </div>
