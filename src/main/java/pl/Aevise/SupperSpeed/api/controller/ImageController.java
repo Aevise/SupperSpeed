@@ -32,8 +32,9 @@ public class ImageController {
     ) throws IOException {
         var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream().findFirst()
-                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
-        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."))
+                .getAuthority();
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
             imageHandlingService.uploadLogo(image.getBytes(), restaurantId, restaurantName);
 
             return "redirect:" + RESTAURANT_PROFILE;
@@ -51,8 +52,9 @@ public class ImageController {
     ) throws IOException {
         var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream().findFirst()
-                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
-        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."))
+                .getAuthority();
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
             imageHandlingService.uploadDishImage(image.getBytes(), dishId, dishName, restaurantName, restaurantId);
 
             return "redirect:" + RESTAURANT_MENU_EDIT;

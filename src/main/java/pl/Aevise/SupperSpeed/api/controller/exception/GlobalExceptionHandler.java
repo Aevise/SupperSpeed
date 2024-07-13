@@ -105,4 +105,14 @@ public class GlobalExceptionHandler {
         modelView.addObject("errorMessage", message);
         return modelView;
     }
+
+    @ExceptionHandler(IncorrectOrderStatus.class)
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ModelAndView handleException(IncorrectOrderStatus ex) {
+        String message = String.format("Error:\n[%s]", ex.getMessage());
+        log.error(message, ex);
+        ModelAndView modelView = new ModelAndView("error");
+        modelView.addObject("errorMessage", message);
+        return modelView;
+    }
 }

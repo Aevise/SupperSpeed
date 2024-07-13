@@ -73,10 +73,11 @@ public class ClientProfileController {
                     @RequestParam(required = false) String action
             ) {
 
-        var first = SecurityContextHolder.getContext()
+        var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream()
-                .findFirst().orElseThrow(()-> new AccessDeniedException("You do not have the required authority to view this page."));
-        if (!first.getAuthority().equals(AvailableRoles.CLIENT.name())) {
+                .findFirst().orElseThrow(()-> new AccessDeniedException("You do not have the required authority to view this page."))
+                .getAuthority();
+        if (!authority.equals(AvailableRoles.CLIENT.name())) {
             return "redirect:/";
         }
 

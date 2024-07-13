@@ -2,16 +2,21 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.Aevise.SupperSpeed.api.controller.exception.IncorrectOpeningHourException;
+import pl.Aevise.SupperSpeed.api.controller.exception.IncorrectOrderStatus;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
 import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
+import pl.Aevise.SupperSpeed.domain.exception.NotFoundException;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
@@ -64,28 +69,43 @@ public class OrderProcessingController {
             model.addAttribute("restaurantName", restaurantName);
             model.addAttribute("dishListDTO", dishListDTO);
             model.addAttribute("orderId", newOrder.getOrderId());
-            model.addAttribute("orderValue", orderValue);
+            model.addAttribute("orderValue", orderValue.toString());
             return "order_processing";
         }
-        return "error";
+        throw new NotFoundException("Restaurant menu");
     }
 
     @PostMapping(ORDER_PAYMENT)
     public String payForOrder(
             @RequestParam(value = "orderId") Integer orderId
     ) {
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to pay for this order."))
+                .getAuthority();
 
-        supperOrderService.updateOrderToPaid(orderId);
-        return "redirect:/orders";
+        if (authority.equals(AvailableRoles.CLIENT.name())) {
+            supperOrderService.updateOrderToPaid(orderId);
+            return "redirect:/orders";
+        }
+        throw new AccessDeniedException("You do not have the required authority to pay for this order.");
     }
 
     @PostMapping(PROCEED_ORDER)
     public String proceedOrder(
             @RequestParam(value = "orderId") Integer orderId
     ) {
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to proceed this order."))
+                .getAuthority();
 
-        supperOrderService.proceedOrder(orderId);
-        return "redirect:/orders";
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            supperOrderService.proceedOrder(orderId);
+            return "redirect:/orders";
+        }
+        throw new AccessDeniedException("You do not have the required authority to proceed this order.");
+
     }
 
     @PostMapping(CANCEL_ORDER)
@@ -94,15 +114,23 @@ public class OrderProcessingController {
             @RequestParam(value = "statusId") Integer statusId,
             @RequestParam(value = "orderDate") String orderDate
     ) {
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to cancel this order."))
+                .getAuthority();
 
-        if (statusId > 2) {
-            return "error";
-        }
+        if(authority.equals(AvailableRoles.RESTAURANT.name()) || authority.equals(AvailableRoles.CLIENT.name())) {
+            if (statusId > 2) {
+                throw new IncorrectOrderStatus("Order with this status can not be cancelled");
+            }
 
-        if (!checkIfMoreThan20MinutesPassed(orderDate)) {
-            supperOrderService.cancelOrder(orderId);
+            if (!checkIfMoreThan20MinutesPassed(orderDate)) {
+                supperOrderService.cancelOrder(orderId);
+                return "redirect:/orders";
+            }
+            throw new IncorrectOrderStatus("More than 20 minutes passed. Order can not be cancelled");
         }
-        return "redirect:/orders";
+        throw new AccessDeniedException("You do not have the required authority to cancel this order.");
     }
 
     private boolean checkIfMoreThan20MinutesPassed(String orderDate) {
