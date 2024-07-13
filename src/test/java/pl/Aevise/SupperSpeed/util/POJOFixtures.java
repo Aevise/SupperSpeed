@@ -107,4 +107,11 @@ public class POJOFixtures {
                 .orderDateTime(OffsetDateTime.now())
                 .build();
         }
+
+        public static StatusList statusList1(){
+        return StatusList.builder()
+                .statusId(1)
+                .description("NEW")
+                .build();
+        }
     }

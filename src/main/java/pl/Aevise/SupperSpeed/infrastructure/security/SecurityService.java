@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import pl.Aevise.SupperSpeed.api.controller.exception.UserNotFoundException;
 
 import java.util.Optional;
 
@@ -33,6 +34,6 @@ public class SecurityService {
 
         log.error("Security error, could not get user Authorities from Spring Security Context Holder");
 
-        throw new RuntimeException();
+        throw new UserNotFoundException("Authorities not found");
     }
 }

@@ -240,5 +240,4 @@ public class DTOFixtures {
                 .responseDateTime(OffsetDateTime.of(2020, 12, 10, 10, 10, 10, 10, ZoneOffset.UTC).toString())
                 .build();
     }
-
-}
+    }
