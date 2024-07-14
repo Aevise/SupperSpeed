@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.ExtendedModelMap;
+import pl.Aevise.SupperSpeed.api.controller.exception.UserNotFoundException;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOGO_HEIGHT;
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOGO_WIDTH;
@@ -53,14 +55,16 @@ class RestaurantMenuControllerMockitoTest {
         RestaurantDTO restaurantDTO = restaurantDTO1();
         int restaurantId = -2;
         String restaurantName = restaurantDTO.getRestaurantName();
+        String expectedErrorMessage = "Wrong identification provided. User Not Found.";
 
         //when
         ExtendedModelMap model = new ExtendedModelMap();
 
-        String result = restaurantMenuController.getRestaurantMenu(restaurantId, restaurantName, model);
+        UserNotFoundException expectedException = assertThrows(UserNotFoundException.class,
+                () -> restaurantMenuController.getRestaurantMenu(restaurantId, restaurantName, model));
 
         //then
-        assertThat(result).isNotNull().isEqualTo("error");
+        assertThat(expectedErrorMessage).isEqualTo(expectedException.getMessage());
     }
 
     @Test

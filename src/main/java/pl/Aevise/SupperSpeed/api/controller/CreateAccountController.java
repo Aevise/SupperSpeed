@@ -52,9 +52,6 @@ public class CreateAccountController {
     String getAccountCreationForm(
             Model model
     ) {
-        var authority = SecurityContextHolder.getContext()
-                .getAuthentication().getAuthorities().stream().toList();
-        SecurityContext context = SecurityContextHolder.getContext();
         List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
         model.addAttribute("cuisinesListDTO", cuisines);
 

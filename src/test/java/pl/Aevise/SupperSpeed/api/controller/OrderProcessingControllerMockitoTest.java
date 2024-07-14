@@ -119,6 +119,6 @@ class OrderProcessingControllerMockitoTest {
         assertThat(model.get("restaurantName")).isNotNull().isEqualTo(restaurantName);
         assertThat(model.get("dishListDTO")).isNotNull().isEqualTo(dishes);
         assertThat(model.get("orderId")).isNotNull().isEqualTo(order.getOrderId());
-        assertThat(model.get("orderValue")).isNotNull().isEqualTo(BigDecimal.ONE);
+        assertThat(model.get("orderValue")).isNotNull().isEqualTo(BigDecimal.ONE.toString());
     }
 }
