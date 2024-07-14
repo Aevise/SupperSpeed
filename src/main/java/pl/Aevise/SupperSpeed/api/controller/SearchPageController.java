@@ -28,7 +28,7 @@ import java.util.TreeMap;
 @AllArgsConstructor
 public class SearchPageController {
 
-    private static final String SEARCH_PAGE = "/search";
+    public static final String SEARCH_PAGE = "/search";
 
     private final SecurityService securityService;
 
