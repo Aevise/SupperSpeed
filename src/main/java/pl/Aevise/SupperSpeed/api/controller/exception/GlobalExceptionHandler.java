@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ModelAndView handleException(AccessDeniedException ex){
+    public ModelAndView handleException(AccessDeniedException ex) {
         String message = String.format("Error:\n[%s]", ex.getMessage());
         log.error(message, ex);
         ModelAndView modelView = new ModelAndView("error");
@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ModelAndView handleException(UserNotFoundException ex){
+    public ModelAndView handleException(UserNotFoundException ex) {
         String message = String.format("Error:\n[%s]", ex.getMessage());
         log.error(message, ex);
         ModelAndView modelView = new ModelAndView("error");

@@ -24,7 +24,7 @@ public class DishDTO {
     Boolean availability;
     Boolean isHidden;
 
-    public final Map<String, String> asMap(){
+    public final Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
         ofNullable(dishId).ifPresent(value -> result.put("dishId", dishId.toString()));
         ofNullable(name).ifPresent(value -> result.put("name", name));

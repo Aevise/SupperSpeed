@@ -64,6 +64,15 @@ class DeliveryAddressesControllerWebMvcTest {
     @MockBean
     private RestaurantService restaurantService;
 
+    public static Stream<Arguments> checkThatYouCanGetDeliveryAddresses() {
+        return Stream.of(
+                Arguments.of("0", "asc", "0", "asc"),
+                Arguments.of("0", "asc", "0", "desc"),
+                Arguments.of("0", "desc", "0", "asc"),
+                Arguments.of("0", "desc", "0", "desc")
+        );
+    }
+
     @ParameterizedTest
     @MethodSource
     void checkThatYouCanGetDeliveryAddresses(
@@ -141,15 +150,6 @@ class DeliveryAddressesControllerWebMvcTest {
                 .andExpect(model().attributeExists("EAPage"))
                 .andExpect(model().attribute("EAPage", exiAdrPage));
 
-    }
-
-    public static Stream<Arguments> checkThatYouCanGetDeliveryAddresses() {
-        return Stream.of(
-                Arguments.of("0", "asc", "0", "asc"),
-                Arguments.of("0", "asc", "0", "desc"),
-                Arguments.of("0", "desc", "0", "asc"),
-                Arguments.of("0", "desc", "0", "desc")
-        );
     }
 
     @Test

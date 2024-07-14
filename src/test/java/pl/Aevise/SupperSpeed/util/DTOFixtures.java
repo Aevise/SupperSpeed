@@ -234,11 +234,11 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static RestaurantResponseDTO restaurantResponseDTO1(){
+    public static RestaurantResponseDTO restaurantResponseDTO1() {
         return RestaurantResponseDTO.builder()
                 .restaurantResponseId(1)
                 .description("test restaurant response 1")
                 .responseDateTime(OffsetDateTime.of(2020, 12, 10, 10, 10, 10, 10, ZoneOffset.UTC).toString())
                 .build();
     }
-    }
+}

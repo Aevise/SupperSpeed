@@ -1,15 +1,12 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.Aevise.SupperSpeed.api.controller.exception.UserNotFoundException;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantResponseDTO;
 import pl.Aevise.SupperSpeed.api.dto.UserRatingDTO;
 import pl.Aevise.SupperSpeed.business.RestaurantResponseService;
@@ -35,8 +32,8 @@ public class CommentsController {
     ) {
         var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream().findFirst()
-                .orElseThrow(()-> new AccessDeniedException("You do not have the required authority to view this page."));
-        if(authority.getAuthority().equals(AvailableRoles.CLIENT.name())){
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
+        if (authority.getAuthority().equals(AvailableRoles.CLIENT.name())) {
             userRatingService.saveNewComment(userRatingDTO, orderId);
 
             return "redirect:" + SUPPER_SPEED_ORDERS_BROWSER;
@@ -51,8 +48,8 @@ public class CommentsController {
     ) {
         var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream().findFirst()
-                .orElseThrow(()-> new AccessDeniedException("You do not have the required authority to view this page."));
-        if(authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
+        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
             restaurantResponseService.saveRestaurantResponse(restaurantResponseDTO, userRatingId);
             return "redirect:" + SUPPER_SPEED_ORDERS_BROWSER;
         }

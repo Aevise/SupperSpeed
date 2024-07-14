@@ -23,7 +23,7 @@ public class DeliveryAddressDTO {
     String postalCode;
     String streetName;
 
-    public final Map<String, String> asMap(){
+    public final Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
         ofNullable(deliveryAddressId).ifPresent(value -> result.put("deliveryAddressId", deliveryAddressId.toString()));
         ofNullable(country).ifPresent(value -> result.put("country", country));

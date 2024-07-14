@@ -15,17 +15,29 @@ import pl.Aevise.SupperSpeed.business.UserService;
 
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static pl.Aevise.SupperSpeed.util.Constants.*;
+import static pl.Aevise.SupperSpeed.util.Constants.TEST_CLIENT_EMAIL_1;
+import static pl.Aevise.SupperSpeed.util.Constants.testPassword;
 
 @ExtendWith(MockitoExtension.class)
 class UserDeleteControllerMockitoTest {
+    @InjectMocks
+    UserDeleteController userDeleteController;
     @Mock
     private UserService userService;
 
-    @InjectMocks
-    UserDeleteController userDeleteController;
+    private static Stream<Arguments> checkThatYouCanCorrectlyDeleteUser() {
+        return Stream.of(
+                Arguments.of("yes", "CLIENT", "redirect:/logout"),
+                Arguments.of("yes", "RESTAURANT", "redirect:/logout")
+        );
+    }
+
+    private static Stream<Arguments> checkThatYouAreCorrectlyRedirectedIfYouDoNotDeleteUser() {
+        return Stream.of(
+                Arguments.of("no", "RESTAURANT", "redirect:/restaurant/profile"),
+                Arguments.of("no", "CLIENT", "redirect:/client/profile")
+        );
+    }
 
     @ParameterizedTest
     @MethodSource
@@ -42,13 +54,6 @@ class UserDeleteControllerMockitoTest {
         Assertions.assertEquals(result, expectedResult);
     }
 
-    private static Stream<Arguments> checkThatYouCanCorrectlyDeleteUser(){
-        return Stream.of(
-                Arguments.of("yes", "CLIENT", "redirect:/logout"),
-                Arguments.of("yes", "RESTAURANT", "redirect:/logout")
-        );
-    }
-
     @ParameterizedTest
     @MethodSource
     void checkThatYouAreCorrectlyRedirectedIfYouDoNotDeleteUser(String confirmation, String authority, String expectedResult) {
@@ -60,12 +65,5 @@ class UserDeleteControllerMockitoTest {
 
         //then
         Assertions.assertEquals(result, expectedResult);
-    }
-
-    private static Stream<Arguments> checkThatYouAreCorrectlyRedirectedIfYouDoNotDeleteUser(){
-        return Stream.of(
-                Arguments.of("no", "RESTAURANT", "redirect:/restaurant/profile"),
-                Arguments.of("no", "CLIENT", "redirect:/client/profile")
-        );
     }
 }

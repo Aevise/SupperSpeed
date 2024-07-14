@@ -1,13 +1,9 @@
 package pl.Aevise.SupperSpeed.util;
 
 import lombok.experimental.UtilityClass;
-import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.domain.*;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
 import java.time.OffsetDateTime;
 
 import static pl.Aevise.SupperSpeed.util.Constants.*;
@@ -66,14 +62,14 @@ public class POJOFixtures {
                 .build();
     }
 
-    public static DeliveryAddressList deliveryAddressList1(){
+    public static DeliveryAddressList deliveryAddressList1() {
         return DeliveryAddressList.builder()
                 .restaurantId(restaurant1().getRestaurantId())
                 .deliveryAddress(deliveryAddress1())
                 .build();
     }
 
-    public static DeliveryAddressList deliveryAddressList2(){
+    public static DeliveryAddressList deliveryAddressList2() {
         return DeliveryAddressList.builder()
                 .restaurantId(restaurant1().getRestaurantId())
                 .deliveryAddress(deliveryAddress2())
@@ -91,34 +87,34 @@ public class POJOFixtures {
                 .build();
     }
 
-        public static DeliveryAddress deliveryAddress2(){
-            return DeliveryAddress.builder()
-                    .deliveryAddressId(2)
-                    .country(POLAND)
-                    .city(WARSZAWA)
-                    .district("Targowek")
-                    .postalCode("12-345")
-                    .streetName("Test2")
-                    .build();
-        }
+    public static DeliveryAddress deliveryAddress2() {
+        return DeliveryAddress.builder()
+                .deliveryAddressId(2)
+                .country(POLAND)
+                .city(WARSZAWA)
+                .district("Targowek")
+                .postalCode("12-345")
+                .streetName("Test2")
+                .build();
+    }
 
-        public static SupperOrder supperOrder1(){
+    public static SupperOrder supperOrder1() {
         return SupperOrder.builder()
                 .orderId(1)
                 .client(client1())
                 .restaurant(restaurant1())
                 .orderDateTime(OffsetDateTime.now())
                 .build();
-        }
+    }
 
-        public static StatusList statusList1(){
+    public static StatusList statusList1() {
         return StatusList.builder()
                 .statusId(1)
                 .description("NEW")
                 .build();
-        }
+    }
 
-        public static Dish dish1(){
+    public static Dish dish1() {
         return Dish.builder()
                 .dishId(1)
                 .name("dish 1")
@@ -127,12 +123,12 @@ public class POJOFixtures {
                 .availability(true)
                 .isHidden(false)
                 .build();
-        }
+    }
 
-        public static DishCategory dishCategory1(){
+    public static DishCategory dishCategory1() {
         return DishCategory.builder()
                 .dishCategoryId(1)
                 .categoryName("dish category 1")
                 .build();
-        }
     }
+}

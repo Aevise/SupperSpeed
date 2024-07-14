@@ -30,6 +30,8 @@ import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
 @ExtendWith(MockitoExtension.class)
 class SearchPageControllerMockitoTest {
 
+    @InjectMocks
+    SearchPageController searchPageController;
     @Mock
     private SecurityService securityService;
     @Mock
@@ -40,9 +42,6 @@ class SearchPageControllerMockitoTest {
     private AddressService addressService;
     @Mock
     private SupperOrderService supperOrderService;
-
-    @InjectMocks
-    SearchPageController searchPageController;
 
     @Test
     void checkThatYouCanGetSpecificRestaurantsByCuisine() {

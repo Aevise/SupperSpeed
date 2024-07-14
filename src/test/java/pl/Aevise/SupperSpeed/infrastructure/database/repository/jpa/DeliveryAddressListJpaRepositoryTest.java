@@ -7,17 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.test.context.TestPropertySource;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.util.List;
 
@@ -42,7 +38,7 @@ class DeliveryAddressListJpaRepositoryTest {
     }
 
     @BeforeEach
-    void bindRestaurantsWithDeliveryAddresses(){
+    void bindRestaurantsWithDeliveryAddresses() {
         var restaurants = List.of(
                 restaurantEntity1(),
                 restaurantEntity2()

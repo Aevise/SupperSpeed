@@ -8,11 +8,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.*;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

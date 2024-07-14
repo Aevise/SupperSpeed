@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static pl.Aevise.SupperSpeed.api.controller.SearchPageController.SEARCH_PAGE;
 import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
-import static pl.Aevise.SupperSpeed.util.DTOFixtures.cuisineDTO2;
 
 @WebMvcTest(controllers = SearchPageController.class)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -89,11 +88,11 @@ class SearchPageControllerMockMvcTest {
         when(restaurantService.findCuisinesByDeliveryAddress_CityAndStreetName(city, streetName)).thenReturn(cuisinesInArea);
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(SEARCH_PAGE)
-                        .param("city", city)
-                        .param("streetName", streetName)
-                        .param("cuisine", cuisine)
-                        .param("currDirection", currDirection)
-                        .param("currPage", Integer.toString(currPage))
+                .param("city", city)
+                .param("streetName", streetName)
+                .param("cuisine", cuisine)
+                .param("currDirection", currDirection)
+                .param("currPage", Integer.toString(currPage))
                 .with(SecurityMockMvcRequestPostProcessors.csrf()));
 
         //then

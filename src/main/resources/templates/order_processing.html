@@ -37,7 +37,9 @@
 
     <div class="row">
         <div class="col">
-            <a class="btn btn-info" role="button" th:href="@{/menu/{restaurantId}/{restaurantName}(restaurantId=${restaurantId}, restaurantName=${restaurantName})}">Go back</a>
+            <a class="btn btn-info" role="button"
+               th:href="@{/menu/{restaurantId}/{restaurantName}(restaurantId=${restaurantId}, restaurantName=${restaurantName})}">Go
+                back</a>
         </div>
         <div class="col">
             <form method="get" th:action="@{/client/profile}">

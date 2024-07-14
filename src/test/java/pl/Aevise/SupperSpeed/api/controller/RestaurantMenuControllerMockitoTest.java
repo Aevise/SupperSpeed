@@ -33,6 +33,8 @@ import static pl.Aevise.SupperSpeed.util.POJOFixtures.restaurant1;
 @ExtendWith(MockitoExtension.class)
 class RestaurantMenuControllerMockitoTest {
 
+    @InjectMocks
+    RestaurantMenuController restaurantMenuController;
     @Mock
     private DishService dishService;
     @Mock
@@ -45,9 +47,6 @@ class RestaurantMenuControllerMockitoTest {
     private RestaurantMapper restaurantMapper;
     @Mock
     private SecurityService securityService;
-
-    @InjectMocks
-    RestaurantMenuController restaurantMenuController;
 
     @Test
     void checkThatShouldReturnErrorPageWhenUserWithNegativeIdIsSelected() {

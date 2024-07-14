@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.Aevise.SupperSpeed.api.controller.exception.IncorrectOpeningHourException;
 import pl.Aevise.SupperSpeed.api.controller.exception.IncorrectOrderStatus;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
@@ -119,7 +118,7 @@ public class OrderProcessingController {
                 .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to cancel this order."))
                 .getAuthority();
 
-        if(authority.equals(AvailableRoles.RESTAURANT.name()) || authority.equals(AvailableRoles.CLIENT.name())) {
+        if (authority.equals(AvailableRoles.RESTAURANT.name()) || authority.equals(AvailableRoles.CLIENT.name())) {
             if (statusId > 2) {
                 throw new IncorrectOrderStatus("Order with this status can not be cancelled");
             }

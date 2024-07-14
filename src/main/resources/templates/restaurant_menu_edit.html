@@ -25,7 +25,7 @@
         <thead>
         <tr class="table-primary">
             <form method="post" th:action="@{/restaurant/profile/menu/updateCategory}">
-                <th colspan="5" style="text-align: center;" >
+                <th colspan="5" style="text-align: center;">
                     <label>
                         <input th:name="categoryName" th:value="${category.getKey().get(0).categoryName}" type="text"/>
                     </label>

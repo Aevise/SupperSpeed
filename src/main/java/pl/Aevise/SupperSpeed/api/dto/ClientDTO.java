@@ -28,7 +28,7 @@ public class ClientDTO {
     Integer supperUserId;
     AddressDTO addressDTO;
 
-    public final Map<String, String> asMap(){
+    public final Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
         ofNullable(id).ifPresent(value -> result.put("id", value.toString()));
         ofNullable(name).ifPresent(value -> result.put("name", name));

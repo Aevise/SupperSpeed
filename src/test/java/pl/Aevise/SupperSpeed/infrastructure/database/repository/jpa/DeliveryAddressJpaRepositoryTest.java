@@ -9,16 +9,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.deliveryAddressEntity1;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
@@ -47,9 +44,9 @@ class DeliveryAddressJpaRepositoryTest {
                 .findByAllFieldsExceptId("NON", "NON", "NON", "NON", "NON");
         DeliveryAddressEntity testDeliveryAddressEntity1 = null, testDeliveryAddressEntity2 = null, testDeliveryAddressEntity3 = null;
 
-        if(fetchedAddress1.isPresent()) testDeliveryAddressEntity1 = fetchedAddress1.get();
-        if(fetchedAddress2.isPresent()) testDeliveryAddressEntity2 = fetchedAddress2.get();
-        if(fetchedAddress3.isPresent()) testDeliveryAddressEntity3 = fetchedAddress3.get();
+        if (fetchedAddress1.isPresent()) testDeliveryAddressEntity1 = fetchedAddress1.get();
+        if (fetchedAddress2.isPresent()) testDeliveryAddressEntity2 = fetchedAddress2.get();
+        if (fetchedAddress3.isPresent()) testDeliveryAddressEntity3 = fetchedAddress3.get();
 
         //then
         assertThat(testDeliveryAddressEntity1).isNotNull().isIn(deliveryAddresses).isEqualTo(deliveryAddressEntity1());

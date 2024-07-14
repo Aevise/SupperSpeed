@@ -2,8 +2,6 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,13 +33,13 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateAccountController {
 
-    //TODO zmienić potem na false i dodac aktywowanie uzytkownika za pomoca maila
-    static final boolean userDefaultActive = true;
-    static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     public static final String CREATE_ACCOUNT_PAGE = "/create";
     public static final String CREATE_ACCOUNT_USER = "/create/user";
     public static final String CREATE_ACCOUNT_RESTAURANT = "/create/restaurant";
     public static final String ACCOUNT_EXIST = "/create/exist";
+    //TODO zmienić potem na false i dodac aktywowanie uzytkownika za pomoca maila
+    static final boolean userDefaultActive = true;
+    static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final UserService userService;
     private final ClientService clientService;
     private final RestaurantService restaurantService;

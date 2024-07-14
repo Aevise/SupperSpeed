@@ -36,8 +36,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.Aevise.SupperSpeed.api.controller.MainPageController.MAIN_PAGE;
-import static pl.Aevise.SupperSpeed.util.Constants.TEST_RESTAURANT_EMAIL_1;
-import static pl.Aevise.SupperSpeed.util.Constants.testPassword;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.cuisineDTO1;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.cuisineDTO2;
 
@@ -56,6 +54,13 @@ class MainPageControllerWebMvcTest {
     private CuisineService cuisineService;
     @MockBean
     private SecurityService securityService;
+
+    public static Stream<Arguments> checkThatProfileButtonAppearsForLoggedUser() {
+        return Stream.of(
+                Arguments.of("CLIENT", "<a class=\"btn btn-info float-end\" role=\"button\" href=\"/client/profile\">Profile</a>"),
+                Arguments.of("RESTAURANT", "<a class=\"btn btn-info float-end\" role=\"button\" href=\"/restaurant/profile\">Profile</a>")
+        );
+    }
 
     @Test
     void checkThatYouCanGetMainPage() throws Exception {
@@ -169,12 +174,5 @@ class MainPageControllerWebMvcTest {
                 .andExpect(model().attributeExists("userRole"))
                 .andExpect(view().name("main_page"));
         assertThat(content).contains(expectedPartOfHTML);
-    }
-
-    public static Stream<Arguments> checkThatProfileButtonAppearsForLoggedUser() {
-        return Stream.of(
-                Arguments.of("CLIENT", "<a class=\"btn btn-info float-end\" role=\"button\" href=\"/client/profile\">Profile</a>"),
-                Arguments.of("RESTAURANT", "<a class=\"btn btn-info float-end\" role=\"button\" href=\"/restaurant/profile\">Profile</a>")
-        );
     }
 }

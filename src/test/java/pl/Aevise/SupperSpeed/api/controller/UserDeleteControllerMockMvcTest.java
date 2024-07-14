@@ -39,6 +39,24 @@ class UserDeleteControllerMockMvcTest {
     @MockBean
     private final UserService userService;
 
+    public static Stream<String> checkThatYouCanGetDeletePage() {
+        return Stream.of("RESTAURANT", "CLIENT");
+    }
+
+    public static Stream<Arguments> checkThatYouAuthorizedUserCanDeleteProfile() {
+        return Stream.of(
+                Arguments.of("RESTAURANT", "yes"),
+                Arguments.of("CLIENT", "yes")
+        );
+    }
+
+    public static Stream<Arguments> checkThatYouAreRedirectedToCorrectProfileWhenDenyingProfileDeletion() {
+        return Stream.of(
+                Arguments.of("RESTAURANT", "no", "redirect:" + RESTAURANT_PROFILE),
+                Arguments.of("CLIENT", "no", "redirect:" + CLIENT_PROFILE)
+        );
+    }
+
     @Test
     @WithMockUser
     void checkThatExceptionIsThrownWhenYouTryToAccessDeletePageWithoutAuthority() throws Exception {
@@ -80,10 +98,6 @@ class UserDeleteControllerMockMvcTest {
                 .andExpect(view().name("delete"));
     }
 
-    public static Stream<String> checkThatYouCanGetDeletePage() {
-        return Stream.of("RESTAURANT", "CLIENT");
-    }
-
     @ParameterizedTest
     @MethodSource
     void checkThatYouAuthorizedUserCanDeleteProfile(
@@ -107,13 +121,6 @@ class UserDeleteControllerMockMvcTest {
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name("redirect:" + CLIENT_LOGOUT));
 
-    }
-
-    public static Stream<Arguments> checkThatYouAuthorizedUserCanDeleteProfile() {
-        return Stream.of(
-                Arguments.of("RESTAURANT", "yes"),
-                Arguments.of("CLIENT", "yes")
-        );
     }
 
     @ParameterizedTest
@@ -140,12 +147,5 @@ class UserDeleteControllerMockMvcTest {
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name(redirectURL));
 
-    }
-
-    public static Stream<Arguments> checkThatYouAreRedirectedToCorrectProfileWhenDenyingProfileDeletion() {
-        return Stream.of(
-                Arguments.of("RESTAURANT", "no", "redirect:" + RESTAURANT_PROFILE),
-                Arguments.of("CLIENT", "no", "redirect:" + CLIENT_PROFILE)
-        );
     }
 }

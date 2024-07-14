@@ -8,16 +8,14 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.clientEntity1;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.clientEntity2;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
@@ -27,6 +25,7 @@ import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 class ClientJpaRepositoryTest {
 
     private final ClientJpaRepository clientJpaRepository;
+
     @Test
     void findClientBySupperUserId() {
         //given
@@ -44,9 +43,9 @@ class ClientJpaRepositoryTest {
         Optional<ClientEntity> fetchedClient2 = clientJpaRepository.findBySupperUser_SupperUserId(savedClient2.getSupperUser().getSupperUserId());
         Optional<ClientEntity> fetchedClient3 = clientJpaRepository.findBySupperUser_SupperUserId(123456789);
         ClientEntity testClientEntity1 = null, testClientEntity2 = null, testClientEntity3 = null;
-        if(fetchedClient1.isPresent()) testClientEntity1 = fetchedClient1.get();
-        if(fetchedClient2.isPresent()) testClientEntity2 = fetchedClient2.get();
-        if(fetchedClient3.isPresent()) testClientEntity3 = fetchedClient3.get();
+        if (fetchedClient1.isPresent()) testClientEntity1 = fetchedClient1.get();
+        if (fetchedClient2.isPresent()) testClientEntity2 = fetchedClient2.get();
+        if (fetchedClient3.isPresent()) testClientEntity3 = fetchedClient3.get();
 
         //then
         assertThat(testClientEntity1).isNotNull().isInstanceOf(ClientEntity.class).isNotIn(clients);

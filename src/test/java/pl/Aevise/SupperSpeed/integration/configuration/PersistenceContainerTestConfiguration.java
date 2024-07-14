@@ -19,7 +19,7 @@ public class PersistenceContainerTestConfiguration {
 
     @Bean
     @Qualifier(POSTGRESQL)
-    PostgreSQLContainer<?> postgreSQLContainer(){
+    PostgreSQLContainer<?> postgreSQLContainer() {
         PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(POSTGRESQL_CONTAINER)
                 .withUsername(USERNAME)
                 .withPassword(PASSWORD);
@@ -30,7 +30,7 @@ public class PersistenceContainerTestConfiguration {
     }
 
     @Bean
-    DataSource dataSource(final PostgreSQLContainer<?> container){
+    DataSource dataSource(final PostgreSQLContainer<?> container) {
         return DataSourceBuilder.create()
                 .type(HikariDataSource.class)
                 .driverClassName(container.getDriverClassName())

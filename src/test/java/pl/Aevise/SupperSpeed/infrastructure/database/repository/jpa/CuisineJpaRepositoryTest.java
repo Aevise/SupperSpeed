@@ -14,7 +14,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.Aevise.SupperSpeed.util.Constants.CUISINES;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.cuisineEntity1;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.cuisineEntity2;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")

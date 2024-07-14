@@ -63,6 +63,24 @@ class OrderProcessingControllerWebMvcTest {
     @MockBean
     private SecurityService securityService;
 
+    public static Stream<Arguments> checkThatYouCanOrCanNotCancelOrderBasedOnOrderStatus() {
+        return Stream.of(
+                Arguments.of(false, OrderStatus.NEW.getStatusId()),
+                Arguments.of(false, OrderStatus.PAID.getStatusId()),
+                Arguments.of(true, OrderStatus.ACCEPTED.getStatusId()),
+                Arguments.of(true, OrderStatus.DELIVERY.getStatusId()),
+                Arguments.of(true, OrderStatus.REALIZED.getStatusId())
+        );
+    }
+
+    public static Stream<Arguments> checkThatYouCanNotCancelOrderCreatedMoreThan20MinutesAgo() {
+        return Stream.of(
+                Arguments.of(false, OffsetDateTime.now().minusMinutes(19)),
+                Arguments.of(false, OffsetDateTime.now().minusMinutes(20)),
+                Arguments.of(true, OffsetDateTime.now().minusMinutes(21))
+        );
+    }
+
     @Test
     @WithMockUser(username = TEST_RESTAURANT_EMAIL_1, authorities = "RESTAURANT")
     void checkThatYouCanNotPlaceOrderAsRestaurantClient() throws Exception {
@@ -297,16 +315,6 @@ class OrderProcessingControllerWebMvcTest {
         }
     }
 
-    public static Stream<Arguments> checkThatYouCanOrCanNotCancelOrderBasedOnOrderStatus() {
-        return Stream.of(
-                Arguments.of(false, OrderStatus.NEW.getStatusId()),
-                Arguments.of(false, OrderStatus.PAID.getStatusId()),
-                Arguments.of(true, OrderStatus.ACCEPTED.getStatusId()),
-                Arguments.of(true, OrderStatus.DELIVERY.getStatusId()),
-                Arguments.of(true, OrderStatus.REALIZED.getStatusId())
-        );
-    }
-
     @ParameterizedTest
     @MethodSource
     void checkThatYouCanNotCancelOrderCreatedMoreThan20MinutesAgo(
@@ -340,14 +348,6 @@ class OrderProcessingControllerWebMvcTest {
                     .andExpect(model().hasNoErrors())
                     .andExpect(view().name("redirect:/orders"));
         }
-    }
-
-    public static Stream<Arguments> checkThatYouCanNotCancelOrderCreatedMoreThan20MinutesAgo() {
-        return Stream.of(
-                Arguments.of(false, OffsetDateTime.now().minusMinutes(19)),
-                Arguments.of(false, OffsetDateTime.now().minusMinutes(20)),
-                Arguments.of(true, OffsetDateTime.now().minusMinutes(21))
-        );
     }
 
 //    public enum OrderStatus {

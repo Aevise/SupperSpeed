@@ -62,6 +62,13 @@ class RestaurantProfileControllerWebMvcTest {
     @MockBean
     private FileMigrationUtil fileMigrationUtil;
 
+    public static Stream<Arguments> checkThatYouCanSeeHideOrShowMyRestaurantButton() {
+        return Stream.of(
+                Arguments.of(false, "Show my restaurant"),
+                Arguments.of(true, "Hide my restaurant")
+        );
+    }
+
     @Test
     void checkThatYouCanGetRestaurantProfileWithoutUploadedLogo() throws Exception {
         //given
@@ -162,13 +169,6 @@ class RestaurantProfileControllerWebMvcTest {
                 .andExpect(model().hasNoErrors());
 
         assertThat(content).contains(expectedPartOfHTML);
-    }
-
-    public static Stream<Arguments> checkThatYouCanSeeHideOrShowMyRestaurantButton() {
-        return Stream.of(
-                Arguments.of(false, "Show my restaurant"),
-                Arguments.of(true, "Hide my restaurant")
-        );
     }
 
     @Test

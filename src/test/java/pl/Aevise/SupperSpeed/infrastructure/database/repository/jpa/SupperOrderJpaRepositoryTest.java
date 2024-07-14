@@ -10,20 +10,16 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
-import pl.Aevise.SupperSpeed.api.controller.utils.PaginationAndSortingUtils;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.buildDishesListEntity;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
@@ -38,6 +34,10 @@ class SupperOrderJpaRepositoryTest {
     private final ClientJpaRepository clientJpaRepository;
 
     private final SupperOrderJpaRepository supperOrderJpaRepository;
+
+    private static PageRequest buildPageRequestForRatedOrders() {
+        return PageRequest.of(0, 10, Sort.by("orderId").ascending());
+    }
 
     @BeforeEach
     void createDishesAndOrders() {
@@ -72,11 +72,6 @@ class SupperOrderJpaRepositoryTest {
                 buildDishesListEntity(savedDishes.get(1), order2)
         );
         dishesListJpaRepository.saveAllAndFlush(dishesList);
-    }
-
-
-    private static PageRequest buildPageRequestForRatedOrders() {
-            return PageRequest.of(0, 10, Sort.by("orderId").ascending());
     }
 
     @Test

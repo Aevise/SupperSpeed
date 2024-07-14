@@ -62,6 +62,9 @@ class RestaurantMenuEditionControllerMockMvcTest {
     @MockBean
     private ImageHandlingService imageHandlingService;
 
+    public static Stream<Boolean> checkThatYouCanCorrectlyUpdateDish() {
+        return Stream.of(false, true);
+    }
 
     @Test
     void checkThatYouCanGetRestaurantMenuEdition() throws Exception {
@@ -148,10 +151,6 @@ class RestaurantMenuEditionControllerMockMvcTest {
                 .andExpect(status().isFound())
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name("redirect:" + RESTAURANT_MENU_EDIT));
-    }
-
-    public static Stream<Boolean> checkThatYouCanCorrectlyUpdateDish() {
-        return Stream.of(false, true);
     }
 
     @Test

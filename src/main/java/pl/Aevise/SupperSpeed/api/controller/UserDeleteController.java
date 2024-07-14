@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.business.UserService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
