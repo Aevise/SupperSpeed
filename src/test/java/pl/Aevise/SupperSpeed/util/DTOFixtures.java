@@ -177,6 +177,7 @@ public class DTOFixtures {
     public static DishDTO dishDTO1() {
         return DishDTO.builder()
                 .dishId(1)
+                .description("test dishDTO 1")
                 .name(dishEntity1().getName())
                 .price(dishEntity1().getPrice())
                 .availability(dishEntity1().getAvailability())

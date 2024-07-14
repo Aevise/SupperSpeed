@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import pl.Aevise.SupperSpeed.api.controller.exception.UserNotFoundException;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishCategoryDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
@@ -44,7 +45,7 @@ public class RestaurantMenuController {
                     Model model
             ) {
         if (restaurantId <= 0) {
-            return ERROR;
+            throw new UserNotFoundException("Wrong identification provided. User Not Found.");
         }
         List<DishCategoryDTO> dishCategories = dishListService.getDishCategoriesByRestaurantId(restaurantId);
 
