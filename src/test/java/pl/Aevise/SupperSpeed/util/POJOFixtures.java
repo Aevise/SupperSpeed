@@ -3,7 +3,10 @@ package pl.Aevise.SupperSpeed.util;
 import lombok.experimental.UtilityClass;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.domain.*;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 
@@ -112,6 +115,24 @@ public class POJOFixtures {
         return StatusList.builder()
                 .statusId(1)
                 .description("NEW")
+                .build();
+        }
+
+        public static Dish dish1(){
+        return Dish.builder()
+                .dishId(1)
+                .name("dish 1")
+                .description("I am dish 1")
+                .price(BigDecimal.TEN)
+                .availability(true)
+                .isHidden(false)
+                .build();
+        }
+
+        public static DishCategory dishCategory1(){
+        return DishCategory.builder()
+                .dishCategoryId(1)
+                .categoryName("dish category 1")
                 .build();
         }
     }

@@ -3,7 +3,6 @@ package pl.Aevise.SupperSpeed.api.controller;
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,19 +24,15 @@ import pl.Aevise.SupperSpeed.business.ImageHandlingService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
-import pl.Aevise.SupperSpeed.util.DTOFixtures;
-import pl.Aevise.SupperSpeed.util.POJOFixtures;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static pl.Aevise.SupperSpeed.api.controller.RestaurantMenuController.RESTAURANT_MENU;
 import static pl.Aevise.SupperSpeed.util.Constants.TEST_RESTAURANT_EMAIL_1;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
-import static pl.Aevise.SupperSpeed.util.POJOFixtures.*;
+import static pl.Aevise.SupperSpeed.util.POJOFixtures.restaurant1;
 
 @WebMvcTest(controllers = RestaurantMenuController.class)
 @AllArgsConstructor(onConstructor = @__(@Autowired))

@@ -1,7 +1,9 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.*;
 import pl.Aevise.SupperSpeed.domain.Dish;
+import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -75,36 +78,57 @@ public class RestaurantMenuEditionController {
     public String updateDish(
             @ModelAttribute DishDTO dishDTO
     ) {
-        if (dishDTO.getAvailability() == null) {
-            dishDTO.setAvailability(false);
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to update this dish."))
+                .getAuthority();
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            if (dishDTO.getAvailability() == null) {
+                dishDTO.setAvailability(false);
+            }
+            dishService.updateDish(dishDTO);
+            return "redirect:" + RESTAURANT_MENU_EDIT;
         }
-        dishService.updateDish(dishDTO);
-        return "redirect:" + RESTAURANT_MENU_EDIT;
+        throw new AccessDeniedException("You do not have the required authority to update this dish.");
     }
 
     @PostMapping(RESTAURANT_MENU_DELETE_DISH)
     public String deleteDish(
             @RequestParam(value = "dishId") Integer dishId
     ) {
-        dishService.deleteOrHideDishByDishId(dishId);
-        return "redirect:" + RESTAURANT_MENU_EDIT;
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to delete this dish."))
+                .getAuthority();
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            dishService.deleteOrHideDishByDishId(dishId);
+            return "redirect:" + RESTAURANT_MENU_EDIT;
+        }
+        throw new AccessDeniedException("You do not have the required authority to delete this dish.");
     }
 
     @PostMapping(RESTAURANT_MENU_DELETE_CATEGORY)
     public String deleteCategory(
             @RequestParam(value = "dishCategoryId") Integer categoryId
     ) {
-        List<Dish> allDishesByCategory = dishService.findAllByCategory(categoryId);
-        if (!allDishesByCategory.isEmpty()) {
-            var dishMapByPresenceInOrder = mapOrdersByPresenceInAnyOrder(allDishesByCategory);
-            dishService.deleteOrHideDishesMap(dishMapByPresenceInOrder);
-            dishCategoryService.deleteCategory(categoryId);
-        } else {
-            dishCategoryService.deleteCategory(categoryId);
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to delete this dish category."))
+                .getAuthority();
+
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            List<Dish> allDishesByCategory = dishService.findAllByCategory(categoryId);
+
+            if (!allDishesByCategory.isEmpty()) {
+                var dishMapByPresenceInOrder = mapOrdersByPresenceInAnyOrder(allDishesByCategory);
+                dishService.deleteOrHideDishesMap(dishMapByPresenceInOrder);
+                dishCategoryService.deleteCategory(categoryId);
+            } else {
+                dishCategoryService.deleteCategory(categoryId);
+            }
+            return "redirect:" + RESTAURANT_MENU_EDIT;
         }
-
-
-        return "redirect:" + RESTAURANT_MENU_EDIT;
+        throw new AccessDeniedException("You do not have the required authority to delete this dish category.");
     }
 
     private Map<Boolean, List<Dish>> mapOrdersByPresenceInAnyOrder(List<Dish> allDishesByCategory) {
@@ -123,9 +147,17 @@ public class RestaurantMenuEditionController {
     public String updateCategory(
             @ModelAttribute DishCategoryDTO dishCategoryDTO
     ) {
-        dishCategoryService.updateCategory(dishCategoryDTO);
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to update this category."))
+                .getAuthority();
 
-        return "redirect:" + RESTAURANT_MENU_EDIT;
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            dishCategoryService.updateCategory(dishCategoryDTO);
+
+            return "redirect:" + RESTAURANT_MENU_EDIT;
+        }
+        throw new AccessDeniedException("You do not have the required authority to update this category.");
     }
 
     @PostMapping(RESTAURANT_MENU_ADD_CATEGORY)
@@ -133,9 +165,16 @@ public class RestaurantMenuEditionController {
             @RequestParam(value = "categoryName") String categoryName,
             @RequestParam(value = "restaurantId") String restaurantId
     ) {
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to add new category."))
+                .getAuthority();
 
-        dishCategoryService.addCategory(dishCategoryService.buildDishCategory(restaurantId, categoryName));
-        return "redirect:" + RESTAURANT_MENU_EDIT;
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            dishCategoryService.addCategory(dishCategoryService.buildDishCategory(restaurantId, categoryName));
+            return "redirect:" + RESTAURANT_MENU_EDIT;
+        }
+        throw new AccessDeniedException("You do not have the required authority to add new category.");
     }
 
     @PostMapping(RESTAURANT_MENU_ADD_DISH)
@@ -144,10 +183,16 @@ public class RestaurantMenuEditionController {
             @RequestParam(value = "restaurantId") Integer restaurantId,
             @RequestParam(value = "categoryId") Integer categoryId
     ) {
-        Dish dish = dishService.buildDish(dishDTO, restaurantId, categoryId);
-        dishService.addDish(dish);
-        return "redirect:" + RESTAURANT_MENU_EDIT;
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to add new dish."))
+                .getAuthority();
+
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            Dish dish = dishService.buildDish(dishDTO, restaurantId, categoryId);
+            dishService.addDish(dish);
+            return "redirect:" + RESTAURANT_MENU_EDIT;
+        }
+        throw new AccessDeniedException("You do not have the required authority to add new dish.");
     }
-
-
 }
