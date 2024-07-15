@@ -14,4 +14,6 @@ public class FlywayConstants {
             "Sushi", "Vegan", "Vegetarian", "Pancakes");
 
         public static final List<String> flywayDistinctCities = List.of(CHELM, LUBLIN);
+
+
 }

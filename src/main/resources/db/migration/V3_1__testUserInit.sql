@@ -50,10 +50,13 @@ VALUES (3, 2, 'Dzik', 'Ten już nie jest ani dziki ani zły', '45.3', NULL, true
 INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
 VALUES (3, 3, 'Trawa', 'Je jom krowa', '1.3', NULL, true);
 
+INSERT INTO user_rating(food_rating, delivery_rating, rating_date_time, description)
+VALUES (2, 3, CURRENT_TIMESTAMP, 'testUserRating1');
+
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
 VALUES (1, 3, CURRENT_TIMESTAMP, 1);
-INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (1, 3, CURRENT_TIMESTAMP, 2);
+INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id, rating_id)
+VALUES (1, 3, CURRENT_TIMESTAMP, 2, 1);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
 VALUES (1, 3, CURRENT_TIMESTAMP, 3);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)

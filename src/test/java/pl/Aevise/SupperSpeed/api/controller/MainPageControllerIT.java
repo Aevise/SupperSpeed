@@ -30,8 +30,6 @@ import static pl.Aevise.SupperSpeed.util.Constants.testPassword;
 import static pl.Aevise.SupperSpeed.util.FlywayConstants.flywayCuisines;
 import static pl.Aevise.SupperSpeed.util.FlywayConstants.flywayDistinctCities;
 
-@RunWith(SpringRunner.class)
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @AutoConfigureMockMvc
 class MainPageControllerIT extends AbstractITConfiguration {
 

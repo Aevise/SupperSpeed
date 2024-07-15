@@ -91,4 +91,15 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    @Bean
+    @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "test")
+    SecurityFilterChain securityTestEnvironment(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeHttpRequests().anyRequest().authenticated()
+                .and()
+                .formLogin(FormLoginConfigurer::permitAll)
+                .logout(logoutConfiguration());
+        return http.build();
+    }
 }

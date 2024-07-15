@@ -3,4 +3,4 @@ spring:
     hibernate:
       ddl-auto: none
   security:
-    enabled: true
+    enabled: test
