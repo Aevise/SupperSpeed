@@ -125,16 +125,6 @@ public class DeliveryAddressesController {
         throw new AccessDeniedException("You do not have the required authority to view this page.");
     }
 
-
-    private DeliveryAddressDTO buildDeliveryAddressFromRestaurantAddress(AddressDTO addressDTO) {
-        return DeliveryAddressDTO.builder()
-                .city(addressDTO.getCity())
-                .country(addressDTO.getCountry())
-                .postalCode(addressDTO.getPostalCode())
-                .streetName(addressDTO.getStreetName())
-                .build();
-    }
-
     private PageRequest buildPageRequestForDeliveryAddressList(String direction, Integer page) {
         if (direction.equalsIgnoreCase(PaginationAndSortingUtils.ASC.getSortingDirection())) {
             return PageRequest.of(page, 10, Sort.by("deliveryAddressEntity.streetName").ascending());

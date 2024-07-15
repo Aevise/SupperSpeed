@@ -74,3 +74,43 @@ INSERT INTO dishes_list(dish_id, order_id, quantity)
 VALUES (2, 1, 2);
 INSERT INTO dishes_list(dish_id, order_id, quantity)
 VALUES (3, 2, 1);
+
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa1');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa2');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa3');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa4');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa5');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa6');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa7');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa8');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa9');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa10');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa11');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa12');
+INSERT INTO delivery_address(country, city, district, postal_code, street_name)
+VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa13');
+
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,1);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,2);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,3);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,4);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,5);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,6);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,7);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,8);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,9);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,11);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,12);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (2,13);

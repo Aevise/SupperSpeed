@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,6 +28,7 @@ import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserE
 import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.security.dto.SupperUserDTO;
 import pl.Aevise.SupperSpeed.integration.configuration.AbstractITConfiguration;
+import pl.Aevise.SupperSpeed.integration.configuration.FlywayManualMigrationsConfiguration;
 import pl.Aevise.SupperSpeed.util.DTOFixtures;
 
 import java.util.List;
@@ -39,6 +41,7 @@ import static pl.Aevise.SupperSpeed.util.DTOFixtures.clientDTO1;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.restaurantDTO1;
 
 @AutoConfigureMockMvc
+@Import(FlywayManualMigrationsConfiguration.class)
 //@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CreateAccountControllerIT extends AbstractITConfiguration {
 
