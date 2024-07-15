@@ -89,9 +89,6 @@ public class RestaurantService {
 
     @Transactional
     public int createRestaurant(RestaurantEntity restaurantEntity) {
-        /**
-         * @return the id of created client. Returned id matches supper_user id.
-         */
         RestaurantEntity restaurant = restaurantDAO.createRestaurant(restaurantEntity);
         log.info("Successfully created user with email: [{}]. Id:[{}]", restaurant.getSupperUser().getEmail(), restaurant.getId());
         return restaurant.getId();

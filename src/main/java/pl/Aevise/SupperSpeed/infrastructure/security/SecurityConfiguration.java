@@ -96,8 +96,7 @@ public class SecurityConfiguration {
     SecurityFilterChain securityTestEnvironment(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .authorizeHttpRequests().anyRequest().authenticated()
-                .and()
+                .authorizeHttpRequests(authorizationConfiguration())
                 .formLogin(FormLoginConfigurer::permitAll)
                 .logout(logoutConfiguration());
         return http.build();

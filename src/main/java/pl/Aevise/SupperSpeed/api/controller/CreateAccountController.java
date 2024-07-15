@@ -50,7 +50,10 @@ public class CreateAccountController {
     String getAccountCreationForm(
             Model model
     ) {
-        List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());
+        List<CuisineDTO> cuisines = cuisineService
+                .findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection())
+                .stream().filter(cuisine -> !cuisine.getCuisine().equalsIgnoreCase("All")).toList();
+
         model.addAttribute("cuisinesListDTO", cuisines);
 
         return "create_account_page";

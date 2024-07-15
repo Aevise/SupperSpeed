@@ -29,9 +29,6 @@ public class ClientService {
 
     @Transactional
     public int createClient(ClientEntity clientEntity) {
-        /**
-         * @return the id of created client. Returned id matches supper_user id.
-         */
         ClientEntity user = clientDAO.createClient(clientEntity);
         log.info("Successfully created user with email: [{}]. Id:[{}]", user.getSupperUser().getEmail(), user.getId());
         return user.getId();
