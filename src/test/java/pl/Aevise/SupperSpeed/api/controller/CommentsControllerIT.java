@@ -1,39 +1,26 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import jakarta.persistence.EntityNotFoundException;
-import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.Location;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.event.annotation.BeforeTestMethod;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantResponseDTO;
 import pl.Aevise.SupperSpeed.api.dto.UserRatingDTO;
-import pl.Aevise.SupperSpeed.business.UserRatingService;
-import pl.Aevise.SupperSpeed.domain.UserRating;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantResponseEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.UserRatingEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.repository.UserRatingRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.RestaurantResponseJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.UserRatingJpaRepository;
 import pl.Aevise.SupperSpeed.integration.configuration.AbstractITConfiguration;
-import pl.Aevise.SupperSpeed.integration.configuration.EmptyMigrationStrategyConfig;
-import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
 import pl.Aevise.SupperSpeed.util.DTOFixtures;
 
 import java.util.Map;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.Aevise.SupperSpeed.api.controller.CommentsController.ADD_COMMENT;
@@ -69,7 +56,7 @@ class CommentsControllerIT extends AbstractITConfiguration {
         ResultActions result = mockMvc.perform(post(ADD_COMMENT)
                 .params(params));
         UserRatingEntity newUserRating = userRatingJpaRepository.findById(2).orElseThrow(
-                ()-> new EntityNotFoundException("User Rating not added")
+                () -> new EntityNotFoundException("User Rating not added")
         );
 
         //then

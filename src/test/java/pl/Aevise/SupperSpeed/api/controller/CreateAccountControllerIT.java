@@ -1,5 +1,7 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
+import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import pl.Aevise.SupperSpeed.api.controller.exception.UserNotFoundException;
@@ -36,11 +39,13 @@ import static pl.Aevise.SupperSpeed.util.DTOFixtures.clientDTO1;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.restaurantDTO1;
 
 @AutoConfigureMockMvc
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CreateAccountControllerIT extends AbstractITConfiguration {
 
     @Autowired
+    Flyway flyway;
+    @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private CuisineJpaRepository cuisineJpaRepository;
     @Autowired
@@ -49,9 +54,14 @@ class CreateAccountControllerIT extends AbstractITConfiguration {
     private ClientJpaRepository clientJpaRepository;
     @Autowired
     private RestaurantJpaRepository restaurantJpaRepository;
-
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @BeforeEach
+    void recreateFlywayMigrations() {
+        flyway.clean();
+        flyway.migrate();
+    }
 
     @Test
     void checkThatYouCanGetAccountCreationForm() {
@@ -73,12 +83,12 @@ class CreateAccountControllerIT extends AbstractITConfiguration {
     }
 
     @Test
+    @Transactional
     void checkThatYouCanCreateClientUser() {
         //given
         String url = String.format("http://localhost:%s%s" + CREATE_ACCOUNT_USER, port, basePath);
         SupperUserDTO supperUserDTO = DTOFixtures.supperUserDTO1();
         supperUserDTO.setSupperUserId(null);
-        supperUserDTO.setEmail("hmm@hmm.com");
         ClientDTO clientDTO = clientDTO1();
         clientDTO.setSupperUserId(null);
         clientDTO.setId(null);
@@ -101,7 +111,7 @@ class CreateAccountControllerIT extends AbstractITConfiguration {
                 requestEntity,
                 String.class
         );
-        SupperUserEntity newSupperUser = supperUserJpaRepository.findById(6).orElseThrow(
+        SupperUserEntity newSupperUser = supperUserJpaRepository.findById(5).orElseThrow(
                 () -> new UserNotFoundException("User not added"));
         ClientEntity newClient = clientJpaRepository.findById(2).orElseThrow(
                 () -> new UserNotFoundException("Client not added"));
@@ -115,6 +125,7 @@ class CreateAccountControllerIT extends AbstractITConfiguration {
     }
 
     @Test
+    @Transactional
     void checkThatYouCanCreateRestaurantUser() {
         //given
         String url = String.format("http://localhost:%s%s" + CREATE_ACCOUNT_RESTAURANT, port, basePath);

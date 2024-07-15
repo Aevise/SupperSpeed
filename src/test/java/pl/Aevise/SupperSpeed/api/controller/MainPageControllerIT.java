@@ -1,11 +1,9 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -13,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import pl.Aevise.SupperSpeed.integration.configuration.AbstractITConfiguration;
@@ -39,9 +36,15 @@ class MainPageControllerIT extends AbstractITConfiguration {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    public static Stream<Arguments> checkThatYouGetProfileButtonWhenLogged() {
+        return Stream.of(
+                Arguments.of("CLIENT", "<a class=\"btn btn-info float-end\" role=\"button\" href=\"/client/profile\">Profile</a>"),
+                Arguments.of("RESTAURANT", "<a class=\"btn btn-info float-end\" role=\"button\" href=\"/restaurant/profile\">Profile</a>")
+        );
+    }
 
     @Test
-    void checkThatYouCanGetMainPage(){
+    void checkThatYouCanGetMainPage() {
         //given
         String url = String.format("http://localhost:%s%s", port, basePath);
 
@@ -83,12 +86,5 @@ class MainPageControllerIT extends AbstractITConfiguration {
         assertThat(content).contains(expectedPartOfHTML);
         assertThat(content).contains(flywayCuisines);
         assertThat(content).contains(flywayDistinctCities);
-    }
-
-    public static Stream<Arguments> checkThatYouGetProfileButtonWhenLogged() {
-        return Stream.of(
-                Arguments.of("CLIENT", "<a class=\"btn btn-info float-end\" role=\"button\" href=\"/client/profile\">Profile</a>"),
-                Arguments.of("RESTAURANT", "<a class=\"btn btn-info float-end\" role=\"button\" href=\"/restaurant/profile\">Profile</a>")
-        );
     }
 }

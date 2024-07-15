@@ -1,4 +1,6 @@
 spring:
+  flyway:
+    clean-disabled: false
   jpa:
     hibernate:
       ddl-auto: none
