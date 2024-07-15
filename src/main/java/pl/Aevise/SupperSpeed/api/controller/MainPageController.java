@@ -1,6 +1,10 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +14,7 @@ import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.CuisineService;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -23,7 +28,6 @@ public class MainPageController {
 
     @GetMapping(MAIN_PAGE)
     String getMainPage(Model model) {
-
         String userRole = securityService.getUserAuthority();
         List<String> distinctCities = addressService.findDistinctCities();
         List<CuisineDTO> cuisines = cuisineService.findAllSorted(PaginationAndSortingUtils.ASC.getSortingDirection());

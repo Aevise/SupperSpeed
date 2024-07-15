@@ -13,7 +13,9 @@ public class Constants {
     public final static String CHELM = "Chelm";
     public final static String POLAND = "Poland";
     public final static String TEST_CLIENT_EMAIL_1 = "test4@gmail.com";
+    public final static String TEST_CLIENT_EMAIL_FLYWAY_1 = "user4@user.com";
     public final static String TEST_RESTAURANT_EMAIL_1 = "test1@gmail.com";
+
 
     public final static Map<String, String> CUISINES = ImmutableMap.of(
             "Italian", "Italian",
