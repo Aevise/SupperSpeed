@@ -54,7 +54,8 @@
                 <div class="form-group">
                     <label for="city">City:</label>
                     <select class="form-control" id="city" name="city">
-                        <option th:attr="selected=${city == currentCity}" th:each="city : ${distinctCities}" th:text="${city}"
+                        <option th:attr="selected=${city == currentCity}" th:each="city : ${distinctCities}"
+                                th:text="${city}"
                                 th:value="${city}"></option>
                     </select>
                 </div>

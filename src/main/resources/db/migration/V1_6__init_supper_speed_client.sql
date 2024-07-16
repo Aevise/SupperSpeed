@@ -6,7 +6,7 @@ CREATE TABLE client
     surname    VARCHAR(32),
     phone      VARCHAR(32),
     address_id INT,
-    is_shown BOOLEAN DEFAULT TRUE,
+    is_shown   BOOLEAN DEFAULT TRUE,
     PRIMARY KEY (client_id),
     CONSTRAINT fk_client_user_id
         FOREIGN KEY (user_id)

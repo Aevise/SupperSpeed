@@ -43,10 +43,9 @@ import static pl.Aevise.SupperSpeed.util.Constants.*;
 class OrderProcessingControllerIT extends AbstractITConfiguration {
 
     @Autowired
-    private MockMvc mockMvc;
-    @Autowired
     Flyway flyway;
-
+    @Autowired
+    private MockMvc mockMvc;
     @Autowired
     private DishJpaRepository dishJpaRepository;
 
@@ -55,6 +54,43 @@ class OrderProcessingControllerIT extends AbstractITConfiguration {
 
     @Autowired
     private OffsetDateTimeMapper offsetDateTimeMapper;
+
+    public static Stream<Arguments> checkThatOrderPaymentWorksCorrectly() {
+        return Stream.of(
+                Arguments.of(1, 2),
+                Arguments.of(2, 2),
+                Arguments.of(3, 3)
+        );
+    }
+
+    public static Stream<Arguments> checkThatRestaurantCanProceedOrder() {
+        return Stream.of(
+                Arguments.of(1, 1, false),
+                Arguments.of(2, 3, true),
+                Arguments.of(3, 4, true),
+                Arguments.of(4, 5, true),
+                Arguments.of(5, 5, false),
+                Arguments.of(6, 6, false)
+        );
+    }
+
+    public static Stream<Arguments> checkThatYouCanCancelOrderWithCorrectTime() {
+        return Stream.of(
+                Arguments.of(1, 1, 6, true),
+                Arguments.of(2, 2, 6, true),
+                Arguments.of(3, 3, 3, false),
+                Arguments.of(4, 4, 4, false),
+                Arguments.of(5, 5, 5, false),
+                Arguments.of(6, 6, 6, false)
+        );
+    }
+
+    public static Stream<Arguments> checkThatYouCanNotCancelOrderWithCorrectStatusButIncorrectTime() {
+        return Stream.of(
+                Arguments.of(2, 2, 6, true, 19),
+                Arguments.of(2, 2, 2, false, 21)
+        );
+    }
 
     @BeforeEach
     void recreateFlywayMigrations() {
@@ -128,14 +164,6 @@ class OrderProcessingControllerIT extends AbstractITConfiguration {
         assertEquals(expectedOrderStatus, newSupperOrder.getStatus().getStatusId());
     }
 
-    public static Stream<Arguments> checkThatOrderPaymentWorksCorrectly() {
-        return Stream.of(
-                Arguments.of(1, 2),
-                Arguments.of(2, 2),
-                Arguments.of(3, 3)
-        );
-    }
-
     @ParameterizedTest
     @MethodSource
     @WithMockUser(username = TEST_RESTAURANT_EMAIL_1, password = testPassword, authorities = "RESTAURANT")
@@ -167,17 +195,6 @@ class OrderProcessingControllerIT extends AbstractITConfiguration {
         }
 
         assertEquals(expectedOrderStatus, newSupperOrder.getStatus().getStatusId());
-    }
-
-    public static Stream<Arguments> checkThatRestaurantCanProceedOrder() {
-        return Stream.of(
-                Arguments.of(1, 1, false),
-                Arguments.of(2, 3, true),
-                Arguments.of(3, 4, true),
-                Arguments.of(4, 5, true),
-                Arguments.of(5, 5, false),
-                Arguments.of(6, 6, false)
-        );
     }
 
     @ParameterizedTest
@@ -220,17 +237,6 @@ class OrderProcessingControllerIT extends AbstractITConfiguration {
         assertEquals(expectedOrderStatus, newSupperOrder.getStatus().getStatusId());
     }
 
-    public static Stream<Arguments> checkThatYouCanCancelOrderWithCorrectTime() {
-        return Stream.of(
-                Arguments.of(1, 1, 6, true),
-                Arguments.of(2, 2, 6, true),
-                Arguments.of(3, 3, 3, false),
-                Arguments.of(4, 4, 4, false),
-                Arguments.of(5, 5, 5, false),
-                Arguments.of(6, 6, 6, false)
-        );
-    }
-
     @ParameterizedTest
     @MethodSource
     void checkThatYouCanNotCancelOrderWithCorrectStatusButIncorrectTime(
@@ -271,12 +277,5 @@ class OrderProcessingControllerIT extends AbstractITConfiguration {
         }
 
         assertEquals(expectedOrderStatus, newSupperOrder.getStatus().getStatusId());
-    }
-
-    public static Stream<Arguments> checkThatYouCanNotCancelOrderWithCorrectStatusButIncorrectTime() {
-        return Stream.of(
-                Arguments.of(2, 2, 6, true, 19),
-                Arguments.of(2, 2, 2, false, 21)
-        );
     }
 }

@@ -27,6 +27,14 @@ class OrdersBrowseControllerIT extends AbstractITConfiguration {
     @Autowired
     private MockMvc mockMvc;
 
+    public static Stream<Arguments> checkThatYouCanGetYourOrders() {
+        return Stream.of(
+                Arguments.of(TEST_CLIENT_EMAIL_FLYWAY_1, CLIENT.name()),
+                Arguments.of(TEST_RESTAURANT_EMAIL_FLYWAY_1, RESTAURANT.name()),
+                Arguments.of(TEST_RESTAURANT_EMAIL_FLYWAY_1, RESTAURANT.name())
+        );
+    }
+
     @ParameterizedTest
     @MethodSource
     void checkThatYouCanGetYourOrders(
@@ -51,13 +59,5 @@ class OrdersBrowseControllerIT extends AbstractITConfiguration {
                 .andExpect(model().attributeExists("ordersTotalPrice"))
                 .andExpect(model().attributeExists("userId"))
                 .andExpect(view().name("orders_page"));
-    }
-
-    public static Stream<Arguments> checkThatYouCanGetYourOrders() {
-        return Stream.of(
-                Arguments.of(TEST_CLIENT_EMAIL_FLYWAY_1, CLIENT.name()),
-                Arguments.of(TEST_RESTAURANT_EMAIL_FLYWAY_1, RESTAURANT.name()),
-                Arguments.of(TEST_RESTAURANT_EMAIL_FLYWAY_1, RESTAURANT.name())
-        );
     }
 }

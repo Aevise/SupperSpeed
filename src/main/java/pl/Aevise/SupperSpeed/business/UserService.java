@@ -42,9 +42,9 @@ public class UserService {
 
         if (user.isPresent() && authority.equals(AvailableRoles.RESTAURANT.name())) {
             restaurantService.detachUserFromRestaurant(email);
-        }else if (user.isPresent() && authority.equals(AvailableRoles.CLIENT.name())) {
+        } else if (user.isPresent() && authority.equals(AvailableRoles.CLIENT.name())) {
             clientService.detachUserFromClient(email);
-        }else{
+        } else {
             throw new AccessDeniedException("You are not authorized to perform this action");
         }
         supperUserDAO.deleteUserByEmail(email);

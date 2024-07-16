@@ -20,7 +20,6 @@ import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.utils.FileMigrationUtil;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOGO_HEIGHT;
@@ -47,7 +46,7 @@ public class RestaurantProfileController {
     public String getRestaurantProfile(
             Model model,
             @AuthenticationPrincipal UserDetails userDetails
-    ){
+    ) {
 
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(

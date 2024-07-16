@@ -30,6 +30,15 @@ class OpinionControllerIT extends AbstractITConfiguration {
     @Autowired
     private UserRatingJpaRepository userRatingJpaRepository;
 
+    public static Stream<Arguments> checkThatYouCanSeeOpinionsAboutRestaurants() {
+        return Stream.of(
+                Arguments.of(3, "asc", 0),
+                Arguments.of(2, "asc", 0),
+                Arguments.of(3, "desc", 0),
+                Arguments.of(2, "desc", 0)
+        );
+    }
+
     @ParameterizedTest
     @MethodSource
     void checkThatYouCanSeeOpinionsAboutRestaurants(
@@ -68,14 +77,5 @@ class OpinionControllerIT extends AbstractITConfiguration {
             assertTrue(body.contains("Total delivery rating: 0.0"));
             assertTrue(body.contains("Total amount of rated orders: 0"));
         }
-    }
-
-    public static Stream<Arguments> checkThatYouCanSeeOpinionsAboutRestaurants() {
-        return Stream.of(
-                Arguments.of(3, "asc", 0),
-                Arguments.of(2, "asc", 0),
-                Arguments.of(3, "desc", 0),
-                Arguments.of(2, "desc", 0)
-        );
     }
 }

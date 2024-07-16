@@ -12,8 +12,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import pl.Aevise.SupperSpeed.integration.configuration.AbstractITConfiguration;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static pl.Aevise.SupperSpeed.api.controller.SearchPageController.SEARCH_PAGE;
 import static pl.Aevise.SupperSpeed.util.Constants.WARSZAWA;
 
@@ -21,6 +21,7 @@ class SearchPageControllerIT extends AbstractITConfiguration {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+
     @Test
     void getSearchPage() {
         //given

@@ -54,6 +54,13 @@ class RestaurantMenuEditionControllerIT extends AbstractITConfiguration {
     @Autowired
     private DishJpaRepository dishJpaRepository;
 
+    public static Stream<Arguments> checkThatYouCanSuccessfullyDeleteDish() {
+        return Stream.of(
+                Arguments.of(true, 1),
+                Arguments.of(false, 5)
+        );
+    }
+
     @BeforeEach
     void recreateFlywayMigrations() {
         flyway.clean();
@@ -158,13 +165,6 @@ class RestaurantMenuEditionControllerIT extends AbstractITConfiguration {
         } else {
             assertTrue(dish.isEmpty());
         }
-    }
-
-    public static Stream<Arguments> checkThatYouCanSuccessfullyDeleteDish() {
-        return Stream.of(
-                Arguments.of(true, 1),
-                Arguments.of(false, 5)
-        );
     }
 
     @Test

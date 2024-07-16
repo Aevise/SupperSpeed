@@ -24,7 +24,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.AddressJpaRe
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.RestaurantJpaRepository;
 import pl.Aevise.SupperSpeed.integration.configuration.AbstractITConfiguration;
 import pl.Aevise.SupperSpeed.integration.configuration.FlywayManualMigrationsConfiguration;
-import pl.Aevise.SupperSpeed.util.DTOFixtures;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +39,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.Aevise.SupperSpeed.api.controller.RestaurantProfileController.*;
 import static pl.Aevise.SupperSpeed.util.Constants.TEST_RESTAURANT_EMAIL_FLYWAY_1;
-import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
+import static pl.Aevise.SupperSpeed.util.DTOFixtures.addressDTO1;
+import static pl.Aevise.SupperSpeed.util.DTOFixtures.restaurantDTO1;
 
 @AutoConfigureMockMvc
 @Import(FlywayManualMigrationsConfiguration.class)
@@ -48,14 +48,20 @@ import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
 class RestaurantProfileControllerIT extends AbstractITConfiguration {
 
     @Autowired
-    private MockMvc mockMvc;
-    @Autowired
     Flyway flyway;
-
+    @Autowired
+    private MockMvc mockMvc;
     @Autowired
     private RestaurantJpaRepository restaurantJpaRepository;
     @Autowired
     private AddressJpaRepository addressJpaRepository;
+
+    public static Stream<Arguments> checkThatRestaurantVisibilityChanges() {
+        return Stream.of(
+                Arguments.of(true, false),
+                Arguments.of(false, true)
+        );
+    }
 
     @BeforeEach
     void recreateFlywayMigrations() {
@@ -213,12 +219,5 @@ class RestaurantProfileControllerIT extends AbstractITConfiguration {
                 .andExpect(model().hasNoErrors());
 
         assertEquals(newRestaurant.getIsShown(), expectedAvailability);
-    }
-
-    public static Stream<Arguments> checkThatRestaurantVisibilityChanges() {
-        return Stream.of(
-                Arguments.of(true, false),
-                Arguments.of(false, true)
-        );
     }
 }

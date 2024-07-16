@@ -54,6 +54,13 @@ class DeliveryAddressesControllerIT extends AbstractITConfiguration {
     @Autowired
     private DeliveryAddressJpaRepository deliveryAddressJpaRepository;
 
+    static Stream<Arguments> checkThatYouCanGetDeliveryAddressesForRestaurant() {
+        return Stream.of(
+                Arguments.of("0", 10),
+                Arguments.of("1", 1)
+        );
+    }
+
     @BeforeEach
     void recreateFlywayMigrations() {
         flyway.clean();
@@ -95,13 +102,6 @@ class DeliveryAddressesControllerIT extends AbstractITConfiguration {
                 .andExpect(view().name("delivery_addresses"));
 
         assertEquals(deliveryAddressesPage.size(), expectedSize);
-    }
-
-    static Stream<Arguments> checkThatYouCanGetDeliveryAddressesForRestaurant() {
-        return Stream.of(
-                Arguments.of("0", 10),
-                Arguments.of("1", 1)
-        );
     }
 
     @Test

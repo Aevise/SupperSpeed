@@ -49,30 +49,29 @@ import static pl.Aevise.SupperSpeed.util.Constants.TEST_RESTAURANT_EMAIL_FLYWAY_
 @WithMockUser(username = TEST_RESTAURANT_EMAIL_FLYWAY_1, password = Constants.testPassword, authorities = "RESTAURANT")
 class ImageControllerIT extends AbstractITConfiguration {
 
+    private final int restaurantId = 3;
+    private final String restaurantName = TEST_RESTAURANT_EMAIL_FLYWAY_1;
+    private final String TEST_IMAGE_FOLDER = "images/" + restaurantName + "_" + restaurantId + "/";
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private Flyway flyway;
-
     @Autowired
     private LogoJpaRepository logoJpaRepository;
-
     @Autowired
     private OffsetDateTimeMapper offsetDateTimeMapper;
-
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-    private final int restaurantId = 3;
-    private final String restaurantName = TEST_RESTAURANT_EMAIL_FLYWAY_1;
-    private final String TEST_IMAGE_FOLDER = "images/" + restaurantName + "_" + restaurantId + "/";
+    public static Stream<String> checkThatImageEndpointRequiresToBeLogged() {
+        return Stream.of("/upload/logo", "/upload/dishImage");
+    }
 
     @BeforeEach
     void recreateFlywayMigrations() {
         flyway.clean();
         flyway.migrate();
     }
-
 
     @AfterEach
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -107,10 +106,6 @@ class ImageControllerIT extends AbstractITConfiguration {
         //then
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertThat(body).contains(expectedPartOfHTML);
-    }
-
-    public static Stream<String> checkThatImageEndpointRequiresToBeLogged() {
-        return Stream.of("/upload/logo", "/upload/dishImage");
     }
 
     @Test
