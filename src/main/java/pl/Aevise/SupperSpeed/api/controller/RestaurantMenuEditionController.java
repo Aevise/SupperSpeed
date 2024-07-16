@@ -37,10 +37,8 @@ public class RestaurantMenuEditionController {
     static final String RESTAURANT_MENU_DELETE_CATEGORY = "/restaurant/profile/menu/deleteCategory";
     static final String RESTAURANT_MENU_ADD_CATEGORY = "/restaurant/profile/menu/addCategory";
     static final String RESTAURANT_MENU_ADD_DISH = "/restaurant/profile/menu/addDish";
-//    static final String ERROR = "error";
 
     private final DishListService dishListService;
-    //    private final ProfileService profileService;
     private final DishCategoryService dishCategoryService;
     private final DishService dishService;
     private final RestaurantService restaurantService;
