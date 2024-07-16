@@ -1,7 +1,6 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa;
 
 import lombok.AllArgsConstructor;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -12,14 +11,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.TestPropertySource;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
-import pl.Aevise.SupperSpeed.infrastructure.database.entity.utils.DeliveryAddressKey;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.Aevise.SupperSpeed.util.Constants.CUISINES;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
@@ -29,7 +26,6 @@ import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 class DeliveryAddressListJpaRepositoryTest {
 
     private final RestaurantJpaRepository restaurantJpaRepository;
-    private final DeliveryAddressJpaRepository deliveryAddressJpaRepository;
 
     private final DeliveryAddressListJpaRepository deliveryAddressListJpaRepository;
 
@@ -37,68 +33,17 @@ class DeliveryAddressListJpaRepositoryTest {
         return PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending());
     }
 
-    @BeforeEach
-    void bindRestaurantsWithDeliveryAddresses() {
-        var restaurants = List.of(
-                restaurantEntity1(),
-                restaurantEntity2()
-        );
-        var deliveryAddresses = List.of(
-                deliveryAddressEntity1(),
-                deliveryAddressEntity2(),
-                deliveryAddressEntity3()
-        );
-        deliveryAddressJpaRepository.saveAllAndFlush(deliveryAddresses);
-        restaurantJpaRepository.saveAllAndFlush(restaurants);
-
-        var savedDeliveryAddresses = deliveryAddressJpaRepository.findAll();
-        var savedRestaurants = restaurantJpaRepository.findAll();
-
-        RestaurantEntity firstSavedRestaurant = savedRestaurants.get(0);
-        RestaurantEntity secondSavedRestaurant = savedRestaurants.get(1);
-        var deliveryAddressesList = List.of(
-                DeliveryAddressListEntity.builder()
-                        .deliveryAddressEntity(savedDeliveryAddresses.get(0))
-                        .restaurantEntity(firstSavedRestaurant)
-                        .id(DeliveryAddressKey.builder()
-                                .deliveryAddressId(savedDeliveryAddresses.get(0).getDeliveryAddressId())
-                                .restaurantId(firstSavedRestaurant.getId())
-                                .build())
-                        .build(),
-                DeliveryAddressListEntity.builder()
-                        .deliveryAddressEntity(savedDeliveryAddresses.get(1))
-                        .restaurantEntity(firstSavedRestaurant)
-                        .id(DeliveryAddressKey.builder()
-                                .deliveryAddressId(savedDeliveryAddresses.get(1).getDeliveryAddressId())
-                                .restaurantId(firstSavedRestaurant.getId())
-                                .build())
-                        .build(),
-                DeliveryAddressListEntity.builder()
-                        .deliveryAddressEntity(savedDeliveryAddresses.get(2))
-                        .restaurantEntity(secondSavedRestaurant)
-                        .id(DeliveryAddressKey.builder()
-                                .deliveryAddressId(savedDeliveryAddresses.get(2).getDeliveryAddressId())
-                                .restaurantId(secondSavedRestaurant.getId())
-                                .build())
-                        .build(),
-                DeliveryAddressListEntity.builder()
-                        .deliveryAddressEntity(savedDeliveryAddresses.get(1))
-                        .restaurantEntity(savedRestaurants.get(2))
-                        .id(DeliveryAddressKey.builder()
-                                .deliveryAddressId(savedDeliveryAddresses.get(1).getDeliveryAddressId())
-                                .restaurantId(savedRestaurants.get(2).getId())
-                                .build())
-                        .build()
-        );
-        deliveryAddressListJpaRepository.saveAllAndFlush(deliveryAddressesList);
-    }
+    private final static String street1 = "Jaskrawa1";
+    private final static String city1 = "WARSZAWA";
+    private final static String street2 = "Jaskrawa2";
+    private final static String city2 = "WARSZAWA";
 
     @Test
     void checkThatYouCanGetAllDeliveryAddressesForRestaurantWithGivenId() {
         //given
         var savedRestaurants = restaurantJpaRepository.findAll();
-        RestaurantEntity firstSavedRestaurant = savedRestaurants.get(0);
-        RestaurantEntity secondSavedRestaurant = savedRestaurants.get(1);
+        RestaurantEntity firstSavedRestaurant = savedRestaurants.get(1);
+        RestaurantEntity secondSavedRestaurant = savedRestaurants.get(2);
 
         //when
         List<DeliveryAddressListEntity> deliveryAddressList1 = deliveryAddressListJpaRepository.getAllByRestaurantEntity_Id(
@@ -110,15 +55,15 @@ class DeliveryAddressListJpaRepositoryTest {
 
         //then
         assertThat(deliveryAddressList1).doesNotContainNull().hasSize(2);
-        assertThat(deliveryAddressList2).doesNotContainNull().hasSize(1);
+        assertThat(deliveryAddressList2).doesNotContainNull().hasSize(10);
     }
 
     @Test
     void checkThatYouCanGetDeliveryAddressesForGivenRestaurantId() {
         //given
         var savedRestaurants = restaurantJpaRepository.findAll();
-        RestaurantEntity firstSavedRestaurant = savedRestaurants.get(0);
-        RestaurantEntity secondSavedRestaurant = savedRestaurants.get(1);
+        RestaurantEntity firstSavedRestaurant = savedRestaurants.get(1);
+        RestaurantEntity secondSavedRestaurant = savedRestaurants.get(2);
 
         //when
         var deliveryAddresses1 = deliveryAddressListJpaRepository.getDeliveryAddressesForRestaurant(firstSavedRestaurant.getId());
@@ -126,18 +71,12 @@ class DeliveryAddressListJpaRepositoryTest {
 
         //then
         assertThat(deliveryAddresses1).doesNotContainNull().hasSize(2);
-        assertThat(deliveryAddresses2).doesNotContainNull().hasSize(1);
+        assertThat(deliveryAddresses2).doesNotContainNull().hasSize(11);
     }
 
     @Test
     void checkIfYouCanGetAllRestaurantsByDeliveryAddressCityAndStreetName() {
-        //given
-        String street1 = deliveryAddressEntity1().getStreetName();
-        String city1 = deliveryAddressEntity1().getCity();
-        String street2 = deliveryAddressEntity2().getStreetName();
-        String city2 = deliveryAddressEntity2().getCity();
-
-        //when
+        //given, when
         var restaurants1 = deliveryAddressListJpaRepository
                 .getAllRestaurantsByCityAndStreetName(city1, street1, buildPageRequestForDeliveryAddressList()).toList();
         var restaurants2 = deliveryAddressListJpaRepository
@@ -151,10 +90,6 @@ class DeliveryAddressListJpaRepositoryTest {
     @Test
     void checkIfYouCanGetAllRestaurantsByDeliveryAddressCityAndStreetNameAndCuisine() {
         //given
-        String street1 = deliveryAddressEntity1().getStreetName();
-        String city1 = deliveryAddressEntity1().getCity();
-        String street2 = deliveryAddressEntity2().getStreetName();
-        String city2 = deliveryAddressEntity2().getCity();
         String cuisine1 = "Spanish";
         String cuisine2 = "Italian";
         String cuisine3 = "none";
@@ -174,7 +109,7 @@ class DeliveryAddressListJpaRepositoryTest {
         ).toList();
 
         //then
-        assertThat(restaurants1).doesNotContainNull().hasSize(1);
+        assertThat(restaurants1).doesNotContainNull().hasSize(0);
         assertThat(restaurants2).doesNotContainNull().hasSize(1);
         assertThat(restaurants3).doesNotContainNull().hasSize(1);
         assertThat(restaurants4).hasSize(0);
@@ -182,18 +117,12 @@ class DeliveryAddressListJpaRepositoryTest {
 
     @Test
     void findCuisinesFromRestaurantsDeliveringTo() {
-        //given
-        String street1 = deliveryAddressEntity1().getStreetName();
-        String city1 = deliveryAddressEntity1().getCity();
-        String street2 = deliveryAddressEntity2().getStreetName();
-        String city2 = deliveryAddressEntity2().getCity();
-
-        //when
+        //given, when
         List<String> cuisines1 = deliveryAddressListJpaRepository.findCuisinesFromRestaurantsDeliveringTo(city1, street1);
         List<String> cuisines2 = deliveryAddressListJpaRepository.findCuisinesFromRestaurantsDeliveringTo(city2, street2);
 
         //then
-        assertThat(cuisines1).doesNotContainNull().hasSize(1).contains(CUISINES.get("Spanish"));
-        assertThat(cuisines2).doesNotContainNull().hasSize(2).contains(CUISINES.get("Spanish"));
+        assertThat(cuisines1).doesNotContainNull().hasSize(1).contains(CUISINES.get("Italian"));
+        assertThat(cuisines2).doesNotContainNull().hasSize(2).contains(CUISINES.get("Spanish"), CUISINES.get("Italian"));
     }
 }

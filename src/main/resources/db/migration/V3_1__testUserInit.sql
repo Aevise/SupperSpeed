@@ -107,6 +107,8 @@ values (3, 1);
 INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
 values (3, 2);
 INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (2, 2);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
 values (3, 3);
 INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
 values (3, 4);

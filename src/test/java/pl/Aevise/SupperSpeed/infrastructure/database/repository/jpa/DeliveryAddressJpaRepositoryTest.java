@@ -1,13 +1,18 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa;
 
 import lombok.AllArgsConstructor;
+import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
+import pl.Aevise.SupperSpeed.integration.configuration.FlywayManualMigrationsConfiguration;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
 
 import java.util.List;
@@ -18,13 +23,22 @@ import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 
 @DataJpaTest
-@TestPropertySource(locations = "classpath:application-test.yml")
+@ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(PersistenceContainerTestConfiguration.class)
+@Import({PersistenceContainerTestConfiguration.class,
+FlywayManualMigrationsConfiguration.class})
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 class DeliveryAddressJpaRepositoryTest {
 
+    Flyway flyway;
+
     private final DeliveryAddressJpaRepository deliveryAddressJpaRepository;
+
+    @BeforeEach
+    void recreateFlywayMigrations() {
+        flyway.clean();
+        flyway.migrate();
+    }
 
     @Test
     void checkThatYouCanFindAllDeliveryAddressesWithAllAddressValuesExceptId() {
