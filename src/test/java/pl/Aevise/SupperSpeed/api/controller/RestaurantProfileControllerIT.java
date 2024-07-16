@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.api.controller;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -25,6 +26,11 @@ import pl.Aevise.SupperSpeed.integration.configuration.AbstractITConfiguration;
 import pl.Aevise.SupperSpeed.integration.configuration.FlywayManualMigrationsConfiguration;
 import pl.Aevise.SupperSpeed.util.DTOFixtures;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -34,6 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.Aevise.SupperSpeed.api.controller.RestaurantProfileController.*;
 import static pl.Aevise.SupperSpeed.util.Constants.TEST_RESTAURANT_EMAIL_FLYWAY_1;
+import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
 
 @AutoConfigureMockMvc
 @Import(FlywayManualMigrationsConfiguration.class)
@@ -54,6 +61,24 @@ class RestaurantProfileControllerIT extends AbstractITConfiguration {
     void recreateFlywayMigrations() {
         flyway.clean();
         flyway.migrate();
+    }
+
+    @AfterEach
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    void deleteTestPhotosFromFolder() throws IOException {
+        String TEST_IMAGE_FOLDER = "images/" + restaurantDTO1().getRestaurantName() + "_3";
+        File directory = new File(TEST_IMAGE_FOLDER);
+        Path pathToDirectory = Path.of(TEST_IMAGE_FOLDER);
+
+        if (directory.exists()) {
+            try (Stream<Path> files = Files.walk(pathToDirectory)) {
+                files
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+            }
+        }
+        assertFalse(false, String.valueOf(Files.exists(pathToDirectory)));
     }
 
     @Test
@@ -95,7 +120,7 @@ class RestaurantProfileControllerIT extends AbstractITConfiguration {
         int restaurantId = 3;
         String action = "updateProfile";
 
-        RestaurantDTO restaurantDTO = DTOFixtures.restaurantDTO1();
+        RestaurantDTO restaurantDTO = restaurantDTO1();
         restaurantDTO.setRestaurantId(restaurantId);
         restaurantDTO.setUserId(3);
 
@@ -129,7 +154,7 @@ class RestaurantProfileControllerIT extends AbstractITConfiguration {
         int addressId = 3;
         String action = "updateAddress";
 
-        AddressDTO addressDTO = DTOFixtures.addressDTO1();
+        AddressDTO addressDTO = addressDTO1();
         addressDTO.setAddressId(addressId);
 
         MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
