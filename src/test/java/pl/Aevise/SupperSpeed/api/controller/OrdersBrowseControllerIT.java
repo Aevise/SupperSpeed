@@ -27,13 +27,11 @@ class OrdersBrowseControllerIT extends AbstractITConfiguration {
     @Autowired
     private MockMvc mockMvc;
 
-    @SuppressWarnings("unchecked")
     @ParameterizedTest
     @MethodSource
     void checkThatYouCanGetYourOrders(
             String username,
-            String authority,
-            int userId
+            String authority
     ) throws Exception {
         //given
         UserDetails userDetails = User.withUsername(username).password(testPassword).authorities(authority).build();
@@ -57,9 +55,9 @@ class OrdersBrowseControllerIT extends AbstractITConfiguration {
 
     public static Stream<Arguments> checkThatYouCanGetYourOrders() {
         return Stream.of(
-                Arguments.of(TEST_CLIENT_EMAIL_FLYWAY_1, CLIENT.name(), 4),
-                Arguments.of(TEST_RESTAURANT_EMAIL_FLYWAY_1, RESTAURANT.name(), 3),
-                Arguments.of(TEST_RESTAURANT_EMAIL_FLYWAY_1, RESTAURANT.name(), 2)
+                Arguments.of(TEST_CLIENT_EMAIL_FLYWAY_1, CLIENT.name()),
+                Arguments.of(TEST_RESTAURANT_EMAIL_FLYWAY_1, RESTAURANT.name()),
+                Arguments.of(TEST_RESTAURANT_EMAIL_FLYWAY_1, RESTAURANT.name())
         );
     }
 }
