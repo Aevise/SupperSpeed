@@ -2,6 +2,7 @@ package pl.Aevise.SupperSpeed.business;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.business.dao.AddressDAO;
@@ -9,6 +10,7 @@ import pl.Aevise.SupperSpeed.domain.Address;
 import pl.Aevise.SupperSpeed.domain.SupperUser;
 import pl.Aevise.SupperSpeed.domain.exception.NotFoundException;
 import pl.Aevise.SupperSpeed.infrastructure.security.dao.SupperUserDAO;
+import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
 import java.util.Optional;
 
@@ -35,23 +37,18 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUserByEmail(String email) {
-
+    public void deleteUserByEmail(String email, String authority) {
         Optional<SupperUser> user = supperUserDAO.findByEmail(email);
 
-        //TODO ukrywanie uzytkownikow, ktorzy maja wiecej niz jedno zamowienie
-        if (user.isPresent()) {
+        if (user.isPresent() && authority.equals(AvailableRoles.RESTAURANT.name())) {
             restaurantService.detachUserFromRestaurant(email);
+        }else if (user.isPresent() && authority.equals(AvailableRoles.CLIENT.name())) {
+            clientService.detachUserFromClient(email);
+        }else{
+            throw new AccessDeniedException("You are not authorized to perform this action");
         }
-
         supperUserDAO.deleteUserByEmail(email);
-//        if (user.isPresent()) {
-//            Integer userId = user.get().getSupperUserId();
-//            supperUserDAO.deleteUserById(userId);
-//            //TODO ZROBIC RESTAURANT NA ISSHOWN = FALSE
-//        } else {
-//            log.error("Could not find the user with email: [{}] ", email);
-//        }
+        log.info("Deleted user information from the database");
     }
 
     public Optional<SupperUser> findUserByEmail(String email) {

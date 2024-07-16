@@ -60,7 +60,7 @@ public class UserDeleteController {
         );
         if ("yes".equals(confirmation) &&
                 (authority.equals(AvailableRoles.CLIENT.name()) || authority.equals(AvailableRoles.RESTAURANT.name()))) {
-            userService.deleteUserByEmail(userDetails.getUsername());
+            userService.deleteUserByEmail(userDetails.getUsername(), authority);
             return "redirect:" + CLIENT_LOGOUT;
         }
 

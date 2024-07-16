@@ -17,4 +17,5 @@ public interface ClientDAO {
 
     Optional<Client> findByUserId(Integer supperUserId);
 
+    Client detachUserFromRestaurant(String email);
 }

@@ -108,7 +108,7 @@ class UserDeleteControllerMockMvcTest {
         UserDetails userDetails = User.withUsername(TEST_RESTAURANT_EMAIL_1).password(testPassword).authorities(authority).build();
 
         //when
-        Mockito.doNothing().when(userService).deleteUserByEmail(TEST_RESTAURANT_EMAIL_1);
+        Mockito.doNothing().when(userService).deleteUserByEmail(TEST_RESTAURANT_EMAIL_1, authority);
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(CLIENT_DELETE)
                 .param("confirmation", deleteProfile)
@@ -134,7 +134,7 @@ class UserDeleteControllerMockMvcTest {
         UserDetails userDetails = User.withUsername(TEST_RESTAURANT_EMAIL_1).password(testPassword).authorities(authority).build();
 
         //when
-        Mockito.doNothing().when(userService).deleteUserByEmail(TEST_RESTAURANT_EMAIL_1);
+        Mockito.doNothing().when(userService).deleteUserByEmail(TEST_RESTAURANT_EMAIL_1, authority);
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(CLIENT_DELETE)
                 .param("confirmation", deleteProfile)
@@ -146,6 +146,5 @@ class UserDeleteControllerMockMvcTest {
                 .andExpect(status().isFound())
                 .andExpect(model().hasNoErrors())
                 .andExpect(view().name(redirectURL));
-
     }
 }

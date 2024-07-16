@@ -46,7 +46,7 @@ class UserDeleteControllerMockitoTest {
         UserDetails userDetails = User.withUsername(TEST_CLIENT_EMAIL_1).password(testPassword).authorities(authority).build();
 
         //when
-        Mockito.doNothing().when(userService).deleteUserByEmail(userDetails.getUsername());
+        Mockito.doNothing().when(userService).deleteUserByEmail(userDetails.getUsername(), authority);
 
         String result = userDeleteController.deleteUser(userDetails, confirmation);
 

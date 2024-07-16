@@ -35,11 +35,13 @@ public class ClientEntity {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "is_shown")
+    private Boolean isShown;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", unique = true, nullable = false)
     private AddressEntity address;
 
-    //TODO czy tutaj dodac kiedys Cascade? Do sprawdzenia na testach
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private Set<SupperOrderEntity> orders;
 
