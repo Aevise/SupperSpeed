@@ -32,7 +32,7 @@ class OpinionControllerIT extends AbstractITConfiguration {
 
     @ParameterizedTest
     @MethodSource
-    void showOpinionsAboutRestaurant(
+    void checkThatYouCanSeeOpinionsAboutRestaurants(
             Integer restaurantId,
             String sortingDirection,
             Integer currentPage
@@ -70,7 +70,7 @@ class OpinionControllerIT extends AbstractITConfiguration {
         }
     }
 
-    public static Stream<Arguments> showOpinionsAboutRestaurant() {
+    public static Stream<Arguments> checkThatYouCanSeeOpinionsAboutRestaurants() {
         return Stream.of(
                 Arguments.of(3, "asc", 0),
                 Arguments.of(2, "asc", 0),

@@ -64,7 +64,7 @@ VALUES (1, 3, CURRENT_TIMESTAMP, 4);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
 VALUES (1, 3, CURRENT_TIMESTAMP, 5);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
-VALUES (1, 3, CURRENT_TIMESTAMP, 5);
+VALUES (1, 3, CURRENT_TIMESTAMP, 6);
 INSERT INTO supper_order(client_id, restaurant_id, order_date_time, status_id)
 VALUES (1, 2, CURRENT_TIMESTAMP, 5);
 

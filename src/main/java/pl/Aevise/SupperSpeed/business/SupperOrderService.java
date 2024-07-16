@@ -87,8 +87,8 @@ public class SupperOrderService {
         SupperOrder fetchedOrder = supperOrderDAO.findById(orderId);
         Integer orderStatus = fetchedOrder.getStatus().getStatusId();
 
-        if (orderStatus >= OrderStatus.NEW.getStatusId() &&
-                orderStatus < OrderStatus.CANCELED.getStatusId()) {
+        if (orderStatus > OrderStatus.NEW.getStatusId() &&
+                orderStatus < OrderStatus.REALIZED.getStatusId()) {
             SupperOrder updatedOrder = supperOrderDAO.proceedOrder(orderStatus + 1, fetchedOrder);
             if (updatedOrder.getStatus().getStatusId() > orderStatus) {
                 log.info("Successfully proceeded order: [{}]", orderId);

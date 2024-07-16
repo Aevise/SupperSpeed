@@ -52,7 +52,6 @@ public class OrderProcessingController {
                     @AuthenticationPrincipal UserDetails userDetails,
                     Model model
             ) {
-
         if (securityService.getUserAuthority().equalsIgnoreCase(AvailableRoles.RESTAURANT.toString())) {
             return "redirect:/orders";
         }
