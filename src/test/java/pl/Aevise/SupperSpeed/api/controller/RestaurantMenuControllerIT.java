@@ -3,21 +3,17 @@ package pl.Aevise.SupperSpeed.api.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DishCategoryJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.DishJpaRepository;
 import pl.Aevise.SupperSpeed.integration.configuration.AbstractITConfiguration;
-import pl.Aevise.SupperSpeed.util.Constants;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static pl.Aevise.SupperSpeed.api.controller.OpinionController.OPINION;
-import static pl.Aevise.SupperSpeed.api.controller.RestaurantMenuController.RESTAURANT_MENU;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RestaurantMenuControllerIT extends AbstractITConfiguration {
 
