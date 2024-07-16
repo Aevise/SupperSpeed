@@ -47,7 +47,7 @@ public class RestaurantProfileController {
     public String getRestaurantProfile(
             Model model,
             @AuthenticationPrincipal UserDetails userDetails
-    ) throws IOException {
+    ){
 
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(

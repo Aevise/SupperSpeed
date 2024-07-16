@@ -46,6 +46,5 @@ public class FileMigrationUtil {
             log.error("Could not enter source path [{}] - [{}]", sourcePath, e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
-
     }
 }
