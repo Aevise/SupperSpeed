@@ -102,15 +102,27 @@ VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa12');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
 VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa13');
 
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,1);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,2);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,3);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,4);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,5);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,6);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,7);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,8);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,9);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,11);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (3,12);
-INSERT INTO delivery_address_list(restaurant_id, delivery_address_id) values (2,13);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 1);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 2);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 3);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 4);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 5);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 6);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 7);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 8);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 9);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 11);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (3, 12);
+INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
+values (2, 13);
