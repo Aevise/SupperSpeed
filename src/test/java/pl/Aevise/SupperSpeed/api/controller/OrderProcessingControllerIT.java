@@ -182,7 +182,6 @@ class OrderProcessingControllerIT extends AbstractITConfiguration {
 
     @ParameterizedTest
     @MethodSource
-    @WithMockUser(username = TEST_RESTAURANT_EMAIL_1, password = testPassword, authorities = "RESTAURANT")
     void checkThatYouCanCancelOrderWithCorrectTime(
             int orderId,
             int currentOrderStatus,
@@ -234,7 +233,6 @@ class OrderProcessingControllerIT extends AbstractITConfiguration {
 
     @ParameterizedTest
     @MethodSource
-    @WithMockUser(username = TEST_RESTAURANT_EMAIL_1, password = testPassword, authorities = "RESTAURANT")
     void checkThatYouCanNotCancelOrderWithCorrectStatusButIncorrectTime(
             int orderId,
             int currentOrderStatus,
