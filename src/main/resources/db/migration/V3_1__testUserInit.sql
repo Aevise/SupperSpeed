@@ -22,7 +22,7 @@ VALUES ('user4@user.com', '$2a$12$zjYWnQlFwPc0xP.Ls0brs.WFZ/qN/J3Z0.o/M/K7bQRW6S
 
 
 INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
-VALUES (1, 'restaurant1', 1, CURRENT_TIME, CURRENT_TIME, 5, true);
+VALUES (1, 'restaurant1', 1, CURRENT_TIME, CURRENT_TIME, 5, false);
 INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
 VALUES (2, 'restaurant2', 2, CURRENT_TIME, CURRENT_TIME, 5, true);
 INSERT INTO restaurant(user_id, restaurant_name, address_id, open_hour, close_hour, cuisine_id, is_shown)
@@ -38,6 +38,8 @@ INSERT INTO dish_category(restaurant_id, category_name)
 VALUES (3, 'Dania wegańskie');
 INSERT INTO dish_category(restaurant_id, category_name)
 VALUES (2, 'Dania wegańskie');
+INSERT INTO dish_category(restaurant_id, category_name)
+VALUES (1, 'Dania wegańskie');
 
 INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
 VALUES (3, 1, 'Ryba po grecku', 'Jakas tam rybka po grecku', '12.3', NULL, true);
@@ -49,6 +51,14 @@ INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, imag
 VALUES (3, 2, 'Dzik', 'Ten już nie jest ani dziki ani zły', '45.3', NULL, true);
 INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
 VALUES (3, 3, 'Trawa', 'Je jom krowa', '1.3', NULL, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
+VALUES (2, 4, 'Trawa1', 'Je jom krowa', '1.3', NULL, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
+VALUES (2, 4, 'Trawa2', 'Je jom krowa', '1.3', NULL, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability, is_hidden)
+VALUES (2, 4, 'Trawa3', 'Je jom krowa', '1.3', NULL, true, true);
+INSERT INTO dish(restaurant_id, dish_category_id, name, description, price, image_id, availability)
+VALUES (1, 5, 'Trawa4', 'Je jom krowa', '1.3', NULL, true);
 
 INSERT INTO user_rating(food_rating, delivery_rating, rating_date_time, description)
 VALUES (2, 3, CURRENT_TIMESTAMP, 'testUserRating1');

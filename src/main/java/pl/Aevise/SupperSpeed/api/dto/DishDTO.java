@@ -19,10 +19,10 @@ public class DishDTO {
     Integer dishId;
     String name;
     String description;
+    String category;
     BigDecimal price;
     ImageDTO imageDTO;
     Boolean availability;
-    Boolean isHidden;
 
     public final Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
@@ -31,7 +31,7 @@ public class DishDTO {
         ofNullable(description).ifPresent(value -> result.put("description", description));
         ofNullable(price).ifPresent(value -> result.put("price", price.toString()));
         ofNullable(availability).ifPresent(value -> result.put("availability", availability.toString()));
-        ofNullable(isHidden).ifPresent(value -> result.put("isHidden", isHidden.toString()));
+        ofNullable(category).ifPresent(value -> result.put("category", category));
         return result;
     }
 }

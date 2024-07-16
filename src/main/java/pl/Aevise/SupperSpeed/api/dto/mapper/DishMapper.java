@@ -15,5 +15,6 @@ public interface DishMapper {
     Dish mapFromDTO(final DishDTO dishDTO);
 
     @Mapping(source = "image", target = "imageDTO")
+    @Mapping(source = "dishCategory.categoryName", target = "category")
     DishDTO mapToDTO(Dish dish);
 }

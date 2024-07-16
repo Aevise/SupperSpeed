@@ -109,7 +109,6 @@ class RestaurantMenuEditionControllerIT extends AbstractITConfiguration {
                 .description(newDescription)
                 .price(BigDecimal.TEN)
                 .availability(null)
-                .isHidden(false)
                 .build();
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         Map<String, String> parametersMap = newDishInformation.asMap();
@@ -224,7 +223,7 @@ class RestaurantMenuEditionControllerIT extends AbstractITConfiguration {
         //given
         int restaurantId = 1;
         String newCategoryName = "new test category";
-        int expectedDishCategoryId = 5;
+        int expectedDishCategoryId = 6;
 
         //when
         ResultActions result = mockMvc.perform(post(RESTAURANT_MENU_ADD_CATEGORY)
@@ -251,7 +250,7 @@ class RestaurantMenuEditionControllerIT extends AbstractITConfiguration {
         int categoryId = 1;
         DishDTO dishDTO = dishDTO1();
         dishDTO.setDishId(null);
-        int expectedDishId = 6;
+        int expectedDishId = 10;
 
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         Map<String, String> parametersMap = dishDTO.asMap();
@@ -275,6 +274,5 @@ class RestaurantMenuEditionControllerIT extends AbstractITConfiguration {
         assertEquals(dishDTO.getDescription(), newDish.getDescription());
         assertEquals(dishDTO.getName(), newDish.getName());
         assertEquals(dishDTO.getAvailability(), newDish.getAvailability());
-        assertEquals(dishDTO.getIsHidden(), newDish.getIsHidden());
     }
 }

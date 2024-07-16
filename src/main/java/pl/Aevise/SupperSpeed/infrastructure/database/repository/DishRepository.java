@@ -26,14 +26,6 @@ public class DishRepository implements DishDAO {
 
     private final ImageEntityMapper imageEntityMapper;
 
-    @Override
-    public List<Dish> findAllByRestaurant(Integer restaurantId) {
-        return dishJpaRepository
-                .findAllByRestaurant_Id(restaurantId)
-                .stream()
-                .map(dishEntityMapper::mapFromEntity)
-                .toList();
-    }
 
     @Override
     public List<Dish> findAllByCategory(Integer categoryId) {
@@ -114,5 +106,23 @@ public class DishRepository implements DishDAO {
                 .toList();
 
         dishJpaRepository.saveAllAndFlush(dishEntityList);
+    }
+
+    @Override
+    public List<Dish> findAllNotHiddenDishes(String restaurantName) {
+        return dishJpaRepository
+                .findAllByRestaurant_RestaurantNameAndRestaurant_IsShownAndIsHidden(restaurantName, true, false)
+                .stream()
+                .map(dishEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<Dish> findNotHiddenDishesByCategory(String restaurantName, String category) {
+        return dishJpaRepository
+                .findAllByRestaurant_RestaurantNameAndRestaurant_IsShownAndDishCategory_CategoryNameAndIsHidden(restaurantName,  true, category, false)
+                .stream()
+                .map(dishEntityMapper::mapFromEntity)
+                .toList();
     }
 }

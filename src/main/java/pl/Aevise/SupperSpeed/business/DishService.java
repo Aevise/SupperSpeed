@@ -11,10 +11,7 @@ import pl.Aevise.SupperSpeed.business.dao.DishDAO;
 import pl.Aevise.SupperSpeed.domain.Dish;
 import pl.Aevise.SupperSpeed.domain.Image;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -28,10 +25,31 @@ public class DishService {
     private final DishListService dishListService;
     private final DishMapper dishMapper;
 
-    public List<Dish> findAllByRestaurant(Integer restaurantId) {
-        List<Dish> dishesFromRestaurant = dishDAO.findAllByRestaurant(restaurantId);
-        log.info("Found: [{}] dishesByRestaurant", dishesFromRestaurant.size());
-        return dishesFromRestaurant;
+    public List<DishDTO> findAllNotHiddenDishes(String restaurantName) {
+        List<Dish> dishesFromRestaurant = dishDAO.findAllNotHiddenDishes(restaurantName);
+        if(dishesFromRestaurant.isEmpty()){
+            log.info("No dishes for restaurant [{}] found", restaurantName);
+            return List.of();
+        }
+        List<DishDTO> dishList = dishesFromRestaurant.stream()
+                .map(dishMapper::mapToDTO)
+                .toList();
+        log.info("[{}] dishes found for restaurant with id: [{}]", dishList.size(), restaurantName);
+        return dishList;
+    }
+
+    public List<DishDTO> findNotHiddenDishesByCategory(String restaurantName, String category) {
+        List<Dish> dishesFromRestaurant = dishDAO.findNotHiddenDishesByCategory(restaurantName, category);
+        if(dishesFromRestaurant.isEmpty()){
+            log.info("No dishes for restaurant [{}] found", restaurantName);
+            return List.of();
+        }
+        List<DishDTO> dishList = dishesFromRestaurant.stream()
+                .map(dishMapper::mapToDTO)
+                .toList();
+        log.info("[{}] dishes found for restaurant with id: [{}] and category [{}]",
+                dishList.size(), restaurantName, category);
+        return dishList;
     }
 
     public List<Dish> findAllByCategory(Integer categoryId) {
@@ -100,12 +118,6 @@ public class DishService {
         log.info("Dish with id: [{}] image updated successfully", dishId);
     }
 
-//    @Transactional
-//    public HashMap<String, List<DishDTO>> getDishListByCategoryFromRestaurant(Integer restaurantId) {
-//        List<DishCategoryDTO> dishCategories = getDishCategoriesByRestaurantId(restaurantId);
-//        return extractDishesByCategoryName(dishCategories);
-//    }
-
     @Transactional
     public HashMap<String, List<DishDTO>> extractDishesByCategoryName(List<DishCategoryDTO> dishCategories) {
         HashMap<String, List<DishDTO>> dishesByCategory = new HashMap<>();
@@ -131,9 +143,9 @@ public class DishService {
                     List.of(dishCategory),
                     findAllByCategory(dishCategory.getDishCategoryId())
                             .stream()
+                            .filter(dish -> !filterUnavailable || dish.getAvailability())
+                            .filter(dish -> !dish.getIsHidden())
                             .map(dishMapper::mapToDTO)
-                            .filter(dishDTO -> !filterUnavailable || dishDTO.getAvailability())
-                            .filter(dishDTO -> !dishDTO.getIsHidden())
                             .toList()
             );
         }
@@ -142,4 +154,7 @@ public class DishService {
         }
         return dishesByCategory;
     }
+
+
+
 }

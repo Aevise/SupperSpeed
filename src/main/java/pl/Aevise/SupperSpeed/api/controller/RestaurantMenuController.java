@@ -26,7 +26,6 @@ import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOG
 public class RestaurantMenuController {
 
     static final String RESTAURANT_MENU = "/menu/{restaurantId}/{restaurantName}";
-    static final String ERROR = "error";
 
     private final DishService dishService;
     private final DishListService dishListService;

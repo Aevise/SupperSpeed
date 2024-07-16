@@ -181,7 +181,6 @@ public class DTOFixtures {
                 .name(dishEntity1().getName())
                 .price(dishEntity1().getPrice())
                 .availability(dishEntity1().getAvailability())
-                .isHidden(dishEntity1().getIsHidden())
                 .build();
     }
 
