@@ -1,7 +1,7 @@
 package pl.Aevise.SupperSpeed.api.dto.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
+import pl.Aevise.SupperSpeed.api.dto.RestRestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 
@@ -18,4 +18,15 @@ public interface RestaurantMapper {
 
     @Mapping(source = "imageDTO", target = "image")
     Restaurant mapFromDTO(RestaurantDTO restaurantDTO);
+
+    @Mapping(source = "cuisine.cuisine", target = "cuisine")
+    @BeanMapping(builder = @Builder(disableBuilder = true))
+    RestRestaurantDTO mapToRest(RestaurantDTO restaurantDTO);
+
+    @AfterMapping
+    default void setNullAddressId(@MappingTarget RestRestaurantDTO restRestaurantDTO) {
+        if (restRestaurantDTO.getAddress() != null) {
+            restRestaurantDTO.getAddress().setAddressId(null);
+        }
+    }
 }

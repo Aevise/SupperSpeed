@@ -44,7 +44,7 @@ public class DishesRestController {
             @PathVariable String restaurantName,
             @PathVariable String category
     ){
-        if (Objects.isNull(restaurantName)) {
+        if (Objects.isNull(restaurantName) || Objects.isNull(category)) {
             return ResponseEntity.notFound().build();
         }
 

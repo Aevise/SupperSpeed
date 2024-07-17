@@ -34,8 +34,10 @@ class OpinionAndRatingRestControllerIT extends RestAssuredIntegrationTestBase {
             Integer dishesOnPage,
             Integer expectedSize
     ) {
-        //given, when
+        //given
         String URL = API_UNAUTH + GET_OPINIONS;
+
+        //when
         List<RestOpinionDTO> dishes = requestSpecificationNoAuthentication().
                 pathParam("restaurantName", restaurantName)
                 .queryParam("sort", sortingDirection)

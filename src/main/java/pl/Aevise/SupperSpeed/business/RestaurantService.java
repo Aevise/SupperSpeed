@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
+import pl.Aevise.SupperSpeed.api.dto.RestRestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
@@ -84,6 +85,19 @@ public class RestaurantService {
                     .toList();
         }
         log.info("Could not find any restaurant in city [{}]", city);
+        return List.of();
+    }
+
+    public List<RestRestaurantDTO> findAllByCityForRest(String city){
+        List<RestaurantDTO> restaurants = findAllByCity(city);
+        List<RestRestaurantDTO> mappedRestaurants = restaurants.stream()
+                .filter(RestaurantDTO::getIsShown)
+                .map(restaurantMapper::mapToRest)
+                .toList();
+        if(!mappedRestaurants.isEmpty()){
+            log.info("Filtered restaurants and mapped [{}] of them", mappedRestaurants.size());
+            return mappedRestaurants;
+        }
         return List.of();
     }
 
