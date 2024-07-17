@@ -5,7 +5,7 @@ CREATE TABLE supper_order
     restaurant_id   INT                      NOT NULL,
     order_date_time TIMESTAMP WITH TIME ZONE NOT NULL,
     status_id       INT                      NOT NULL,
-    rating_id       INT,
+    rating_id       INT UNIQUE,
     PRIMARY KEY (order_id),
     CONSTRAINT fk_client_order
         FOREIGN KEY (client_id)
