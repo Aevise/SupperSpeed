@@ -4,9 +4,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -114,5 +116,13 @@ public class GlobalExceptionHandler {
         ModelAndView modelView = new ModelAndView("error");
         modelView.addObject("errorMessage", message);
         return modelView;
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleException(MissingServletRequestParameterException ex) {
+        String message = String.format("Error:\n[%s]", ex.getMessage());
+        log.error(message, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 }

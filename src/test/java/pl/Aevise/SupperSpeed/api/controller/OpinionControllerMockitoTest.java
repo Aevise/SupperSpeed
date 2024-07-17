@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.ui.ExtendedModelMap;
+import pl.Aevise.SupperSpeed.api.controller.utils.interfaces.PageRequestUtils;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.UserRatingService;
@@ -25,6 +26,8 @@ class OpinionControllerMockitoTest {
     private UserRatingService userRatingService;
     @Mock
     private RestaurantService restaurantService;
+    @Mock
+    private PageRequestUtils pageRequestUtils;
 
     @InjectMocks
     private OpinionController opinionController;
@@ -43,6 +46,7 @@ class OpinionControllerMockitoTest {
         ExtendedModelMap model = new ExtendedModelMap();
 
         when(restaurantService.findRestaurantDTOById(restaurantId)).thenReturn(restaurant);
+        when(pageRequestUtils.buildPageRequestForRatedOrders(currDir, page)).thenReturn(pageRequest);
         when(userRatingService.getOpinionsAboutOrdersFromRestaurant(restaurantId, pageRequest)).thenReturn(opinions);
         when(userRatingService.getRestaurantRating(restaurantId)).thenReturn(totalRestaurantRatingDTO1());
 

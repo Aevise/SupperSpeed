@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.*;
 import pl.Aevise.SupperSpeed.api.dto.mapper.OffsetDateTimeMapper;
+import pl.Aevise.SupperSpeed.api.dto.mapper.OpinionMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.UserRatingMapper;
 import pl.Aevise.SupperSpeed.business.dao.UserRatingDAO;
 import pl.Aevise.SupperSpeed.domain.UserRating;
@@ -31,6 +32,8 @@ public class UserRatingService {
     private final SupperOrderService supperOrderService;
     private final DishListService dishListService;
     private OffsetDateTimeMapper offsetDateTimeMapper;
+
+    private final OpinionMapper opinionMapper;
 
     @Transactional
     public void saveNewComment(UserRatingDTO userRatingDTO, Integer orderId) {
@@ -71,6 +74,15 @@ public class UserRatingService {
         log.warn("Could not get total rating for restaurant with id: [{}]", restaurantId);
         return null;
     }
+    public TotalRestaurantRatingDTO getRestaurantRating(String restaurantName) {
+        List<SupperOrderDTO> ratedOrdersByRestaurantName = supperOrderService.getRatedOrdersByRestaurantName(restaurantName);
+        if (!ratedOrdersByRestaurantName.isEmpty()) {
+            log.info("Successfully got rating for restaurant with name: [{}]", restaurantName);
+            return supperOrderService.getRestaurantRating(ratedOrdersByRestaurantName);
+        }
+        log.warn("Could not get total rating for restaurant with name: [{}]", restaurantName);
+        return null;
+    }
 
     public Page<OpinionDTO> getOpinionsAboutOrdersFromRestaurant(Integer restaurantId, PageRequest pageRequest) {
         Page<SupperOrderDTO> ratedOrdersByRestaurantId = supperOrderService.getRatedOrdersByRestaurantId(restaurantId, pageRequest);
@@ -101,6 +113,49 @@ public class UserRatingService {
                 pageRequest,
                 opinionsAboutRestaurant.size()
         );
+    }
+
+    public Page<OpinionDTO> getOpinionsAboutOrdersFromRestaurant(String restaurantName, PageRequest pageRequest) {
+        Page<SupperOrderDTO> ratedOrdersByRestaurantId = supperOrderService.getRatedOrdersByRestaurantName(restaurantName, pageRequest);
+        List<OpinionDTO> opinionsAboutRestaurant = new ArrayList<>();
+
+        if (!ratedOrdersByRestaurantId.isEmpty()) {
+            log.info("Fetched [{}]/[{}] rated orders for restaurant with name: [{}]",
+                    ratedOrdersByRestaurantId.getNumberOfElements(),
+                    ratedOrdersByRestaurantId.getTotalElements(),
+                    restaurantName);
+            for (SupperOrderDTO order : ratedOrdersByRestaurantId) {
+                List<DishListDTO> dishesByOrderId = dishListService.getDishesByOrderId(order.getOrderId());
+                HashMap<DishDTO, Integer> dishes = new HashMap<>();
+                if (!dishesByOrderId.isEmpty()) {
+                    for (DishListDTO dishListDTO : dishesByOrderId) {
+                        dishes.putIfAbsent(dishListDTO.getDishDTO(), dishListDTO.getQuantity());
+                    }
+                }
+                opinionsAboutRestaurant.add(buildOpinionDTO(order, order.getUserRatingDTO(), dishes));
+            }
+        } else {
+            log.info("No rated orders found for restaurant with name [{}]", restaurantName);
+        }
+        if (opinionsAboutRestaurant.isEmpty()) {
+            return Page.empty();
+        }
+        return new PageImpl<>(opinionsAboutRestaurant,
+                pageRequest,
+                opinionsAboutRestaurant.size()
+        );
+    }
+
+    public Page<RestOpinionDTO> getOpinionsAboutOrdersFromRestaurantForRest(String restaurantName, PageRequest pageRequest){
+        Page<OpinionDTO> opinionsPage = getOpinionsAboutOrdersFromRestaurant(restaurantName, pageRequest);
+
+        List<RestOpinionDTO> restOpinions = opinionsPage.getContent()
+                .stream()
+                .map(opinionMapper::mapToRestDTO)
+                .toList();
+
+        return new PageImpl<>(restOpinions, pageRequest, opinionsPage.getTotalElements());
+
     }
 
     private OpinionDTO buildOpinionDTO(

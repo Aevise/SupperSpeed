@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.Aevise.SupperSpeed.api.controller.utils.URLConstants;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.business.DishService;
 
@@ -14,13 +15,12 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping(DishesRestController.DISH)
+@RequestMapping(URLConstants.API_UNAUTH)
 @AllArgsConstructor
 public class DishesRestController {
 
-    public static final String DISH = "/api/unauth/dishes";
-    public static final String ALL_DISHES_FROM_RESTAURANT = "/{restaurantName}/category/all";
-    public static final String ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY = "/{restaurantName}/category/{category}";
+    public static final String ALL_DISHES_FROM_RESTAURANT = "/dishes/{restaurantName}/category/all";
+    public static final String ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY = "/dishes/{restaurantName}/category/{category}";
 
     private final DishService dishService;
 

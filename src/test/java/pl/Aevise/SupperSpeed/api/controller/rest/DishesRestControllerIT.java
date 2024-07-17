@@ -9,7 +9,9 @@ import pl.Aevise.SupperSpeed.integration.configuration.RestAssuredIntegrationTes
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.Aevise.SupperSpeed.api.controller.rest.DishesRestController.*;
+import static pl.Aevise.SupperSpeed.api.controller.rest.DishesRestController.ALL_DISHES_FROM_RESTAURANT;
+import static pl.Aevise.SupperSpeed.api.controller.rest.DishesRestController.ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY;
+import static pl.Aevise.SupperSpeed.api.controller.utils.URLConstants.API_UNAUTH;
 
 class DishesRestControllerIT extends RestAssuredIntegrationTestBase {
 
@@ -24,7 +26,7 @@ class DishesRestControllerIT extends RestAssuredIntegrationTestBase {
         String restaurantName = "restaurant3";
 
         //when
-        String URL = DISH + ALL_DISHES_FROM_RESTAURANT;
+        String URL = API_UNAUTH + ALL_DISHES_FROM_RESTAURANT;
         List<DishDTO> dishes = requestSpecificationNoAuthentication().
                 pathParam("restaurantName", restaurantName)
                 .get(URL)
@@ -50,7 +52,7 @@ class DishesRestControllerIT extends RestAssuredIntegrationTestBase {
         String dishCategory = "Dania rybne";
 
         //when
-        String URL = DISH + ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY;
+        String URL = API_UNAUTH + ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY;
         List<DishDTO> dishes = requestSpecificationNoAuthentication()
                 .pathParam("restaurantName", restaurantName)
                 .pathParam("category", dishCategory)

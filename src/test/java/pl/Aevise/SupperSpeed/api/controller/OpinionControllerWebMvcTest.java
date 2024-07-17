@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import pl.Aevise.SupperSpeed.api.controller.utils.interfaces.PageRequestUtils;
 import pl.Aevise.SupperSpeed.api.dto.*;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.UserRatingService;
@@ -28,8 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static pl.Aevise.SupperSpeed.api.controller.OpinionController.OPINION;
@@ -44,6 +44,9 @@ import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
 class OpinionControllerWebMvcTest {
 
     private MockMvc mockMvc;
+
+    @MockBean
+    private PageRequestUtils pageRequestUtils;
 
     @MockBean
     private UserRatingService userRatingService;
@@ -74,6 +77,7 @@ class OpinionControllerWebMvcTest {
         parametersMap.forEach(params::add);
 
         //when
+        when(pageRequestUtils.buildPageRequestForRatedOrders(anyString(), anyInt())).thenReturn(pageRequest);
         when(restaurantService.findRestaurantDTOById(restaurantId)).thenReturn(restaurantDTO);
         when(userRatingService.getOpinionsAboutOrdersFromRestaurant(anyInt(), any(PageRequest.class))).thenReturn(noOpinions);
         when(userRatingService.getRestaurantRating(restaurantId)).thenReturn(totalRestaurantRatingDTO);
@@ -129,6 +133,7 @@ class OpinionControllerWebMvcTest {
         parametersMap.forEach(params::add);
 
         //when
+        when(pageRequestUtils.buildPageRequestForRatedOrders(anyString(), anyInt())).thenReturn(pageRequest);
         when(restaurantService.findRestaurantDTOById(restaurantId)).thenReturn(restaurantDTO);
         when(userRatingService.getOpinionsAboutOrdersFromRestaurant(restaurantId, pageRequest)).thenReturn(opinions);
         when(userRatingService.getRestaurantRating(restaurantId)).thenReturn(totalRestaurantRatingDTO);
@@ -188,6 +193,7 @@ class OpinionControllerWebMvcTest {
         parametersMap.forEach(params::add);
 
         //when
+        when(pageRequestUtils.buildPageRequestForRatedOrders(anyString(), anyInt())).thenReturn(pageRequest);
         when(restaurantService.findRestaurantDTOById(restaurantId)).thenReturn(restaurantDTO);
         when(userRatingService.getOpinionsAboutOrdersFromRestaurant(restaurantId, pageRequest)).thenReturn(opinions);
         when(userRatingService.getRestaurantRating(restaurantId)).thenReturn(totalRestaurantRatingDTO);

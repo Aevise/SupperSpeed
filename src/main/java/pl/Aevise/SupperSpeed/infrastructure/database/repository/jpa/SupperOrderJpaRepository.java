@@ -13,8 +13,10 @@ public interface SupperOrderJpaRepository extends JpaRepository<SupperOrderEntit
     List<SupperOrderEntity> findAllByClient_Id(Integer clientId);
 
     Page<SupperOrderEntity> findAllByRestaurant_IdAndUserRatingIsNotNull(Integer restaurantId, PageRequest pageRequest);
+    Page<SupperOrderEntity> findAllByRestaurant_RestaurantNameAndUserRatingIsNotNull(String restaurantName, PageRequest pageRequest);
 
     List<SupperOrderEntity> findAllByRestaurant_IdAndUserRatingIsNotNull(Integer restaurantId);
+    List<SupperOrderEntity> findAllByRestaurant_RestaurantNameAndUserRatingIsNotNull(String restaurantName);
 
 
 }
