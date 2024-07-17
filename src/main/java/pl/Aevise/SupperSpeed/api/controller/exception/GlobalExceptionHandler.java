@@ -125,4 +125,20 @@ public class GlobalExceptionHandler {
         log.error(message, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
+
+    @ExceptionHandler(ForbiddenRESTRequest.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleException(ForbiddenRESTRequest ex) {
+        String message = String.format("Error:\n[%s]", ex.getMessage());
+        log.error(message, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
+
+    @ExceptionHandler(IncorrectParamsInRESTRequest.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleException(IncorrectParamsInRESTRequest ex) {
+        String message = String.format("Error:\n[%s]", ex.getMessage());
+        log.error(message, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
 }

@@ -12,8 +12,11 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static pl.Aevise.SupperSpeed.util.Constants.DISH_CATEGORY;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.restaurantEntity1;
 
@@ -50,5 +53,18 @@ class DishCategoryJpaRepositoryTest {
 
         //then
         assertThat(fetchedDishCategories).doesNotContainNull().hasSize(2);
+    }
+
+    @Test
+    void checkThatYouCanGetDishCategoryByName(){
+        //given
+        String categoryName = "Dania rybne";
+
+        //when
+        Optional<DishCategoryEntity> byCategoryName = dishCategoryJpaRepository.findByCategoryName(categoryName);
+
+        //then
+        assertTrue(byCategoryName.isPresent());
+        assertEquals(byCategoryName.get().getCategoryName(), categoryName);
     }
 }

@@ -36,7 +36,7 @@ public class SecurityConfiguration {
                 auth
                         .requestMatchers("/", "/menu/**", "/search/**", "/create/**", "/login", "/logout", "/images/**", "error", "/opinion", "/api/unauth/**").permitAll()
                         .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
-                        .requestMatchers("/restaurant/**", "/upload/**", "/api/auth/restaurant").hasAuthority(AvailableRoles.RESTAURANT.name())
+                        .requestMatchers("/restaurant/**", "/upload/**", "/api/auth/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
                         .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(
                                 AvailableRoles.CLIENT.name(),
                                 AvailableRoles.RESTAURANT.name()
@@ -73,6 +73,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationConfiguration())
+                .httpBasic(Customizer.withDefaults())
 //                .oauth2Login(Customizer.withDefaults())
                 .formLogin(FormLoginConfigurer::permitAll)
                 .logout(logoutConfiguration());
@@ -96,6 +97,7 @@ public class SecurityConfiguration {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(authorizationConfiguration())
+                .httpBasic(Customizer.withDefaults())
                 .formLogin(FormLoginConfigurer::permitAll)
                 .logout(logoutConfiguration());
         return http.build();

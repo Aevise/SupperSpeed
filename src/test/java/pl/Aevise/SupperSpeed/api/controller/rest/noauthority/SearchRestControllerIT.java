@@ -1,10 +1,15 @@
 package pl.Aevise.SupperSpeed.api.controller.rest.noauthority;
 
 import io.restassured.response.ValidatableResponse;
+import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import pl.Aevise.SupperSpeed.api.dto.RestRestaurantDTO;
+import pl.Aevise.SupperSpeed.integration.configuration.FlywayManualMigrationsConfiguration;
 import pl.Aevise.SupperSpeed.integration.configuration.RestAssuredIntegrationTestBase;
 
 import java.util.List;
@@ -14,9 +19,19 @@ import static pl.Aevise.SupperSpeed.api.controller.rest.noAuthority.SearchRestCo
 import static pl.Aevise.SupperSpeed.api.controller.utils.URLConstants.API_UNAUTH;
 
 class SearchRestControllerIT extends RestAssuredIntegrationTestBase {
-    @BeforeEach
-    void setupCredentials() {
+
+    @Autowired
+    private Flyway flyway;
+
+    @Override
+    protected void setupCredentials() {
         setTestCredentials("user4@user.com", "test");
+    }
+
+    @AfterEach
+    void recreateFlywayMigrations() {
+        flyway.clean();
+        flyway.migrate();
     }
 
     @Test

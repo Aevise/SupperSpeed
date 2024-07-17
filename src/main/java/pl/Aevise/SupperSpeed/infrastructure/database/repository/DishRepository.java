@@ -37,7 +37,7 @@ public class DishRepository implements DishDAO {
     }
 
     @Override
-    public void updateDish(DishDTO dishDTO) {
+    public Dish updateDish(DishDTO dishDTO) {
         DishEntity dish = dishJpaRepository
                 .findById(dishDTO.getDishId())
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -49,9 +49,14 @@ public class DishRepository implements DishDAO {
         dish.setName(newDishData.getName());
         dish.setDescription(newDishData.getDescription());
         dish.setPrice(newDishData.getPrice());
-        dish.setAvailability(newDishData.getAvailability());
+        if(newDishData.getAvailability() == null){
+            dish.setAvailability(false);
+        }else {
+            dish.setAvailability(newDishData.getAvailability());
+        }
 
-        dishJpaRepository.saveAndFlush(dish);
+        DishEntity dishEntity = dishJpaRepository.saveAndFlush(dish);
+        return dishEntityMapper.mapFromEntity(dishEntity);
     }
 
     @Override
@@ -66,9 +71,10 @@ public class DishRepository implements DishDAO {
     }
 
     @Override
-    public void addDish(Dish dish) {
+    public Dish addDish(Dish dish) {
         DishEntity dishToSave = dishEntityMapper.mapToEntity(dish);
-        dishJpaRepository.saveAndFlush(dishToSave);
+        DishEntity dishEntity = dishJpaRepository.saveAndFlush(dishToSave);
+        return dishEntityMapper.mapFromEntity(dishEntity);
     }
 
     @Override
@@ -124,5 +130,11 @@ public class DishRepository implements DishDAO {
                 .stream()
                 .map(dishEntityMapper::mapFromEntity)
                 .toList();
+    }
+
+    @Override
+    public Optional<Dish> findById(Integer dishId) {
+        return dishJpaRepository.findById(dishId)
+                .map(dishEntityMapper::mapFromEntity);
     }
 }

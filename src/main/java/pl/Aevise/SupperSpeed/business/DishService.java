@@ -10,6 +10,8 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
 import pl.Aevise.SupperSpeed.business.dao.DishDAO;
 import pl.Aevise.SupperSpeed.domain.Dish;
 import pl.Aevise.SupperSpeed.domain.Image;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
 import java.util.*;
 
@@ -58,9 +60,10 @@ public class DishService {
         return dishesFromRestaurant;
     }
 
-    public void updateDish(DishDTO dishDTO) {
-        dishDAO.updateDish(dishDTO);
+    public DishDTO updateDish(DishDTO dishDTO) {
+        Dish dish = dishDAO.updateDish(dishDTO);
         log.info("Updated dish: [{}] - [{}]", dishDTO.getDishId(), dishDTO.getName());
+        return dishMapper.mapToDTO(dish);
     }
 
     public void deleteOrHideDishByDishId(Integer dishId) {
@@ -93,10 +96,17 @@ public class DishService {
     }
 
     @Transactional
-    public void addDish(Dish dish) {
-
-        dishDAO.addDish(dish);
+    public DishDTO addDish(DishDTO dishDTO) {
+        Dish dish = dishDAO.addDish(dishMapper.mapFromDTO(dishDTO));
         log.info("Successfully added dish: [{}]", dish.getName());
+        return dishMapper.mapToDTO(dish);
+    }
+
+    @Transactional
+    public Dish addDish(Dish dish) {
+        Dish newDish = dishDAO.addDish(dish);
+        log.info("Successfully added dish: [{}]", newDish.getName());
+        return newDish;
     }
 
     public Dish buildDish(DishDTO dishDTO, Integer restaurantId, Integer categoryId) {
@@ -109,6 +119,35 @@ public class DishService {
                         .orElse(false))
                 .restaurant(restaurantService.findByIdEntity(restaurantId))
                 .dishCategory(dishCategoryService.findByIdEntity(categoryId))
+                .isHidden(false)
+                .build();
+    }
+
+    public Dish buildDish(DishDTO dishDTO, RestaurantEntity restaurantEntity, DishCategoryEntity dishCategoryEntity) {
+        return Dish.builder()
+                .name(dishDTO.getName())
+                .price(dishDTO.getPrice())
+                .description(dishDTO.getDescription())
+                .availability(Optional
+                        .ofNullable(dishDTO.getAvailability())
+                        .orElse(false))
+                .restaurant(restaurantEntity)
+                .dishCategory(dishCategoryEntity)
+                .isHidden(false)
+                .build();
+    }
+
+
+    public Dish buildDish(DishDTO dishDTO, Integer restaurantId, String categoryName) {
+        return Dish.builder()
+                .name(dishDTO.getName())
+                .price(dishDTO.getPrice())
+                .description(dishDTO.getDescription())
+                .availability(Optional
+                        .ofNullable(dishDTO.getAvailability())
+                        .orElse(false))
+                .restaurant(restaurantService.findByIdEntity(restaurantId))
+                .dishCategory(dishCategoryService.findByName(categoryName))
                 .isHidden(false)
                 .build();
     }
@@ -155,6 +194,25 @@ public class DishService {
         return dishesByCategory;
     }
 
+    public DishDTO findById(Integer dishId) {
+        Optional<Dish> dish = dishDAO.findById(dishId);
 
+        if(dish.isPresent()){
+            log.info("Found dish with id: [{}]", dishId);
+            return dishMapper.mapToDTO(dish.get());
+        }
+        log.info("Dish with id: [{}] not found", dishId);
+        return null;
+    }
 
+    public Dish findByIdPOJO(Integer dishId) {
+        Optional<Dish> dish = dishDAO.findById(dishId);
+
+        if(dish.isPresent()){
+            log.info("Found dish with id: [{}]", dishId);
+            return dish.get();
+        }
+        log.info("Dish with id: [{}] not found", dishId);
+        return null;
+    }
 }

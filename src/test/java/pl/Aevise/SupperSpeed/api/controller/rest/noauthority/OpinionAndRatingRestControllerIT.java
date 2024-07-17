@@ -20,8 +20,8 @@ import static pl.Aevise.SupperSpeed.api.controller.utils.URLConstants.API_UNAUTH
 
 class OpinionAndRatingRestControllerIT extends RestAssuredIntegrationTestBase {
 
-    @BeforeEach
-    void setupCredentials() {
+    @Override
+    protected void setupCredentials() {
         setTestCredentials("user4@user.com", "test");
     }
 

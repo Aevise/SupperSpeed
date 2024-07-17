@@ -26,6 +26,6 @@ public interface AuthenticationTestSupport {
         return requestSpecification()
                 .post(LOGOUT)
                 .then()
-                .statusCode(HttpStatus.FOUND.value());
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }

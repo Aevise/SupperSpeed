@@ -10,13 +10,13 @@ import java.util.Optional;
 public interface DishDAO {
     List<Dish> findAllByCategory(Integer categoryId);
 
-    void updateDish(DishDTO dishDTO);
+    Dish updateDish(DishDTO dishDTO);
 
     void deleteDish(Integer dishId);
 
     void deleteDishes(List<Dish> dishes);
 
-    void addDish(Dish dish);
+    Dish addDish(Dish dish);
 
     void setDishImage(Image image, Integer dishId);
 
@@ -27,4 +27,6 @@ public interface DishDAO {
     List<Dish> findAllNotHiddenDishes(String restaurantName);
 
     List<Dish> findNotHiddenDishesByCategory(String restaurantName, String category);
+
+    Optional<Dish> findById(Integer dishId);
 }

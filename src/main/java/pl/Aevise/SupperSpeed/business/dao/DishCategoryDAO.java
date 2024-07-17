@@ -18,4 +18,6 @@ public interface DishCategoryDAO {
     void addCategory(DishCategoryEntity dishCategory);
 
     Optional<DishCategory> findById(Integer id);
+
+    Optional<DishCategory> findByName(String categoryName);
 }

@@ -140,7 +140,7 @@ class RestaurantMenuEditionControllerMockMvcTest {
         parametersMap.forEach(params::add);
 
         //when
-        doNothing().when(dishService).updateDish(dishDTO);
+        when(dishService.updateDish(dishDTO)).thenReturn(dishDTO);
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(RESTAURANT_MENU_UPDATE_DISH)
                 .params(params)
@@ -402,7 +402,7 @@ class RestaurantMenuEditionControllerMockMvcTest {
 
         //when
         when(dishService.buildDish(dishDTO, restaurantId, categoryId)).thenReturn(dish);
-        doNothing().when(dishService).addDish(dish);
+        when(dishService.addDish(dish)).thenReturn(dish);
 
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(RESTAURANT_MENU_ADD_DISH)
                 .params(params)

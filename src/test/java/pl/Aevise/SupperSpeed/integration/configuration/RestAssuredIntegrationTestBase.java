@@ -27,6 +27,8 @@ public abstract class RestAssuredIntegrationTestBase
     private String testUsername = "user3@user.com";
     private String testPassword = "test";
 
+    protected abstract void setupCredentials();
+
     @Autowired
     @SuppressWarnings("unused")
     private ObjectMapper objectMapper;
@@ -63,6 +65,7 @@ public abstract class RestAssuredIntegrationTestBase
 
     @BeforeEach
     void beforeEach() {
+        setupCredentials();
         jSessionIdValue = login(testUsername, testPassword)
                 .and()
                 .cookie("JSESSIONID")

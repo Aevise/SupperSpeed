@@ -33,7 +33,10 @@ public class DishesSearchRestController {
         }
 
         List<DishDTO> dishes = dishService.findAllNotHiddenDishes(restaurantName)
-                .stream().sorted(Comparator.comparing(DishDTO::getDishId)).toList();
+                .stream()
+                .sorted(Comparator.comparing(DishDTO::getDishId))
+                .peek(dish -> dish.setDishId(null))
+                .toList();
         if(dishes.isEmpty()) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(dishes);
@@ -47,11 +50,13 @@ public class DishesSearchRestController {
         if (Objects.isNull(restaurantName) || Objects.isNull(category)) {
             return ResponseEntity.notFound().build();
         }
-
         List<DishDTO> dishes = dishService.findNotHiddenDishesByCategory(restaurantName, category)
                 .stream()
+                .sorted(Comparator.comparing(DishDTO::getDishId))
                 .peek(dish -> dish.setCategory(null))
-                .sorted(Comparator.comparing(DishDTO::getDishId)).toList();
+                .peek(dish -> dish.setDishId(null))
+                .toList();
+
         if(dishes.isEmpty()) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(dishes);
