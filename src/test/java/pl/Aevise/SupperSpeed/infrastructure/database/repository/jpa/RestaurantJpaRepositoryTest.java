@@ -120,7 +120,7 @@ class RestaurantJpaRepositoryTest {
     }
 
     @Test
-    void checkThatYouCanGetAllRestaurantsInCityWithCuisine(){
+    void checkThatYouCanGetAllRestaurantsInCityWithCuisine() {
         //given
         String city = "Lublin";
         String cuisine = "Italian";

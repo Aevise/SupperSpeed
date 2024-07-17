@@ -24,7 +24,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RestaurantService {
 
-    private final ProfileService profileService;
     private final AddressService addressService;
 
     private final RestaurantDAO restaurantDAO;
@@ -69,12 +68,6 @@ public class RestaurantService {
         return Optional.empty();
     }
 
-    public List<Restaurant> findAll() {
-        List<Restaurant> restaurants = restaurantDAO.findAll();
-        log.info("Found [{}] restaurants", restaurants.size());
-        return restaurants;
-    }
-
     public List<RestaurantDTO> findAllByCity(String city) {
         List<Restaurant> restaurants = restaurantDAO.findAllByCity(city);
 
@@ -88,12 +81,12 @@ public class RestaurantService {
         return List.of();
     }
 
-    public List<RestRestaurantDTO> prepareDataToRest(List<RestaurantDTO> restaurants){
+    public List<RestRestaurantDTO> prepareDataToRest(List<RestaurantDTO> restaurants) {
         List<RestRestaurantDTO> mappedRestaurants = restaurants.stream()
                 .filter(RestaurantDTO::getIsShown)
                 .map(restaurantMapper::mapToRest)
                 .toList();
-        if(!mappedRestaurants.isEmpty()){
+        if (!mappedRestaurants.isEmpty()) {
             log.info("Filtered restaurants and mapped [{}] of them", mappedRestaurants.size());
             return mappedRestaurants;
         }
@@ -203,26 +196,6 @@ public class RestaurantService {
         }
     }
 
-    public List<RestaurantDTO> filterRestaurantsByCuisine(String cuisine, List<Restaurant> restaurantsDeliveringOnAddress) {
-        List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
-                .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
-                .map(restaurantMapper::mapToDTO)
-                .toList();
-        log.info("Found [{}] restaurant with cuisine [{}]",
-                filteredRestaurants.size(), cuisine);
-        return filteredRestaurants;
-    }
-
-    public List<RestaurantDTO> filterRestaurantDTOsByCuisine(String cuisine, List<RestaurantDTO> restaurantsDeliveringOnAddress) {
-        List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
-                .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
-                .toList();
-        log.info("Found [{}] restaurant with cuisine [{}]",
-                filteredRestaurants.size(), cuisine);
-        return filteredRestaurants;
-    }
-
-    //---------------------------------------------------------------------
     public List<String> findCuisinesByDeliveryAddress_CityAndStreetName(String city, String streetName) {
         return deliveryAddressService.getCuisineFromRestaurantsDeliveringTo(city, streetName);
     }

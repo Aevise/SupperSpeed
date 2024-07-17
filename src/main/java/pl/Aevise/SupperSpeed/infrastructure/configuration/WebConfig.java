@@ -25,6 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations(resourceLocation);
     }
+
     @Bean
     public WebClient webClient(ObjectMapper objectMapper) {
         final var strategies = ExchangeStrategies

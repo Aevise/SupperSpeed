@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface DishCategoryJpaRepository extends JpaRepository<DishCategoryEntity, Integer> {
 
     List<DishCategoryEntity> findAllByRestaurant_Id(Integer restaurantId);
+
     Optional<DishCategoryEntity> findByCategoryName(String categoryName);
 }

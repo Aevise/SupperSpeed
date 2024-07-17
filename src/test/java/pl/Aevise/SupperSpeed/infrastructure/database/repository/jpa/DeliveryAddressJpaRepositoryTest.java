@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.FlywayManualMigrationsConfiguration;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
@@ -26,13 +24,12 @@ import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import({PersistenceContainerTestConfiguration.class,
-FlywayManualMigrationsConfiguration.class})
+        FlywayManualMigrationsConfiguration.class})
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 class DeliveryAddressJpaRepositoryTest {
 
-    Flyway flyway;
-
     private final DeliveryAddressJpaRepository deliveryAddressJpaRepository;
+    Flyway flyway;
 
     @BeforeEach
     void recreateFlywayMigrations() {

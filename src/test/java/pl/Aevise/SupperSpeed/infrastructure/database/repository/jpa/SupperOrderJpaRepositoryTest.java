@@ -43,6 +43,13 @@ class SupperOrderJpaRepositoryTest {
         return PageRequest.of(0, 10, Sort.by("orderId").ascending());
     }
 
+    public static Stream<Arguments> checkThatYouCanGetAllRatedOrdersBasedOnRestaurantName() {
+        return Stream.of(
+                Arguments.of("restaurant3", 1),
+                Arguments.of("restaurant2", 0)
+        );
+    }
+
     @BeforeEach
     void createDishesAndOrders() {
         //create restaurant
@@ -142,7 +149,7 @@ class SupperOrderJpaRepositoryTest {
     void checkThatYouCanGetAllRatedOrdersBasedOnRestaurantName(
             String restaurantName,
             Integer expectedAmount
-    ){
+    ) {
         //given, when
         var orders = supperOrderJpaRepository
                 .findAllByRestaurant_RestaurantNameAndUserRatingIsNotNull(restaurantName, buildPageRequestForRatedOrders())
@@ -150,12 +157,5 @@ class SupperOrderJpaRepositoryTest {
 
         //then
         assertThat(orders).doesNotContainNull().hasSize(expectedAmount);
-    }
-
-    public static Stream<Arguments> checkThatYouCanGetAllRatedOrdersBasedOnRestaurantName(){
-        return Stream.of(
-                Arguments.of("restaurant3", 1),
-                Arguments.of("restaurant2", 0)
-        );
     }
 }

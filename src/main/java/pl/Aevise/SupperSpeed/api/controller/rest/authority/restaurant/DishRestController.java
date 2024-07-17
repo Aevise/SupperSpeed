@@ -75,7 +75,7 @@ public class DishRestController {
             @RequestBody DishDTO dishDTO,
             @RequestParam(value = "dishId") Integer dishId,
             @AuthenticationPrincipal UserDetails userDetails
-            ){
+    ) {
         checkDishData(dishDTO);
 
         String username = userDetails.getUsername();
@@ -83,8 +83,8 @@ public class DishRestController {
 
         Dish oldDish = dishService.findByIdPOJO(dishId);
 
-        if(oldDish == null ||
-                !Objects.equals(oldDish.getRestaurant().getId(), restaurant.getRestaurantId())){
+        if (oldDish == null ||
+                !Objects.equals(oldDish.getRestaurant().getId(), restaurant.getRestaurantId())) {
             throw new ForbiddenRESTRequest("Can not modify this dish");
         }
 
@@ -98,31 +98,31 @@ public class DishRestController {
     public ResponseEntity<String> deleteDish(
             @RequestParam(value = "dishId") Integer dishId,
             @AuthenticationPrincipal UserDetails userDetails
-    ){
+    ) {
         String username = userDetails.getUsername();
         RestaurantDTO restaurant = restaurantService.findRestaurantByEmail(username);
 
         Dish dish = dishService.findByIdPOJO(dishId);
-        if(dish == null || !Objects.equals(dish.getRestaurant().getId(), restaurant.getRestaurantId()) || dish.getIsHidden()) {
+        if (dish == null || !Objects.equals(dish.getRestaurant().getId(), restaurant.getRestaurantId()) || dish.getIsHidden()) {
             throw new ForbiddenRESTRequest("You can not delete this dish");
         }
         dishService.deleteOrHideDishByDishId(dishId);
 
         Dish newDishData = dishService.findByIdPOJO(dishId);
-        if(newDishData == null || newDishData.getIsHidden()){
+        if (newDishData == null || newDishData.getIsHidden()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Dish deleted.");
         }
         return ResponseEntity.internalServerError().build();
     }
 
-    private void checkDishData(DishDTO dishDTO){
-        if (dishDTO.getName() == null){
+    private void checkDishData(DishDTO dishDTO) {
+        if (dishDTO.getName() == null) {
             throw new IncorrectParamsInRESTRequest("Body must contain name value");
         }
-        if (dishDTO.getDescription() == null){
+        if (dishDTO.getDescription() == null) {
             throw new IncorrectParamsInRESTRequest("Body must contain description value");
         }
-        if (dishDTO.getPrice() == null){
+        if (dishDTO.getPrice() == null) {
             throw new IncorrectParamsInRESTRequest("Body must contain price value");
         }
     }

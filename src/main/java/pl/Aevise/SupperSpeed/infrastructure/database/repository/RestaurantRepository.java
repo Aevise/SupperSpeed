@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.RestaurantJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ImageEntityMapper;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
-import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -71,14 +69,6 @@ public class RestaurantRepository implements RestaurantDAO {
                 .map(restaurantEntityMapper::mapFromEntity);
     }
 
-    @Override
-    public List<Restaurant> findAll() {
-        return restaurantJpaRepository
-                .findAll()
-                .stream()
-                .map(restaurantEntityMapper::mapFromEntity)
-                .toList();
-    }
 
     @Override
     public List<Restaurant> findAllByCity(String city) {

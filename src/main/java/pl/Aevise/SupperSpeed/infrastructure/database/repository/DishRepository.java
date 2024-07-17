@@ -49,9 +49,9 @@ public class DishRepository implements DishDAO {
         dish.setName(newDishData.getName());
         dish.setDescription(newDishData.getDescription());
         dish.setPrice(newDishData.getPrice());
-        if(newDishData.getAvailability() == null){
+        if (newDishData.getAvailability() == null) {
             dish.setAvailability(false);
-        }else {
+        } else {
             dish.setAvailability(newDishData.getAvailability());
         }
 
@@ -126,7 +126,7 @@ public class DishRepository implements DishDAO {
     @Override
     public List<Dish> findNotHiddenDishesByCategory(String restaurantName, String category) {
         return dishJpaRepository
-                .findAllByRestaurant_RestaurantNameAndRestaurant_IsShownAndDishCategory_CategoryNameAndIsHidden(restaurantName,  true, category, false)
+                .findAllByRestaurant_RestaurantNameAndRestaurant_IsShownAndDishCategory_CategoryNameAndIsHidden(restaurantName, true, category, false)
                 .stream()
                 .map(dishEntityMapper::mapFromEntity)
                 .toList();

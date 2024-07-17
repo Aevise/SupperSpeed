@@ -34,6 +34,22 @@ class DishJpaRepositoryTest {
 
     private final DishJpaRepository dishJpaRepository;
 
+    public static Stream<Arguments> checkThatYouCanGetAllDishesBasedOnRestaurantName() {
+        return Stream.of(
+                Arguments.of("restaurant1", 0),
+                Arguments.of("restaurant2", 2),
+                Arguments.of("restaurant3", 5)
+        );
+    }
+
+    public static Stream<Arguments> checkThatYouCanGetDishesBasedByRestaurantNameAndDishCategory() {
+        return Stream.of(
+                Arguments.of("restaurant3", "Dania rybne", 2),
+                Arguments.of("restaurant3", "Dania mięsne", 2),
+                Arguments.of("restaurant3", "Dania wegańskie", 1)
+        );
+    }
+
     @BeforeEach
     void createDishes() {
         //create restaurant
@@ -64,7 +80,6 @@ class DishJpaRepositoryTest {
         dishes.get(2).setDishCategory(categoryEntities.get(1));
         dishJpaRepository.saveAllAndFlush(dishes);
     }
-
 
     //    List<DishEntity> findAllByRestaurant_Id(Integer restaurantId);
     @Test
@@ -111,20 +126,12 @@ class DishJpaRepositoryTest {
     void checkThatYouCanGetAllDishesBasedOnRestaurantName(
             String restaurantName,
             int expectedAmountOfDishes
-    ){
+    ) {
         //given, when
         List<DishEntity> dishes = dishJpaRepository.findAllByRestaurant_RestaurantNameAndRestaurant_IsShownAndIsHidden(restaurantName, true, false);
 
         //then
         assertThat(dishes).hasSize(expectedAmountOfDishes);
-    }
-
-    public static Stream<Arguments> checkThatYouCanGetAllDishesBasedOnRestaurantName(){
-        return Stream.of(
-                Arguments.of("restaurant1", 0),
-                Arguments.of("restaurant2", 2),
-                Arguments.of("restaurant3", 5)
-        );
     }
 
     @ParameterizedTest
@@ -133,20 +140,12 @@ class DishJpaRepositoryTest {
             String restaurantName,
             String categoryName,
             Integer expectedAmountOfDishes
-    ){
+    ) {
         //given, when
         List<DishEntity> dishes = dishJpaRepository.findAllByRestaurant_RestaurantNameAndRestaurant_IsShownAndDishCategory_CategoryNameAndIsHidden(
                 restaurantName, true, categoryName, false);
 
         //then
         assertThat(dishes).hasSize(expectedAmountOfDishes);
-    }
-
-    public static Stream<Arguments> checkThatYouCanGetDishesBasedByRestaurantNameAndDishCategory() {
-        return Stream.of(
-                Arguments.of("restaurant3", "Dania rybne", 2),
-                Arguments.of("restaurant3", "Dania mięsne", 2),
-                Arguments.of("restaurant3", "Dania wegańskie", 1)
-                );
     }
 }

@@ -56,7 +56,7 @@ class DishCategoryJpaRepositoryTest {
     }
 
     @Test
-    void checkThatYouCanGetDishCategoryByName(){
+    void checkThatYouCanGetDishCategoryByName() {
         //given
         String categoryName = "Dania rybne";
 

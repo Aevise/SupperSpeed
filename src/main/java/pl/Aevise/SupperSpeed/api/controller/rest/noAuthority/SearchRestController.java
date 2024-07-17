@@ -28,10 +28,9 @@ public class SearchRestController {
             @RequestParam(value = "cuisine", required = false) String cuisine
     ) {
         List<RestaurantDTO> restaurantsDTO;
-        if(cuisine == null){
+        if (cuisine == null) {
             restaurantsDTO = restaurantService.findAllByCity(city);
-        }
-        else {
+        } else {
             restaurantsDTO = restaurantService.findAllByCityAndCuisine(city, cuisine);
         }
 

@@ -37,14 +37,25 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
 
     @Autowired
     private Flyway flyway;
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    public static Stream<Arguments> checkThatRequestIsDeniedWhenTryingToPassIncompleteDishInformation() {
+        return Stream.of(
+                Arguments.of(null, "desc", BigDecimal.ONE, "Error:\n[Body must contain name value]"),
+                Arguments.of("name", null, BigDecimal.ONE, "Error:\n[Body must contain description value]"),
+                Arguments.of("name", "desc", null, "Error:\n[Body must contain price value]")
+        );
+    }
+
+    public static Stream<Integer> checkThatYouCanNotDeleteDishWithWrongRequest() {
+        return Stream.of(999, 8);
+    }
 
     @Override
     protected void setupCredentials() {
         setTestCredentials("user3@user.com", "test");
     }
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     void setUp() {
@@ -56,7 +67,6 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
         flyway.clean();
         flyway.migrate();
     }
-
 
     @Test
     void checkThatYouCanAddNewDish() {
@@ -175,14 +185,6 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
         assertThat(responseBody).isEqualTo(expectedErrorMessage);
     }
 
-    public static Stream<Arguments> checkThatRequestIsDeniedWhenTryingToPassIncompleteDishInformation() {
-        return Stream.of(
-                Arguments.of(null, "desc", BigDecimal.ONE, "Error:\n[Body must contain name value]"),
-                Arguments.of("name", null, BigDecimal.ONE, "Error:\n[Body must contain description value]"),
-                Arguments.of("name", "desc", null, "Error:\n[Body must contain price value]")
-        );
-    }
-
     @Test
     void checkThatYouCanCorrectlyDeleteDish() {
         //given
@@ -261,10 +263,6 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
         //then
         response.statusCode(HttpStatus.BAD_REQUEST.value());
         assertThat(responseBody).isEqualTo(expectedError);
-    }
-
-    public static Stream<Integer> checkThatYouCanNotDeleteDishWithWrongRequest() {
-        return Stream.of(999, 8);
     }
 
     @Test

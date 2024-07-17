@@ -27,7 +27,7 @@ public class DishesSearchRestController {
     @GetMapping(value = ALL_DISHES_FROM_RESTAURANT)
     public ResponseEntity<List<DishDTO>> allDishesFromRestaurant(
             @PathVariable String restaurantName
-    ){
+    ) {
         if (Objects.isNull(restaurantName)) {
             return ResponseEntity.notFound().build();
         }
@@ -37,7 +37,7 @@ public class DishesSearchRestController {
                 .sorted(Comparator.comparing(DishDTO::getDishId))
                 .peek(dish -> dish.setDishId(null))
                 .toList();
-        if(dishes.isEmpty()) return ResponseEntity.notFound().build();
+        if (dishes.isEmpty()) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(dishes);
     }
@@ -46,7 +46,7 @@ public class DishesSearchRestController {
     public ResponseEntity<List<DishDTO>> dishesFromRestaurantByCategory(
             @PathVariable String restaurantName,
             @PathVariable String category
-    ){
+    ) {
         if (Objects.isNull(restaurantName) || Objects.isNull(category)) {
             return ResponseEntity.notFound().build();
         }
@@ -57,7 +57,7 @@ public class DishesSearchRestController {
                 .peek(dish -> dish.setDishId(null))
                 .toList();
 
-        if(dishes.isEmpty()) return ResponseEntity.notFound().build();
+        if (dishes.isEmpty()) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(dishes);
     }

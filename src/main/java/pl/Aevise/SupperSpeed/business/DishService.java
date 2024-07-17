@@ -13,7 +13,10 @@ import pl.Aevise.SupperSpeed.domain.Image;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -29,7 +32,7 @@ public class DishService {
 
     public List<DishDTO> findAllNotHiddenDishes(String restaurantName) {
         List<Dish> dishesFromRestaurant = dishDAO.findAllNotHiddenDishes(restaurantName);
-        if(dishesFromRestaurant.isEmpty()){
+        if (dishesFromRestaurant.isEmpty()) {
             log.info("No dishes for restaurant [{}] found", restaurantName);
             return List.of();
         }
@@ -42,7 +45,7 @@ public class DishService {
 
     public List<DishDTO> findNotHiddenDishesByCategory(String restaurantName, String category) {
         List<Dish> dishesFromRestaurant = dishDAO.findNotHiddenDishesByCategory(restaurantName, category);
-        if(dishesFromRestaurant.isEmpty()){
+        if (dishesFromRestaurant.isEmpty()) {
             log.info("No dishes for restaurant [{}] found", restaurantName);
             return List.of();
         }
@@ -197,7 +200,7 @@ public class DishService {
     public DishDTO findById(Integer dishId) {
         Optional<Dish> dish = dishDAO.findById(dishId);
 
-        if(dish.isPresent()){
+        if (dish.isPresent()) {
             log.info("Found dish with id: [{}]", dishId);
             return dishMapper.mapToDTO(dish.get());
         }
@@ -208,7 +211,7 @@ public class DishService {
     public Dish findByIdPOJO(Integer dishId) {
         Optional<Dish> dish = dishDAO.findById(dishId);
 
-        if(dish.isPresent()){
+        if (dish.isPresent()) {
             log.info("Found dish with id: [{}]", dishId);
             return dish.get();
         }

@@ -31,9 +31,8 @@ public class UserRatingService {
 
     private final SupperOrderService supperOrderService;
     private final DishListService dishListService;
-    private OffsetDateTimeMapper offsetDateTimeMapper;
-
     private final OpinionMapper opinionMapper;
+    private OffsetDateTimeMapper offsetDateTimeMapper;
 
     @Transactional
     public void saveNewComment(UserRatingDTO userRatingDTO, Integer orderId) {
@@ -74,6 +73,7 @@ public class UserRatingService {
         log.warn("Could not get total rating for restaurant with id: [{}]", restaurantId);
         return null;
     }
+
     public TotalRestaurantRatingDTO getRestaurantRating(String restaurantName) {
         List<SupperOrderDTO> ratedOrdersByRestaurantName = supperOrderService.getRatedOrdersByRestaurantName(restaurantName);
         if (!ratedOrdersByRestaurantName.isEmpty()) {
@@ -146,7 +146,7 @@ public class UserRatingService {
         );
     }
 
-    public Page<RestOpinionDTO> getOpinionsAboutOrdersFromRestaurantForRest(String restaurantName, PageRequest pageRequest){
+    public Page<RestOpinionDTO> getOpinionsAboutOrdersFromRestaurantForRest(String restaurantName, PageRequest pageRequest) {
         Page<OpinionDTO> opinionsPage = getOpinionsAboutOrdersFromRestaurant(restaurantName, pageRequest);
 
         List<RestOpinionDTO> restOpinions = opinionsPage.getContent()

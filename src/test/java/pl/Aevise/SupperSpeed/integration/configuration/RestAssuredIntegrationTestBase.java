@@ -26,27 +26,9 @@ public abstract class RestAssuredIntegrationTestBase
 
     private String testUsername = "user3@user.com";
     private String testPassword = "test";
-
-    protected abstract void setupCredentials();
-
     @Autowired
     @SuppressWarnings("unused")
     private ObjectMapper objectMapper;
-
-    @Override
-    public ObjectMapper getObjectMapper() {
-        return objectMapper;
-    }
-
-    @Test
-    void contextLoaded() {
-        assertThat(true).isTrue();
-    }
-
-    public void setTestCredentials(String username, String password) {
-        this.testUsername = username;
-        this.testPassword = password;
-    }
 
     @BeforeAll
     static void beforeAll() {
@@ -61,6 +43,23 @@ public abstract class RestAssuredIntegrationTestBase
     @AfterAll
     static void afterAll() {
         wireMockServer.stop();
+    }
+
+    protected abstract void setupCredentials();
+
+    @Override
+    public ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
+
+    @Test
+    void contextLoaded() {
+        assertThat(true).isTrue();
+    }
+
+    public void setTestCredentials(String username, String password) {
+        this.testUsername = username;
+        this.testPassword = password;
     }
 
     @BeforeEach

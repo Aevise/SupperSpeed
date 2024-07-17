@@ -25,18 +25,16 @@ import static pl.Aevise.SupperSpeed.util.Constants.CUISINES;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 class DeliveryAddressListJpaRepositoryTest {
 
+    private final static String street1 = "Jaskrawa1";
+    private final static String city1 = "WARSZAWA";
+    private final static String street2 = "Jaskrawa2";
+    private final static String city2 = "WARSZAWA";
     private final RestaurantJpaRepository restaurantJpaRepository;
-
     private final DeliveryAddressListJpaRepository deliveryAddressListJpaRepository;
 
     private static PageRequest buildPageRequestForDeliveryAddressList() {
         return PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending());
     }
-
-    private final static String street1 = "Jaskrawa1";
-    private final static String city1 = "WARSZAWA";
-    private final static String street2 = "Jaskrawa2";
-    private final static String city2 = "WARSZAWA";
 
     @Test
     void checkThatYouCanGetAllDeliveryAddressesForRestaurantWithGivenId() {
