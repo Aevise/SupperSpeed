@@ -88,8 +88,7 @@ public class RestaurantService {
         return List.of();
     }
 
-    public List<RestRestaurantDTO> findAllByCityForRest(String city){
-        List<RestaurantDTO> restaurants = findAllByCity(city);
+    public List<RestRestaurantDTO> prepareDataToRest(List<RestaurantDTO> restaurants){
         List<RestRestaurantDTO> mappedRestaurants = restaurants.stream()
                 .filter(RestaurantDTO::getIsShown)
                 .map(restaurantMapper::mapToRest)
@@ -100,6 +99,7 @@ public class RestaurantService {
         }
         return List.of();
     }
+
 
     @Transactional
     public int createRestaurant(RestaurantEntity restaurantEntity) {
@@ -225,5 +225,18 @@ public class RestaurantService {
     //---------------------------------------------------------------------
     public List<String> findCuisinesByDeliveryAddress_CityAndStreetName(String city, String streetName) {
         return deliveryAddressService.getCuisineFromRestaurantsDeliveringTo(city, streetName);
+    }
+
+    public List<RestaurantDTO> findAllByCityAndCuisine(String city, String cuisine) {
+        List<Restaurant> restaurants = restaurantDAO.findAllByCityAndCuisine(city, cuisine);
+
+        if (!restaurants.isEmpty()) {
+            log.info("Found [{}] restaurants in city [{}] with cuisine [{}]", restaurants.size(), city, cuisine);
+            return restaurants.stream()
+                    .map(restaurantMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Could not find any restaurant in city [{}] with cuisine [{}]", city, cuisine);
+        return List.of();
     }
 }

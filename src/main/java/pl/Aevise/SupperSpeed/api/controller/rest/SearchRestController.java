@@ -1,7 +1,6 @@
 package pl.Aevise.SupperSpeed.api.controller.rest;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +24,20 @@ public class SearchRestController {
 
     @GetMapping(SEARCH_ENDPOINT)
     public ResponseEntity<List<RestRestaurantDTO>> searchForRestaurantByAddress(
-            @RequestParam(value = "city") String city
-            ) {
+            @RequestParam(value = "city") String city,
+            @RequestParam(value = "cuisine", required = false) String cuisine
+    ) {
+        List<RestaurantDTO> restaurantsDTO;
+        if(cuisine == null){
+            restaurantsDTO = restaurantService.findAllByCity(city);
+        }
+        else {
+            restaurantsDTO = restaurantService.findAllByCityAndCuisine(city, cuisine);
+        }
 
-        List<RestRestaurantDTO> restaurants = restaurantService.findAllByCityForRest(city);
-        if(restaurants.isEmpty()) return ResponseEntity.notFound().build();
+        List<RestRestaurantDTO> restaurants = restaurantService.prepareDataToRest(restaurantsDTO);
+
+        if (restaurants.isEmpty()) return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(restaurants);
     }

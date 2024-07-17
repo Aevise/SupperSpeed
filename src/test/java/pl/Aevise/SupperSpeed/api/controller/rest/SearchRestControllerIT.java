@@ -46,6 +46,34 @@ class SearchRestControllerIT extends RestAssuredIntegrationTestBase {
     }
 
     @Test
+    void checkThatYouCanSearchForRestaurantsWithCuisineInCity() {
+        //given/
+        String URL = API_UNAUTH + SEARCH_ENDPOINT;
+        String city = "Lublin";
+        String cuisine = "Italian";
+        int expectedSize = 1;
+
+        //when
+        List<RestRestaurantDTO> dishes = requestSpecificationNoAuthentication()
+                .queryParam("city", city)
+                .queryParam("cuisine", cuisine)
+                .get(URL)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .and()
+                .extract()
+                .jsonPath()
+                .getList(".", RestRestaurantDTO.class);
+
+        //then
+        assertThat(dishes).isNotNull();
+        assertThat(dishes).isNotEmpty();
+        assertThat(dishes.get(0)).isInstanceOf(RestRestaurantDTO.class);
+
+        assertThat(dishes).hasSize(expectedSize);
+    }
+
+    @Test
     void checkThatNotFoundIsSentWhenCityHasNoVisibleRestaurants() {
         //given/
         String URL = API_UNAUTH + SEARCH_ENDPOINT;

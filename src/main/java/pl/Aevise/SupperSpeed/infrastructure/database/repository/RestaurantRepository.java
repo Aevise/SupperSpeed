@@ -27,10 +27,6 @@ public class RestaurantRepository implements RestaurantDAO {
 
     private final ImageEntityMapper imageEntityMapper;
 
-    private final SupperUserJpaRepository supperUserJpaRepository;
-
-    private final EntityManager entityManager;
-
     @Override
     public Optional<Restaurant> findByName(String restaurantName) {
         return Optional.empty();
@@ -146,6 +142,15 @@ public class RestaurantRepository implements RestaurantDAO {
     @Override
     public Optional<AddressEntity> getAddressByRestaurantId(Integer restaurantId) {
         return restaurantJpaRepository.findAddressByRestaurantId(restaurantId);
+    }
+
+    @Override
+    public List<Restaurant> findAllByCityAndCuisine(String city, String cuisine) {
+        return restaurantJpaRepository
+                .findAllByAddress_CityAndCuisine_Cuisine(city, cuisine)
+                .stream()
+                .map(restaurantEntityMapper::mapFromEntity)
+                .toList();
     }
 
 }

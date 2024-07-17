@@ -34,4 +34,6 @@ public interface RestaurantDAO {
     List<String> getDistinctCitiesWithRestaurants();
 
     Optional<AddressEntity> getAddressByRestaurantId(Integer restaurantId);
+
+    List<Restaurant> findAllByCityAndCuisine(String city, String cuisine);
 }

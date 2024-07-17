@@ -118,4 +118,18 @@ class RestaurantJpaRepositoryTest {
         assertThat(testRestaurantEntity1).isNotNull().isEqualTo(fetchedRestaurant1.get());
         assertThat(testRestaurantEntity2).isNotNull().isEqualTo(restaurantEntity2());
     }
+
+    @Test
+    void checkThatYouCanGetAllRestaurantsInCityWithCuisine(){
+        //given
+        String city = "Lublin";
+        String cuisine = "Italian";
+
+        //when
+        List<RestaurantEntity> restaurants = restaurantJpaRepository.findAllByAddress_CityAndCuisine_Cuisine(city, cuisine);
+
+        //then
+        assertThat(restaurants).isNotEmpty();
+        assertThat(restaurants.size()).isEqualTo(1);
+    }
 }
