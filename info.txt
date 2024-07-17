@@ -1,2 +1,0 @@
-APIs:
-- Google Photos Library API
