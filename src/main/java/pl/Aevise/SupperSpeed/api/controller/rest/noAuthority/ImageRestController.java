@@ -1,5 +1,8 @@
 package pl.Aevise.SupperSpeed.api.controller.rest.noAuthority;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -18,12 +21,17 @@ import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.DEFAULT
 
 @RestController
 @Slf4j
+@Tag(name = "Image Controller (Internal)", description = "Endpoints used to fetch images from database. Used internally by other controllers")
 public class ImageRestController {
 
     private final Path rootLocation = Paths.get(new File(DEFAULT_IMAGE_STORAGE_FOLDER).getAbsolutePath());
 
     @GetMapping("/images/{fileName:.+}")
-    public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
+    @Operation(summary = "Get dish image or restaurant logo from the database")
+    public ResponseEntity<Resource> getImage(
+            @Parameter(description = "Name of image. Format:\nyyyy_MM_dd-<dishName>_<dishId>.jpg\nor\nyyyy_MM_dd-<{>restaurantName>_<restaurantId>-LOGO.jpg", required = true)
+            @PathVariable String fileName
+    ) {
         try {
             Path file = rootLocation.resolve(fileName).normalize();
             URI fileUri = file.toUri();

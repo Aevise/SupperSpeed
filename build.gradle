@@ -34,6 +34,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+    //documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
     //image processing
     implementation "org.imgscalr:imgscalr-lib:${imgscalrVersion}"
 
