@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springBootDependencyManagementVersion}"
+    id 'jacoco'
 }
 
 group = "pl.Aevise"
@@ -65,5 +66,17 @@ test {
     useJUnitPlatform()
     testLogging{
         events "passed", "skipped", "failed"
+    }
+}
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir('jacocoHtml'))
     }
 }
