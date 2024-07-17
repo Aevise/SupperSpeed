@@ -103,7 +103,7 @@ The project uses several dependencies to facilitate development, including Sprin
 
 Below is the Entity Relationship Diagram (ERD) of the project to help you understand the database structure and relationships between different entities.
 
-![Supper Speed ERD](./SupperSpeed_ERD.png)
+![Supper Speed ERD](./src/main/resources/db/SupperSpeed_ERD.png)
 
 ## Contributing
 
