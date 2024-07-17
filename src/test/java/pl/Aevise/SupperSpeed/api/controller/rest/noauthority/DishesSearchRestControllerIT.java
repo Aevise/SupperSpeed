@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.api.controller.rest.noauthority;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;

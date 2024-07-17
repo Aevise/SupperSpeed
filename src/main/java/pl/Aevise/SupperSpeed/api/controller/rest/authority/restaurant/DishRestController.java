@@ -29,6 +29,7 @@ public class DishRestController {
     public static final String ADD_DISH = "/dish/add";
     public static final String GET_DISHES = "/dish/all";
     public static final String UPDATE_DISH = "/dish/update";
+    public static final String DELETE_DISH = "/dish/delete";
 
     private final DishCategoryService dishCategoryService;
     private final DishService dishService;
@@ -91,6 +92,27 @@ public class DishRestController {
         DishDTO newDish = dishService.updateDish(dishDTO);
 
         return ResponseEntity.ok(newDish);
+    }
+
+    @DeleteMapping(DELETE_DISH)
+    public ResponseEntity<String> deleteDish(
+            @RequestParam(value = "dishId") Integer dishId,
+            @AuthenticationPrincipal UserDetails userDetails
+    ){
+        String username = userDetails.getUsername();
+        RestaurantDTO restaurant = restaurantService.findRestaurantByEmail(username);
+
+        Dish dish = dishService.findByIdPOJO(dishId);
+        if(dish == null || !Objects.equals(dish.getRestaurant().getId(), restaurant.getRestaurantId()) || dish.getIsHidden()) {
+            throw new ForbiddenRESTRequest("You can not delete this dish");
+        }
+        dishService.deleteOrHideDishByDishId(dishId);
+
+        Dish newDishData = dishService.findByIdPOJO(dishId);
+        if(newDishData == null || newDishData.getIsHidden()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Dish deleted.");
+        }
+        return ResponseEntity.internalServerError().build();
     }
 
     private void checkDishData(DishDTO dishDTO){

@@ -3,13 +3,10 @@ package pl.Aevise.SupperSpeed.api.controller.rest.noauthority;
 import io.restassured.response.ValidatableResponse;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import pl.Aevise.SupperSpeed.api.dto.RestRestaurantDTO;
-import pl.Aevise.SupperSpeed.integration.configuration.FlywayManualMigrationsConfiguration;
 import pl.Aevise.SupperSpeed.integration.configuration.RestAssuredIntegrationTestBase;
 
 import java.util.List;

@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.api.controller.rest.noauthority;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,6 +18,15 @@ import static pl.Aevise.SupperSpeed.api.controller.rest.noAuthority.OpinionAndRa
 import static pl.Aevise.SupperSpeed.api.controller.utils.URLConstants.API_UNAUTH;
 
 class OpinionAndRatingRestControllerIT extends RestAssuredIntegrationTestBase {
+
+    public static Stream<Arguments> checkThatYouCanGetAllOpinionsAboutRestaurant() {
+        return Stream.of(
+                Arguments.of("restaurant3", "asc", 0, 10, 1),
+                Arguments.of("restaurant3", "asc", 100, 10, 0),
+                Arguments.of("restaurant3", "desc", 0, 10, 1),
+                Arguments.of("restaurant2", "desc", 0, 10, 0)
+        );
+    }
 
     @Override
     protected void setupCredentials() {
@@ -60,15 +68,6 @@ class OpinionAndRatingRestControllerIT extends RestAssuredIntegrationTestBase {
             assertThat(dishes).isEmpty();
         }
         assertThat(dishes).hasSize(expectedSize);
-    }
-
-    public static Stream<Arguments> checkThatYouCanGetAllOpinionsAboutRestaurant() {
-        return Stream.of(
-                Arguments.of("restaurant3", "asc", 0, 10, 1),
-                Arguments.of("restaurant3", "asc", 100, 10, 0),
-                Arguments.of("restaurant3", "desc", 0, 10, 1),
-                Arguments.of("restaurant2", "desc", 0, 10, 0)
-        );
     }
 
     @Test
