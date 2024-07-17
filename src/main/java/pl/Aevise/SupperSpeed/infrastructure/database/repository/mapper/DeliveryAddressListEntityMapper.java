@@ -1,10 +1,13 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper;
 
+import org.mapstruct.AnnotateWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pl.Aevise.SupperSpeed.domain.DeliveryAddressList;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressListEntity;
+import pl.Aevise.SupperSpeed.infrastructure.util.GeneratedMapper;
 
+@AnnotateWith(GeneratedMapper.class)
 @Mapper(componentModel = "spring", uses = {
         RestaurantEntityMapper.class,
         DeliveryAddressEntityMapper.class

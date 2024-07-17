@@ -3,7 +3,9 @@ package pl.Aevise.SupperSpeed.api.dto.mapper;
 import org.mapstruct.*;
 import pl.Aevise.SupperSpeed.api.dto.OpinionDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestOpinionDTO;
+import pl.Aevise.SupperSpeed.infrastructure.util.GeneratedMapper;
 
+@AnnotateWith(GeneratedMapper.class)
 @Mapper(componentModel = "spring")
 public interface OpinionMapper {
 
