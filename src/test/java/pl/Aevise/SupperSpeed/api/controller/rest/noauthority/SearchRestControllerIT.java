@@ -1,4 +1,4 @@
-package pl.Aevise.SupperSpeed.api.controller.rest;
+package pl.Aevise.SupperSpeed.api.controller.rest.noauthority;
 
 import io.restassured.response.ValidatableResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +10,7 @@ import pl.Aevise.SupperSpeed.integration.configuration.RestAssuredIntegrationTes
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.Aevise.SupperSpeed.api.controller.rest.SearchRestController.SEARCH_ENDPOINT;
+import static pl.Aevise.SupperSpeed.api.controller.rest.noAuthority.SearchRestController.SEARCH_ENDPOINT;
 import static pl.Aevise.SupperSpeed.api.controller.utils.URLConstants.API_UNAUTH;
 
 class SearchRestControllerIT extends RestAssuredIntegrationTestBase {

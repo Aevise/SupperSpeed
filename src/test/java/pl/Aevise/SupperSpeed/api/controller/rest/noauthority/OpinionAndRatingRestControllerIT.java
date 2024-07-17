@@ -1,4 +1,4 @@
-package pl.Aevise.SupperSpeed.api.controller.rest;
+package pl.Aevise.SupperSpeed.api.controller.rest.noauthority;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.Aevise.SupperSpeed.api.controller.rest.OpinionAndRatingRestController.GET_OPINIONS;
-import static pl.Aevise.SupperSpeed.api.controller.rest.OpinionAndRatingRestController.GET_TOTAL_RATING;
+import static pl.Aevise.SupperSpeed.api.controller.rest.noAuthority.OpinionAndRatingRestController.GET_OPINIONS;
+import static pl.Aevise.SupperSpeed.api.controller.rest.noAuthority.OpinionAndRatingRestController.GET_TOTAL_RATING;
 import static pl.Aevise.SupperSpeed.api.controller.utils.URLConstants.API_UNAUTH;
 
 class OpinionAndRatingRestControllerIT extends RestAssuredIntegrationTestBase {

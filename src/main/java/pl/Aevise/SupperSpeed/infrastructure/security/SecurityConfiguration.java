@@ -36,7 +36,7 @@ public class SecurityConfiguration {
                 auth
                         .requestMatchers("/", "/menu/**", "/search/**", "/create/**", "/login", "/logout", "/images/**", "error", "/opinion", "/api/unauth/**").permitAll()
                         .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
-                        .requestMatchers("/restaurant/**", "/upload/**").hasAuthority(AvailableRoles.RESTAURANT.name())
+                        .requestMatchers("/restaurant/**", "/upload/**", "/api/auth/restaurant").hasAuthority(AvailableRoles.RESTAURANT.name())
                         .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(
                                 AvailableRoles.CLIENT.name(),
                                 AvailableRoles.RESTAURANT.name()

@@ -1,4 +1,4 @@
-package pl.Aevise.SupperSpeed.api.controller.rest;
+package pl.Aevise.SupperSpeed.api.controller.rest.noAuthority;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;

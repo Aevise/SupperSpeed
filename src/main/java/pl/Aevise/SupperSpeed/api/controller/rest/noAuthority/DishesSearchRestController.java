@@ -1,4 +1,4 @@
-package pl.Aevise.SupperSpeed.api.controller.rest;
+package pl.Aevise.SupperSpeed.api.controller.rest.noAuthority;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping(URLConstants.API_UNAUTH)
 @AllArgsConstructor
-public class DishesRestController {
+public class DishesSearchRestController {
 
     public static final String ALL_DISHES_FROM_RESTAURANT = "/dishes/{restaurantName}/category/all";
     public static final String ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY = "/dishes/{restaurantName}/category/{category}";

@@ -1,4 +1,4 @@
-package pl.Aevise.SupperSpeed.api.controller.rest;
+package pl.Aevise.SupperSpeed.api.controller.rest.noauthority;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,11 +9,11 @@ import pl.Aevise.SupperSpeed.integration.configuration.RestAssuredIntegrationTes
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static pl.Aevise.SupperSpeed.api.controller.rest.DishesRestController.ALL_DISHES_FROM_RESTAURANT;
-import static pl.Aevise.SupperSpeed.api.controller.rest.DishesRestController.ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY;
+import static pl.Aevise.SupperSpeed.api.controller.rest.noAuthority.DishesSearchRestController.ALL_DISHES_FROM_RESTAURANT;
+import static pl.Aevise.SupperSpeed.api.controller.rest.noAuthority.DishesSearchRestController.ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY;
 import static pl.Aevise.SupperSpeed.api.controller.utils.URLConstants.API_UNAUTH;
 
-class DishesRestControllerIT extends RestAssuredIntegrationTestBase {
+class DishesSearchRestControllerIT extends RestAssuredIntegrationTestBase {
 
     @BeforeEach
     void setupCredentials() {

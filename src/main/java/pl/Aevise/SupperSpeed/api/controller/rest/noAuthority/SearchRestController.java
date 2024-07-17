@@ -1,4 +1,4 @@
-package pl.Aevise.SupperSpeed.api.controller.rest;
+package pl.Aevise.SupperSpeed.api.controller.rest.noAuthority;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
