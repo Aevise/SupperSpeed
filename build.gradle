@@ -65,6 +65,13 @@ dependencies {
     testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
 }
 
+bootJar {
+    archiveFileName = "supper_speed_application.${archiveExtension.get()}"
+}
+jar {
+    enabled = false
+}
+
 test {
     useJUnitPlatform()
     testLogging {
