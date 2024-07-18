@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.Aevise.SupperSpeed.api.controller.utils.PaginationAndSortingUtils;
 import pl.Aevise.SupperSpeed.api.dto.CuisineDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
-import pl.Aevise.SupperSpeed.api.dto.mapper.AddressMapper;
-import pl.Aevise.SupperSpeed.api.dto.mapper.CuisineMapper;
-import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.CuisineService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
@@ -28,7 +25,7 @@ import java.util.TreeMap;
 @AllArgsConstructor
 public class SearchPageController {
 
-    private static final String SEARCH_PAGE = "/search";
+    public static final String SEARCH_PAGE = "/search";
 
     private final SecurityService securityService;
 

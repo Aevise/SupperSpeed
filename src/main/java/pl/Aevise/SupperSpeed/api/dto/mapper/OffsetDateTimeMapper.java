@@ -1,13 +1,16 @@
 package pl.Aevise.SupperSpeed.api.dto.mapper;
 
+import org.mapstruct.AnnotateWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
+import pl.Aevise.SupperSpeed.infrastructure.util.GeneratedMapper;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+@AnnotateWith(GeneratedMapper.class)
 @Mapper(componentModel = "spring")
 public interface OffsetDateTimeMapper {
 

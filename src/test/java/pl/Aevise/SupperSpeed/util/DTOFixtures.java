@@ -177,10 +177,10 @@ public class DTOFixtures {
     public static DishDTO dishDTO1() {
         return DishDTO.builder()
                 .dishId(1)
+                .description("test dishDTO 1")
                 .name(dishEntity1().getName())
                 .price(dishEntity1().getPrice())
                 .availability(dishEntity1().getAvailability())
-                .isHidden(dishEntity1().getIsHidden())
                 .build();
     }
 
@@ -233,12 +233,11 @@ public class DTOFixtures {
                 .build();
     }
 
-    public static RestaurantResponseDTO restaurantResponseDTO1(){
+    public static RestaurantResponseDTO restaurantResponseDTO1() {
         return RestaurantResponseDTO.builder()
                 .restaurantResponseId(1)
                 .description("test restaurant response 1")
                 .responseDateTime(OffsetDateTime.of(2020, 12, 10, 10, 10, 10, 10, ZoneOffset.UTC).toString())
                 .build();
     }
-
 }

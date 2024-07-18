@@ -19,8 +19,6 @@ public interface RestaurantDAO {
 
     Optional<Restaurant> findById(Integer id);
 
-    List<Restaurant> findAll();
-
     List<Restaurant> findAllByCity(String city);
 
     RestaurantEntity createRestaurant(RestaurantEntity restaurantEntity);
@@ -34,4 +32,6 @@ public interface RestaurantDAO {
     List<String> getDistinctCitiesWithRestaurants();
 
     Optional<AddressEntity> getAddressByRestaurantId(Integer restaurantId);
+
+    List<Restaurant> findAllByCityAndCuisine(String city, String cuisine);
 }

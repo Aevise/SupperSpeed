@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +26,8 @@ import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
 
 @ExtendWith(MockitoExtension.class)
 class RestaurantMenuEditionControllerMockitoTest {
+    @InjectMocks
+    RestaurantMenuEditionController restaurantMenuEditionController;
     @Mock
     private DishListService dishListService;
     @Mock
@@ -37,9 +38,6 @@ class RestaurantMenuEditionControllerMockitoTest {
     private RestaurantService restaurantService;
     @Mock
     private ImageHandlingService imageHandlingService;
-
-    @InjectMocks
-    RestaurantMenuEditionController restaurantMenuEditionController;
 
     @Test
     void checkThatYouCanGetRestaurantMenuInEditionMode() {

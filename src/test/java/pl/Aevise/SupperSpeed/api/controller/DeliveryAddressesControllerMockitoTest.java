@@ -45,6 +45,46 @@ class DeliveryAddressesControllerMockitoTest {
     @InjectMocks
     private DeliveryAddressesController deliveryAddressesController;
 
+    private static Stream<Arguments> checkThatYouCanGetDeliveryAddressesForRestaurant() {
+        return Stream.of(
+                Arguments.of(0, "asc", 0, "asc",
+                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
+                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
+                        "delivery_addresses",
+                        List.of(deliveryAddressDTO3(), deliveryAddressDTO4()),
+
+                        0, "desc", 0, "asc",
+                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
+                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
+                        "delivery_addresses",
+                        List.of(deliveryAddressDTO3(), deliveryAddressDTO4()),
+
+                        0, "desc", 0, "desc",
+                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
+                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
+                        "delivery_addresses",
+                        List.of(deliveryAddressDTO3(), deliveryAddressDTO4()),
+
+                        0, "asc", 0, "desc",
+                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
+                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
+                        "delivery_addresses",
+                        List.of(deliveryAddressDTO3(), deliveryAddressDTO4()),
+
+                        0, "asc", 0, "desc",
+                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
+                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
+                        "delivery_addresses",
+                        List.of(),
+
+                        0, "asc", 0, "asc",
+                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
+                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
+                        "delivery_addresses",
+                        List.of())
+        );
+    }
+
     @ParameterizedTest
     @MethodSource
     void checkThatYouCanGetDeliveryAddressesForRestaurant(
@@ -94,45 +134,5 @@ class DeliveryAddressesControllerMockitoTest {
         assertThat(model.get("CASortingDirection")).isNotNull().isEqualTo(currAdrSortingDirection);
         assertThat(model.get("EASortingDirection")).isNotNull().isEqualTo(exiAdrSortingDirection);
         assertThat(model.get("EAPage")).isNotNull().isEqualTo(exiAdrPage);
-    }
-
-    private static Stream<Arguments> checkThatYouCanGetDeliveryAddressesForRestaurant() {
-        return Stream.of(
-                Arguments.of(0, "asc", 0, "asc",
-                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
-                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
-                        "delivery_addresses",
-                        List.of(deliveryAddressDTO3(), deliveryAddressDTO4()),
-
-                        0, "desc", 0, "asc",
-                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
-                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
-                        "delivery_addresses",
-                        List.of(deliveryAddressDTO3(), deliveryAddressDTO4()),
-
-                        0, "desc", 0, "desc",
-                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
-                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
-                        "delivery_addresses",
-                        List.of(deliveryAddressDTO3(), deliveryAddressDTO4()),
-
-                        0, "asc", 0, "desc",
-                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
-                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
-                        "delivery_addresses",
-                        List.of(deliveryAddressDTO3(), deliveryAddressDTO4()),
-
-                        0, "asc", 0, "desc",
-                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
-                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
-                        "delivery_addresses",
-                        List.of(),
-
-                        0, "asc", 0, "asc",
-                        PageRequest.of(0, 10, Sort.by("deliveryAddressEntity.streetName").ascending()),
-                        PageRequest.of(0, 10, Sort.by("streetName").ascending()),
-                        "delivery_addresses",
-                        List.of())
-        );
     }
 }

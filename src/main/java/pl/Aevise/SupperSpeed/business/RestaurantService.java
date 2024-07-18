@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.dto.AddressDTO;
+import pl.Aevise.SupperSpeed.api.dto.RestRestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.business.dao.RestaurantDAO;
@@ -23,7 +24,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RestaurantService {
 
-    private final ProfileService profileService;
     private final AddressService addressService;
 
     private final RestaurantDAO restaurantDAO;
@@ -68,12 +68,6 @@ public class RestaurantService {
         return Optional.empty();
     }
 
-    public List<Restaurant> findAll() {
-        List<Restaurant> restaurants = restaurantDAO.findAll();
-        log.info("Found [{}] restaurants", restaurants.size());
-        return restaurants;
-    }
-
     public List<RestaurantDTO> findAllByCity(String city) {
         List<Restaurant> restaurants = restaurantDAO.findAllByCity(city);
 
@@ -87,11 +81,21 @@ public class RestaurantService {
         return List.of();
     }
 
+    public List<RestRestaurantDTO> prepareDataToRest(List<RestaurantDTO> restaurants) {
+        List<RestRestaurantDTO> mappedRestaurants = restaurants.stream()
+                .filter(RestaurantDTO::getIsShown)
+                .map(restaurantMapper::mapToRest)
+                .toList();
+        if (!mappedRestaurants.isEmpty()) {
+            log.info("Filtered restaurants and mapped [{}] of them", mappedRestaurants.size());
+            return mappedRestaurants;
+        }
+        return List.of();
+    }
+
+
     @Transactional
     public int createRestaurant(RestaurantEntity restaurantEntity) {
-        /**
-         * @return the id of created client. Returned id matches supper_user id.
-         */
         RestaurantEntity restaurant = restaurantDAO.createRestaurant(restaurantEntity);
         log.info("Successfully created user with email: [{}]. Id:[{}]", restaurant.getSupperUser().getEmail(), restaurant.getId());
         return restaurant.getId();
@@ -192,27 +196,20 @@ public class RestaurantService {
         }
     }
 
-    public List<RestaurantDTO> filterRestaurantsByCuisine(String cuisine, List<Restaurant> restaurantsDeliveringOnAddress) {
-        List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
-                .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
-                .map(restaurantMapper::mapToDTO)
-                .toList();
-        log.info("Found [{}] restaurant with cuisine [{}]",
-                filteredRestaurants.size(), cuisine);
-        return filteredRestaurants;
-    }
-
-    public List<RestaurantDTO> filterRestaurantDTOsByCuisine(String cuisine, List<RestaurantDTO> restaurantsDeliveringOnAddress) {
-        List<RestaurantDTO> filteredRestaurants = restaurantsDeliveringOnAddress.stream()
-                .filter(restaurant -> restaurant.getCuisine().getCuisine().equalsIgnoreCase(cuisine))
-                .toList();
-        log.info("Found [{}] restaurant with cuisine [{}]",
-                filteredRestaurants.size(), cuisine);
-        return filteredRestaurants;
-    }
-
-    //---------------------------------------------------------------------
     public List<String> findCuisinesByDeliveryAddress_CityAndStreetName(String city, String streetName) {
         return deliveryAddressService.getCuisineFromRestaurantsDeliveringTo(city, streetName);
+    }
+
+    public List<RestaurantDTO> findAllByCityAndCuisine(String city, String cuisine) {
+        List<Restaurant> restaurants = restaurantDAO.findAllByCityAndCuisine(city, cuisine);
+
+        if (!restaurants.isEmpty()) {
+            log.info("Found [{}] restaurants in city [{}] with cuisine [{}]", restaurants.size(), city, cuisine);
+            return restaurants.stream()
+                    .map(restaurantMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Could not find any restaurant in city [{}] with cuisine [{}]", city, cuisine);
+        return List.of();
     }
 }

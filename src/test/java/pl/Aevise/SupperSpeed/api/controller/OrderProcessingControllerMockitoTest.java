@@ -3,7 +3,6 @@ package pl.Aevise.SupperSpeed.api.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -13,17 +12,18 @@ import org.springframework.ui.ExtendedModelMap;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.business.DishListService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
+import pl.Aevise.SupperSpeed.domain.exception.NotFoundException;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.SupperOrderEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.dishListDTO1;
@@ -65,7 +65,7 @@ class OrderProcessingControllerMockitoTest {
     }
 
     @Test
-    void shouldReturnErrorPageWhenReceivedParametersMapIsEmpty(){
+    void shouldReturnErrorPageWhenReceivedParametersMapIsEmpty() {
         //given
         String authority = AvailableRoles.CLIENT.toString();
         UserDetails userDetails = User.withUsername(TEST_CLIENT_EMAIL_1).password(testPassword).authorities(authority).build();
@@ -73,16 +73,19 @@ class OrderProcessingControllerMockitoTest {
         String restaurantName = restaurantDTO1().getRestaurantName();
         Map<String, String[]> emptyResult = Map.of();
 
+        String expectedExceptionMessage = "Restaurant menu";
+
         //when
         ExtendedModelMap model = new ExtendedModelMap();
 
         when(securityService.getUserAuthority()).thenReturn(authority);
         when(request.getParameterMap()).thenReturn(emptyResult);
 
-        String result = orderProcessingController.getRestaurantMenu(request, restaurantId, restaurantName, userDetails, model);
+        NotFoundException receivedException = assertThrows(NotFoundException.class,
+                () -> orderProcessingController.getRestaurantMenu(request, restaurantId, restaurantName, userDetails, model));
 
         //then
-        assertThat(result).isNotNull().isEqualTo("error");
+        assertEquals(expectedExceptionMessage, receivedException.getMessage());
     }
 
     @Test
@@ -95,7 +98,7 @@ class OrderProcessingControllerMockitoTest {
         Map<String, String[]> servletResponse = Map.of("amountOfDishWithId_1", new String[]{"1"});
         SupperOrderEntity order = buildSupperOrderEntity(restaurantEntity1(), clientEntity1());
         order.setOrderId(1);
-        Map<Integer, Integer> dishesAndQuantities = Map.of(1,1);
+        Map<Integer, Integer> dishesAndQuantities = Map.of(1, 1);
         List<DishListDTO> dishes = List.of(dishListDTO1());
 
         //when
@@ -115,6 +118,6 @@ class OrderProcessingControllerMockitoTest {
         assertThat(model.get("restaurantName")).isNotNull().isEqualTo(restaurantName);
         assertThat(model.get("dishListDTO")).isNotNull().isEqualTo(dishes);
         assertThat(model.get("orderId")).isNotNull().isEqualTo(order.getOrderId());
-        assertThat(model.get("orderValue")).isNotNull().isEqualTo(BigDecimal.ONE);
+        assertThat(model.get("orderValue")).isNotNull().isEqualTo(BigDecimal.ONE.toString());
     }
 }

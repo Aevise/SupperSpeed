@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version "${springBootVersion}"
     id 'io.spring.dependency-management' version "${springBootDependencyManagementVersion}"
+    id 'jacoco'
 }
 
 group = "pl.Aevise"
@@ -33,6 +34,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
+    //documentation
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
     //image processing
     implementation "org.imgscalr:imgscalr-lib:${imgscalrVersion}"
 
@@ -47,7 +51,6 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${mapstructBindingVersion}"
 
-
     //tests
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
@@ -56,11 +59,27 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
+
+    testImplementation "org.slf4j:slf4j-api:${wiremockSlf4jVersion}"
+    testImplementation "com.github.tomakehurst:wiremock-standalone:${wiremockVersion}"
+    testImplementation "io.rest-assured:rest-assured:${restAssuredVersion}"
 }
 
 test {
     useJUnitPlatform()
     testLogging{
         events "passed", "skipped", "failed"
+    }
+}
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir('jacocoHtml'))
     }
 }

@@ -122,8 +122,29 @@ public class SupperOrderRepository implements SupperOrderDAO {
     }
 
     @Override
+    public Page<SupperOrder> getRatedOrdersByRestaurantName(String restaurantName, PageRequest pageRequest) {
+        Page<SupperOrderEntity> ratedOrders = supperOrderJpaRepository.findAllByRestaurant_RestaurantNameAndUserRatingIsNotNull(restaurantName, pageRequest);
+        if (!ratedOrders.isEmpty()) {
+            return ratedOrders
+                    .map(supperOrderEntityMapper::mapFromEntity);
+        }
+        return Page.empty();
+    }
+
+    @Override
     public List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId) {
         List<SupperOrderEntity> ratedOrders = supperOrderJpaRepository.findAllByRestaurant_IdAndUserRatingIsNotNull(restaurantId);
+        if (!ratedOrders.isEmpty()) {
+            return ratedOrders.stream()
+                    .map(supperOrderEntityMapper::mapFromEntity)
+                    .toList();
+        }
+        return List.of();
+    }
+
+    @Override
+    public List<SupperOrder> getRatedOrdersByRestaurantName(String restaurantName) {
+        List<SupperOrderEntity> ratedOrders = supperOrderJpaRepository.findAllByRestaurant_RestaurantNameAndUserRatingIsNotNull(restaurantName);
         if (!ratedOrders.isEmpty()) {
             return ratedOrders.stream()
                     .map(supperOrderEntityMapper::mapFromEntity)

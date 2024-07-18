@@ -30,5 +30,9 @@ public interface SupperOrderDAO {
 
     Page<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId, PageRequest pageRequest);
 
+    Page<SupperOrder> getRatedOrdersByRestaurantName(String restaurantName, PageRequest pageRequest);
+
+    List<SupperOrder> getRatedOrdersByRestaurantName(String restaurantName);
+
     List<SupperOrder> getRatedOrdersByRestaurantId(Integer restaurantId);
 }

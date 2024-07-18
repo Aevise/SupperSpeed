@@ -34,14 +34,14 @@ public class SecurityConfiguration {
         return auth -> {
             try {
                 auth
-                        .requestMatchers("/", "/menu/**", "/search/**", "/create/**", "/login", "/logout", "/images/**", "error", "/opinion").anonymous()
+                        .requestMatchers("/", "/menu/**", "/search/**", "/create/**", "/login", "/logout", "/images/**", "error",
+                                "/opinion", "/api/unauth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
-                        .requestMatchers("/restaurant/**", "/upload/**").hasAuthority(AvailableRoles.RESTAURANT.name())
+                        .requestMatchers("/restaurant/**", "/upload/**", "/api/auth/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
                         .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(
                                 AvailableRoles.CLIENT.name(),
                                 AvailableRoles.RESTAURANT.name()
-                        )
-                        .requestMatchers("/photo/**").authenticated();
+                        );
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -74,6 +74,7 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationConfiguration())
+                .httpBasic(Customizer.withDefaults())
 //                .oauth2Login(Customizer.withDefaults())
                 .formLogin(FormLoginConfigurer::permitAll)
                 .logout(logoutConfiguration());
@@ -91,4 +92,15 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    @Bean
+    @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "test")
+    SecurityFilterChain securityTestEnvironment(HttpSecurity http) throws Exception {
+        http
+                .csrf().disable()
+                .authorizeHttpRequests(authorizationConfiguration())
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(FormLoginConfigurer::permitAll)
+                .logout(logoutConfiguration());
+        return http.build();
+    }
 }

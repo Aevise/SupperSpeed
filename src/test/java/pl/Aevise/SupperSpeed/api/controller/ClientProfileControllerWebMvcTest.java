@@ -61,6 +61,30 @@ class ClientProfileControllerWebMvcTest {
     @MockBean
     private AddressMapper addressMapper;
 
+    public static Stream<Arguments> phoneValidationShouldWorkCorrectly() {
+        return Stream.of(
+                Arguments.of(false, ""),
+                Arguments.of(false, "+48 504 203 260@@"),
+                Arguments.of(false, "+48.504.203.260"),
+                Arguments.of(false, "+55(123) 456-78-90-"),
+                Arguments.of(false, "+55(123) - 456-78-90"),
+                Arguments.of(false, "504.203.260"),
+                Arguments.of(false, " "),
+                Arguments.of(false, "-"),
+                Arguments.of(false, "()"),
+                Arguments.of(false, "() + ()"),
+                Arguments.of(false, "(21 7777"),
+                Arguments.of(false, "+48 (21)"),
+                Arguments.of(false, "+"),
+                Arguments.of(false, " 1"),
+                Arguments.of(false, "1"),
+                Arguments.of(false, "+48 (12) 504 203 260"),
+                Arguments.of(false, "+48 (12) 504-203-260"),
+                Arguments.of(false, "+48(12)504203260"),
+                Arguments.of(false, "555-5555-555"),
+                Arguments.of(true, "+48 504 203 260")
+        );
+    }
 
     @Test
     @WithMockUser(username = TEST_CLIENT_EMAIL_1, authorities = "CLIENT")
@@ -214,31 +238,6 @@ class ClientProfileControllerWebMvcTest {
                     .andExpect(model().attributeExists("errorMessage"))
                     .andExpect(model().attribute("errorMessage", Matchers.containsString(phone)));
         }
-    }
-
-    public static Stream<Arguments> phoneValidationShouldWorkCorrectly() {
-        return Stream.of(
-                Arguments.of(false, ""),
-                Arguments.of(false, "+48 504 203 260@@"),
-                Arguments.of(false, "+48.504.203.260"),
-                Arguments.of(false, "+55(123) 456-78-90-"),
-                Arguments.of(false, "+55(123) - 456-78-90"),
-                Arguments.of(false, "504.203.260"),
-                Arguments.of(false, " "),
-                Arguments.of(false, "-"),
-                Arguments.of(false, "()"),
-                Arguments.of(false, "() + ()"),
-                Arguments.of(false, "(21 7777"),
-                Arguments.of(false, "+48 (21)"),
-                Arguments.of(false, "+"),
-                Arguments.of(false, " 1"),
-                Arguments.of(false, "1"),
-                Arguments.of(false, "+48 (12) 504 203 260"),
-                Arguments.of(false, "+48 (12) 504-203-260"),
-                Arguments.of(false, "+48(12)504203260"),
-                Arguments.of(false, "555-5555-555"),
-                Arguments.of(true, "+48 504 203 260")
-        );
     }
 
 

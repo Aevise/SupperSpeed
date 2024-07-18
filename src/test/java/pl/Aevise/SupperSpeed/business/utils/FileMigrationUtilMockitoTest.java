@@ -1,7 +1,6 @@
 package pl.Aevise.SupperSpeed.business.utils;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,13 +27,11 @@ import static pl.Aevise.SupperSpeed.util.DTOFixtures.restaurantDTO2;
 @ExtendWith(MockitoExtension.class)
 class FileMigrationUtilMockitoTest {
 
+    private final static String TEST_FOLDER = "TestFolderDeleteIfExist";
     @Mock
     private ImageHandlingService imageHandlingService;
-
     @InjectMocks
     private FileMigrationUtil fileMigrationUtil;
-
-    private final static String TEST_FOLDER = "TestFolderDeleteIfExist";
 
     @AfterEach
     void deleteTestFolders() throws IOException {

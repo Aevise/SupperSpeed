@@ -1,7 +1,9 @@
 package pl.Aevise.SupperSpeed.api.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +18,8 @@ import pl.Aevise.SupperSpeed.business.AddressService;
 import pl.Aevise.SupperSpeed.business.ImageHandlingService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.business.utils.FileMigrationUtil;
+import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import static pl.Aevise.SupperSpeed.business.utils.ImageHandlerInterface.MAX_LOGO_HEIGHT;
@@ -44,7 +46,7 @@ public class RestaurantProfileController {
     public String getRestaurantProfile(
             Model model,
             @AuthenticationPrincipal UserDetails userDetails
-    ) throws IOException {
+    ) {
 
         RestaurantDTO restaurantDTO = restaurantService
                 .findRestaurantByEmail(
@@ -83,22 +85,39 @@ public class RestaurantProfileController {
             @RequestParam String restaurantId,
             @RequestParam(value = "oldName", required = false) String oldName
     ) {
-        if ("updateAddress".equals(action)) {
-            restaurantService.updateAddress(addressDTO, Integer.valueOf(restaurantId));
-        } else {
-            restaurantService.updateRestaurantInformation(restaurantDTO, Integer.valueOf(restaurantId));
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to update this profile."))
+                .getAuthority();
 
-            String newName = restaurantDTO.getRestaurantName();
-            fileMigrationUtil.migrateFilesAfterRestaurantNameChange(Integer.valueOf(restaurantId), oldName, newName);
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            if ("updateAddress".equals(action)) {
+                restaurantService.updateAddress(addressDTO, Integer.valueOf(restaurantId));
+            } else {
+                restaurantService.updateRestaurantInformation(restaurantDTO, Integer.valueOf(restaurantId));
+                String newName = restaurantDTO.getRestaurantName();
+                if (!oldName.equals(newName)) {
+                    fileMigrationUtil.migrateFilesAfterRestaurantNameChange(Integer.valueOf(restaurantId), oldName, newName);
+                }
+            }
+            return "redirect:" + RESTAURANT_PROFILE;
         }
-        return "redirect:" + RESTAURANT_PROFILE;
+        throw new AccessDeniedException("You do not have the required authority to update this profile.");
     }
 
     @PostMapping(RESTAURANT_TOGGLE)
     public String toggleRestaurantVisibility(
             @RequestParam Integer restaurantId
     ) {
-        restaurantService.toggleRestaurantVisibility(restaurantId);
-        return "redirect:" + RESTAURANT_PROFILE;
+        var authority = SecurityContextHolder.getContext()
+                .getAuthentication().getAuthorities().stream().findFirst()
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to update this profile."))
+                .getAuthority();
+
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
+            restaurantService.toggleRestaurantVisibility(restaurantId);
+            return "redirect:" + RESTAURANT_PROFILE;
+        }
+        throw new AccessDeniedException("You do not have the required authority to update this profile.");
     }
 }

@@ -99,8 +99,9 @@ public class DeliveryAddressesController {
     ) {
         var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream().findFirst()
-                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
-        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."))
+                .getAuthority();
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
             deliveryAddressService.removeDeliveryAddress(deliveryAddressId, restaurantId);
 
             return "redirect:" + SHOW_DELIVERY_ADDRESSES;
@@ -115,22 +116,13 @@ public class DeliveryAddressesController {
     ) {
         var authority = SecurityContextHolder.getContext()
                 .getAuthentication().getAuthorities().stream().findFirst()
-                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."));
-        if (authority.getAuthority().equals(AvailableRoles.RESTAURANT.name())) {
+                .orElseThrow(() -> new AccessDeniedException("You do not have the required authority to view this page."))
+                .getAuthority();
+        if (authority.equals(AvailableRoles.RESTAURANT.name())) {
             deliveryAddressService.addDeliveryAddress(deliveryAddressDTO, restaurantId);
             return "redirect:" + SHOW_DELIVERY_ADDRESSES;
         }
         throw new AccessDeniedException("You do not have the required authority to view this page.");
-    }
-
-
-    private DeliveryAddressDTO buildDeliveryAddressFromRestaurantAddress(AddressDTO addressDTO) {
-        return DeliveryAddressDTO.builder()
-                .city(addressDTO.getCity())
-                .country(addressDTO.getCountry())
-                .postalCode(addressDTO.getPostalCode())
-                .streetName(addressDTO.getStreetName())
-                .build();
     }
 
     private PageRequest buildPageRequestForDeliveryAddressList(String direction, Integer page) {

@@ -55,7 +55,6 @@ public class RestaurantEntity {
     @JoinColumn(name = "image_id", unique = true)
     private ImageEntity imageEntity;
 
-    //TODO czy tutaj dodac kiedys Cascade? Do sprawdzenia na testach
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private Set<SupperOrderEntity> orders;
 }

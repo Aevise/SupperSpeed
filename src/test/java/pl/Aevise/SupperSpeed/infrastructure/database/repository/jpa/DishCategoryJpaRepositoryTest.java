@@ -10,14 +10,15 @@ import org.springframework.test.context.TestPropertySource;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static pl.Aevise.SupperSpeed.util.Constants.DISH_CATEGORY;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.restaurantEntity1;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
@@ -29,10 +30,18 @@ class DishCategoryJpaRepositoryTest {
     private final RestaurantJpaRepository restaurantJpaRepository;
     private final DishCategoryJpaRepository dishCategoryJpaRepository;
 
+    private static DishCategoryEntity buildDishCategory(RestaurantEntity restaurant, String categoryName) {
+        return DishCategoryEntity.builder()
+                .restaurant(restaurant)
+                .categoryName(categoryName)
+                .build();
+    }
+
     @Test
     void checkThatYouCanFetchAllDishCategoriesForRestaurant() {
         //given
-        var restaurant = restaurantJpaRepository.saveAndFlush(restaurantEntity1());;
+        var restaurant = restaurantJpaRepository.saveAndFlush(restaurantEntity1());
+        ;
         var dishCategories = List.of(
                 buildDishCategory(restaurant, DISH_CATEGORY.get("Meat")),
                 buildDishCategory(restaurant, DISH_CATEGORY.get("Vegan"))
@@ -46,10 +55,16 @@ class DishCategoryJpaRepositoryTest {
         assertThat(fetchedDishCategories).doesNotContainNull().hasSize(2);
     }
 
-    private static DishCategoryEntity buildDishCategory(RestaurantEntity restaurant, String categoryName){
-        return DishCategoryEntity.builder()
-                .restaurant(restaurant)
-                .categoryName(categoryName)
-                .build();
+    @Test
+    void checkThatYouCanGetDishCategoryByName() {
+        //given
+        String categoryName = "Dania rybne";
+
+        //when
+        Optional<DishCategoryEntity> byCategoryName = dishCategoryJpaRepository.findByCategoryName(categoryName);
+
+        //then
+        assertTrue(byCategoryName.isPresent());
+        assertEquals(byCategoryName.get().getCategoryName(), categoryName);
     }
 }

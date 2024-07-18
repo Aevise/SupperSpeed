@@ -3,7 +3,7 @@ CREATE TABLE restaurant
     restaurant_id   SERIAL      NOT NULL,
     user_id         INT,
     address_id      INT,
-    image_id        INT,
+    image_id        INT UNIQUE,
     cuisine_id      INT,
     restaurant_name VARCHAR(32) NOT NULL,
     phone           VARCHAR(32),

@@ -12,6 +12,8 @@ public interface RestaurantJpaRepository extends JpaRepository<RestaurantEntity,
 
     List<RestaurantEntity> findAllByAddress_City(String city);
 
+    List<RestaurantEntity> findAllByAddress_CityAndCuisine_Cuisine(String city, String cuisine);
+
     Optional<RestaurantEntity> findBySupperUser_Email(String email);
 
     @Query("SELECT DISTINCT a.city FROM RestaurantEntity r JOIN r.address a WHERE a.city IS NOT NULL AND a.streetName IS NOT NULL")

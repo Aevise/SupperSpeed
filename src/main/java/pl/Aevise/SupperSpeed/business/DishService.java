@@ -10,6 +10,8 @@ import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
 import pl.Aevise.SupperSpeed.business.dao.DishDAO;
 import pl.Aevise.SupperSpeed.domain.Dish;
 import pl.Aevise.SupperSpeed.domain.Image;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.DishCategoryEntity;
+import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,10 +30,31 @@ public class DishService {
     private final DishListService dishListService;
     private final DishMapper dishMapper;
 
-    public List<Dish> findAllByRestaurant(Integer restaurantId) {
-        List<Dish> dishesFromRestaurant = dishDAO.findAllByRestaurant(restaurantId);
-        log.info("Found: [{}] dishesByRestaurant", dishesFromRestaurant.size());
-        return dishesFromRestaurant;
+    public List<DishDTO> findAllNotHiddenDishes(String restaurantName) {
+        List<Dish> dishesFromRestaurant = dishDAO.findAllNotHiddenDishes(restaurantName);
+        if (dishesFromRestaurant.isEmpty()) {
+            log.info("No dishes for restaurant [{}] found", restaurantName);
+            return List.of();
+        }
+        List<DishDTO> dishList = dishesFromRestaurant.stream()
+                .map(dishMapper::mapToDTO)
+                .toList();
+        log.info("[{}] dishes found for restaurant with id: [{}]", dishList.size(), restaurantName);
+        return dishList;
+    }
+
+    public List<DishDTO> findNotHiddenDishesByCategory(String restaurantName, String category) {
+        List<Dish> dishesFromRestaurant = dishDAO.findNotHiddenDishesByCategory(restaurantName, category);
+        if (dishesFromRestaurant.isEmpty()) {
+            log.info("No dishes for restaurant [{}] found", restaurantName);
+            return List.of();
+        }
+        List<DishDTO> dishList = dishesFromRestaurant.stream()
+                .map(dishMapper::mapToDTO)
+                .toList();
+        log.info("[{}] dishes found for restaurant with id: [{}] and category [{}]",
+                dishList.size(), restaurantName, category);
+        return dishList;
     }
 
     public List<Dish> findAllByCategory(Integer categoryId) {
@@ -40,9 +63,10 @@ public class DishService {
         return dishesFromRestaurant;
     }
 
-    public void updateDish(DishDTO dishDTO) {
-        dishDAO.updateDish(dishDTO);
+    public DishDTO updateDish(DishDTO dishDTO) {
+        Dish dish = dishDAO.updateDish(dishDTO);
         log.info("Updated dish: [{}] - [{}]", dishDTO.getDishId(), dishDTO.getName());
+        return dishMapper.mapToDTO(dish);
     }
 
     public void deleteOrHideDishByDishId(Integer dishId) {
@@ -75,10 +99,17 @@ public class DishService {
     }
 
     @Transactional
-    public void addDish(Dish dish) {
-
-        dishDAO.addDish(dish);
+    public DishDTO addDish(DishDTO dishDTO) {
+        Dish dish = dishDAO.addDish(dishMapper.mapFromDTO(dishDTO));
         log.info("Successfully added dish: [{}]", dish.getName());
+        return dishMapper.mapToDTO(dish);
+    }
+
+    @Transactional
+    public Dish addDish(Dish dish) {
+        Dish newDish = dishDAO.addDish(dish);
+        log.info("Successfully added dish: [{}]", newDish.getName());
+        return newDish;
     }
 
     public Dish buildDish(DishDTO dishDTO, Integer restaurantId, Integer categoryId) {
@@ -95,16 +126,39 @@ public class DishService {
                 .build();
     }
 
+    public Dish buildDish(DishDTO dishDTO, RestaurantEntity restaurantEntity, DishCategoryEntity dishCategoryEntity) {
+        return Dish.builder()
+                .name(dishDTO.getName())
+                .price(dishDTO.getPrice())
+                .description(dishDTO.getDescription())
+                .availability(Optional
+                        .ofNullable(dishDTO.getAvailability())
+                        .orElse(false))
+                .restaurant(restaurantEntity)
+                .dishCategory(dishCategoryEntity)
+                .isHidden(false)
+                .build();
+    }
+
+
+    public Dish buildDish(DishDTO dishDTO, Integer restaurantId, String categoryName) {
+        return Dish.builder()
+                .name(dishDTO.getName())
+                .price(dishDTO.getPrice())
+                .description(dishDTO.getDescription())
+                .availability(Optional
+                        .ofNullable(dishDTO.getAvailability())
+                        .orElse(false))
+                .restaurant(restaurantService.findByIdEntity(restaurantId))
+                .dishCategory(dishCategoryService.findByName(categoryName))
+                .isHidden(false)
+                .build();
+    }
+
     public void setDishImage(Image image, Integer dishId) {
         dishDAO.setDishImage(image, dishId);
         log.info("Dish with id: [{}] image updated successfully", dishId);
     }
-
-//    @Transactional
-//    public HashMap<String, List<DishDTO>> getDishListByCategoryFromRestaurant(Integer restaurantId) {
-//        List<DishCategoryDTO> dishCategories = getDishCategoriesByRestaurantId(restaurantId);
-//        return extractDishesByCategoryName(dishCategories);
-//    }
 
     @Transactional
     public HashMap<String, List<DishDTO>> extractDishesByCategoryName(List<DishCategoryDTO> dishCategories) {
@@ -131,9 +185,9 @@ public class DishService {
                     List.of(dishCategory),
                     findAllByCategory(dishCategory.getDishCategoryId())
                             .stream()
+                            .filter(dish -> !filterUnavailable || dish.getAvailability())
+                            .filter(dish -> !dish.getIsHidden())
                             .map(dishMapper::mapToDTO)
-                            .filter(dishDTO -> !filterUnavailable || dishDTO.getAvailability())
-                            .filter(dishDTO -> !dishDTO.getIsHidden())
                             .toList()
             );
         }
@@ -141,5 +195,27 @@ public class DishService {
             dishesByCategory.entrySet().removeIf(category -> category.getValue().isEmpty());
         }
         return dishesByCategory;
+    }
+
+    public DishDTO findById(Integer dishId) {
+        Optional<Dish> dish = dishDAO.findById(dishId);
+
+        if (dish.isPresent()) {
+            log.info("Found dish with id: [{}]", dishId);
+            return dishMapper.mapToDTO(dish.get());
+        }
+        log.info("Dish with id: [{}] not found", dishId);
+        return null;
+    }
+
+    public Dish findByIdPOJO(Integer dishId) {
+        Optional<Dish> dish = dishDAO.findById(dishId);
+
+        if (dish.isPresent()) {
+            log.info("Found dish with id: [{}]", dishId);
+            return dish.get();
+        }
+        log.info("Dish with id: [{}] not found", dishId);
+        return null;
     }
 }

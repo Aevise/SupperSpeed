@@ -32,7 +32,7 @@ public class RestaurantDTO {
     ImageDTO imageDTO;
     AddressDTO address;
 
-    public final Map<String, String> asMap(){
+    public final Map<String, String> asMap() {
         Map<String, String> result = new HashMap<>();
         ofNullable(userId).ifPresent(value -> result.put("userId", userId.toString()));
         ofNullable(restaurantId).ifPresent(value -> result.put("restaurantId", restaurantId.toString()));

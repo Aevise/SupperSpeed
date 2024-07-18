@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.entity.SupperUserEntity;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.supperUserEntity1;
+import static pl.Aevise.SupperSpeed.util.EntityFixtures.supperUserEntity2;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")

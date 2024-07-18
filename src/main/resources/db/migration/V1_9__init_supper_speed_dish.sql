@@ -6,7 +6,7 @@ CREATE TABLE dish
     name             VARCHAR(32)           NOT NULL,
     description      VARCHAR(128),
     price            NUMERIC(8, 2)         NOT NULL,
-    image_id         INT,
+    image_id         INT UNIQUE,
     availability     BOOLEAN               NOT NULL,
     is_hidden        BOOLEAN DEFAULT FALSE NOT NULL,
     PRIMARY KEY (dish_id),

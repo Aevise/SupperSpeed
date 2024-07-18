@@ -1,12 +1,15 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper;
 
+import org.mapstruct.AnnotateWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import pl.Aevise.SupperSpeed.domain.Restaurant;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.security.database.repository.mapper.SupperUserEntityMapper;
+import pl.Aevise.SupperSpeed.infrastructure.util.GeneratedMapper;
 
+@AnnotateWith(GeneratedMapper.class)
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         uses = {

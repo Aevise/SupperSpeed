@@ -64,4 +64,10 @@ public class DishCategoryRepository implements DishCategoryDAO {
         return dishCategoryJpaRepository.findById(id)
                 .map(dishCategoryEntityMapper::mapFromEntity);
     }
+
+    @Override
+    public Optional<DishCategory> findByName(String categoryName) {
+        return dishCategoryJpaRepository.findByCategoryName(categoryName)
+                .map(dishCategoryEntityMapper::mapFromEntity);
+    }
 }

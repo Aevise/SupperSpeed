@@ -17,7 +17,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.restaurantEntity1;
 
 @DataJpaTest
 @TestPropertySource(locations = "classpath:application-test.yml")
@@ -118,5 +117,19 @@ class RestaurantJpaRepositoryTest {
         //then
         assertThat(testRestaurantEntity1).isNotNull().isEqualTo(fetchedRestaurant1.get());
         assertThat(testRestaurantEntity2).isNotNull().isEqualTo(restaurantEntity2());
+    }
+
+    @Test
+    void checkThatYouCanGetAllRestaurantsInCityWithCuisine() {
+        //given
+        String city = "Lublin";
+        String cuisine = "Italian";
+
+        //when
+        List<RestaurantEntity> restaurants = restaurantJpaRepository.findAllByAddress_CityAndCuisine_Cuisine(city, cuisine);
+
+        //then
+        assertThat(restaurants).isNotEmpty();
+        assertThat(restaurants.size()).isEqualTo(1);
     }
 }

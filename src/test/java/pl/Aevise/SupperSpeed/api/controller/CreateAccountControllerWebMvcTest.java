@@ -70,6 +70,53 @@ class CreateAccountControllerWebMvcTest {
     @MockBean
     private CuisineService cuisineService;
 
+    public static Stream<Arguments> checkThatPhoneValidationWorksCorrectly() {
+        return Stream.of(
+                Arguments.of(false, ""),
+                Arguments.of(false, "+48 504 203 260@@"),
+                Arguments.of(false, "+48.504.203.260"),
+                Arguments.of(false, "+55(123) 456-78-90-"),
+                Arguments.of(false, "+55(123) - 456-78-90"),
+                Arguments.of(false, "504.203.260"),
+                Arguments.of(false, " "),
+                Arguments.of(false, "-"),
+                Arguments.of(false, "()"),
+                Arguments.of(false, "() + ()"),
+                Arguments.of(false, "(21 7777"),
+                Arguments.of(false, "+48 (21)"),
+                Arguments.of(false, "+"),
+                Arguments.of(false, " 1"),
+                Arguments.of(false, "1"),
+                Arguments.of(false, "+48 (12) 504 203 260"),
+                Arguments.of(false, "+48 (12) 504-203-260"),
+                Arguments.of(false, "+48(12)504203260"),
+                Arguments.of(false, "555-5555-555"),
+                Arguments.of(true, "+48 504 203 260")
+        );
+    }
+
+    public static Stream<Arguments> checkThatEmailVerificationWorksCorrectlyForCreatingRestaurantUser() {
+        return Stream.of(
+                Arguments.of(false, ""),
+                Arguments.of(false, "testtestcom"),
+                Arguments.of(false, "testtest.com"),
+                Arguments.of(false, "test@test@com"),
+                Arguments.of(true, "test@test.com"),
+                Arguments.of(true, "test@test.com.pl")
+        );
+    }
+
+    public static Stream<Arguments> checkThatEmailVerificationWorksCorrectlyForCreatingClientUser() {
+        return Stream.of(
+                Arguments.of(false, ""),
+                Arguments.of(false, "testtestcom"),
+                Arguments.of(false, "testtest.com"),
+                Arguments.of(false, "test@test@com"),
+                Arguments.of(true, "test@test.com"),
+                Arguments.of(true, "test@test.com.pl")
+        );
+    }
+
     @Test
     void checkThatYouCanGetAccountCreationForm() throws Exception {
         //given
@@ -287,31 +334,6 @@ class CreateAccountControllerWebMvcTest {
         }
     }
 
-    public static Stream<Arguments> checkThatPhoneValidationWorksCorrectly() {
-        return Stream.of(
-                Arguments.of(false, ""),
-                Arguments.of(false, "+48 504 203 260@@"),
-                Arguments.of(false, "+48.504.203.260"),
-                Arguments.of(false, "+55(123) 456-78-90-"),
-                Arguments.of(false, "+55(123) - 456-78-90"),
-                Arguments.of(false, "504.203.260"),
-                Arguments.of(false, " "),
-                Arguments.of(false, "-"),
-                Arguments.of(false, "()"),
-                Arguments.of(false, "() + ()"),
-                Arguments.of(false, "(21 7777"),
-                Arguments.of(false, "+48 (21)"),
-                Arguments.of(false, "+"),
-                Arguments.of(false, " 1"),
-                Arguments.of(false, "1"),
-                Arguments.of(false, "+48 (12) 504 203 260"),
-                Arguments.of(false, "+48 (12) 504-203-260"),
-                Arguments.of(false, "+48(12)504203260"),
-                Arguments.of(false, "555-5555-555"),
-                Arguments.of(true, "+48 504 203 260")
-        );
-    }
-
     @ParameterizedTest
     @MethodSource
     @WithMockUser(username = TEST_RESTAURANT_EMAIL_1, authorities = "RESTAURANT")
@@ -351,18 +373,6 @@ class CreateAccountControllerWebMvcTest {
         }
     }
 
-
-    public static Stream<Arguments> checkThatEmailVerificationWorksCorrectlyForCreatingRestaurantUser() {
-        return Stream.of(
-                Arguments.of(false, ""),
-                Arguments.of(false, "testtestcom"),
-                Arguments.of(false, "testtest.com"),
-                Arguments.of(false, "test@test@com"),
-                Arguments.of(true, "test@test.com"),
-                Arguments.of(true, "test@test.com.pl")
-        );
-    }
-
     @ParameterizedTest
     @MethodSource
     void checkThatEmailVerificationWorksCorrectlyForCreatingClientUser(Boolean correctEmail, String email) throws Exception {
@@ -397,17 +407,5 @@ class CreateAccountControllerWebMvcTest {
                     .andExpect(model().attributeExists("errorMessage"))
                     .andExpect(model().attribute("errorMessage", Matchers.containsString(email)));
         }
-    }
-
-
-    public static Stream<Arguments> checkThatEmailVerificationWorksCorrectlyForCreatingClientUser() {
-        return Stream.of(
-                Arguments.of(false, ""),
-                Arguments.of(false, "testtestcom"),
-                Arguments.of(false, "testtest.com"),
-                Arguments.of(false, "test@test@com"),
-                Arguments.of(true, "test@test.com"),
-                Arguments.of(true, "test@test.com.pl")
-        );
     }
 }

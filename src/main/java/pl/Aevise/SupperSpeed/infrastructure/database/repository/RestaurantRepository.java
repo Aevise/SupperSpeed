@@ -1,6 +1,5 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -13,7 +12,6 @@ import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.RestaurantJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ImageEntityMapper;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.RestaurantEntityMapper;
-import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,10 +24,6 @@ public class RestaurantRepository implements RestaurantDAO {
     private final RestaurantEntityMapper restaurantEntityMapper;
 
     private final ImageEntityMapper imageEntityMapper;
-
-    private final SupperUserJpaRepository supperUserJpaRepository;
-
-    private final EntityManager entityManager;
 
     @Override
     public Optional<Restaurant> findByName(String restaurantName) {
@@ -75,14 +69,6 @@ public class RestaurantRepository implements RestaurantDAO {
                 .map(restaurantEntityMapper::mapFromEntity);
     }
 
-    @Override
-    public List<Restaurant> findAll() {
-        return restaurantJpaRepository
-                .findAll()
-                .stream()
-                .map(restaurantEntityMapper::mapFromEntity)
-                .toList();
-    }
 
     @Override
     public List<Restaurant> findAllByCity(String city) {
@@ -146,6 +132,15 @@ public class RestaurantRepository implements RestaurantDAO {
     @Override
     public Optional<AddressEntity> getAddressByRestaurantId(Integer restaurantId) {
         return restaurantJpaRepository.findAddressByRestaurantId(restaurantId);
+    }
+
+    @Override
+    public List<Restaurant> findAllByCityAndCuisine(String city, String cuisine) {
+        return restaurantJpaRepository
+                .findAllByAddress_CityAndCuisine_Cuisine(city, cuisine)
+                .stream()
+                .map(restaurantEntityMapper::mapFromEntity)
+                .toList();
     }
 
 }

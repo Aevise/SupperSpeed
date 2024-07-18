@@ -76,4 +76,14 @@ public class DishCategoryService {
         return null;
     }
 
+    public DishCategoryEntity findByName(String categoryName) {
+        Optional<DishCategory> dishCategory = dishCategoryDAO.findByName(categoryName);
+        if (dishCategory.isPresent()) {
+            DishCategoryEntity dishCategoryEntity = dishCategoryEntityMapper.mapToEntity(dishCategory.get());
+            log.info("Successfully mapped dish category to entity");
+            return dishCategoryEntity;
+        }
+        log.warn("No dish category to map");
+        return null;
+    }
 }

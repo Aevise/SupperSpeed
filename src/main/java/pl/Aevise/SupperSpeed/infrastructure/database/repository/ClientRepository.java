@@ -3,13 +3,11 @@ package pl.Aevise.SupperSpeed.infrastructure.database.repository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import pl.Aevise.SupperSpeed.api.dto.mapper.ClientMapper;
 import pl.Aevise.SupperSpeed.business.dao.ClientDAO;
 import pl.Aevise.SupperSpeed.domain.Client;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.ClientEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa.ClientJpaRepository;
 import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEntityMapper;
-import pl.Aevise.SupperSpeed.infrastructure.security.database.jpa.SupperUserJpaRepository;
 
 import java.util.Optional;
 
@@ -17,11 +15,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ClientRepository implements ClientDAO {
 
-    private final SupperUserJpaRepository supperUserJpaRepository;
     private final ClientJpaRepository clientJpaRepository;
     private final ClientEntityMapper clientEntityMapper;
-    private final ClientMapper clientMapper;
-
 
     @Override
     public void updateClientInformation(Client client, Integer id) {
@@ -68,5 +63,20 @@ public class ClientRepository implements ClientDAO {
             return clientEntity.map(clientEntityMapper::mapFromEntity);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Client detachUserFromRestaurant(String email) {
+        Optional<ClientEntity> bySupperUserEmail = clientJpaRepository.findBySupperUser_Email(email);
+
+        if (bySupperUserEmail.isPresent()) {
+            ClientEntity client = bySupperUserEmail.get();
+            client.setIsShown(false);
+            client.setSupperUser(null);
+            clientJpaRepository.saveAndFlush(client);
+            return clientEntityMapper.mapFromEntity(client);
+        } else {
+            throw new EntityNotFoundException("Could not find restaurant");
+        }
     }
 }

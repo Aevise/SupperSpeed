@@ -29,16 +29,17 @@ public class ClientService {
 
     @Transactional
     public int createClient(ClientEntity clientEntity) {
-        /**
-         * @return the id of created client. Returned id matches supper_user id.
-         */
         ClientEntity user = clientDAO.createClient(clientEntity);
         log.info("Successfully created user with email: [{}]. Id:[{}]", user.getSupperUser().getEmail(), user.getId());
         return user.getId();
     }
 
-//    @Transactional
-//    public void updateClient(Client client, Integer id){
-//        clientDAO.updateClientInformation(client, id);
-//    }
+    public void detachUserFromClient(String email) {
+        Client client = clientDAO.detachUserFromRestaurant(email);
+        if (!client.getIsShown() && client.getSupperUser() == null) {
+            log.info("Client [{}] detached successfully", client.getId());
+        } else {
+            log.warn("Entity could not be detached");
+        }
+    }
 }

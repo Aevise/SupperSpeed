@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ExtendedModelMap;
-import pl.Aevise.SupperSpeed.api.dto.ClientDTO;
 import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
@@ -20,22 +19,18 @@ import pl.Aevise.SupperSpeed.domain.Client;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.security.SecurityService;
 import pl.Aevise.SupperSpeed.infrastructure.security.utils.AvailableRoles;
-import pl.Aevise.SupperSpeed.util.DTOFixtures;
-import pl.Aevise.SupperSpeed.util.POJOFixtures;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.DTOFixtures.*;
-import static pl.Aevise.SupperSpeed.util.DTOFixtures.supperOrderDTO1;
-import static pl.Aevise.SupperSpeed.util.POJOFixtures.*;
+import static pl.Aevise.SupperSpeed.util.POJOFixtures.client1;
+import static pl.Aevise.SupperSpeed.util.POJOFixtures.supperOrder1;
 
 @ExtendWith(MockitoExtension.class)
 class OrdersBrowseControllerMockitoTest {

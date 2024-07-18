@@ -1,33 +1,41 @@
 package pl.Aevise.SupperSpeed.infrastructure.database.repository.jpa;
 
 import lombok.AllArgsConstructor;
+import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.DeliveryAddressEntity;
+import pl.Aevise.SupperSpeed.integration.configuration.FlywayManualMigrationsConfiguration;
 import pl.Aevise.SupperSpeed.integration.configuration.PersistenceContainerTestConfiguration;
-import pl.Aevise.SupperSpeed.util.EntityFixtures;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static pl.Aevise.SupperSpeed.util.Constants.*;
 import static pl.Aevise.SupperSpeed.util.EntityFixtures.*;
-import static pl.Aevise.SupperSpeed.util.EntityFixtures.deliveryAddressEntity1;
 
 @DataJpaTest
-@TestPropertySource(locations = "classpath:application-test.yml")
+@ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Import(PersistenceContainerTestConfiguration.class)
+@Import({PersistenceContainerTestConfiguration.class,
+        FlywayManualMigrationsConfiguration.class})
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 class DeliveryAddressJpaRepositoryTest {
 
     private final DeliveryAddressJpaRepository deliveryAddressJpaRepository;
+    Flyway flyway;
+
+    @BeforeEach
+    void recreateFlywayMigrations() {
+        flyway.clean();
+        flyway.migrate();
+    }
 
     @Test
     void checkThatYouCanFindAllDeliveryAddressesWithAllAddressValuesExceptId() {
@@ -47,9 +55,9 @@ class DeliveryAddressJpaRepositoryTest {
                 .findByAllFieldsExceptId("NON", "NON", "NON", "NON", "NON");
         DeliveryAddressEntity testDeliveryAddressEntity1 = null, testDeliveryAddressEntity2 = null, testDeliveryAddressEntity3 = null;
 
-        if(fetchedAddress1.isPresent()) testDeliveryAddressEntity1 = fetchedAddress1.get();
-        if(fetchedAddress2.isPresent()) testDeliveryAddressEntity2 = fetchedAddress2.get();
-        if(fetchedAddress3.isPresent()) testDeliveryAddressEntity3 = fetchedAddress3.get();
+        if (fetchedAddress1.isPresent()) testDeliveryAddressEntity1 = fetchedAddress1.get();
+        if (fetchedAddress2.isPresent()) testDeliveryAddressEntity2 = fetchedAddress2.get();
+        if (fetchedAddress3.isPresent()) testDeliveryAddressEntity3 = fetchedAddress3.get();
 
         //then
         assertThat(testDeliveryAddressEntity1).isNotNull().isIn(deliveryAddresses).isEqualTo(deliveryAddressEntity1());

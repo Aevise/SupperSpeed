@@ -8,21 +8,25 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DishDAO {
-    List<Dish> findAllByRestaurant(Integer restaurantId);
-
     List<Dish> findAllByCategory(Integer categoryId);
 
-    void updateDish(DishDTO dishDTO);
+    Dish updateDish(DishDTO dishDTO);
 
     void deleteDish(Integer dishId);
 
     void deleteDishes(List<Dish> dishes);
 
-    void addDish(Dish dish);
+    Dish addDish(Dish dish);
 
     void setDishImage(Image image, Integer dishId);
 
     Optional<Dish> permanentlyHideDishFromAllUsers(Integer dishId);
 
     void permanentlyHideDishesFromAllUsers(List<Dish> dishesInOrder);
+
+    List<Dish> findAllNotHiddenDishes(String restaurantName);
+
+    List<Dish> findNotHiddenDishesByCategory(String restaurantName, String category);
+
+    Optional<Dish> findById(Integer dishId);
 }

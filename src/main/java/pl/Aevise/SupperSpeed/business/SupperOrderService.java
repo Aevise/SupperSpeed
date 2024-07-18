@@ -87,8 +87,8 @@ public class SupperOrderService {
         SupperOrder fetchedOrder = supperOrderDAO.findById(orderId);
         Integer orderStatus = fetchedOrder.getStatus().getStatusId();
 
-        if (orderStatus >= OrderStatus.NEW.getStatusId() &&
-                orderStatus < OrderStatus.CANCELED.getStatusId()) {
+        if (orderStatus > OrderStatus.NEW.getStatusId() &&
+                orderStatus < OrderStatus.REALIZED.getStatusId()) {
             SupperOrder updatedOrder = supperOrderDAO.proceedOrder(orderStatus + 1, fetchedOrder);
             if (updatedOrder.getStatus().getStatusId() > orderStatus) {
                 log.info("Successfully proceeded order: [{}]", orderId);
@@ -221,6 +221,34 @@ public class SupperOrderService {
         }
         log.info("Could not find rated orders for restaurant with id: [{}]", restaurantId);
         return Page.empty();
+    }
+
+    public Page<SupperOrderDTO> getRatedOrdersByRestaurantName(String restaurantName, PageRequest pageRequest) {
+        Page<SupperOrder> ratedOrdersByRestaurantName = supperOrderDAO.getRatedOrdersByRestaurantName(restaurantName, pageRequest);
+        if (!ratedOrdersByRestaurantName.isEmpty()) {
+            log.info("Found [{}]/[{}], page [{}]/[{}] rated orders for restaurant with name: [{}]",
+                    ratedOrdersByRestaurantName.getNumberOfElements(),
+                    ratedOrdersByRestaurantName.getTotalElements(),
+                    ratedOrdersByRestaurantName.getNumber(),
+                    ratedOrdersByRestaurantName.getTotalPages(),
+                    restaurantName);
+            return ratedOrdersByRestaurantName
+                    .map(supperOrderMapper::mapToDTO);
+        }
+        log.info("Could not find rated orders for restaurant with name: [{}]", restaurantName);
+        return Page.empty();
+    }
+
+    public List<SupperOrderDTO> getRatedOrdersByRestaurantName(String restaurantName) {
+        List<SupperOrder> ratedOrdersByRestaurantName = supperOrderDAO.getRatedOrdersByRestaurantName(restaurantName);
+        if (!ratedOrdersByRestaurantName.isEmpty()) {
+            log.info("Found [{}] rated orders for restaurant with name: [{}]", ratedOrdersByRestaurantName.size(), restaurantName);
+            return ratedOrdersByRestaurantName.stream()
+                    .map(supperOrderMapper::mapToDTO)
+                    .toList();
+        }
+        log.info("Could not find rated orders for restaurant with name: [{}]", restaurantName);
+        return List.of();
     }
 
     public TotalRestaurantRatingDTO getRestaurantRating(List<SupperOrderDTO> ratedOrders) {

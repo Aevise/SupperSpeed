@@ -26,14 +26,6 @@ public class DishRepository implements DishDAO {
 
     private final ImageEntityMapper imageEntityMapper;
 
-    @Override
-    public List<Dish> findAllByRestaurant(Integer restaurantId) {
-        return dishJpaRepository
-                .findAllByRestaurant_Id(restaurantId)
-                .stream()
-                .map(dishEntityMapper::mapFromEntity)
-                .toList();
-    }
 
     @Override
     public List<Dish> findAllByCategory(Integer categoryId) {
@@ -45,7 +37,7 @@ public class DishRepository implements DishDAO {
     }
 
     @Override
-    public void updateDish(DishDTO dishDTO) {
+    public Dish updateDish(DishDTO dishDTO) {
         DishEntity dish = dishJpaRepository
                 .findById(dishDTO.getDishId())
                 .orElseThrow(() -> new EntityNotFoundException(
@@ -57,9 +49,14 @@ public class DishRepository implements DishDAO {
         dish.setName(newDishData.getName());
         dish.setDescription(newDishData.getDescription());
         dish.setPrice(newDishData.getPrice());
-        dish.setAvailability(newDishData.getAvailability());
+        if (newDishData.getAvailability() == null) {
+            dish.setAvailability(false);
+        } else {
+            dish.setAvailability(newDishData.getAvailability());
+        }
 
-        dishJpaRepository.saveAndFlush(dish);
+        DishEntity dishEntity = dishJpaRepository.saveAndFlush(dish);
+        return dishEntityMapper.mapFromEntity(dishEntity);
     }
 
     @Override
@@ -74,9 +71,10 @@ public class DishRepository implements DishDAO {
     }
 
     @Override
-    public void addDish(Dish dish) {
+    public Dish addDish(Dish dish) {
         DishEntity dishToSave = dishEntityMapper.mapToEntity(dish);
-        dishJpaRepository.saveAndFlush(dishToSave);
+        DishEntity dishEntity = dishJpaRepository.saveAndFlush(dishToSave);
+        return dishEntityMapper.mapFromEntity(dishEntity);
     }
 
     @Override
@@ -114,5 +112,29 @@ public class DishRepository implements DishDAO {
                 .toList();
 
         dishJpaRepository.saveAllAndFlush(dishEntityList);
+    }
+
+    @Override
+    public List<Dish> findAllNotHiddenDishes(String restaurantName) {
+        return dishJpaRepository
+                .findAllByRestaurant_RestaurantNameAndRestaurant_IsShownAndIsHidden(restaurantName, true, false)
+                .stream()
+                .map(dishEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<Dish> findNotHiddenDishesByCategory(String restaurantName, String category) {
+        return dishJpaRepository
+                .findAllByRestaurant_RestaurantNameAndRestaurant_IsShownAndDishCategory_CategoryNameAndIsHidden(restaurantName, true, category, false)
+                .stream()
+                .map(dishEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    @Override
+    public Optional<Dish> findById(Integer dishId) {
+        return dishJpaRepository.findById(dishId)
+                .map(dishEntityMapper::mapFromEntity);
     }
 }
