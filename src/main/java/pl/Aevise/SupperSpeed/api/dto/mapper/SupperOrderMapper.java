@@ -3,6 +3,7 @@ package pl.Aevise.SupperSpeed.api.dto.mapper;
 import org.mapstruct.AnnotateWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import pl.Aevise.SupperSpeed.api.dto.RestOrderDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.util.GeneratedMapper;
@@ -26,4 +27,9 @@ public interface SupperOrderMapper {
 
     @Mapping(source = "orderDateTime", target = "orderDateTime", qualifiedByName = "mapStringToOffsetDateTime")
     SupperOrder mapFromDTO(SupperOrderDTO supperOrderDTO);
+
+    @Mapping(source = "restaurantDTO.restaurantName", target = "restaurantName")
+    @Mapping(source = "statusListDTO.description", target = "status")
+    @Mapping(source = "userRatingDTO", target = "userRating")
+    RestOrderDTO mapToRestDTO(SupperOrderDTO supperOrderDTO);
 }

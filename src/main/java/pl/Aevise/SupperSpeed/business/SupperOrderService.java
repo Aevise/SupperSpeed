@@ -7,10 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
-import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
-import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
-import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
-import pl.Aevise.SupperSpeed.api.dto.TotalRestaurantRatingDTO;
+import pl.Aevise.SupperSpeed.api.dto.*;
 import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.SupperOrderMapper;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
@@ -38,6 +35,7 @@ public class SupperOrderService {
     private final ClientEntityMapper clientEntityMapper;
 
     private final RestaurantService restaurantService;
+    private final DishListService dishListService;
 
     @Transactional
     public List<SupperOrder> getOrdersByRestaurantId(Integer restaurantId) {
@@ -262,6 +260,7 @@ public class SupperOrderService {
                 .build();
     }
 
+    @Transactional
     public List<SupperOrderDTO> getOrdersByUserEmail(String email){
         RestaurantDTO restaurantByEmail = restaurantService.findRestaurantByEmail(email);
         List<SupperOrderDTO> orders;
@@ -287,4 +286,23 @@ public class SupperOrderService {
         return List.of();
     }
 
+    @Transactional
+    public List<RestOrderDTO> getRestOrdersByUserEmail(String username) {
+                List<SupperOrderDTO> ordersByUserEmail = getOrdersByUserEmail(username);
+                List<RestOrderDTO> ordersToReturn = new LinkedList<>();
+        for (SupperOrderDTO order : ordersByUserEmail) {
+            List<Map<Integer, DishDTO>> dishes = new LinkedList<>();
+            List<DishListDTO> dishesByOrderId = dishListService.getDishesByOrderId(order.getOrderId());
+            for (DishListDTO dish : dishesByOrderId) {
+                dishes.add(Map.of(dish.getQuantity(), dish.getDishDTO()));
+            }
+            BigDecimal bigDecimal = extractTotalOrderValue(dishesByOrderId);
+
+            RestOrderDTO restOrderDTO = supperOrderMapper.mapToRestDTO(order);
+            restOrderDTO.setDishesAndQuantity(dishes);
+            restOrderDTO.setTotalPrice(bigDecimal);
+            ordersToReturn.add(restOrderDTO);
+        }
+        return ordersToReturn;
+    }
 }

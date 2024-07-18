@@ -148,7 +148,7 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
         String responseBody = response.extract().asString();
 
         //then
-        response.statusCode(HttpStatus.BAD_REQUEST.value());
+        response.statusCode(HttpStatus.FORBIDDEN.value());
         assertThat(responseBody).isEqualTo(expectedError);
     }
 
@@ -190,7 +190,7 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
         //given
         String URL = API_AUTH_RESTAURANT + UPDATE_DISH;
         DishDTO dishDTO = dishDTO1();
-        String expectedErrorMessage = "Error:\n[No dish Id provided]";
+        String expectedErrorMessage = "Error:\n[Required request parameter 'dishId' for method parameter type Integer is not present]";
 
         String base64Credentials = Base64.getEncoder().encodeToString("user3@user.com:test".getBytes());
 
@@ -270,7 +270,7 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
     ) {
         //given
         String URL = API_AUTH_RESTAURANT + DELETE_DISH;
-        String expectedError = "Error:\n[Dish not found]";
+        String expectedError = "Error:\n[You can not delete this dish]";
 
         String base64Credentials = Base64.getEncoder().encodeToString("user3@user.com:test".getBytes());
 
