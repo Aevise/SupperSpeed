@@ -46,19 +46,29 @@
                             <h3 style="display: flex; justify-content: center;"> Please provide your information:</h3>
                             <br>
                             <div class="container">
-                                <div class="row">
-                                    <div class="col">
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
                                         <label for="clientName">Name: </label>
+                                    </div>
+                                    <div class="col-md-3">
                                         <input id="clientName" name="name" type="text">
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <label for="clientSurname">Surname: </label>
-                                    <input id="clientSurname" name="surname" type="text">
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="clientSurname">Surname: </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input id="clientSurname" name="surname" type="text">
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <label for="clientPhone">Phone: </label>
-                                    <input id="clientPhone" name="phone" type="text">
+                                <div class="row mt-3">
+                                    <div class="col-md-3">
+                                        <label for="clientPhone">Phone: </label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input id="clientPhone" name="phone" type="text">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -101,43 +111,63 @@
                                     information:</h3>
                                 <br>
                                 <div class="container">
-                                    <div class="row">
-                                        <div class="col">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
                                             <label for="restaurant_name">Name: </label>
+                                        </div>
+                                        <div class="col-md-3">
                                             <input id="restaurant_name" name="restaurantName" type="text">
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <label for="restaurantPhone">Phone: </label>
-                                        <input id="restaurantPhone" name="phone" type="text">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <label for="restaurantPhone">Phone: </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input id="restaurantPhone" name="phone" type="text">
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label for="open_hour">Open Hour: </label>
-                                        <input id="open_hour" name="openHour" type="text">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <label for="open_hour">Open Hour: </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input id="open_hour" name="openHour" type="text">
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label for="close_hour">Close Hour: </label>
-                                        <input id="close_hour" name="closeHour" type="text">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <label for="close_hour">Close Hour: </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input id="close_hour" name="closeHour" type="text">
+                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <label for="cuisine">Cuisine : </label>
-                                        <select id="cuisine" name="cuisine">
-                                            <option th:each="cuisine : ${cuisinesListDTO}" th:text="${cuisine.cuisine}"
-                                                    th:value="${cuisine.cuisine}"></option>
-                                        </select>
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <label for="cuisine">Cuisine : </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select id="cuisine" name="cuisine">
+                                                <option th:each="cuisine : ${cuisinesListDTO}"
+                                                        th:text="${cuisine.cuisine}"
+                                                        th:value="${cuisine.cuisine}"></option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <input id="restaurant_role_id" name="role_id" type="hidden" value="2">
-                                <div class="row mt-3">
-                                    <button class="btn btn-info" role="button" type="submit">Register</button>
                                 </div>
                             </div>
-                        </form>
+                            <input id="restaurant_role_id" name="role_id" type="hidden" value="2">
+                            <div class="row mt-3">
+                                <button class="btn btn-info" role="button" type="submit">Register</button>
+                            </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <div class="row mt-3">
     <div class="col-md-4">
