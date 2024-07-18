@@ -10,6 +10,8 @@ Supper Speed my beginner project designed mimic the JustEat website. This applic
 - **Client Features**: Clients can browse dishes and place orders.
 - **Order Management**: Users can check the status of their orders and proceed with the order processing.
 
+- **SwaggerUI**
+
 ## Getting Started
 
 ### Prerequisites
