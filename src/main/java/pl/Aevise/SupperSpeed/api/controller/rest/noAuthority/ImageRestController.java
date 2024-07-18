@@ -2,6 +2,8 @@ package pl.Aevise.SupperSpeed.api.controller.rest.noAuthority;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -28,6 +30,11 @@ public class ImageRestController {
 
     @GetMapping("/images/{fileName:.+}")
     @Operation(summary = "Get dish image or restaurant logo from the database")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved image"),
+            @ApiResponse(responseCode = "400", description = "Error retrieving image"),
+            @ApiResponse(responseCode = "404", description = "Image not found or not readable")
+    })
     public ResponseEntity<Resource> getImage(
             @Parameter(description = "Name of image. Format:\nyyyy_MM_dd-<dishName>_<dishId>.jpg\nor\nyyyy_MM_dd-<{>restaurantName>_<restaurantId>-LOGO.jpg", required = true)
             @PathVariable String fileName

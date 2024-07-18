@@ -1,5 +1,12 @@
 package pl.Aevise.SupperSpeed.api.controller.rest.authority.restaurant;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +31,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping(URLConstants.API_AUTH_RESTAURANT)
 @AllArgsConstructor
+@Tag(name = "Secured Dish Controller", description = "Endpoints for restaurants to manage their dishes")
 public class DishRestController {
 
     public static final String ADD_DISH = "/dish/add";
@@ -31,14 +39,24 @@ public class DishRestController {
     public static final String UPDATE_DISH = "/dish/update";
     public static final String DELETE_DISH = "/dish/delete";
 
-    private final DishCategoryService dishCategoryService;
     private final DishService dishService;
     private final RestaurantService restaurantService;
     private final DishMapper dishMapper;
 
     @PostMapping(value = ADD_DISH, consumes = "application/json", produces = "application/json")
+    @Operation(summary = "Add a new dish")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Dish created successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DishDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid dish category",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DishDTO.class)))
+    })
     public ResponseEntity<DishDTO> addNewDish(
+            @Parameter(description = "Dish details", required = true)
             @RequestBody DishDTO dishDTO,
+            @Parameter(hidden = true)
             @AuthenticationPrincipal UserDetails userDetails) {
 
         String username = userDetails.getUsername();
@@ -55,7 +73,16 @@ public class DishRestController {
     }
 
     @GetMapping(value = GET_DISHES)
+    @Operation(summary = "Get all dishes")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of dishes",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DishDTO.class))),
+            @ApiResponse(responseCode = "404", description = "No dishes found",
+                    content = @Content)
+    })
     public ResponseEntity<List<DishDTO>> getAllDishes(
+            @Parameter(hidden = true)
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         String username = userDetails.getUsername();
@@ -71,20 +98,34 @@ public class DishRestController {
     }
 
     @PutMapping(value = UPDATE_DISH)
+    @Operation(summary = "Update a dish")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully updated the dish",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DishDTO.class))),
+            @ApiResponse(responseCode = "403", description = "Forbidden to modify this dish",
+                    content = @Content),
+            @ApiResponse(responseCode = "400", description = "Incorrect parameters in request",
+                    content = @Content)
+    })
     public ResponseEntity<DishDTO> updateDish(
+            @Parameter(description = "Details of the dish to be updated", required = true)
             @RequestBody DishDTO dishDTO,
+            @Parameter(description = "ID of the dish to be updated", required = true)
             @RequestParam(value = "dishId") Integer dishId,
+            @Parameter(hidden = true)
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         checkDishData(dishDTO);
+        if(dishId == null || dishId < 1) throw new IncorrectParamsInRESTRequest("No dish Id provided");
+
+        Dish oldDish = dishService.findByIdPOJO(dishId);
+        if (oldDish == null) throw new IncorrectParamsInRESTRequest("Dish not found");
 
         String username = userDetails.getUsername();
         RestaurantDTO restaurant = restaurantService.findRestaurantByEmail(username);
 
-        Dish oldDish = dishService.findByIdPOJO(dishId);
-
-        if (oldDish == null ||
-                !Objects.equals(oldDish.getRestaurant().getId(), restaurant.getRestaurantId())) {
+        if (!Objects.equals(oldDish.getRestaurant().getId(), restaurant.getRestaurantId())) {
             throw new ForbiddenRESTRequest("Can not modify this dish");
         }
 
@@ -95,8 +136,19 @@ public class DishRestController {
     }
 
     @DeleteMapping(DELETE_DISH)
+    @Operation(summary = "Delete a dish")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted the dish",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "Forbidden to delete this dish",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
     public ResponseEntity<String> deleteDish(
+            @Parameter(description = "ID of the dish to be deleted", required = true)
             @RequestParam(value = "dishId") Integer dishId,
+            @Parameter(hidden = true)
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         String username = userDetails.getUsername();

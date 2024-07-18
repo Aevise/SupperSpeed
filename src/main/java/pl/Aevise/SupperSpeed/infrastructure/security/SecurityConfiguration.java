@@ -38,7 +38,7 @@ public class SecurityConfiguration {
                                 "/opinion", "/api/unauth/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .requestMatchers("/client/**").hasAuthority(AvailableRoles.CLIENT.name())
                         .requestMatchers("/restaurant/**", "/upload/**", "/api/auth/restaurant/**").hasAuthority(AvailableRoles.RESTAURANT.name())
-                        .requestMatchers("/delete/**", "/orders/**").hasAnyAuthority(
+                        .requestMatchers("/delete/**", "/orders/**", "/api/auth/orders").hasAnyAuthority(
                                 AvailableRoles.CLIENT.name(),
                                 AvailableRoles.RESTAURANT.name()
                         );

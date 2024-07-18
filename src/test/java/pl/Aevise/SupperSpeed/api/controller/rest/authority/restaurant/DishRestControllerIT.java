@@ -186,6 +186,29 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
     }
 
     @Test
+    void checkThatUpdateRequestIsDeniedWhenDishIdIsNotProvided() {
+        //given
+        String URL = API_AUTH_RESTAURANT + UPDATE_DISH;
+        DishDTO dishDTO = dishDTO1();
+        String expectedErrorMessage = "Error:\n[No dish Id provided]";
+
+        String base64Credentials = Base64.getEncoder().encodeToString("user3@user.com:test".getBytes());
+
+        //when
+        ValidatableResponse response = requestSpecificationNoAuthentication()
+                .header("Authorization", "Basic " + base64Credentials)
+                .header("Content-Type", "application/json")
+                .body(dishDTO)
+                .put(URL)
+                .then();
+        String responseBody = response.extract().asString();
+
+        //then
+        response.statusCode(HttpStatus.BAD_REQUEST.value());
+        assertThat(responseBody).isEqualTo(expectedErrorMessage);
+    }
+
+    @Test
     void checkThatYouCanCorrectlyDeleteDish() {
         //given
         String URL = API_AUTH_RESTAURANT + DELETE_DISH;
@@ -247,7 +270,7 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
     ) {
         //given
         String URL = API_AUTH_RESTAURANT + DELETE_DISH;
-        String expectedError = "Error:\n[You can not delete this dish]";
+        String expectedError = "Error:\n[Dish not found]";
 
         String base64Credentials = Base64.getEncoder().encodeToString("user3@user.com:test".getBytes());
 
@@ -261,7 +284,7 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
         String responseBody = response.extract().asString();
 
         //then
-        response.statusCode(HttpStatus.BAD_REQUEST.value());
+        response.statusCode(HttpStatus.FORBIDDEN.value());
         assertThat(responseBody).isEqualTo(expectedError);
     }
 
@@ -292,7 +315,7 @@ class DishRestControllerIT extends RestAssuredIntegrationTestBase {
                 () -> new EntityNotFoundException("Dish deleted?"));
 
         //then
-        response.statusCode(HttpStatus.BAD_REQUEST.value());
+        response.statusCode(HttpStatus.FORBIDDEN.value());
         assertThat(responseBody).isEqualTo(expectedError);
         assertThat(newDish).isEqualTo(oldDish);
     }

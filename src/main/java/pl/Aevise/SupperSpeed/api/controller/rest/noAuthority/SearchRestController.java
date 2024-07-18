@@ -1,5 +1,10 @@
 package pl.Aevise.SupperSpeed.api.controller.rest.noAuthority;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping(URLConstants.API_UNAUTH)
 @AllArgsConstructor
+@Tag(name = "Restaurant Search Controller", description = "Endpoints for searching restaurants")
 public class SearchRestController {
 
     public static final String SEARCH_ENDPOINT = "/search";
@@ -23,8 +29,15 @@ public class SearchRestController {
 
 
     @GetMapping(SEARCH_ENDPOINT)
+    @Operation(summary = "Get all restaurant by given params")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of restaurants"),
+            @ApiResponse(responseCode = "404", description = "No restaurants found with the given parameters")
+    })
     public ResponseEntity<List<RestRestaurantDTO>> searchForRestaurantByAddress(
+            @Parameter(description = "Name of the city", required = true)
             @RequestParam(value = "city") String city,
+            @Parameter(description = "Searched cuisine", required = true)
             @RequestParam(value = "cuisine", required = false) String cuisine
     ) {
         List<RestaurantDTO> restaurantsDTO;

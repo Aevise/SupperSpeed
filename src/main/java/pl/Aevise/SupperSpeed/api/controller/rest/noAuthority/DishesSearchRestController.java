@@ -2,6 +2,10 @@ package pl.Aevise.SupperSpeed.api.controller.rest.noAuthority;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +34,13 @@ public class DishesSearchRestController {
 
     @GetMapping(value = ALL_DISHES_FROM_RESTAURANT)
     @Operation(summary = "Get all dishes from a restaurant")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of dishes",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DishDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Restaurant not found or no dishes available",
+                    content = @Content)
+    })
     public ResponseEntity<List<DishDTO>> allDishesFromRestaurant(
             @Parameter(description = "Name of the restaurant", required = true)
             @PathVariable String restaurantName
@@ -50,6 +61,13 @@ public class DishesSearchRestController {
 
     @GetMapping(value = ALL_DISHES_FROM_RESTAURANT_BY_CATEGORY)
     @Operation(summary = "Get dishes from a restaurant by category")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved list of dishes by category",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = DishDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Restaurant or category not found or no dishes available",
+                    content = @Content)
+    })
     public ResponseEntity<List<DishDTO>> dishesFromRestaurantByCategory(
             @Parameter(description = "Name of the restaurant", required = true)
             @PathVariable String restaurantName,

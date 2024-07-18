@@ -2,6 +2,8 @@ package pl.Aevise.SupperSpeed.api.controller.rest.noAuthority;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,10 @@ public class OpinionAndRatingRestController {
 
     @GetMapping(value = GET_OPINIONS)
     @Operation(summary = "Get opinions about given restaurant")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved opinions"),
+            @ApiResponse(responseCode = "404", description = "Restaurant not found or no opinions available")
+    })
     public ResponseEntity<List<RestOpinionDTO>> getOpinionsAboutRestaurant(
             @Parameter(description = "Name of the restaurant", required = true)
             @PathVariable String restaurantName,
@@ -51,6 +57,10 @@ public class OpinionAndRatingRestController {
 
     @GetMapping(value = GET_TOTAL_RATING)
     @Operation(summary = "Get total rating about restaurant")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved total rating"),
+            @ApiResponse(responseCode = "404", description = "Restaurant not found")
+    })
     public ResponseEntity<TotalRestaurantRatingDTO> getTotalRestaurantRating(
             @Parameter(description = "Name of the restaurant", required = true)
             @RequestParam(value = "restaurantName") String restaurantName

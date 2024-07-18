@@ -127,11 +127,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ForbiddenRESTRequest.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<String> handleException(ForbiddenRESTRequest ex) {
         String message = String.format("Error:\n[%s]", ex.getMessage());
         log.error(message, ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(message);
     }
 
     @ExceptionHandler(IncorrectParamsInRESTRequest.class)

@@ -11,8 +11,10 @@ import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
 import pl.Aevise.SupperSpeed.api.dto.TotalRestaurantRatingDTO;
+import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.SupperOrderMapper;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
+import pl.Aevise.SupperSpeed.domain.Client;
 import pl.Aevise.SupperSpeed.domain.SupperOrder;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.RestaurantEntity;
 import pl.Aevise.SupperSpeed.infrastructure.database.entity.StatusListEntity;
@@ -23,10 +25,7 @@ import pl.Aevise.SupperSpeed.infrastructure.database.repository.mapper.ClientEnt
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -37,6 +36,8 @@ public class SupperOrderService {
 
     private final ClientProfileService clientProfileService;
     private final ClientEntityMapper clientEntityMapper;
+
+    private final RestaurantService restaurantService;
 
     @Transactional
     public List<SupperOrder> getOrdersByRestaurantId(Integer restaurantId) {
@@ -259,6 +260,31 @@ public class SupperOrderService {
                 .deliveryRating(ratings.get(1))
                 .foodRating(ratings.get(0))
                 .build();
+    }
+
+    public List<SupperOrderDTO> getOrdersByUserEmail(String email){
+        RestaurantDTO restaurantByEmail = restaurantService.findRestaurantByEmail(email);
+        List<SupperOrderDTO> orders;
+        if(restaurantByEmail != null){
+            orders = getOrdersByRestaurantId(restaurantByEmail.getRestaurantId())
+                    .stream()
+                    .map(supperOrderMapper::mapToDTO)
+                    .toList();
+            log.debug("[{}] orders found for user with email [{}]", orders.size(), email);
+            return orders;
+        }
+
+        Optional<Client> clientByEmail = clientProfileService.findClientByEmail(email);
+        if (clientByEmail.isPresent()){
+            orders = getOrdersByClientId(clientByEmail.get().getId())
+                    .stream()
+                    .map(supperOrderMapper::mapToDTO)
+                    .toList();
+            log.debug("[{}] orders found for user with email [{}]", orders.size(), email);
+            return orders;
+        }
+        log.debug("Orders for user with email [{}] not found", email);
+        return List.of();
     }
 
 }

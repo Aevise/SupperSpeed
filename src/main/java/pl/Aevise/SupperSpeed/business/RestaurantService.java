@@ -42,7 +42,7 @@ public class RestaurantService {
             return restaurantMapper.mapToDTO(byUserEmail.get());
         } else {
             log.warn("User with email: [{}] not found", email);
-            throw new RuntimeException("User not found");
+            return null;
         }
     }
 
