@@ -19,7 +19,6 @@ import pl.Aevise.SupperSpeed.api.controller.utils.URLConstants;
 import pl.Aevise.SupperSpeed.api.dto.DishDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestaurantDTO;
 import pl.Aevise.SupperSpeed.api.dto.mapper.DishMapper;
-import pl.Aevise.SupperSpeed.business.DishCategoryService;
 import pl.Aevise.SupperSpeed.business.DishService;
 import pl.Aevise.SupperSpeed.business.RestaurantService;
 import pl.Aevise.SupperSpeed.domain.Dish;
@@ -117,7 +116,7 @@ public class DishRestController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         checkDishData(dishDTO);
-        if(dishId == null || dishId < 1) throw new IncorrectParamsInRESTRequest("No dish Id provided");
+        if (dishId == null || dishId < 1) throw new IncorrectParamsInRESTRequest("No dish Id provided");
 
         Dish oldDish = dishService.findByIdPOJO(dishId);
         if (oldDish == null) throw new IncorrectParamsInRESTRequest("Dish not found");

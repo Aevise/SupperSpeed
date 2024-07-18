@@ -53,7 +53,6 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    //TODO zrobic konfiguracje zabezpieczen po nowemu
     @Bean
     public AuthenticationManager authenticationManager(
             HttpSecurity http,
@@ -70,7 +69,6 @@ public class SecurityConfiguration {
     @Bean
     @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = true)
     SecurityFilterChain securityEnabled(HttpSecurity http) throws Exception {
-        //TODO add request Matchers after authorizehttprequests
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizationConfiguration())

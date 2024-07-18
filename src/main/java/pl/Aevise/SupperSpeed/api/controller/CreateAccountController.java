@@ -37,7 +37,6 @@ public class CreateAccountController {
     public static final String CREATE_ACCOUNT_USER = "/create/user";
     public static final String CREATE_ACCOUNT_RESTAURANT = "/create/restaurant";
     public static final String ACCOUNT_EXIST = "/create/exist";
-    //TODO zmienić potem na false i dodac aktywowanie uzytkownika za pomoca maila
     static final boolean userDefaultActive = true;
     static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final UserService userService;

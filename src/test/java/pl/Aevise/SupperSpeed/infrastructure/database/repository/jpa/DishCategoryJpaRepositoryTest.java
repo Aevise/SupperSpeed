@@ -41,7 +41,6 @@ class DishCategoryJpaRepositoryTest {
     void checkThatYouCanFetchAllDishCategoriesForRestaurant() {
         //given
         var restaurant = restaurantJpaRepository.saveAndFlush(restaurantEntity1());
-        ;
         var dishCategories = List.of(
                 buildDishCategory(restaurant, DISH_CATEGORY.get("Meat")),
                 buildDishCategory(restaurant, DISH_CATEGORY.get("Vegan"))

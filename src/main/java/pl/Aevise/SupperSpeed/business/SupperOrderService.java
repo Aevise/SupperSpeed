@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.Aevise.SupperSpeed.api.controller.utils.OrderStatus;
 import pl.Aevise.SupperSpeed.api.dto.*;
-import pl.Aevise.SupperSpeed.api.dto.mapper.RestaurantMapper;
 import pl.Aevise.SupperSpeed.api.dto.mapper.SupperOrderMapper;
 import pl.Aevise.SupperSpeed.business.dao.SupperOrderDAO;
 import pl.Aevise.SupperSpeed.domain.Client;
@@ -261,10 +260,10 @@ public class SupperOrderService {
     }
 
     @Transactional
-    public List<SupperOrderDTO> getOrdersByUserEmail(String email){
+    public List<SupperOrderDTO> getOrdersByUserEmail(String email) {
         RestaurantDTO restaurantByEmail = restaurantService.findRestaurantByEmail(email);
         List<SupperOrderDTO> orders;
-        if(restaurantByEmail != null){
+        if (restaurantByEmail != null) {
             orders = getOrdersByRestaurantId(restaurantByEmail.getRestaurantId())
                     .stream()
                     .map(supperOrderMapper::mapToDTO)
@@ -274,7 +273,7 @@ public class SupperOrderService {
         }
 
         Optional<Client> clientByEmail = clientProfileService.findClientByEmail(email);
-        if (clientByEmail.isPresent()){
+        if (clientByEmail.isPresent()) {
             orders = getOrdersByClientId(clientByEmail.get().getId())
                     .stream()
                     .map(supperOrderMapper::mapToDTO)
@@ -288,8 +287,8 @@ public class SupperOrderService {
 
     @Transactional
     public List<RestOrderDTO> getRestOrdersByUserEmail(String username) {
-                List<SupperOrderDTO> ordersByUserEmail = getOrdersByUserEmail(username);
-                List<RestOrderDTO> ordersToReturn = new LinkedList<>();
+        List<SupperOrderDTO> ordersByUserEmail = getOrdersByUserEmail(username);
+        List<RestOrderDTO> ordersToReturn = new LinkedList<>();
         for (SupperOrderDTO order : ordersByUserEmail) {
             List<Map<Integer, DishDTO>> dishes = new LinkedList<>();
             List<DishListDTO> dishesByOrderId = dishListService.getDishesByOrderId(order.getOrderId());

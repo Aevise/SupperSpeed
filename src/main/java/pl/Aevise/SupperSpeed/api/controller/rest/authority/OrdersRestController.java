@@ -15,11 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.Aevise.SupperSpeed.api.controller.utils.URLConstants;
-import pl.Aevise.SupperSpeed.api.dto.DishListDTO;
 import pl.Aevise.SupperSpeed.api.dto.RestOrderDTO;
-import pl.Aevise.SupperSpeed.api.dto.SupperOrderDTO;
-import pl.Aevise.SupperSpeed.business.DishListService;
-import pl.Aevise.SupperSpeed.business.DishService;
 import pl.Aevise.SupperSpeed.business.SupperOrderService;
 
 import java.util.List;
@@ -30,9 +26,8 @@ import java.util.List;
 @Tag(name = "Secured Orders Controller", description = "Endpoints for restaurant or user to view their orders")
 public class OrdersRestController {
 
-    private final SupperOrderService supperOrderService;
-
     public final static String ORDERS = "/orders";
+    private final SupperOrderService supperOrderService;
 
     @GetMapping(ORDERS)
     @Operation(summary = "Get all orders for the authenticated user")
@@ -46,12 +41,12 @@ public class OrdersRestController {
     public ResponseEntity<List<RestOrderDTO>> getOrders(
             @Parameter(hidden = true)
             @AuthenticationPrincipal UserDetails userDetails
-            ){
+    ) {
         String username = userDetails.getUsername();
 
         List<RestOrderDTO> orders = supperOrderService.getRestOrdersByUserEmail(username);
 
-        if(orders.isEmpty()){
+        if (orders.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 

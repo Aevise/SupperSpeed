@@ -7,7 +7,7 @@ plugins {
 
 group = "pl.Aevise"
 version = "1.0-SNAPSHOT"
-compileJava.options.encoding= 'UTF-8'
+compileJava.options.encoding = 'UTF-8'
 
 java {
     sourceCompatibility = '17'
@@ -67,7 +67,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    testLogging{
+    testLogging {
         events "passed", "skipped", "failed"
     }
 }

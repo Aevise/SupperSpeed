@@ -1,11 +1,15 @@
 # Supper Speed
 
-Supper Speed my beginner project designed mimic the JustEat website. This application allows users to register with roles of either CLIENT or RESTAURANT. Restaurants can add dishes and dish categories, while clients can order dishes. Users have the ability to update their personal information, such as name, surname, address, and phone number. Additionally, the project supports order status checking and processing.
+Supper Speed my beginner project designed mimic the JustEat website. This application allows users to register with
+roles of either CLIENT or RESTAURANT. Restaurants can add dishes and dish categories, while clients can order dishes.
+Users have the ability to update their personal information, such as name, surname, address, and phone number.
+Additionally, the project supports order status checking and processing.
 
 ## Features
 
 - **User Registration and Authentication**: Users can register and log in with roles of CLIENT or RESTAURANT.
-- **User Profile Management**: Users can update their personal information including name, surname, address, and phone number.
+- **User Profile Management**: Users can update their personal information including name, surname, address, and phone
+  number.
 - **Restaurant Features**: Restaurants can add new dishes and dish categories.
 - **Client Features**: Clients can browse dishes and place orders.
 - **Order Management**: Users can check the status of their orders and proceed with the order processing.
@@ -44,7 +48,8 @@ Supper Speed my beginner project designed mimic the JustEat website. This applic
 
 ### Dependencies
 
-The project uses several dependencies to facilitate development, including Spring Boot for backend development and Thymeleaf for server-side rendering. Below is a list of the main dependencies used in the project:
+The project uses several dependencies to facilitate development, including Spring Boot for backend development and
+Thymeleaf for server-side rendering. Below is a list of the main dependencies used in the project:
 
 #### Spring Boot
 
@@ -84,33 +89,33 @@ The project uses several dependencies to facilitate development, including Sprin
 ## Usage
 
 1. **Register as a User**:
-   - Visit the registration page and sign up as either a CLIENT or a RESTAURANT.
+    - Visit the registration page and sign up as either a CLIENT or a RESTAURANT.
 
 2. **Log in**:
-   - Use your credentials to log in to the application.
+    - Use your credentials to log in to the application.
 
 3. **Manage Profile**:
-   - Navigate to the profile section to update your personal information.
+    - Navigate to the profile section to update your personal information.
 
 4. **For Restaurants**:
-   - Add new dishes and categories through the restaurant dashboard.
+    - Add new dishes and categories through the restaurant dashboard.
 
 5. **For Clients**:
-   - Browse available dishes and place orders.
+    - Browse available dishes and place orders.
 
 6. **Order Management**:
-   - Check the status of your orders and proceed with order processing as required.
+    - Check the status of your orders and proceed with order processing as required.
 
 ## Entity Relationship Diagram (ERD)
 
-Below is the Entity Relationship Diagram (ERD) of the project to help you understand the database structure and relationships between different entities.
+Below is the Entity Relationship Diagram (ERD) of the project to help you understand the database structure and
+relationships between different entities.
 
 ![Supper Speed ERD](./src/main/resources/db/SupperSpeed_ERD.png)
 
 ## Contributing
 
 Sorry, but contributions are not needed. Feel free to pull this project, and do the changes yourself.
-
 
 ## Contact
 
