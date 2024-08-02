@@ -20,8 +20,8 @@ import static java.util.Optional.ofNullable;
 public class SupperUserDTO {
 
     Integer supperUserId;
-    @Email
-    @NotEmpty
+    @Email(message = "Please provide correct correct email ex.: XXXX@XXX.XX")
+    @NotEmpty(message = "Email field must not be empty!")
     String email;
     Boolean active;
     OffsetDateTime creationDateTime;

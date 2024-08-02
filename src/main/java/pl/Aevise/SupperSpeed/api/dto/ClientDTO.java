@@ -23,7 +23,10 @@ public class ClientDTO {
     String name;
     String surname;
     @Size
-    @Pattern(regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$")
+    @Pattern(
+            message = "Please provide correct phone number ex.: +11 222 333 444",
+            regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$"
+    )
     String phone;
     Integer supperUserId;
     AddressDTO addressDTO;

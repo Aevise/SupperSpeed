@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -25,7 +26,10 @@ public class RestaurantDTO {
     LocalTime openHour;
     LocalTime closeHour;
     @Size
-    @Pattern(regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$")
+    @Pattern(
+            message = "Please provide correct phone number ex.: +11 222 333 444",
+            regexp = "^[+]\\d{2}\\s\\d{3}\\s\\d{3}\\s\\d{3}$"
+    )
     String phone;
     Boolean isShown;
     CuisineDTO cuisine;
