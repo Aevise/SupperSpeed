@@ -106,6 +106,45 @@ Thymeleaf for server-side rendering. Below is a list of the main dependencies us
 6. **Order Management**:
     - Check the status of your orders and proceed with order processing as required.
 
+## Use cases with existing test Data
+1. **Overview**:
+   - 4 test users exist: 
+     - user1@user.com, user2@user.com, user3@user.com - as restaurant
+     - user4@user.com - as client
+   - test users share the same password: test
+   - if you want to see restaurant's or client's profile it is recommended to log in as user3 or user 4 (have the biggest amount of data added)
+
+2. **Main Page**:
+   - Field "city" contains cities with registered restaurants.
+   - In the main page your provide your address. Pressing "Show Restaurants" button redirects you to page with listed restaurants which deliver to you address.
+     - Choose data: City - Lublin, Street Name - Jaskrawa1, Cuisine: All - and you'll see single restaurant with name restaurant3.
+     - Choose data: City - Lublin, Street Name - Jaskrawa2, Cuisine: All - and you'll see two restaurants with name restaurant2 and restaurant3.
+   - Now you can browse restaurant's menu or opinions about restaurant.
+   - Restaurants can be sorted (asc or desc)
+
+3. **Restaurant Profile**:
+   - Allows you to change restaurant data and restaurant address.
+   - Restaurant can only be found when it has IsShown parameter set to true (if yellow button "hide my restaurant" is present it means that your restaurant can be found)
+
+4. **Restaurant Menu**:
+   - Allows you to new/update/delete dish categories and dishes.
+   - Allows to add dish photo
+   - only one dish/category can be updated in the single request.
+
+5. **Restaurant Delivery Addresses**:
+   - Shows the delivery addresses for restaurant. Data is paginated and can be sorted (asc or desc)
+   - You can add delivery address existing in the database to your pool of delivery addresses (must be added before)
+   - You can add your own delivery address to the database. It is automatically assigned to your pool (other restaurant will see address you have added)
+
+6. **View Orders**:
+   - shows all your orders
+   - order can be cancelled by the client when orders status is equal to NEW or PAID unless 20 minutes has passed
+   - order can be cancelled by the restaurant when orders status is equal to NEW, PAID, ACCEPTED or DELIVERY unless 20 minutes has passed
+   - client can comment on realized orders
+   - restaurant can add their own response to client comment
+   - comments cannot be edited!
+
+
 ## Entity Relationship Diagram (ERD)
 
 Below is the Entity Relationship Diagram (ERD) of the project to help you understand the database structure and
