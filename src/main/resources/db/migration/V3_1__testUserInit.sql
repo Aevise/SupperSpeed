@@ -86,31 +86,31 @@ INSERT INTO dishes_list(dish_id, order_id, quantity)
 VALUES (3, 2, 1);
 
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa1');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa1');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa2');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa2');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa3');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa3');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa4');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa4');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa5');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa5');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa6');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa6');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa7');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa7');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa8');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa8');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa9');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa9');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa10');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa10');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa11');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa11');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa12');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa12');
 INSERT INTO delivery_address(country, city, district, postal_code, street_name)
-VALUES ('POLAND', 'WARSZAWA', 'NOO', '22-100', 'Jaskrawa13');
+VALUES ('POLAND', 'Lublin', 'NOO', '22-100', 'Jaskrawa13');
 
 INSERT INTO delivery_address_list(restaurant_id, delivery_address_id)
 values (3, 1);

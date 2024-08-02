@@ -26,9 +26,9 @@ import static pl.Aevise.SupperSpeed.util.Constants.CUISINES;
 class DeliveryAddressListJpaRepositoryTest {
 
     private final static String street1 = "Jaskrawa1";
-    private final static String city1 = "WARSZAWA";
+    private final static String city1 = "Lublin";
     private final static String street2 = "Jaskrawa2";
-    private final static String city2 = "WARSZAWA";
+    private final static String city2 = "Lublin";
     private final RestaurantJpaRepository restaurantJpaRepository;
     private final DeliveryAddressListJpaRepository deliveryAddressListJpaRepository;
 
