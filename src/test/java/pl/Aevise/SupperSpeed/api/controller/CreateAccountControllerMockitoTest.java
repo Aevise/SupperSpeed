@@ -100,7 +100,7 @@ class CreateAccountControllerMockitoTest {
         String result = createAccountController.createClient(supperUserDTO, clientDTO, roleId, password);
 
         //then
-        assertEquals(result, "redirect:/create");
+        assertEquals(result, "account_created");
     }
 
     @Test
@@ -163,6 +163,6 @@ class CreateAccountControllerMockitoTest {
         String result = createAccountController.createRestaurant(supperUserDTO, restaurantDTO, roleId, password, cuisine);
 
         //then
-        assertEquals(result, "redirect:/create");
+        assertEquals(result, "account_created");
     }
 }

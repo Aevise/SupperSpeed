@@ -78,7 +78,7 @@ public class CreateAccountController {
                 )
         );
 
-        return "redirect:" + CREATE_ACCOUNT_PAGE;
+        return "account_created";
     }
 
     @PostMapping(CREATE_ACCOUNT_RESTAURANT)
@@ -109,7 +109,7 @@ public class CreateAccountController {
                 )
         );
 
-        return "redirect:" + CREATE_ACCOUNT_PAGE;
+        return "account_created";
     }
 
     @GetMapping(ACCOUNT_EXIST)

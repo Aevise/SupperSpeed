@@ -193,9 +193,9 @@ class CreateAccountControllerWebMvcTest {
                 .with(SecurityMockMvcRequestPostProcessors.csrf()));
 
         //then
-        perform.andExpect(status().isFound())
+        perform.andExpect(status().isOk())
                 .andExpect(model().hasNoErrors())
-                .andExpect(view().name("redirect:" + CREATE_ACCOUNT_PAGE));
+                .andExpect(view().name("account_created"));
     }
 
     @Test
@@ -290,9 +290,9 @@ class CreateAccountControllerWebMvcTest {
                 .with(SecurityMockMvcRequestPostProcessors.csrf()));
 
         //then
-        perform.andExpect(status().isFound())
+        perform.andExpect(status().isOk())
                 .andExpect(model().attributeDoesNotExist("errorMessage"))
-                .andExpect(view().name("redirect:" + CREATE_ACCOUNT_PAGE));
+                .andExpect(view().name("account_created"));
     }
 
     @ParameterizedTest
@@ -323,9 +323,9 @@ class CreateAccountControllerWebMvcTest {
         //then
         if (correctPhone) {
             mockMvc.perform(post(CREATE_ACCOUNT_RESTAURANT).params(parameters).with(SecurityMockMvcRequestPostProcessors.csrf()))
-                    .andExpect(status().isFound())
+                    .andExpect(status().isOk())
                     .andExpect(model().attributeDoesNotExist("errorMessage"))
-                    .andExpect(view().name("redirect:" + CREATE_ACCOUNT_PAGE));
+                    .andExpect(view().name("account_created"));
         } else {
             mockMvc.perform(post(CREATE_ACCOUNT_RESTAURANT).params(parameters).with(SecurityMockMvcRequestPostProcessors.csrf()))
                     .andExpect(status().isBadRequest())
@@ -362,9 +362,9 @@ class CreateAccountControllerWebMvcTest {
         //then
         if (correctEmail) {
             mockMvc.perform(post(CREATE_ACCOUNT_RESTAURANT).params(parameters).with(SecurityMockMvcRequestPostProcessors.csrf()))
-                    .andExpect(status().isFound())
+                    .andExpect(status().isOk())
                     .andExpect(model().attributeDoesNotExist("errorMessage"))
-                    .andExpect(view().name("redirect:" + CREATE_ACCOUNT_PAGE));
+                    .andExpect(view().name("account_created"));
         } else {
             mockMvc.perform(post(CREATE_ACCOUNT_RESTAURANT).params(parameters).with(SecurityMockMvcRequestPostProcessors.csrf()))
                     .andExpect(status().isBadRequest())
@@ -398,9 +398,9 @@ class CreateAccountControllerWebMvcTest {
         //then
         if (correctEmail) {
             mockMvc.perform(post(CREATE_ACCOUNT_USER).params(parameters).with(SecurityMockMvcRequestPostProcessors.csrf()))
-                    .andExpect(status().isFound())
+                    .andExpect(status().isOk())
                     .andExpect(model().attributeDoesNotExist("errorMessage"))
-                    .andExpect(view().name("redirect:" + CREATE_ACCOUNT_PAGE));
+                    .andExpect(view().name("account_created"));
         } else {
             mockMvc.perform(post(CREATE_ACCOUNT_USER).params(parameters).with(SecurityMockMvcRequestPostProcessors.csrf()))
                     .andExpect(status().isBadRequest())

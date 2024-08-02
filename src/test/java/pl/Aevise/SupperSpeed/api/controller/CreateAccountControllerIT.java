@@ -119,7 +119,7 @@ class CreateAccountControllerIT extends AbstractITConfiguration {
                 () -> new UserNotFoundException("Client not added"));
 
         //then
-        assertTrue(response.getStatusCode().is3xxRedirection());
+        assertTrue(response.getStatusCode().is2xxSuccessful());
         assertEquals(clientDTO.getName(), newClient.getName());
         assertEquals(clientDTO.getSurname(), newClient.getSurname());
         assertEquals(clientDTO.getPhone(), newClient.getPhone());
@@ -163,7 +163,7 @@ class CreateAccountControllerIT extends AbstractITConfiguration {
                 () -> new UserNotFoundException("Restaurant not added"));
 
         //then
-        assertTrue(response.getStatusCode().is3xxRedirection());
+        assertTrue(response.getStatusCode().is2xxSuccessful());
         assertEquals(restaurantDTO.getRestaurantName(), newRestaurant.getRestaurantName());
         assertEquals(restaurantDTO.getOpenHour(), newRestaurant.getOpenHour());
         assertEquals(restaurantDTO.getCloseHour(), newRestaurant.getCloseHour());
