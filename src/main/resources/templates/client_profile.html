@@ -24,7 +24,7 @@
             <button class="btn btn-info" type="submit">View my orders</button>
         </div>
     </form>
-    <div class="col-md-3">
+    <div class="row-md-3">
         <h3>Your current data:</h3>
         <form method="post" th:action="@{/client/profile/update}">
             <input name="action" type="hidden" value="updateData"/>
@@ -51,6 +51,9 @@
                 </div>
                 <div class="col-md-3">
                     <input id="customerPhone" th:field="*{clientDTO.phone}" type="text">
+                </div>
+                <div class="col-md-3">
+                    <h6>accepted format - +XX XXX XXX XXX</h6>
                 </div>
             </div>
             <div class="row mt-3">
