@@ -42,7 +42,6 @@ import static pl.Aevise.SupperSpeed.util.DTOFixtures.restaurantDTO1;
 
 @AutoConfigureMockMvc
 @Import(FlywayManualMigrationsConfiguration.class)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CreateAccountControllerIT extends AbstractITConfiguration {
 
     @Autowired
