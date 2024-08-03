@@ -8,7 +8,6 @@ server:
   port: 8080
   servlet:
     context-path: /supperspeed
-  access-token: 6e9bcb840461718912b38556131f9b28f50fd2d3
 
 spring:
   datasource:
